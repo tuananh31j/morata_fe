@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 const FeatureCard = () => {
-    const [isScale, setIsScale] = useState<Boolean>(false);
+    const [isScale, setIsScale] = useState<boolean>(false);
 
     const handleScale = (status: string) => {
         status === 'open' ? setIsScale(true) : setIsScale(false);

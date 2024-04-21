@@ -1,3 +1,29 @@
+@import 'normalize.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-track:hover {
+    background: #e2d5d5;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+input:focus {
+    outline: none;
+}
+
+body {
+    transition: background-color 1s ease-in-out;
+}
