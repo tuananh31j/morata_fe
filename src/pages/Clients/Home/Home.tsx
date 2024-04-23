@@ -1,9 +1,9 @@
-import Banner from '~/components/Banner';
+import PopupCart from '~/components/PopupCart';
 
 const Home = () => {
     return (
         <div>
-            <Banner />
+            <PopupCart />
         </div>
     );
 };
