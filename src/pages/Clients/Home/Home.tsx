@@ -1,7 +1,6 @@
 import Banner from '~/components/Banner';
 import FeatureCard from '~/components/Product/FeatureCard';
 import MediumCard from '~/components/Product/MediumCard';
-import Slideshow from '~/components/Slideshow';
 import WrapperList from '~/components/WrapperList';
 
 const Home = () => {

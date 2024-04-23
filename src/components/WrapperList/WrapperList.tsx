@@ -55,7 +55,7 @@ const WrapperList: React.FC<IWrapperListProps> = ({ data, CardItem, title, flex,
             )}
             {flex && (
                 <>
-                    <div className='mx-2 gap-3 lg:grid lg:grid-cols-2'>
+                    <div className='mx-2 items-center gap-3 lg:grid  lg:grid-cols-2'>
                         <div>
                             <Slideshow />
                         </div>

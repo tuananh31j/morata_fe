@@ -42,7 +42,7 @@ const MenuItem = () => {
                 </div>
             </div>
             {/* MENU Products CONTENT */}
-            <div className='invisible absolute z-50 mt-14 grid w-[1300px] -translate-x-56 grid-cols-4 bg-white p-5 opacity-0 duration-500 group-hover:visible group-hover:mt-0 group-hover:opacity-100'>
+            <div className='invisible absolute left-1 z-50 mt-14 grid w-[90%] grid-cols-4 bg-white p-5 opacity-0 duration-500 group-hover:visible group-hover:mt-0 group-hover:opacity-100'>
                 <Columns />
                 <Columns />
                 <Columns />
