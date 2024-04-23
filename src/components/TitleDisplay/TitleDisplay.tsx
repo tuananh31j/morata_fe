@@ -5,12 +5,12 @@ const TitleDisplay = ({ seeMore, title }: { title: string; seeMore?: { path: str
     return (
         <div className='my-5 flex items-center justify-between border-b-[1.5px]'>
             <div className='inline-block border-b-[1.5px] border-[#16bcdc] py-[4px]  text-start md:border-b-[2.3px]'>
-                <h1 className='text-start font-[400] capitalize'>{title}</h1>
+                <h1 className='text-start font-[400] capitalize md:text-[20px]'>{title}</h1>
             </div>
             <div>
                 {!!seeMore && (
-                    <Link to={seeMore.path} className='text-[10px] font-[400] capitalize'>
-                        {seeMore.name} <RightOutlined className='text-[7px]' />
+                    <Link to={seeMore.path} className='text-[10px] font-[400] capitalize md:text-[14px]'>
+                        {seeMore.name} <RightOutlined className='text-[7px] md:text-[10px]' />
                     </Link>
                 )}
             </div>

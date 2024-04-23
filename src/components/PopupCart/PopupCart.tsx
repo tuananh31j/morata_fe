@@ -2,7 +2,7 @@ import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant
 import { Button, Drawer, List, Avatar, InputNumber, Slider } from 'antd';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-const CartPopup = () => {
+const PopupCart = ({ children }: { children: React.ReactNode }) => {
     const [visible, setVisible] = useState(false);
     const onClose = () => {
         setVisible(false);
@@ -35,14 +35,14 @@ const CartPopup = () => {
         [totalOrderAmount]: `$${totalOrderAmount}`,
         [freeShippingThreshold]: `$${freeShippingThreshold}`,
     };
-    const handleQuantityChange = (id, value) => {
+    const handleQuantityChange = (id: number, value: number) => {
         console.log(id, value);
     };
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <Button type='primary' onClick={() => setVisible(true)}>
-                Open
-            </Button>
+            <span className='cursor-pointer' onClick={() => setVisible(true)}>
+                {children}
+            </span>
             <Drawer
                 title={
                     <div className='flex items-center justify-between'>
@@ -158,4 +158,4 @@ const CartPopup = () => {
     );
 };
 
-export default CartPopup;
+export default PopupCart;
