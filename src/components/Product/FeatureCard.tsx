@@ -10,6 +10,7 @@ const FeatureCard = () => {
     const handleScale = (status: string) => {
         status === 'open' ? setIsScale(true) : setIsScale(false);
     };
+
     return (
         <div className='rounded-xl bg-white p-5'>
             <div className='relative flex justify-between gap-5 rounded'>
