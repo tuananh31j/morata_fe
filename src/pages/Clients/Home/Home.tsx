@@ -1,9 +1,9 @@
-import MediumCard from '~/components/Product/MediumCard';
+import Banner from '~/components/Banner';
 
 const Home = () => {
     return (
         <div>
-            <MediumCard />
+            <Banner />
         </div>
     );
 };
