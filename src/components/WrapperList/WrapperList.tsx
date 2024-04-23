@@ -5,7 +5,7 @@ import useWindowSize from '~/hooks/useWindowSize';
 import { getMaxSlidesToShow } from '~/utils';
 import { CarouselRef } from 'antd/es/carousel';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import Title from '../Title';
 
 interface IWrapperListProps {
     data: number[];
@@ -22,18 +22,7 @@ const WrapperList: React.FC<IWrapperListProps> = ({ data, CardItem, title, seeMo
 
     return (
         <div className='group transition-all duration-300 ease-in'>
-            <div className='my-5 flex items-center justify-between border-b-[1.5px]'>
-                <div className='inline-block border-b-[1.5px] border-[#16bcdc] py-[4px]  text-start md:border-b-[2.3px]'>
-                    <h1 className='text-start font-[400] capitalize'>{title}</h1>
-                </div>
-                <div>
-                    {!!seeMore && (
-                        <Link to={seeMore.path} className='text-[10px] font-[400] capitalize'>
-                            {seeMore.name} <RightOutlined className='text-[7px]' />
-                        </Link>
-                    )}
-                </div>
-            </div>
+            <Title title={title} seeMore={seeMore} />
             <div className='relative'>
                 <Carousel className='' ref={ref} slidesToShow={slidesToShow} draggable dots={false}>
                     {data.map((item, i) => (

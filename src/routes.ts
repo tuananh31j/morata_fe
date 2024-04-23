@@ -1,6 +1,6 @@
-import About from './pages/About';
-import Dashboard from './pages/Dashboard';
-import Home from './pages/Home';
+import About from './pages/Clients/About';
+import Dashboard from './pages/Admins/Dashboard';
+import Home from './pages/Clients/Home';
 
 export const ClientRoutes = [
     { PATH: '', ELEMENT: Home },
