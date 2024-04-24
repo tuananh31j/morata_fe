@@ -3,6 +3,7 @@ import ButtonBackToTop from '~/components/ButtonBackToTop';
 import FeatureCard from '~/components/Product/FeatureCard';
 import MediumCard from '~/components/Product/MediumCard';
 import WrapperList from '~/components/WrapperList';
+import CategoryCard from '~/components/CategoryCard';
 
 const Home = () => {
     return (
@@ -16,9 +17,9 @@ const Home = () => {
             />
             <WrapperList
                 seeMore={{ path: '', name: 'Xem Thêm' }}
-                CardItem={FeatureCard}
+                CardItem={CategoryCard}
                 title='Popular Categories'
-                data={[1, 2, 2, 2, 2, 2, 2, 2, 2]}
+                data={[1, 2, 3, 4]}
             />
             <WrapperList
                 seeMore={{ path: '', name: 'Xem Thêm' }}
