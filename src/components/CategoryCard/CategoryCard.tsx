@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import catImage from '../../assets/images/cate_1_1.avif';
-const SmallCategoryCard = () => {
+const CategoryCard = () => {
     return (
         <>
             <Link to={`/`} className=' relative mt-2 block w-[236px] overflow-hidden rounded-[20px]'>
@@ -16,4 +16,4 @@ const SmallCategoryCard = () => {
     );
 };
 
-export default SmallCategoryCard;
+export default CategoryCard;
