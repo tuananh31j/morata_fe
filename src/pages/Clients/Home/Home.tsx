@@ -15,12 +15,7 @@ const Home = () => {
                 title='Hot Trending Products'
                 data={[1, 2, 2, 2, 2, 2, 2, 2, 2]}
             />
-            <WrapperList
-                seeMore={{ path: '', name: 'Xem Thêm' }}
-                CardItem={CategoryCard}
-                title='Popular Categories'
-                data={[1, 2, 3, 4]}
-            />
+            <WrapperList CardItem={CategoryCard} title='Popular Categories' data={[1, 2, 3, 4]} />
             <WrapperList
                 seeMore={{ path: '', name: 'Xem Thêm' }}
                 CardItem={MediumCard}
