@@ -7,6 +7,7 @@ import TitleDisplay from '../TitleDisplay';
 import SliderControls from '../SliderControls';
 import Slideshow from '../Slideshow';
 import FeatureCard from '../Product/FeatureCard';
+import MediumCard from '../Product/MediumCard';
 
 interface IWrapperListProps {
     data: number[];
@@ -14,6 +15,7 @@ interface IWrapperListProps {
     title: string;
     flex?: boolean;
     seeMore?: { path: string; name: string };
+    propsCard?: { flex?: boolean };
 }
 const WrapperList: React.FC<IWrapperListProps> = ({ data, CardItem, title, flex, seeMore }) => {
     const windowSize = useWindowSize();
@@ -55,11 +57,13 @@ const WrapperList: React.FC<IWrapperListProps> = ({ data, CardItem, title, flex,
             )}
             {flex && (
                 <>
-                    <div className='mx-2 items-center gap-3 lg:grid  lg:grid-cols-2'>
-                        <div>
-                            <Slideshow />
+                    <div className='mx-2 items-center gap-3 lg:flex'>
+                        <div className='lg:w-[40%]'>
+                            <Slideshow ItemCard={MediumCard} />
                         </div>
-                        <div className='grid grid-cols-2 gap-4'>
+                        <div className='grid h-full flex-1 grid-cols-3 gap-4'>
+                            <FeatureCard />
+                            <FeatureCard />
                             <FeatureCard />
                             <FeatureCard />
                             <FeatureCard />

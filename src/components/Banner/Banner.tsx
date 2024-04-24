@@ -1,12 +1,13 @@
 import { Typography } from 'antd';
 const { Title, Paragraph } = Typography;
 import Slideshow from '../Slideshow';
+import SlideItem from './SlideItem';
 const Banner = () => {
     return (
         <div className='container m-10 mx-auto'>
             <div className='mx-2 gap-3 lg:grid lg:grid-cols-2'>
                 <div className='content-slide pb-2 '>
-                    <Slideshow />
+                    <Slideshow ItemCard={SlideItem} />
                 </div>
                 <div className='grid grid-cols-2 gap-4 '>
                     <div className='grid gap-2'>
