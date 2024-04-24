@@ -39,11 +39,8 @@ const WrapperList: React.FC<IWrapperListProps> = ({ data, CardItem, title, flex,
                 <div className='group relative'>
                     <Carousel className='' ref={ref} slidesToShow={slidesToShow} draggable dots={false}>
                         {data.map((item, i) => (
-                            <div className='' key={i}>
-                                <div
-                                    className='2
-                        mx-[10px] bg-transparent'
-                                >
+                            <div key={i}>
+                                <div className='mx-[10px] bg-transparent'>
                                     {/* @CardItem */}
                                     <CardItem />
                                 </div>
