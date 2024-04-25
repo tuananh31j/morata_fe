@@ -5,11 +5,13 @@ import SmallCard from '~/components/Product/SmallCard';
 import MediumCard from '~/components/Product/MediumCard';
 import WrapperList from '~/components/WrapperList';
 import CategoryCard from '~/components/CategoryCard';
+import ShopBenefits from '~/components/ShopBenefits';
 
 const Home = () => {
     return (
         <div>
             <Banner />
+            <ShopBenefits />
             <WrapperList
                 seeMore={{ path: '', name: 'Xem Thêm' }}
                 CardItem={SmallCard}

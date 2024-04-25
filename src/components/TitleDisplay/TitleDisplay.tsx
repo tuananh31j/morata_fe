@@ -9,7 +9,10 @@ const TitleDisplay = ({ seeMore, title }: { title: string; seeMore?: { path: str
             </div>
             <div>
                 {!!seeMore && (
-                    <Link to={seeMore.path} className='text-[10px] font-[400] capitalize md:text-[14px]'>
+                    <Link
+                        to={seeMore.path}
+                        className='text-[10px] font-[400] capitalize hover:text-blue-800 hover:underline md:text-[14px]'
+                    >
                         {seeMore.name} <RightOutlined className='text-[7px] md:text-[10px]' />
                     </Link>
                 )}
