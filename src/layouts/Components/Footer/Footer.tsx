@@ -1,89 +1,194 @@
-const Footer = () => {
-    return (
-        <div>footer</div>
-        // <>
-        //     <div className='container bg-blue-500'>
-        //         <div className=' lg:grid '>
-        //             {/* footer-items */}
-        //             <div className='footer-iteam col-lg-3 col-md-3 col-12'>
-        //                 <aside id='block_297971d8-0316-476b-b319-8a21c85d2f7b' className='widget widget_text'>
-        //                     <h3 className='widget-title small'>
-        //                         <span className='txt_title alo-color alo-text-transform capitalize text-white'>
-        //                             Download App
-        //                         </span>
-        //                         <span className='icon_mobile alo-color text-white'>
-        //                             <i className='laber-icon-down icon-chevron-down' />
-        //                             <i className='laber-icon-up icon-chevron-up' />
-        //                         </span>
-        //                     </h3>
-        //                     <div className='textwidget widget_footer hidden'>
-        //                         <div className='contentHtml mb-30 alo-color text-gray-500'>
-        //                             Morata App is now available on App Store &amp; Google Play. Get it now.
-        //                         </div>
-        //                         <div className='ao-img mb-30'>
-        //                             <div
-        //                                 data-image-id={35784923251006}
-        //                                 className='alo-image alo-border-radius ratio h-full w-auto overflow-hidden'
-        //                             >
-        //                                 <img
-        //                                     src='//demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=3840'
-        //                                     className='h-full w-auto'
-        //                                 />
-        //                             </div>
-        //                         </div>
-        //                         <div className='laber-social-link socials clearfix'>
-        //                             <ul className='list-socials flex space-x-4'>
-        //                                 <li className='twitter'>
-        //                                     <a className='alo_tooltip' target='_blank' title='Twitter'>
-        //                                         <i className='fa fa-twitter' />
-        //                                         <span className='alo_tooltip-content'>Twitter</span>
-        //                                     </a>
-        //                                 </li>
-        //                                 <li className='facebook'>
-        //                                     <a className='alo_tooltip' target='_blank' title='Facebook'>
-        //                                         <i className='fa fa-facebook-f' />
-        //                                         <span className='alo_tooltip-content'>Facebook</span>
-        //                                     </a>
-        //                                 </li>
-        //                                 <li className='pinterest'>
-        //                                     <a className='alo_tooltip' target='_blank' title='Pinterest'>
-        //                                         <i className='fa fa-pinterest-p' aria-hidden='true' />
-        //                                         <span className='alo_tooltip-content'>Pinterest</span>
-        //                                     </a>
-        //                                 </li>
-        //                                 <li className='tumblr'>
-        //                                     <a className='alo_tooltip' target='_blank' title='Tumblr'>
-        //                                         <i className='fa fa-tumblr' aria-hidden='true' />
-        //                                         <span className='alo_tooltip-content'>Tumblr</span>
-        //                                     </a>
-        //                                 </li>
-        //                                 <li className='snapcha'>
-        //                                     <a className='alo_tooltip' target='_blank' title='Snapchat'>
-        //                                         <i className='fa fa-snapchat-ghost' aria-hidden='true' />
-        //                                         <span className='alo_tooltip-content'>Snapcha</span>
-        //                                     </a>
-        //                                 </li>
-        //                                 <li className='tiktok'>
-        //                                     <a className='alo_tooltip' target='_blank' title='TikTok'>
-        //                                         <svg
-        //                                             xmlns='http://www.w3.org/2000/svg'
-        //                                             height='1em'
-        //                                             viewBox='0 0 448 512'
-        //                                         >
-        //                                             <path d='M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z' />
-        //                                         </svg>
-        //                                         <span className='alo_tooltip-content'>TikTok</span>
-        //                                     </a>
-        //                                 </li>
-        //                             </ul>
-        //                         </div>
-        //                     </div>
-        //                 </aside>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </>
-    );
-};
+import { BellFilled, FacebookFilled, PinterestOutlined, TikTokOutlined, TwitterOutlined } from '@ant-design/icons';
+import { Collapse, ConfigProvider } from 'antd';
 
-export default Footer;
+
+const { Panel } = Collapse;
+
+
+const Footer = () => {    
+
+  return (
+    <footer className='bg-[#1f2024] mt-5'>
+        <div className='max-w-[1872px] mx-auto'>
+            <div className='p-5 border-y-[1px] border-[#777777] lg:px-16 py-10 flex flex-col lg:flex-row gap-2 lg:gap-[20px]'>
+                <ConfigProvider
+                    theme={{
+                        token:{
+                            colorTextHeading: 'white',
+                            fontSize: 18
+                        }
+                    }}
+                >
+                    <Collapse 
+                    expandIconPosition={'end'}
+                    defaultActiveKey={'1'}
+                    ghost 
+                    className='w-full lg:w-[412px] bg-[#525252] lg:bg-transparent' 
+                    bordered={false} 
+                    >
+                            <Panel key={1}  header="Download App" >
+                                <p className='text-[16px] text-[#999999]'>Morata App is now available on App Store & Google Play. Get it now.</p>
+                                <div className='mt-[30px]'>
+                                        <img
+                                        src="//demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=3840"
+                                        alt=""
+                                        srcSet="//demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=375 375w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=550 550w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=750 750w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=1100 1100w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=1500 1500w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=1780 1780w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=2000 2000w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=3000 3000w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=3840 3840w"
+                                        width={382}
+                                        height={45.0}
+                                        loading="lazy"
+                                
+                                        sizes="100vw"
+                                        />
+                                </div>
+                                <ul className='flex gap-[10px] mt-[30px]'>
+                                    <li className='text-white w-[40px] h-[40px] flex justify-center bg-cyan-500 rounded-[10px]'><TwitterOutlined /></li>
+                                    <li className='text-white w-[40px] h-[40px] flex justify-center bg-[#3c5b9b] rounded-[10px]'><FacebookFilled /></li>
+                                    <li className='text-white w-[40px] h-[40px] flex justify-center bg-[#e92e2e] rounded-[10px]'><PinterestOutlined /></li>
+                                    <li className='text-white w-[40px] h-[40px] flex justify-center overflow-hidden bg-[#203864] rounded-[10px]'><img src="https://cdn.freebiesupply.com/logos/large/2x/tumblr-icon-logo-png-transparent.png" alt="" /></li>
+                                    <li className='text-white w-[40px] h-[40px] flex justify-center bg-[#f6ea3c] rounded-[10px]'><BellFilled /></li>
+                                    <li className='w-[40px] h-[40px] flex justify-center bg-[#ffffff] rounded-[10px]'><TikTokOutlined /></li>
+
+                                </ul>
+                            </Panel>      
+                    </Collapse>
+                </ConfigProvider>
+                <ConfigProvider
+                    theme={{
+                        token:{
+                            colorTextHeading: 'white',
+                            fontSize: 18
+                        }
+                    }}
+                >
+                    <Collapse 
+                    expandIconPosition={'end'}
+
+                    defaultActiveKey={'2'}
+                    ghost 
+                    className='w-full lg:w-[268px]  bg-[#525252] lg:bg-transparent' 
+                    bordered={false} 
+                   >
+                            <Panel key={1}   header="My Account" >
+                            <ul className='text-[16px] flex flex-col gap-[6px] text-[#999999]'>
+                                <li><a href="">Product Support</a></li>
+                                <li><a href="">Checkout</a></li>
+                                <li><a href="">Shopping Cart</a></li>
+                                <li><a href="">Wishlist</a></li>
+                                <li><a href="">Custom Link</a></li>
+                                <li><a href="">Redeem Voucher</a></li>
+                            </ul>
+                                
+                            </Panel>      
+                    </Collapse>
+                </ConfigProvider>
+                <ConfigProvider
+                    theme={{
+                        token:{
+                            colorTextHeading: 'white',
+                            fontSize: 18
+                        }
+                    }}
+                >
+                    <Collapse 
+                    defaultActiveKey={'3'}
+                    expandIconPosition={'end'}
+
+                    ghost 
+                    className=' w-full lg:w-[268px] bg-[#525252] lg:bg-transparent' 
+                    bordered={false} 
+                   >
+                            <Panel key={1}   header="Customer Service" >
+                            <ul className='text-[16px] flex flex-col gap-[6px] text-[#999999]'>
+                                <li><a href="">Help Center</a></li>
+                                <li><a href="">Contact Us</a></li>
+                                <li><a href="">Report Abuse</a></li>
+                                <li><a href="">Submit a Dispute</a></li>
+                                <li><a href="">Policies & Rules</a></li>
+                                <li><a href="">Online Returns Policy</a></li>
+                            </ul>
+                                
+                            </Panel>      
+                    </Collapse>
+                </ConfigProvider>
+                <ConfigProvider
+                    theme={{
+                        token:{
+                            colorTextHeading: 'white',
+                            fontSize: 18
+                        }
+                    }}
+                >
+                    <Collapse 
+                    defaultActiveKey={'4'}
+                    expandIconPosition={'end'}
+
+                    ghost 
+                    className='lg:w-[268px] w-full lg:bg-transparent bg-[#525252]' 
+                    bordered={false} 
+                    >
+                            <Panel key={1}   header="Help & Customer Care" >
+                            <ul className='text-[16px] flex flex-col gap-[6px] text-[#777777]'>
+                                <li><a href="">New Customers</a></li>
+                                <li><a href="">How to use My Account</a></li>
+                                <li><a href="">Placing an Order</a></li>
+                                <li><a href="">Payment Methods</a></li>
+                                <li><a href="">Delivery & Dispatch</a></li>
+                                <li><a href="">Problems with your Order</a></li>
+                            </ul>
+                                
+                            </Panel>      
+                    </Collapse>
+                </ConfigProvider>
+                <ConfigProvider
+                    theme={{
+                        token:{
+                            colorTextHeading: 'white',
+                            fontSize: 18
+                        }
+                    }}
+                >
+                    <Collapse 
+                    defaultActiveKey={'5'}
+                    expandIconPosition={'end'}
+
+                    ghost 
+                    className='lg:w-[412px] w-full bg-[#525252] lg:bg-transparent' 
+                    bordered={false} 
+                    >
+                            <Panel key={1}   header="Sign Up To Newsletter" >
+                                <p className='text-[16px] text-[#999999]'>Join 60.000+ subscribers and get a new discount coupon on every Saturday.</p>
+                                <div className='mt-[30px] bg-white flex justify-between h-[45px] rounded-[5px] overflow-hidden text-[13px]'>
+                                    <input type="text" className='px-[15px]' placeholder='Your email address'/>
+                                    <button className='w-[120px] bg-cyan-500 text-white font-semibold'>SUBSCRIBE</button>
+                                </div>
+                                <p className='text-[14px] mt-[15px] text-[#999999]'> By providing your email address, you agree to our Privacy Policy and Terms of Service. </p>
+                            </Panel>     
+                            
+                    </Collapse>
+                </ConfigProvider>
+            </div>
+            <div className='flex justify-center mt-[50px] pb-[50px]'>
+                <div className='flex flex-col'>
+                    <ul className='flex gap-[15px] flex-wrap justify-center text-[12px] text-[#999999]'>
+                        <li><a href="">ABOUT US</a></li>
+                        <div className='h-[5px w-[1px] bg-[#999999]'></div>
+                        <li ><a href="">CUSTOMER SERVICE</a></li>
+                        <div className='h-[5px w-[1px] bg-[#999999]'></div>
+                        <li><a href="">PRIVACY POLICY</a></li>
+                        <div className='h-[5px w-[1px] bg-[#999999]'></div>
+                        <li><a href="">SITE MAP</a></li>
+                        <div className='h-[5px w-[1px] bg-[#999999]'></div>
+                        <li><a href="">CONTACT US</a></li>
+                    </ul>
+                    <div className='flex justify-center py-[35px] '>
+                        <img src="https://demo-morata.myshopify.com/cdn/shop/files/payments.png?v=1698422597&width=2000" alt="" />
+                    </div>
+                    <p className='text-center text-[16px] text-[#999999]'>Copyright @ <span className='text-cyan-500 font-semibold'>Morata</span>. All Rights Reserved. Powered by <span className='text-cyan-500 font-semibold'>Alothemes</span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+  )
+}
+
+export default Footer

@@ -82,7 +82,7 @@ const Header = () => {
 
     return (
         <div className=' bg-blue-900'>
-            <div className='mx-auto px-4 lg:container'>
+            <div className='px-16'>
                 {/* thongtin-header-laptop */}
                 <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex'>
                     <div className='justify-between gap-5 lg:flex'>
@@ -276,7 +276,7 @@ const Header = () => {
                             <a className='text-lg text-white'>Shop By Department</a>
                             {/* đổ list catgory */}
                             {isVisible && (
-                                <ul className='absolute  w-[305px] translate-y-28 border border-gray-200 bg-white shadow-lg transition-all duration-1000'>
+                                <ul className='absolute z-20 w-[305px] translate-y-28 border border-gray-200 bg-white shadow-lg transition-all duration-1000'>
                                     {categories.map((category, index) => (
                                         <li key={index} className='px-4 py-2 hover:bg-gray-100'>
                                             {category}
