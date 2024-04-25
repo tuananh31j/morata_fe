@@ -35,7 +35,7 @@ const WrapperList: React.FC<IWrapperListProps> = ({ data, CardItem, title, flex,
     };
 
     return (
-        <div className=' transition-all duration-300 ease-in'>
+        <div className=' my-10 transition-all duration-300 ease-in'>
             <TitleDisplay title={title} seeMore={seeMore} />
             {!flex && (
                 <div className='group relative'>

@@ -1,6 +1,7 @@
 import Banner from '~/components/Banner';
 import ButtonBackToTop from '~/components/ButtonBackToTop';
 import FeatureCard from '~/components/Product/FeatureCard';
+import SmallCard from '~/components/Product/SmallCard';
 import MediumCard from '~/components/Product/MediumCard';
 import WrapperList from '~/components/WrapperList';
 import CategoryCard from '~/components/CategoryCard';
@@ -11,7 +12,7 @@ const Home = () => {
             <Banner />
             <WrapperList
                 seeMore={{ path: '', name: 'Xem Thêm' }}
-                CardItem={FeatureCard}
+                CardItem={SmallCard}
                 title='Hot Trending Products'
                 data={[1, 2, 2, 2, 2, 2, 2, 2, 2]}
             />
