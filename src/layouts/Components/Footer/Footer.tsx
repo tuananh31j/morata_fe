@@ -26,7 +26,7 @@ const Footer = () => {
                     className='w-full lg:w-[412px] bg-[#525252] lg:bg-transparent' 
                     bordered={false} 
                     >
-                            <Panel key={1}  header="Download App" >
+                            <Panel key={1}  showArrow={false} header="Download App" >
                                 <p className='text-[16px] text-[#999999]'>Morata App is now available on App Store & Google Play. Get it now.</p>
                                 <div className='mt-[30px]'>
                                         <img
@@ -68,7 +68,7 @@ const Footer = () => {
                     className='w-full lg:w-[400px]  bg-[#525252] lg:bg-transparent' 
                     bordered={false} 
                    >
-                            <Panel key={1}   header="My Account" >
+                            <Panel key={1}  showArrow={false} header="My Account" >
                             <ul className='text-[16px] flex flex-col gap-[6px] text-[#999999]'>
                                 <li><a href="">Product Support</a></li>
                                 <li><a href="">Checkout</a></li>
@@ -92,12 +92,11 @@ const Footer = () => {
                     <Collapse 
                     defaultActiveKey={'1'}
                     expandIconPosition={'end'}
-
                     ghost 
                     className=' w-full lg:w-[400px] bg-[#525252] lg:bg-transparent' 
                     bordered={false} 
                    >
-                            <Panel key={1}   header="Customer Service" >
+                            <Panel key={1} showArrow={false}  header="Customer Service" >
                             <ul className='text-[16px] flex flex-col gap-[6px] text-[#999999]'>
                                 <li><a href="">Help Center</a></li>
                                 <li><a href="">Contact Us</a></li>
@@ -126,7 +125,7 @@ const Footer = () => {
                     className='lg:w-[400px]  w-full lg:bg-transparent bg-[#525252]' 
                     bordered={false} 
                     >
-                            <Panel key={1}   header="Help & Customer Care" >
+                            <Panel key={1} showArrow={false}   header="Help & Customer Care" >
                             <ul className='text-[16px] flex flex-col gap-[6px] text-[#777777]'>
                                 <li><a href="">New Customers</a></li>
                                 <li><a href="">How to use My Account</a></li>
@@ -155,7 +154,7 @@ const Footer = () => {
                     className='lg:w-[412px] w-full bg-[#525252] lg:bg-transparent' 
                     bordered={false} 
                     >
-                            <Panel key={1}   header="Sign Up To Newsletter" >
+                            <Panel key={1} showArrow={false}  header="Sign Up To Newsletter" >
                                 <p className='text-[16px] text-[#999999]'>Join 60.000+ subscribers and get a new discount coupon on every Saturday.</p>
                                 <div className='mt-[30px] bg-white flex justify-between h-[45px] rounded-[5px] overflow-hidden text-[13px]'>
                                     <input type="text" className='px-[15px]' placeholder='Your email address'/>
