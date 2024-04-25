@@ -82,7 +82,7 @@ const Header = () => {
 
     return (
         <div className=' bg-blue-900'>
-            <div className='2xl mx-2 lg:mx-16'>
+            <div className='mx-1 lg:mx-4'>
                 {/* thongtin-header-laptop */}
                 <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex'>
                     <div className='justify-between gap-5 lg:flex'>

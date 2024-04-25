@@ -3,32 +3,37 @@ import secondImage from '../../assets/images/products_5_2.webp';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import RatingDisplay from '../RatingDisplay';
+import ProductActions from '../ProductActions';
 
 const SmallCard = () => {
-    const [isScale, setIsScale] = useState<boolean>(false);
-
-    const handleScale = (status: string) => {
-        status === 'open' ? setIsScale(true) : setIsScale(false);
+    const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
+    const handleSetDateActive = () => {
+        setIsActiveProductActions(!isActiveProductActions);
     };
-
     return (
         <div className='rounded-xl bg-white p-5'>
-            <div className='relative justify-between gap-5 rounded'>
+            <div className='group relative justify-between gap-5 rounded'>
                 {/* Image */}
-                <Link to={`/`} className='relative block w-full'>
-                    <img
-                        src={secondImage}
-                        alt=''
-                        className={`bottom-0 left-0 right-0 top-0 block w-full scale-105 transition-transform duration-500 ease-linear ${!isScale ? 'hover:duration-500 hover:ease-linear' : ''}`}
-                    />
-                    <img
-                        src={mainImage}
-                        alt=''
-                        className='absolute bottom-0 left-0 right-0 top-0 w-full opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear'
-                        onMouseOver={() => handleScale('open')}
-                        onMouseLeave={() => handleScale('close')}
-                    />
-                </Link>
+                <div
+                    className='group relative'
+                    data-active={isActiveProductActions ? 'card' : ''}
+                    onMouseEnter={handleSetDateActive}
+                    onMouseLeave={handleSetDateActive}
+                >
+                    <Link to={`/`} className='block w-full overflow-hidden'>
+                        <img
+                            src={secondImage}
+                            alt=''
+                            className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
+                        />
+                        <img
+                            src={mainImage}
+                            alt=''
+                            className='relative z-10 w-full opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                        />
+                    </Link>
+                    <ProductActions />
+                </div>
 
                 {/* Name */}
                 <div className='mt-[15px]'>
