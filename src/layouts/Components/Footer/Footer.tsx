@@ -63,9 +63,9 @@ const Footer = () => {
                     <Collapse 
                     expandIconPosition={'end'}
 
-                    defaultActiveKey={'2'}
+                    defaultActiveKey={'1'}
                     ghost 
-                    className='w-full lg:w-[268px]  bg-[#525252] lg:bg-transparent' 
+                    className='w-full lg:w-[400px]  bg-[#525252] lg:bg-transparent' 
                     bordered={false} 
                    >
                             <Panel key={1}   header="My Account" >
@@ -90,11 +90,11 @@ const Footer = () => {
                     }}
                 >
                     <Collapse 
-                    defaultActiveKey={'3'}
+                    defaultActiveKey={'1'}
                     expandIconPosition={'end'}
 
                     ghost 
-                    className=' w-full lg:w-[268px] bg-[#525252] lg:bg-transparent' 
+                    className=' w-full lg:w-[400px] bg-[#525252] lg:bg-transparent' 
                     bordered={false} 
                    >
                             <Panel key={1}   header="Customer Service" >
@@ -119,11 +119,11 @@ const Footer = () => {
                     }}
                 >
                     <Collapse 
-                    defaultActiveKey={'4'}
+                    defaultActiveKey={'1'}
                     expandIconPosition={'end'}
 
                     ghost 
-                    className='lg:w-[268px] w-full lg:bg-transparent bg-[#525252]' 
+                    className='lg:w-[400px]  w-full lg:bg-transparent bg-[#525252]' 
                     bordered={false} 
                     >
                             <Panel key={1}   header="Help & Customer Care" >
@@ -148,7 +148,7 @@ const Footer = () => {
                     }}
                 >
                     <Collapse 
-                    defaultActiveKey={'5'}
+                    defaultActiveKey={'1'}
                     expandIconPosition={'end'}
 
                     ghost 
