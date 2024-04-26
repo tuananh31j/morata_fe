@@ -1,5 +1,5 @@
 import { DockerOutlined, EyeOutlined, FileProtectOutlined, FireFilled, HeartOutlined, MenuOutlined, RedoOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider } from "antd";
+import { Button, ConfigProvider, Tabs, TabsProps } from "antd";
 
 import ButtonBackToTop from "~/components/ButtonBackToTop";
 import SmallCard from "~/components/Product/SmallCard";
@@ -7,6 +7,7 @@ import ProgressBar from "~/components/ProgressBar";
 import RatingDisplay from "~/components/RatingDisplay";
 import WrapperList from "~/components/WrapperList";
 import ThumnailProduct from "./_component/ThumnailProduct";
+import DescriptionProduct from "./_component/DescriptionProduct";
 
 // demo data product gallery
 const items = [
@@ -17,6 +18,7 @@ const items = [
     {url: 'https://demo-morata.myshopify.com/cdn/shop/products/products_3_6.jpg?v=1697644630'},
     {url: 'https://demo-morata.myshopify.com/cdn/shop/products/products_3_7.jpg?v=1697644630'},
 ]
+
 
 const ProductDetails = () => {
 
@@ -146,6 +148,7 @@ const ProductDetails = () => {
                         </div>
                     </div>
                 </div>
+                    <DescriptionProduct/>
                 {/* WrapperList */}
                 <WrapperList
                     seeMore={{ path: '', name: 'Xem Thêm' }}
