@@ -11,11 +11,13 @@ const data = [1, 1, 1, 1, 1, 1, 11, 1];
 const Home = () => {
     return (
         <div>
-            {/* Banner */}
+            {/*@ Banner */}
             <Banner />
-            {/* ShopBenefits */}
+
+            {/*@ ShopBenefits */}
             <ShopBenefits />
-            {/* Hot Trending Products */}
+
+            {/*@ Hot Trending Products */}
             <WrapperList title='Hot Trending Products'>
                 <CarouselDisplay>
                     {data.map((item, i) => (
@@ -25,7 +27,8 @@ const Home = () => {
                     ))}
                 </CarouselDisplay>
             </WrapperList>
-            {/* Top Deals Of The Day */}
+
+            {/*@ Top Deals Of The Day */}
             <WrapperList title='Top Deals Of The Day'>
                 <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
                     {data.map((item, i) => (
@@ -34,13 +37,9 @@ const Home = () => {
                         </CarouselItem>
                     ))}
                 </CarouselDisplay>
-                {/* <div className='mx-auto grid grid-cols-1 items-center justify-center lg:grid-cols-3 lg:gap-4'>
-                    <CategoryCard />
-                    <CategoryCard />
-                    <CategoryCard />
-                </div> */}
             </WrapperList>
-            {/* Popular Categories */}
+
+            {/*@ Popular Categories */}
             <WrapperList title='Popular Categories'>
                 <CarouselDisplay>
                     {data.map((item, i) => (
@@ -50,7 +49,8 @@ const Home = () => {
                     ))}
                 </CarouselDisplay>
             </WrapperList>
-            {/* Top Featured Products */}
+
+            {/*@ Top Featured Products */}
             <WrapperList title='Top Featured Products'>
                 <TopFeaturedProducts />
             </WrapperList>

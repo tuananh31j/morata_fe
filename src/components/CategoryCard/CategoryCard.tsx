@@ -4,7 +4,7 @@ const SmallCategoryCard = () => {
     return (
         <>
             <Link to={`/`} className=' relative mt-2 block h-full w-full rounded-[20px]'>
-                <div className='w-[90%] overflow-hidden rounded-2xl border border-transparent'>
+                <div className='w-full overflow-hidden rounded-2xl border border-transparent'>
                     <img
                         src={catImage}
                         alt=''

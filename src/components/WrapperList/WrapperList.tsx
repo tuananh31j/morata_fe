@@ -9,26 +9,9 @@ interface IWrapperListProps {
 }
 const WrapperList: React.FC<IWrapperListProps> = ({ children, title, flex, seeMore }) => {
     return (
-        <div className=' my-10 transition-all duration-300 ease-in'>
+        <div className='my-20 transition-all duration-300 ease-in'>
             <TitleDisplay title={title} seeMore={seeMore} />
             {children}
-            {/* {flex && (
-                <>
-                    <div className='mx-2 items-center gap-3 lg:flex'>
-                        <div className='lg:w-[40%]'>
-                            <Slideshow ItemCard={MediumCard} />
-                        </div>
-                        <div className='grid h-full flex-1 grid-cols-3 gap-4'>
-                            <FeatureCard />
-                            <FeatureCard />
-                            <FeatureCard />
-                            <FeatureCard />
-                            <FeatureCard />
-                            <FeatureCard />
-                        </div>
-                    </div>
-                </>
-            )} */}
         </div>
     );
 };

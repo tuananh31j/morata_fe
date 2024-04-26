@@ -2,7 +2,7 @@ import { DeliveryIcon, HandIcon, HelpCenterIcon, PaymentIcon } from '../Icons';
 
 const ShopBenefits = () => {
     return (
-        <div className='my-10 grid grid-cols-2 items-center justify-center gap-10 lg:grid-cols-4  lg:gap-4 '>
+        <div className='my-20 grid grid-cols-2 items-center justify-center gap-10 lg:grid-cols-4  lg:gap-4 '>
             <div className='flex items-center justify-center gap-3 text-center'>
                 <DeliveryIcon className='h-14 text-blue-500 duration-75 hover:animate-pulse' />
                 <div className='hidden text-start lg:inline-block'>
