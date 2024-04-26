@@ -8,7 +8,7 @@ export const ClientRoutes = [
     { PATH: '', ELEMENT: Home },
     { PATH: 'about', ELEMENT: About },
     { PATH: 'products', ELEMENT: Products },
-    {PATH: 'productdetail', ELEMENT: ProductDetails}
+    { PATH: 'productdetail', ELEMENT: ProductDetails },
 ];
 
 export const AdminRoutes = [{ PATH: '', ELEMENT: Dashboard }];

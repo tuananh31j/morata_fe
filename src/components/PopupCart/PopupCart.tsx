@@ -56,7 +56,7 @@ const PopupCart = ({ children }: { children: React.ReactNode }) => {
                 placement='right'
                 closable={false}
                 onClose={onClose}
-                visible={visible}
+                open={visible}
                 className='relative z-10 '
             >
                 <List

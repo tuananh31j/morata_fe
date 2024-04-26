@@ -3,7 +3,7 @@ const HelpCenterIcon = ({ className, color = '#16bcdc' }: { className?: string; 
         <svg
             className={className}
             id='Layer_1'
-            enable-background='new 0 0 64 64'
+            enableBackground='new 0 0 64 64'
             viewBox='0 0 64 64'
             xmlns='http://www.w3.org/2000/svg'
         >

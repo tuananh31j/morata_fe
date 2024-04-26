@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NotFound from './components/NotFound/NotFound';
 import MainLayout from './layouts/MainLayout/MainLayout';
 import { AdminRoutes, ClientRoutes } from './routes';
 import PrivateLayout from './layouts/PrivateLayout';
+import NotFound from './pages/NotFound';
 
 const App = () => {
     return (

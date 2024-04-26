@@ -19,7 +19,7 @@ const Home = () => {
             <WrapperList title='Hot Trending Products'>
                 <CarouselDisplay>
                     {data.map((item, i) => (
-                        <CarouselItem>
+                        <CarouselItem key={i}>
                             <SmallCard />
                         </CarouselItem>
                     ))}
@@ -29,7 +29,7 @@ const Home = () => {
             <WrapperList title='Top Deals Of The Day'>
                 <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
                     {data.map((item, i) => (
-                        <CarouselItem>
+                        <CarouselItem key={i}>
                             <MediumCard />
                         </CarouselItem>
                     ))}
@@ -44,7 +44,7 @@ const Home = () => {
             <WrapperList title='Popular Categories'>
                 <CarouselDisplay>
                     {data.map((item, i) => (
-                        <CarouselItem>
+                        <CarouselItem key={i}>
                             <CategoryCard />
                         </CarouselItem>
                     ))}

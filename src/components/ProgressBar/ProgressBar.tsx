@@ -1,15 +1,11 @@
-import { Progress } from "antd"
+import { Progress } from 'antd';
 
-const ProgressBar = ({stock}: {stock: number}) => {
-  return (
-    <>
-      <Progress 
-                            size={'small'}
-                            percent={stock} 
-                            showInfo={false} 
-                            status="exception"/>  
-    </>
-  )
-}
+const ProgressBar = ({ stock }: { stock: number }) => {
+    return (
+        <>
+            <Progress size={'small'} percent={stock} showInfo={false} status='exception' />
+        </>
+    );
+};
 
-export default ProgressBar
+export default ProgressBar;
