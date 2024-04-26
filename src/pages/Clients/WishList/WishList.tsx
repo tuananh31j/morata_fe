@@ -1,13 +1,9 @@
-import BreadCrumb from '~/components/Breadcrumb/Breadcrumb';
 import SmallCard from '~/components/Product/SmallCard';
+import WrapperList from '~/components/WrapperList';
 
 const Wishlist = () => {
     return (
-        <section className='py-4'>
-            <BreadCrumb />
-            <h1 className='my-4 text-[26px]'>
-                <span className='border-b-[2px] border-[#16bcdc] pb-3'>Your Favourite Product</span>
-            </h1>
+        <WrapperList title='My wishlist'>
             <p className='pb-4 text-center text-[#777777]'>
                 Commodo sociosqu venenatis cras dolor sagittis integer luctus maecenas.
             </p>
@@ -18,7 +14,7 @@ const Wishlist = () => {
                 <SmallCard />
                 <SmallCard />
             </div>
-        </section>
+        </WrapperList>
     );
 };
 
