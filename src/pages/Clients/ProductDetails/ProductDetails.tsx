@@ -150,7 +150,7 @@ const ProductDetails = () => {
                 </div>
                     <DescriptionProduct/>
                 {/* WrapperList */}
-                <WrapperList
+                {/* <WrapperList
                     seeMore={{ path: '', name: 'Xem Thêm' }}
                     CardItem={SmallCard}
                     title='Related Products'
@@ -161,7 +161,7 @@ const ProductDetails = () => {
                     CardItem={SmallCard}
                     title='Recently Viewed Products'
                     data={[1, 2, 2,2,2,2,2,2,2,2]}
-                />
+                /> */}
             </div>
             {/* Button back position to top */}
             <ButtonBackToTop/>
