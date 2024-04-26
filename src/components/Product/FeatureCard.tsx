@@ -1,8 +1,8 @@
-import { StarFilled } from '@ant-design/icons';
 import mainImage from '../../assets/images/products_5_1.webp';
 import secondImage from '../../assets/images/products_5_2.webp';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import RatingDisplay from '../RatingDisplay';
 
 const FeatureCard = () => {
     const [isScale, setIsScale] = useState<boolean>(false);
@@ -32,16 +32,7 @@ const FeatureCard = () => {
                     <h4 className='line-clamp-2 cursor-default text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                         Apple iPhone 11 Pro 256GB Space Gray – Unlocked
                     </h4>
-                    <div
-                        className='my-2 flex gap-1
-                        '
-                    >
-                        <StarFilled className='text-sm text-[#FFB800]' />
-                        <StarFilled className='text-sm text-[#FFB800]' />
-                        <StarFilled className='text-sm text-[#FFB800]' />
-                        <StarFilled className='text-sm text-[#FFB800]' />
-                        <StarFilled className='text-sm text-[#FFB800]' />
-                    </div>
+                    <RatingDisplay rating={3} />
                     <div className='mb-3 flex gap-x-2'>
                         <span className='text-base font-semibold leading-5 text-red-600'>$21000</span>
                         <del className=' text-base font-semibold leading-5 text-gray-500'>$23000</del>
