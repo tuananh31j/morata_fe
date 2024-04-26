@@ -5,9 +5,9 @@ const { Panel } = Collapse;
 
 const Footer = () => {
     return (
-        <footer className='mt-5 bg-[#1f2024]'>
-            <div className='mx-1 py-4 lg:mx-3'>
-                <div className='flex flex-col gap-y-2 border-b-[1px] border-[#777777] lg:flex-row lg:gap-[20px] '>
+        <footer className='mt-5  bg-[#1f2024]'>
+            <div className=''>
+                <div className='mx-1 flex flex-col gap-2 border-y-[1px] border-[#777777] py-10 lg:mx-3 lg:flex-row lg:gap-[20px] '>
                     <ConfigProvider
                         theme={{
                             token: {
@@ -23,7 +23,7 @@ const Footer = () => {
                             className='w-full bg-[#525252] lg:w-[412px] lg:bg-transparent'
                             bordered={false}
                         >
-                            <Panel key={1} header='Download App'>
+                            <Panel showArrow={false} key={1} header='Download App'>
                                 <p className='text-[16px] text-[#999999]'>
                                     Morata App is now available on App Store & Google Play. Get it now.
                                 </p>
@@ -79,7 +79,7 @@ const Footer = () => {
                             className='w-full bg-[#525252]  lg:w-[400px] lg:bg-transparent'
                             bordered={false}
                         >
-                            <Panel key={1} header='My Account'>
+                            <Panel showArrow={false} key={1} header='My Account'>
                                 <ul className='flex flex-col gap-[6px] text-[16px] text-[#999999]'>
                                     <li>
                                         <a href=''>Product Support</a>
@@ -118,7 +118,7 @@ const Footer = () => {
                             className=' w-full bg-[#525252] lg:w-[400px] lg:bg-transparent'
                             bordered={false}
                         >
-                            <Panel key={1} header='Customer Service'>
+                            <Panel showArrow={false} key={1} header='Customer Service'>
                                 <ul className='flex flex-col gap-[6px] text-[16px] text-[#999999]'>
                                     <li>
                                         <a href=''>Help Center</a>
@@ -157,7 +157,7 @@ const Footer = () => {
                             className='w-full  bg-[#525252] lg:w-[400px] lg:bg-transparent'
                             bordered={false}
                         >
-                            <Panel key={1} header='Help & Customer Care'>
+                            <Panel showArrow={false} key={1} header='Help & Customer Care'>
                                 <ul className='flex flex-col gap-[6px] text-[16px] text-[#777777]'>
                                     <li>
                                         <a href=''>New Customers</a>
@@ -196,7 +196,7 @@ const Footer = () => {
                             className='w-full bg-[#525252] lg:w-[412px] lg:bg-transparent'
                             bordered={false}
                         >
-                            <Panel key={1} header='Sign Up To Newsletter'>
+                            <Panel showArrow={false} key={1} header='Sign Up To Newsletter'>
                                 <p className='text-[16px] text-[#999999]'>
                                     Join 60.000+ subscribers and get a new discount coupon on every Saturday.
                                 </p>
