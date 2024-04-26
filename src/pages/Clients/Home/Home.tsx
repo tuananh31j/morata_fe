@@ -1,32 +1,59 @@
 import Banner from '~/components/Banner';
-import ButtonBackToTop from '~/components/ButtonBackToTop';
-import FeatureCard from '~/components/Product/FeatureCard';
 import SmallCard from '~/components/Product/SmallCard';
 import MediumCard from '~/components/Product/MediumCard';
 import WrapperList from '~/components/WrapperList';
 import CategoryCard from '~/components/CategoryCard';
 import ShopBenefits from '~/components/ShopBenefits';
+import CarouselDisplay, { CarouselItem } from '~/components/CarouselDisplay';
+import TopFeaturedProducts from '~/components/TopFeaturedProducts';
+const data = [1, 1, 1, 1, 1, 1, 11, 1];
 
 const Home = () => {
     return (
         <div>
+            {/* Banner */}
             <Banner />
+            {/* ShopBenefits */}
             <ShopBenefits />
-            <WrapperList
-                seeMore={{ path: '', name: 'Xem Thêm' }}
-                CardItem={SmallCard}
-                title='Hot Trending Products'
-                data={[1, 2, 2, 2, 2, 2, 2, 2, 2]}
-            />
-            <WrapperList CardItem={CategoryCard} title='Popular Categories' data={[1, 2, 3, 4]} />
-            <WrapperList
-                seeMore={{ path: '', name: 'Xem Thêm' }}
-                CardItem={MediumCard}
-                title='Top Deals Of The Day'
-                data={[1, 2]}
-            />
-            <WrapperList data={[1, 2, 2, 2, 2, 2, 2]} title='Top Featured Products' CardItem={FeatureCard} flex />
-            <ButtonBackToTop />
+            {/* Hot Trending Products */}
+            <WrapperList title='Hot Trending Products'>
+                <CarouselDisplay>
+                    {data.map((item, i) => (
+                        <CarouselItem>
+                            <SmallCard />
+                        </CarouselItem>
+                    ))}
+                </CarouselDisplay>
+            </WrapperList>
+            {/* Top Deals Of The Day */}
+            <WrapperList title='Top Deals Of The Day'>
+                <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
+                    {data.map((item, i) => (
+                        <CarouselItem>
+                            <MediumCard />
+                        </CarouselItem>
+                    ))}
+                </CarouselDisplay>
+                {/* <div className='mx-auto grid grid-cols-1 items-center justify-center lg:grid-cols-3 lg:gap-4'>
+                    <CategoryCard />
+                    <CategoryCard />
+                    <CategoryCard />
+                </div> */}
+            </WrapperList>
+            {/* Popular Categories */}
+            <WrapperList title='Popular Categories'>
+                <CarouselDisplay>
+                    {data.map((item, i) => (
+                        <CarouselItem>
+                            <CategoryCard />
+                        </CarouselItem>
+                    ))}
+                </CarouselDisplay>
+            </WrapperList>
+            {/* Top Featured Products */}
+            <WrapperList title='Top Featured Products'>
+                <TopFeaturedProducts />
+            </WrapperList>
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import { Breadcrumb, ConfigProvider } from 'antd';
 import { useLocation, Link } from 'react-router-dom';
 
-const BreadCrumb = () => {
+const BreadcrumbDisplay = () => {
     const location = useLocation();
 
     const breadCrumbView = () => {
@@ -52,4 +52,4 @@ const BreadCrumb = () => {
     return <>{breadCrumbView()}</>;
 };
 
-export default BreadCrumb;
+export default BreadcrumbDisplay;
