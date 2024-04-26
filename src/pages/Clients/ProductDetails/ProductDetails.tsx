@@ -1,13 +1,13 @@
 import { DockerOutlined, EyeOutlined, FileProtectOutlined, FireFilled, HeartOutlined, MenuOutlined, RedoOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Tabs, TabsProps } from "antd";
+import { Button, ConfigProvider } from "antd";
 
 import ButtonBackToTop from "~/components/ButtonBackToTop";
 import SmallCard from "~/components/Product/SmallCard";
 import ProgressBar from "~/components/ProgressBar";
 import RatingDisplay from "~/components/RatingDisplay";
 import WrapperList from "~/components/WrapperList";
-import ThumnailProduct from "./_component/ThumnailProduct";
-import DescriptionProduct from "./_component/DescriptionProduct";
+import DescriptionProduct from "./_component/Description/DescriptionProduct";
+import ThumnailProduct from "./_component/Thumbnail/ThumnailProduct";
 
 // demo data product gallery
 const items = [
