@@ -3,6 +3,7 @@ import MainLayout from './layouts/MainLayout/MainLayout';
 import { AdminRoutes, ClientRoutes } from './routes';
 import PrivateLayout from './layouts/PrivateLayout';
 import NotFound from './pages/NotFound';
+import CheckOut from './pages/Clients/Checkout/CheckOut';
 
 const App = () => {
     return (
@@ -23,7 +24,7 @@ const App = () => {
                         return <Route key={i} path={router.PATH} element={<Page />}></Route>;
                     })}
                 </Route>
-
+                <Route path='checkout' element={<CheckOut />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </Router>
