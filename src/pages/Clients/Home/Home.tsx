@@ -6,6 +6,7 @@ import CategoryCard from '~/components/CategoryCard';
 import ShopBenefits from '~/components/ShopBenefits';
 import CarouselDisplay, { CarouselItem } from '~/components/CarouselDisplay';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
+import PopupProductList from '~/components/PopupProductList';
 const data = [1, 1, 1, 1, 1, 1, 11, 1];
 
 const Home = () => {
@@ -54,6 +55,8 @@ const Home = () => {
             <WrapperList title='Top Featured Products'>
                 <TopFeaturedProducts />
             </WrapperList>
+            {/* add popup productlist */}
+            <PopupProductList/>
         </div>
     );
 };
