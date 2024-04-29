@@ -17,7 +17,7 @@ const PopupProductList = () => {
         if(windowsize.windowWidth > 768){
             setTimeout(() => {
                 setOpen(true)
-            }, 7000);
+            }, 4000);
         }
     },[])
   return (
