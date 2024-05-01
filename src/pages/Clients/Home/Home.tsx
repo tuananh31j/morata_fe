@@ -56,7 +56,7 @@ const Home = () => {
                 <TopFeaturedProducts />
             </WrapperList>
             {/* add popup productlist */}
-            <PopupProductList/>
+            <PopupProductList />
         </div>
     );
 };

@@ -1,1 +1,1 @@
-export {default} from './PopupProductList'
+export { default } from './PopupProductList';
