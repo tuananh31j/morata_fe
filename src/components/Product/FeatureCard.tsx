@@ -16,11 +16,13 @@ const FeatureCard = () => {
             <div className='relative flex justify-between gap-5 rounded'>
                 <Link to={`/`} className='relative block w-full max-w-24'>
                     <img
+                        loading='lazy'
                         src={secondImage}
                         alt=''
                         className={`absolute bottom-0 left-0 right-0 top-0 scale-105 transition-transform duration-500 ease-linear ${!isScale ? 'hover:duration-500 hover:ease-linear' : ''}`}
                     />
                     <img
+                        loading='lazy'
                         src={mainImage}
                         alt=''
                         className='absolute bottom-0 left-0 right-0 top-0 opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear'

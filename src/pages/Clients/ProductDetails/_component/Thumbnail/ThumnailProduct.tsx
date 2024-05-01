@@ -21,7 +21,7 @@ const ThumnailProduct = ({ items }: { items: { url: string }[] }) => {
                         onClick={() => onclickImage(index)}
                         className={`cursor-pointer overflow-hidden rounded-[5px] border-[1px] ${currentSlide === index ? 'border-[#777777]' : ''} duration-75`}
                     >
-                        <img className='w-[68px]' src={item.url} alt='' />
+                        <img loading='lazy' className='w-[68px]' src={item.url} alt='' />
                     </div>
                 ))}
             </div>

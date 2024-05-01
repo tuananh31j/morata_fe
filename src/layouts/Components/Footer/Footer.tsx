@@ -5,9 +5,9 @@ const { Panel } = Collapse;
 
 const Footer = () => {
     return (
-        <footer className='mt-5  bg-[#1f2024]'>
-            <div className=''>
-                <div className='mx-1 flex flex-col gap-2 border-y-[1px] border-[#777777] py-10 lg:mx-3 lg:flex-row lg:gap-[20px] '>
+        <footer className='mt-5 bg-[#1f2024]'>
+            <div className='mx-3 lg:mx-4'>
+                <div className='flex flex-col gap-2 border-y-[1px] border-[#777777] py-10 lg:flex-row lg:gap-[20px] '>
                     <ConfigProvider
                         theme={{
                             token: {
@@ -29,12 +29,12 @@ const Footer = () => {
                                 </p>
                                 <div className='mt-[30px]'>
                                     <img
+                                        loading='lazy'
                                         src='//demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=3840'
                                         alt=''
                                         srcSet='//demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=375 375w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=550 550w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=750 750w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=1100 1100w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=1500 1500w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=1780 1780w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=2000 2000w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=3000 3000w, //demo-morata.myshopify.com/cdn/shop/files/app.png?v=1698465644&width=3840 3840w'
                                         width={382}
                                         height={45.0}
-                                        loading='lazy'
                                         sizes='100vw'
                                     />
                                 </div>
@@ -50,6 +50,7 @@ const Footer = () => {
                                     </li>
                                     <li className='flex h-[40px] w-[40px] justify-center overflow-hidden rounded-[10px] bg-[#203864] text-white'>
                                         <img
+                                            loading='lazy'
                                             src='https://cdn.freebiesupply.com/logos/large/2x/tumblr-icon-logo-png-transparent.png'
                                             alt=''
                                         />
@@ -240,6 +241,7 @@ const Footer = () => {
                         </ul>
                         <div className='flex justify-center py-[35px] '>
                             <img
+                                loading='lazy'
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/payments.png?v=1698422597&width=2000'
                                 alt=''
                             />

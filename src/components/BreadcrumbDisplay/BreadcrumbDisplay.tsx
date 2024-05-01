@@ -25,21 +25,27 @@ const BreadcrumbDisplay = () => {
                 <div className='breadcrumb-container flex h-[60px] w-full items-center font-semibold'>
                     <Breadcrumb>
                         {pathnames.length > 0 ? (
-                            <Breadcrumb.Item>
-                                <Link to='/'>Home</Link>
+                            <Breadcrumb.Item className='text__color'>
+                                <Link className='text__color' to='/'>
+                                    Home
+                                </Link>
                             </Breadcrumb.Item>
                         ) : (
-                            <Breadcrumb.Item>Home</Breadcrumb.Item>
+                            <Breadcrumb.Item className='text__color'>Home</Breadcrumb.Item>
                         )}
 
                         {pathnames.map((name, index) => {
                             const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
                             const isLast = index === pathnames.length - 1;
                             return isLast ? (
-                                <Breadcrumb.Item> {capatilize(name)} </Breadcrumb.Item>
+                                <Breadcrumb.Item key={index} className='text__color'>
+                                    {capatilize(name)}
+                                </Breadcrumb.Item>
                             ) : (
-                                <Breadcrumb.Item>
-                                    <Link to={`${routeTo}`}> {capatilize(name)} </Link>
+                                <Breadcrumb.Item key={index} className='text__color'>
+                                    <Link className='text__color' to={`${routeTo}`}>
+                                        {capatilize(name)}
+                                    </Link>
                                 </Breadcrumb.Item>
                             );
                         })}

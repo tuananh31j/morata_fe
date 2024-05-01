@@ -22,11 +22,13 @@ const SmallCard = () => {
                 >
                     <Link to={`/`} className='block w-full overflow-hidden'>
                         <img
+                            loading='lazy'
                             src={secondImage}
                             alt=''
                             className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
                         />
                         <img
+                            loading='lazy'
                             src={mainImage}
                             alt=''
                             className='relative z-10 w-full opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'

@@ -1,7 +1,7 @@
 import { DoubleLeftOutlined } from '@ant-design/icons';
 import { FloatButton } from 'antd';
 
-const BackTop = () => {
+const BackToTop = () => {
     return (
         <FloatButton.BackTop
             className='h-[50px] w-[50px] hover:bg-[#16bcdc]'
@@ -10,4 +10,4 @@ const BackTop = () => {
     );
 };
 
-export default BackTop;
+export default BackToTop;

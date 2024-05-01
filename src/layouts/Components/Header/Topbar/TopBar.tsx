@@ -27,7 +27,7 @@
 //                         <Dropdown menu={{ items, onClick }}>
 //                             <a onClick={(e) => e.preventDefault()}>
 //                                 <Space style={{ color: 'white' }}>
-//                                     <img
+//                                     <img loading='lazy'
 //                                         alt='EN'
 //                                         className='mr-2 inline-block h-4 w-4'
 //                                         src='//demo-morata.myshopify.com/cdn/shop/t/3/assets/flag_en.png?v=14076981825125011091700037390'

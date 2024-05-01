@@ -5,7 +5,7 @@ import SlideItem from './SlideItem';
 const Banner = () => {
     return (
         <div className='container m-10 mx-auto'>
-            <div className='mx-2 gap-3 lg:grid lg:grid-cols-2'>
+            <div className='gap-3 lg:grid lg:grid-cols-2'>
                 <div className='content-slide pb-2 '>
                     <Slideshow ItemCard={SlideItem} />
                 </div>
@@ -13,6 +13,7 @@ const Banner = () => {
                     <div className='grid gap-2'>
                         <div className='group relative overflow-hidden rounded-3xl'>
                             <img
+                                loading='lazy'
                                 className=' h-full w-full transform transition-transform duration-500 group-hover:scale-110'
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/1_1.png?v=1697473091&width=1500'
                                 alt=''
@@ -26,6 +27,7 @@ const Banner = () => {
                         </div>
                         <div className='group relative overflow-hidden rounded-3xl'>
                             <img
+                                loading='lazy'
                                 className=' h-full w-full transform transition-transform duration-500 group-hover:scale-110 '
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/1_2.png?v=1697474702&width=1500'
                                 alt=''
@@ -41,6 +43,7 @@ const Banner = () => {
                     <div className='grid gap-2'>
                         <div className='group relative overflow-hidden rounded-3xl'>
                             <img
+                                loading='lazy'
                                 className=' h-full w-full transform transition-transform duration-500 group-hover:scale-110'
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/1_3.png?v=1697474702&width=1500'
                                 alt=''
@@ -54,6 +57,7 @@ const Banner = () => {
                         </div>
                         <div className='group relative overflow-hidden rounded-3xl'>
                             <img
+                                loading='lazy'
                                 className=' h-full w-full transform transition-transform duration-500 group-hover:scale-110'
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/1_4.png?v=1697474702&width=1500'
                                 alt=''
