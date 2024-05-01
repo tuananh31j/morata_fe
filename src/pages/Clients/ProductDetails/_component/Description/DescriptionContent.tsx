@@ -8,6 +8,7 @@ const DescriptionContent = () => {
                 Pencil (2nd generation).
             </p>
             <img
+                loading='lazy'
                 src='https://cdn.shopify.com/s/files/1/0836/9845/0750/files/img_content_1.jpg?v=1699289844'
                 alt=''
                 className='w-full py-12'
@@ -25,18 +26,21 @@ const DescriptionContent = () => {
             <div className='img-wrapper justify-between  gap-5 py-12 lg:flex'>
                 <div className='img-items my-2 lg:my-0'>
                     <img
+                        loading='lazy'
                         src='https://cdn.shopify.com/s/files/1/0836/9845/0750/files/img_content_2.jpg?v=1699289845'
                         alt=''
                     />
                 </div>
                 <div className='img-items my-2 lg:my-0'>
                     <img
+                        loading='lazy'
                         src='https://cdn.shopify.com/s/files/1/0836/9845/0750/files/img_content_3.jpg?v=1699289844'
                         alt=''
                     />
                 </div>
                 <div className='img-items my-2 lg:my-0'>
                     <img
+                        loading='lazy'
                         src='https://cdn.shopify.com/s/files/1/0836/9845/0750/files/img_content_4.jpg?v=1699289844'
                         alt=''
                     />

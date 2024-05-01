@@ -6,6 +6,7 @@ const SmallCategoryCard = () => {
             <Link to={`/`} className=' relative mt-2 block h-full w-full rounded-[20px]'>
                 <div className='w-full overflow-hidden rounded-2xl border border-transparent'>
                     <img
+                        loading='lazy'
                         src={catImage}
                         alt=''
                         className='h-full w-full object-cover transition-transform duration-700 ease-linear hover:scale-110 hover:duration-700 hover:ease-linear'

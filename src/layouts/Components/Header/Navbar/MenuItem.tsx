@@ -48,6 +48,7 @@ const MenuItem = () => {
                 <Columns />
                 <div className='relative'>
                     <img
+                        loading='lazy'
                         src='https://demo-morata.myshopify.com/cdn/shop/products/products_4_7.jpg?v=1697644644&width=3840'
                         alt='Product Image'
                         className='h-auto w-full object-cover'

@@ -3,7 +3,7 @@ import { Avatar, Button, ConfigProvider, Drawer, List } from 'antd';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-const PopupWishlist = ({ children }: { children: React.ReactNode }) => {
+const WishListDrawer = ({ children }: { children: React.ReactNode }) => {
     const [visible, setVisible] = useState(false);
     const onClose = () => {
         setVisible(false);
@@ -101,4 +101,4 @@ const PopupWishlist = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-export default PopupWishlist;
+export default WishListDrawer;

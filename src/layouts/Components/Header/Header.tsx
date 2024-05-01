@@ -81,10 +81,10 @@ const Header = () => {
     };
 
     return (
-        <div className=' bg-blue-900'>
-            <div className='mx-1 lg:mx-4'>
+        <div className='bg-blue-900 '>
+            <div className='mx-3 lg:mx-4'>
                 {/* thongtin-header-laptop */}
-                <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex'>
+                <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex '>
                     <div className='justify-between gap-5 lg:flex'>
                         <div className='lg: inline-block text-left'>
                             <div>
@@ -92,6 +92,7 @@ const Header = () => {
                                     <a onClick={(e) => e.preventDefault()}>
                                         <Space style={{ color: 'white' }}>
                                             <img
+                                                loading='lazy'
                                                 alt='EN'
                                                 className='mr-2 inline-block h-4 w-4'
                                                 src='//demo-morata.myshopify.com/cdn/shop/t/3/assets/flag_en.png?v=14076981825125011091700037390'
@@ -148,7 +149,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-                <div className='flex grid-cols-[280px,0.9fr,380px] items-center justify-between gap-10 border-[#3b50a3]  bg-blue-900 px-5 pt-5 lg:grid lg:border-b lg:p-0 lg:py-5'>
+                <div className='flex grid-cols-[280px,0.9fr,380px] items-center justify-between gap-10 border-[#3b50a3]  bg-blue-900 pt-5 lg:grid lg:border-b lg:p-0 lg:py-5'>
                     {/* icon-menu-mobi */}
                     <div className='lg:hidden'>
                         <Space>
@@ -198,6 +199,7 @@ const Header = () => {
 
                     <div className='logo'>
                         <img
+                            loading='lazy'
                             src='//demo-morata.myshopify.com/cdn/shop/files/logo_150x@2x.png?v=1697202938'
                             alt=''
                             className='lg:w-[200px] '
@@ -248,21 +250,21 @@ const Header = () => {
                     <UserToolbar />
                 </div>
                 {/* ---seach-mobile--- */}
-                <div className='relative p-5 pb-10  lg:hidden'>
+                <div className='relative my-5 pb-10  lg:hidden'>
                     <div className='relative h-10 w-full'>
                         <input
                             type='email'
                             className='peer h-14 w-full  bg-white  p-4   outline outline-0 transition-all '
                             placeholder='Search for products ...'
                         />
+                        <button
+                            disabled
+                            className='absolute right-2 top-2 select-none rounded bg-[#16bcdc] p-[10px]'
+                            type='button'
+                        >
+                            <SearchIcon className='h-5 w-5 text-white' />
+                        </button>
                     </div>
-                    <button
-                        disabled
-                        className='!absolute right-1 top-1 mr-5 mt-5 select-none rounded bg-[#16bcdc] px-3 py-3'
-                        type='button'
-                    >
-                        <SearchIcon className='h-5 w-5 text-white' />
-                    </button>
                 </div>
                 <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:flex'>
                     {/* Header MENU bottom */}
