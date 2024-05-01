@@ -55,7 +55,7 @@ const Products = () => {
                         )}
                     >
                         {data.map((item, i) => (
-                            <SmallCard />
+                            <SmallCard key={i} />
                         ))}
                     </div>
                     <Pagination className='text-center' defaultCurrent={6} total={500} />

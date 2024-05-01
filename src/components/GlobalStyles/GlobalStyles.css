@@ -79,8 +79,11 @@ input:focus {
 }
 
 body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     transition: background-color 1s ease-in-out;
 }
+
 /* @keyframes changeGrid {
     from {
         opacity: 0;

@@ -4,6 +4,8 @@ import { AdminRoutes, ClientRoutes } from './routes';
 import PrivateLayout from './layouts/PrivateLayout';
 import NotFound from './pages/NotFound';
 import CheckOut from './pages/Clients/Checkout/CheckOut';
+import { Suspense } from 'react';
+import Loading from './components/Loading/Loading';
 
 const App = () => {
     return (
@@ -13,7 +15,17 @@ const App = () => {
                 <Route path='' element={<MainLayout />}>
                     {ClientRoutes.map((router, i) => {
                         const Page = router.ELEMENT;
-                        return <Route key={i} path={router.PATH} element={<Page />}></Route>;
+                        return (
+                            <Route
+                                key={i}
+                                path={router.PATH}
+                                element={
+                                    <Suspense fallback={<Loading />}>
+                                        <Page />
+                                    </Suspense>
+                                }
+                            ></Route>
+                        );
                     })}
                 </Route>
 
@@ -21,7 +33,17 @@ const App = () => {
                 <Route path='admin' element={<PrivateLayout />}>
                     {AdminRoutes.map((router, i) => {
                         const Page = router.ELEMENT;
-                        return <Route key={i} path={router.PATH} element={<Page />}></Route>;
+                        return (
+                            <Route
+                                key={i}
+                                path={router.PATH}
+                                element={
+                                    <Suspense fallback={<Loading />}>
+                                        <Page />
+                                    </Suspense>
+                                }
+                            ></Route>
+                        );
                     })}
                 </Route>
                 <Route path='checkout' element={<CheckOut />} />
