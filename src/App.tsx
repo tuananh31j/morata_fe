@@ -1,11 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout/MainLayout';
-import { AdminRoutes, ClientRoutes } from './routes';
 import PrivateLayout from './layouts/PrivateLayout';
 import NotFound from './pages/NotFound';
-import CheckOut from './pages/Clients/Checkout/CheckOut';
 import { Suspense } from 'react';
 import Loading from './components/Loading/Loading';
+import { AdminRoutes, ClientRoutes } from './routes';
 
 const App = () => {
     return (
@@ -24,7 +23,23 @@ const App = () => {
                                         <Page />
                                     </Suspense>
                                 }
-                            ></Route>
+                            >
+                                {router.CHILDREN &&
+                                    router.CHILDREN.map((routerChildren, i) => {
+                                        const Page = routerChildren.ELEMENT;
+                                        return (
+                                            <Route
+                                                key={i}
+                                                path={routerChildren.PATH}
+                                                element={
+                                                    <Suspense fallback={<Loading />}>
+                                                        <Page />
+                                                    </Suspense>
+                                                }
+                                            ></Route>
+                                        );
+                                    })}
+                            </Route>
                         );
                     })}
                 </Route>
@@ -46,8 +61,8 @@ const App = () => {
                         );
                     })}
                 </Route>
-                <Route path='checkout' element={<CheckOut />} />
-                <Route path='*' element={<NotFound />} />
+                <Route path='*' element={<Navigate to='/404' />} />
+                <Route path='/404' element={<NotFound />} />
             </Routes>
         </Router>
     );

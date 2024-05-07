@@ -16,6 +16,7 @@ import WrapperList from '~/components/WrapperList';
 import DescriptionProduct from './_component/Description/DescriptionProduct';
 import ThumnailProduct from './_component/Thumbnail/ThumnailProduct';
 import CarouselDisplay, { CarouselItem } from '~/components/CarouselDisplay';
+import useDocumentTitle from '~/hooks/useDocumentTitle';
 
 // demo data product gallery
 const items = [
@@ -29,6 +30,8 @@ const items = [
 const data = [1, 1, 1, 1, 1, 1, 11, 1];
 
 const ProductDetails = () => {
+    useDocumentTitle('Tên sản phẩm');
+
     return (
         <>
             {/* BeadCrumb */}

@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
+import useDocumentTitle from '~/hooks/useDocumentTitle';
 const NotFound = () => {
+    useDocumentTitle('404');
+
     return (
         <div className='flex h-[100vh] w-[100vw] flex-col items-center justify-center'>
             <div className='mb-[30px]'>

@@ -1,7 +1,10 @@
 import SmallCard from '~/components/Product/SmallCard';
 import WrapperList from '~/components/WrapperList';
+import useDocumentTitle from '~/hooks/useDocumentTitle';
 
 const Wishlist = () => {
+    useDocumentTitle('Wish list');
+
     return (
         <WrapperList title='My wishlist'>
             <p className='pb-4 text-center text-[#777777]'>

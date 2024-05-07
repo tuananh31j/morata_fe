@@ -7,9 +7,11 @@ import ShopBenefits from '~/components/ShopBenefits';
 import CarouselDisplay, { CarouselItem } from '~/components/CarouselDisplay';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
 import PopupProductList from '~/components/PopupProductList';
+import useDocumentTitle from '~/hooks/useDocumentTitle';
 const data = [1, 1, 1, 1, 1, 1, 11, 1];
 
 const Home = () => {
+    useDocumentTitle('Home');
     return (
         <div>
             {/*@ Banner */}

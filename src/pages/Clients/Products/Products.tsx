@@ -4,9 +4,12 @@ import FilterProducts from './FilterSidebar';
 import SmallCard from '~/components/Product/SmallCard';
 import clsx from 'clsx';
 import { Pagination } from 'antd';
+import useDocumentTitle from '~/hooks/useDocumentTitle';
 
 const data = [11, 1, 1, 1, 1, 1, 1, 1];
 const Products = () => {
+    useDocumentTitle('Products');
+
     const [gridCol, setGridCol] = useState<string>('');
     const handleClickGrid1 = () => {
         setGridCol('grid-cols-1');
@@ -50,8 +53,7 @@ const Products = () => {
                     <div
                         className={clsx(
                             { [gridCol]: !!gridCol, ['grid-cols-2 lg:grid-cols-4']: !gridCol },
-                            'my-5 grid gap-5',
-                            gridCol
+                            'my-5 grid gap-5'
                         )}
                     >
                         {data.map((item, i) => (
