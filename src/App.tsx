@@ -24,6 +24,9 @@ const App = () => {
                                     </Suspense>
                                 }
                             >
+                                {router.indexPath && (
+                                    <Route path='' element={<Navigate replace to={router.indexPath} />} />
+                                )}
                                 {router.CHILDREN &&
                                     router.CHILDREN.map((routerChildren, i) => {
                                         const Page = routerChildren.ELEMENT;

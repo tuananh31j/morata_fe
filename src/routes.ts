@@ -12,6 +12,8 @@ const AccountLayout = lazy(() => import('./layouts/AccountLayout'));
 const MyOrders = lazy(() => import('./pages/Clients/Account/MyOrders'));
 const MyAddress = lazy(() => import('./pages/Clients/Account/MyAddress'));
 const Profile = lazy(() => import('./pages/Clients/Account/Profile'));
+const Login = lazy(() => import('./pages/Clients/AuthPage/Login'));
+const Register = lazy(() => import('./pages/Clients/AuthPage/Register'));
 
 //@Router
 export const ClientRoutes = [
@@ -24,10 +26,20 @@ export const ClientRoutes = [
     {
         PATH: 'account',
         ELEMENT: AccountLayout,
+        indexPath: 'profile',
         CHILDREN: [
             { PATH: 'profile', ELEMENT: Profile },
             { PATH: 'my-orders', ELEMENT: MyOrders },
             { PATH: 'my-address', ELEMENT: MyAddress },
+        ],
+    },
+    {
+        PATH: 'auth',
+        ELEMENT: AccountLayout,
+        indexPath: 'login',
+        CHILDREN: [
+            { PATH: 'login', ELEMENT: Login },
+            { PATH: 'register', ELEMENT: Register },
         ],
     },
 ];

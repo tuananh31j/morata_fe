@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { CaretIcon, DiscountIcon, SearchIcon } from '~/components/Icons';
 import UserToolbar from './UserToolbar';
 import Navbar from './Navbar';
+import { Link } from 'react-router-dom';
 
 // navbar-mobi
 type MenuItem = Required<MenuProps>['items'][number];
@@ -178,12 +179,14 @@ const Header = () => {
                                 <SearchIcon />
                             </div>
                             <div className='mt-8 flex items-center font-bold'>
-                                <div>
-                                    <UserOutlined className='mr-1 text-base' />
-                                </div>
-                                <div className=''>Login</div>
-                                <div className='mx-1'>/</div>
-                                <div className=''> Register</div>
+                                <Link to='/login' onClick={onClose} className='flex cursor-pointer'>
+                                    <div>
+                                        <UserOutlined className='mr-1 text-base' />
+                                    </div>
+                                    <div className=''>Login</div>
+                                    <div className='mx-1'>/</div>
+                                    <div className=''> Register</div>
+                                </Link>
                             </div>
                             <div className='w-full -translate-x-2 '>
                                 <Menu
@@ -198,12 +201,14 @@ const Header = () => {
                     </div>
 
                     <div className='logo'>
-                        <img
-                            loading='lazy'
-                            src='//demo-morata.myshopify.com/cdn/shop/files/logo_150x@2x.png?v=1697202938'
-                            alt=''
-                            className='lg:w-[200px] '
-                        />
+                        <Link className='cursor-pointer' to={'/'}>
+                            <img
+                                loading='lazy'
+                                src='//demo-morata.myshopify.com/cdn/shop/files/logo_150x@2x.png?v=1697202938'
+                                alt=''
+                                className='lg:w-[200px] '
+                            />
+                        </Link>
                     </div>
                     {/* ///seach-header-laptop */}
                     <form className='hidden lg:block'>
