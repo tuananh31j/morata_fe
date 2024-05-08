@@ -179,7 +179,7 @@ const Header = () => {
                                 <SearchIcon />
                             </div>
                             <div className='mt-8 flex items-center font-bold'>
-                                <Link to='/login' onClick={onClose} className='flex cursor-pointer'>
+                                <Link to='/auth/login' onClick={onClose} className='flex cursor-pointer'>
                                     <div>
                                         <UserOutlined className='mr-1 text-base' />
                                     </div>

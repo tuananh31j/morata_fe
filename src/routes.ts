@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import AuthLayout from './layouts/AuthLayout';
 
 //@Page
 const Dashboard = lazy(() => import('./pages/Admins/Dashboard'));
@@ -35,7 +36,7 @@ export const ClientRoutes = [
     },
     {
         PATH: 'auth',
-        ELEMENT: AccountLayout,
+        ELEMENT: AuthLayout,
         indexPath: 'login',
         CHILDREN: [
             { PATH: 'login', ELEMENT: Login },
