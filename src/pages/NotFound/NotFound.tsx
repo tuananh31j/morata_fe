@@ -4,18 +4,17 @@ const NotFound = () => {
     useDocumentTitle('404');
 
     return (
-        <div className='flex h-[100vh] w-[100vw] flex-col items-center justify-center'>
-            <div className='mb-[30px]'>
+        <div className='flex  h-[100vh] flex-col items-center justify-center'>
+            <div className=' flex justify-center'>
                 <img
+                    className='w-[80%]'
                     loading='lazy'
                     src='https://demo-morata.myshopify.com/cdn/shop/files/404_720x.png?v=1704425830'
                     alt=''
                 />
             </div>
-            <div className=' mt-[35px] flex flex-col items-center gap-[50px]'>
-                <h1 className='text-center text-[28px] font-bold leading-[40px] xl:text-[48px]'>
-                    Opps! Page not found.
-                </h1>
+            <div className=' mt-[15px] flex flex-col items-center gap-5'>
+                <h1 className='text-center text-[28px] font-bold leading-[40px] xl:text-4xl'>Opps! Page not found.</h1>
                 <p className='text-center text-[12px] text-[#777777] xl:text-base'>
                     Sorry for the inconvenience. Go to our homepage or check out our latest collections.
                 </p>

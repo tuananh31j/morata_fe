@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const UserToolbar = () => {
     return (
         <div className='justify-between gap-2 lg:flex'>
-            <Link className='cursor-pointer' to={'login'}>
+            <Link className='cursor-pointer' to={'/auth/login'}>
                 <IconButton name='account' subName='login' icon='UserOutlined' />
             </Link>
             <WishListDrawer>
