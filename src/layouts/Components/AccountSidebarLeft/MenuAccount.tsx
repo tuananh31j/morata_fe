@@ -1,6 +1,6 @@
 import MenuItem from './MenuItem';
 const menus = [
-    { name: 'personal information', path: 'profile' },
+    { name: 'Personal information', path: 'profile' },
     { name: 'My orders', path: 'my-orders' },
     { name: 'My address', path: 'my-address' },
 ];
@@ -10,7 +10,7 @@ const MenuAccount = () => {
         <div className=' flex max-h-[100vh] flex-col justify-items-center'>
             <div className='m-4 flex flex-col justify-center gap-y-3'>
                 {menus.map((item, i) => (
-                    <MenuItem name={item.name} path={item.path} />
+                    <MenuItem name={item.name} key={i} path={item.path} />
                 ))}
                 <button className='mt-5 border p-2 transition-transform duration-200 ease-in-out hover:border-[#16bcdc] active:-translate-y-3'>
                     Đăng xuất
