@@ -18,7 +18,7 @@ const MediumCard = () => {
                     onMouseEnter={handleSetDateActive}
                     onMouseLeave={handleSetDateActive}
                 >
-                    <Link to={`/`} className='block w-full overflow-hidden'>
+                    <Link to={`/productdetail`} className='block w-full overflow-hidden'>
                         <img
                             loading='lazy'
                             src={secondImage}
