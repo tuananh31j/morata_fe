@@ -1,15 +1,19 @@
 import WrapperList from '~/components/WrapperList';
 import StaticImages from '~/assets';
-import { Button, DatePicker, Form, Input, Modal, Radio, Space } from 'antd';
+import { Button, DatePicker, Form, Input, Modal, Radio } from 'antd';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useWindowSize from '~/hooks/useWindowSize';
+
 const Profile = () => {
     const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
-    const [open, setOpen] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const windowSize = useWindowSize();
-
+    const [windowSizeChange, setWindowSizeChange] = useState({
+        windowWidth: window.innerWidth,
+        windowHeght: window.innerHeight,
+    });
     const showModal = () => {
         setOpen(true);
     };
@@ -23,16 +27,18 @@ const Profile = () => {
     };
 
     const handleCancel = () => {
-        console.log('Clicked cancel button');
         setOpen(false);
     };
+    useEffect(() => {
+        setWindowSizeChange(windowSize);
+    }, [windowSize]);
 
     return (
         <>
             <WrapperList title='My Profile' className='my-0'>
                 {/* @Content */}
-                <div className='flex w-[72vw] items-center justify-center'>
-                    <div className='w-[50vw]'>
+                <div className='flex w-[100vw] items-center justify-center md:w-[70vw]'>
+                    <div className='w-[80%] rounded-2xl bg-white px-6 py-4 md:w-[70%]'>
                         {/* User avatar */}
                         <div className='mb-6 flex items-center justify-center'>
                             <div className='mt-4 flex w-24 select-none items-center justify-center rounded-full'>
@@ -92,7 +98,7 @@ const Profile = () => {
                                         Cập nhật thông tin
                                     </Button> */}
                                     <Button
-                                        className='block w-full rounded-3xl border-black bg-black text-center text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc] '
+                                        className='block w-full rounded-3xl bg-black text-center text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc] '
                                         size='large'
                                     >
                                         Cập nhật thông tin
