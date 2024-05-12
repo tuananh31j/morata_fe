@@ -20,12 +20,12 @@ const SmallCard = () => {
                     onMouseEnter={handleSetDateActive}
                     onMouseLeave={handleSetDateActive}
                 >
-                    <Link to={`/`} className='block w-full overflow-hidden'>
+                    <Link to={`/productdetail`} className='flex w-full justify-center overflow-hidden'>
                         <img
                             loading='lazy'
                             src={secondImage}
                             alt=''
-                            className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
+                            className='absolute  w-full scale-100 transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
                         />
                         <img
                             loading='lazy'
@@ -58,7 +58,7 @@ const SmallCard = () => {
                 </div>
 
                 {/* Discount */}
-                <div className='absolute left-0 top-0 inline-block select-none rounded-sm bg-[#16bcdc] px-3 text-sm text-white'>
+                <div className='absolute left-0 top-0 inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>
                     New
                 </div>
             </div>

@@ -41,7 +41,7 @@ const PopupProductList = () => {
                     // Footer custom button view all product
                     footer={[
                         <div key='cancel' className='mb-[25px] flex w-full justify-center'>
-                            <Link to={'/productdetail'}>
+                            <Link to={'/products'}>
                                 <div className='flex h-[50px] w-[182px] items-center justify-center  rounded-[30px] bg-[#222222] text-[12px] font-semibold text-white duration-500 hover:bg-cyan-500'>
                                     VIEW ALL PRODUCTS
                                 </div>

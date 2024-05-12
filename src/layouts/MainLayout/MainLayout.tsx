@@ -10,11 +10,10 @@ const MainLayout = () => {
     return (
         <div className='bg__color'>
             <Header />
-            <div className='mx-3 lg:mx-4'>
+            <div className='mx-3 min-h-[80vh] lg:mx-4'>
                 {!isHomePage && <BreadcrumbDisplay />}
                 <Outlet />
             </div>
-
             <Footer />
             <BackToTop />
         </div>

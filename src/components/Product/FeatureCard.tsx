@@ -14,7 +14,7 @@ const FeatureCard = () => {
     return (
         <div className='rounded-xl bg-white p-5'>
             <div className='relative flex justify-between gap-5 rounded'>
-                <Link to={`/`} className='relative block w-full max-w-24'>
+                <Link to={`/productdetail`} className='relative block w-full max-w-24'>
                     <img
                         loading='lazy'
                         src={secondImage}
