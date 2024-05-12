@@ -2,7 +2,7 @@ import WrapperList from '~/components/WrapperList';
 import StaticImages from '~/assets';
 import { Button, DatePicker, Form, Input, Modal, Radio } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useWindowSize from '~/hooks/useWindowSize';
 
 const Profile = () => {
@@ -10,10 +10,7 @@ const Profile = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const windowSize = useWindowSize();
-    const [windowSizeChange, setWindowSizeChange] = useState({
-        windowWidth: window.innerWidth,
-        windowHeght: window.innerHeight,
-    });
+
     const showModal = () => {
         setOpen(true);
     };
@@ -29,9 +26,6 @@ const Profile = () => {
     const handleCancel = () => {
         setOpen(false);
     };
-    useEffect(() => {
-        setWindowSizeChange(windowSize);
-    }, [windowSize]);
 
     return (
         <>
