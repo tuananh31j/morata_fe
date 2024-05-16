@@ -31,7 +31,7 @@ const DescriptionProduct = () => {
                         <Tabs.TabPane tab='DESCRIPTION' key='1'>
                             <DescriptionContent />
                         </Tabs.TabPane>
-                        {/* DDITIONAL INFORMATION */}
+                        {/* ADDITIONAL INFORMATION */}
 
                         <Tabs.TabPane tab='ADDITIONAL INFORMATION' key='2'>
                             <AddInformationContent />
