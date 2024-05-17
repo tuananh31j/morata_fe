@@ -15,7 +15,7 @@ const SmallCard = () => {
             <div className='group relative justify-between gap-5 rounded'>
                 {/* Image */}
                 <div
-                    className='group relative'
+                    className='group relative w-full'
                     data-active={isActiveProductActions ? 'card' : ''}
                     onMouseEnter={handleSetDateActive}
                     onMouseLeave={handleSetDateActive}
