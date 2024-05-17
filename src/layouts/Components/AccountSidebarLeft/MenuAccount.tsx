@@ -1,4 +1,5 @@
 import MenuItem from './MenuItem';
+
 const menus = [
     { name: 'Personal information', path: 'profile' },
     { name: 'My orders', path: 'my-orders' },

@@ -31,15 +31,15 @@ const Profile = () => {
         <>
             <WrapperList title='My Profile' className='my-0'>
                 {/* @Content */}
-                <div className='flex w-[100vw] items-center justify-center md:w-[70vw]'>
-                    <div className='w-[80%] rounded-2xl bg-white px-6 py-4 md:w-[70%]'>
+                <div className='flex items-center justify-center'>
+                    <div className='w-[80%] rounded-2xl bg-white px-6 py-4'>
                         {/* User avatar */}
                         <div className='mb-6 flex items-center justify-center'>
                             <div className='mt-4 flex w-24 select-none items-center justify-center rounded-full'>
                                 <img
                                     src={StaticImages.userImageDf}
                                     loading='lazy'
-                                    alt='user image'
+                                    alt='user'
                                     className='w-full rounded-full '
                                 />
                             </div>

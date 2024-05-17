@@ -10,7 +10,7 @@ const AccountSidebarLeft = () => {
                 </div>
                 <div className='mb-10 flex items-center justify-center gap-5'>
                     <div className='w-[16%]'>
-                        <img src={StaticImages.userDefault} loading='lazy' alt='' />
+                        <img src={StaticImages.userImageDf} className='w-full rounded-full' loading='lazy' alt='' />
                     </div>
                     <div>
                         <p className='text-[16px] capitalize'>Nguyễn Tuấn Anh</p>
