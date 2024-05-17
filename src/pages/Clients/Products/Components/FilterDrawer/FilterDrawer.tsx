@@ -1,8 +1,7 @@
-import { Drawer, InputNumber } from 'antd';
+import { Drawer, InputNumber, Menu } from 'antd';
 import { useState } from 'react';
 
 import type { MenuProps } from 'antd';
-import { Menu } from 'antd';
 
 import { FilterFilled, MinusOutlined } from '@ant-design/icons';
 import CheckBoxDisplay from '../CheckBoxDisplay/CheckBoxDisplay';

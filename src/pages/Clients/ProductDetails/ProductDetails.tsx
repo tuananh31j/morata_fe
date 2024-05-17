@@ -215,7 +215,7 @@ const ProductDetails = () => {
                 <WrapperList title='Related Products'>
                     <CarouselDisplay>
                         {data.map((item, i) => (
-                            <CarouselItem>
+                            <CarouselItem key={i}>
                                 <SmallCard />
                             </CarouselItem>
                         ))}
@@ -224,7 +224,7 @@ const ProductDetails = () => {
                 <WrapperList title='Recently Viewed Products'>
                     <CarouselDisplay>
                         {data.map((item, i) => (
-                            <CarouselItem>
+                            <CarouselItem key={i}>
                                 <SmallCard />
                             </CarouselItem>
                         ))}

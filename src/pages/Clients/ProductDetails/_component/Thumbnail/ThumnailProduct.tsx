@@ -9,8 +9,8 @@ const ThumnailProduct = ({ items }: { items: { url: string }[] }) => {
         setCurrentSlide(e);
         ref.current?.goTo(e, false);
     };
-    const onChange = (currentSlide: number) => {
-        setCurrentSlide(currentSlide);
+    const onChange = (slide: number) => {
+        setCurrentSlide(slide);
     };
     return (
         <div className='product-thumbnail flex w-full gap-[16px]'>

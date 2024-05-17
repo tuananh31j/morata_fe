@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-//@Page
+// @Page
 const Dashboard = lazy(() => import('./pages/Admins/Dashboard'));
 const About = lazy(() => import('./pages/Clients/About'));
 const Home = lazy(() => import('./pages/Clients/Home'));
@@ -16,8 +16,15 @@ const Login = lazy(() => import('./pages/Clients/AuthPage/Login'));
 const Register = lazy(() => import('./pages/Clients/AuthPage/Register'));
 const AuthLayout = lazy(() => import('./layouts/AuthLayout'));
 
-//@Router
-export const ClientRoutes = [
+// @Router
+type IRoutes = {
+    PATH: string;
+    ELEMENT: React.ElementType;
+    indexPath?: string;
+    CHILDREN?: IRoutes;
+}[];
+
+export const ClientRoutes: IRoutes = [
     { PATH: '', ELEMENT: Home },
     { PATH: 'about', ELEMENT: About },
     { PATH: 'products', ELEMENT: Products },
@@ -45,4 +52,4 @@ export const ClientRoutes = [
     },
 ];
 
-export const AdminRoutes = [{ PATH: '', ELEMENT: Dashboard }];
+export const AdminRoutes: IRoutes = [{ PATH: '', ELEMENT: Dashboard }];

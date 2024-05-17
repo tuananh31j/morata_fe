@@ -1,4 +1,4 @@
-import { Space, Table, Tag } from 'antd';
+import { Space, Table } from 'antd';
 import type { TableProps } from 'antd';
 
 interface DataType {
@@ -18,7 +18,7 @@ const columns: TableProps<DataType>['columns'] = [
         title: 'ID',
         dataIndex: 'orderID',
         key: 'orderID',
-        render: (text) => <a>{text}</a>,
+        render: (text) => <a href='/'>{text}</a>,
     },
     {
         title: 'Status',
@@ -35,9 +35,9 @@ const columns: TableProps<DataType>['columns'] = [
         key: 'action',
         render: (_, record) => (
             <Space size='middle'>
-                {record.status === 'Pending' && <a>Approve</a>}
-                {record.status === 'Confirmed' && <a>Dispatch</a>}
-                <a>Delete</a>
+                {record.status === 'Pending' && <a href='/'>Approve</a>}
+                {record.status === 'Confirmed' && <a href='/'>Dispatch</a>}
+                <a href='/'>Delete</a>
             </Space>
         ),
     },

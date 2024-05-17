@@ -1,30 +1,76 @@
-# React + TypeScript + Vite
+# Writing Trainer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup
 
-Currently, two official plugins are available:
+Make sure to install the dependencies:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+# yarn
+yarn install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+or
+
+```bash
+#npm
+npm install
+```
+
+## Development Server
+
+Start the development server on `http://localhost:****`:
+
+```bash
+# yarn
+yarn dev
+```
+
+or
+
+```bash
+#npm
+npm run dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# yarn
+yarn build
+```
+
+or
+
+```bash
+#npm
+npm run build
+```
+
+Locally preview production build:
+
+```bash
+# yarn
+yarn preview
+```
+
+or
+
+```bash
+#npm
+npm run build
+```
+
+## Setup node
+
+` Expected version "^18.18.0 || >=20.0.0"`
+
+If your node version is outside the required range.
+Follow these steps
+
+1. Download [nvm-setup.zip](https://github.com/coreybutler/nvm-windows/releases/download/1.1.7/nvm-setup.zip) extract and install it.
+2. Execute command `nvm list available` from cmd or gitbash or powershell, this will list all available version of node.
+   ![img.png](img.png)
+3. Use command `nvm install version` e.g. `nvm install 20.0.0` to install on the machine
+4. Last once installed use `nvm use version` to use newer version e.g. `nvm use 20.0.0`.
