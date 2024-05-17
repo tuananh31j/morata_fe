@@ -1,5 +1,5 @@
-import clsx from 'clsx';
 import TitleDisplay from '../TitleDisplay';
+import { cn } from '~/utils';
 
 interface IWrapperListProps {
     children: React.ReactNode;
@@ -12,7 +12,7 @@ interface IWrapperListProps {
 const WrapperList: React.FC<IWrapperListProps> = ({ children, title, className, handleClick, border, seeMore }) => {
     return (
         <div
-            className={clsx(
+            className={cn(
                 { ['border border-transparent border-b-gray-600 border-opacity-20 pb-4']: border, ['my-20']: !border },
                 'transition-all duration-300 ease-in',
                 className

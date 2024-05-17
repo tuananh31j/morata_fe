@@ -1,9 +1,10 @@
 import StaticImages from '~/assets';
 import MenuAccount from './MenuAccount';
+
 const AccountSidebarLeft = () => {
     return (
         <>
-            <div className='hidden flex-col bg-white md:flex md:w-[26vw]'>
+            <div className='hidden flex-col bg-white md:flex'>
                 <div className=''>
                     <h1 className='py-3 text-center text-2xl font-semibold uppercase text-[#16bcdc]'>Tài khoản</h1>
                 </div>

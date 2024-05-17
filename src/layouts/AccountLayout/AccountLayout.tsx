@@ -1,15 +1,20 @@
 import { Outlet } from 'react-router-dom';
 import AccountSidebarLeft from '../Components/AccountSidebarLeft';
 import useDocumentTitle from '~/hooks/useDocumentTitle';
+import { Col, Row } from 'antd';
 
 const AccountLayout = () => {
     useDocumentTitle('Account');
 
     return (
-        <div className='flex gap-4'>
-            <AccountSidebarLeft />
-            <Outlet />
-        </div>
+        <Row justify='space-between'>
+            <Col span={6} className='hidden md:block'>
+                <AccountSidebarLeft />
+            </Col>
+            <Col span={17}>
+                <Outlet />
+            </Col>
+        </Row>
     );
 };
 

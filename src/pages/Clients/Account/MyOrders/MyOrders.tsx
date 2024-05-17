@@ -37,7 +37,7 @@ const MyOrders = () => {
     ];
 
     return (
-        <WrapperList title='My orders' className='my-0 w-full'>
+        <WrapperList title='My orders' className='my-0'>
             {/* @Content */}
             <ConfigProvider
                 theme={{
