@@ -1,5 +1,5 @@
 import { Button, List, Modal, Form, Input, Select, Switch } from 'antd';
-import WrapperList from '~/components/WrapperList';
+import WrapperList from '~/components/_common/WrapperList';
 import { PlusOutlined, EditOutlined, HomeOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 
@@ -15,13 +15,14 @@ const MyAddress = () => {
     ];
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [currentAddress, setCurrentAddress] = useState(null);
+    const [_, setCurrentAddress] = useState(null);
 
     const handleAddAddress = () => {
         setCurrentAddress(null);
         setIsModalVisible(true);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleEditAddress = (address: any) => {
         setCurrentAddress(address);
         setIsModalVisible(true);

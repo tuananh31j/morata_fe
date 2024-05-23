@@ -1,18 +1,22 @@
 import Banner from '~/components/Banner';
-import SmallCard from '~/components/Product/SmallCard';
-import MediumCard from '~/components/Product/MediumCard';
-import WrapperList from '~/components/WrapperList';
+import SmallCard from '~/components/ProductCard/SmallCard';
+import MediumCard from '~/components/ProductCard/MediumCard';
+import WrapperList from '~/components/_common/WrapperList';
 import CategoryCard from '~/components/CategoryCard';
 import ShopBenefits from '~/components/ShopBenefits';
-import CarouselDisplay, { CarouselItem } from '~/components/CarouselDisplay';
+import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
 import PopupProductList from '~/components/PopupProductList';
-import useDocumentTitle from '~/hooks/useDocumentTitle';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import useGetAllProducts from '~/hooks/Queries/useGetAllProducts';
 
 const data = [1, 1, 1, 1, 1, 1, 11, 1];
 
 const Home = () => {
     useDocumentTitle('Home');
+    const res = useGetAllProducts();
+    console.log(res.data);
+
     return (
         <div>
             {/* @Banner*/}

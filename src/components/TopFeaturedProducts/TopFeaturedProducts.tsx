@@ -1,6 +1,6 @@
-import FeatureCard from '../Product/FeatureCard';
-import MediumCard from '../Product/MediumCard';
-import Slideshow from '../Slideshow';
+import FeatureCard from '../ProductCard/FeatureCard';
+import MediumCard from '../ProductCard/MediumCard';
+import Slideshow from '../_common/Slideshow';
 
 const TopFeaturedProducts = () => {
     return (

@@ -1,4 +1,4 @@
-import WrapperList from '~/components/WrapperList';
+import WrapperList from '~/components/_common/WrapperList';
 import { ConfigProvider, Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import OrderTable from '~/pages/Clients/Account/MyOrders/Components/OrderTable';

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import SortAndViewOptions from './Components/SortAndViewOptions';
 import FilterProducts from './FilterSidebar';
-import SmallCard from '~/components/Product/SmallCard';
+import SmallCard from '~/components/ProductCard/SmallCard';
 import clsx from 'clsx';
 import { Pagination } from 'antd';
-import useDocumentTitle from '~/hooks/useDocumentTitle';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import SortAndViewOptions from '~/pages/Clients/Products/_components/SortAndViewOptions';
 
 const data = [11, 1, 1, 1, 1, 1, 1, 1];
 const Products = () => {
@@ -60,7 +60,7 @@ const Products = () => {
                             <SmallCard key={i} />
                         ))}
                     </div>
-                    <Pagination className='text-center' defaultCurrent={6} total={500} />
+                    <Pagination className='text-center' defaultCurrent={1} total={500} />
                 </div>
             </div>
         </>

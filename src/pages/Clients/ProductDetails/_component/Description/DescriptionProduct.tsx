@@ -1,8 +1,9 @@
 import { Collapse, ConfigProvider, Tabs } from 'antd';
-import useWindowSize from '~/hooks/useWindowSize';
+import useWindowSize from '~/hooks/_common/useWindowSize';
 import DescriptionContent from './DescriptionContent';
 import AddInformationContent from './AddInformationContent';
 import ShipReturnContent from './ShipReturnContent';
+
 const { Panel } = Collapse;
 const DescriptionProduct = () => {
     const windowSize = useWindowSize();

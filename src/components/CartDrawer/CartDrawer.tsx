@@ -2,6 +2,7 @@ import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant
 import { Button, Drawer, List, Avatar, InputNumber, Slider } from 'antd';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+
 const CartDrawer = ({ children }: { children: React.ReactNode }) => {
     const [visible, setVisible] = useState(false);
     const onClose = () => {

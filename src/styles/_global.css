@@ -1,0 +1,40 @@
+/* reset css */
+@import 'normalize.css';
+
+/* fonts */
+/* @import 'Fonts.css'; */
+
+/* variables */
+@import '_vars.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* reset css */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #d1d6eb;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-track:hover {
+    background: #d1d6ea;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+input:focus {
+    outline: none;
+}
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    transition: background-color 1s ease-in-out;
+}

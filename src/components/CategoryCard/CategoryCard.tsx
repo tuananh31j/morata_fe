@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import catImage from '../../assets/images/cate_1_1.avif';
+
 const SmallCategoryCard = () => {
     return (
         <>

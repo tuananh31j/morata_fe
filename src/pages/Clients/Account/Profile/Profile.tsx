@@ -1,9 +1,9 @@
-import WrapperList from '~/components/WrapperList';
+import WrapperList from '~/components/_common/WrapperList';
 import StaticImages from '~/assets';
 import { Button, DatePicker, Form, Input, Modal, Radio } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import useWindowSize from '~/hooks/useWindowSize';
+import useWindowSize from '~/hooks/_common/useWindowSize';
 
 const Profile = () => {
     const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];

@@ -1,7 +1,7 @@
 import { ConfigProvider, Form, Input } from 'antd';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import useDocumentTitle from '~/hooks/useDocumentTitle';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 
 const Register = () => {
     useDocumentTitle('Sign Up | MORATA');

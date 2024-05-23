@@ -1,9 +1,9 @@
-import useResponsive from '~/hooks/useResponsive';
-import FilterDrawer from '../Components/FilterDrawer';
-import FilterItem from '../Components/FilterItem';
+import useResponsive from '~/hooks/_common/useResponsive';
 import { InputNumber, Slider } from 'antd';
 import { useState } from 'react';
 import { MinusOutlined } from '@ant-design/icons';
+import FilterItem from '~/pages/Clients/Products/_components/FilterItem';
+import FilterDrawer from '~/pages/Clients/Products/_components/FilterDrawer';
 
 const randomColors = [
     'red',
@@ -57,23 +57,7 @@ const FilterSidebar = () => {
                         </div>
                     </FilterItem>
                     <FilterItem filterType='Screen' data={[1, 1, 1, 1, 1, 1, 1, 2]} />
-
-                    {/* <div className='bg-white'>
-                        <p className='m-3 text-[14px] font-bold'>Khoảng giá</p>
-                        <div className='m-3 flex  items-center justify-between gap-2'>
-                            <InputNumber className='' min={1} max={10} defaultValue={3} />
-                            <InputNumber className='' min={1} max={10} defaultValue={3} />
-                        </div>
-                        <div className='  m-3  flex  items-center justify-between  gap-3'>
-                            <button className='flex-1 rounded-md border border-gray-600 p-3 hover:bg-slate-400 hover:text-white'>
-                                Reset
-                            </button>
-                            <button className='bg__hover flex-1 rounded-md border border-blue-600 p-3 hover:text-white'>
-                                Apply
-                            </button>
-                        </div>
-                    </div> */}
-                    <button className='bg__hover my-4 w-full rounded-md border border-[#1e3a8a] p-3 hover:text-white'>
+                    <button className='my-4 w-full rounded-md border border-[#1e3a8a] bg-[#1e3a8a] p-3 hover:text-white'>
                         Reset All
                     </button>
                 </div>

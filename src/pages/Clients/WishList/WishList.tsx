@@ -1,6 +1,6 @@
-import SmallCard from '~/components/Product/SmallCard';
-import WrapperList from '~/components/WrapperList';
-import useDocumentTitle from '~/hooks/useDocumentTitle';
+import SmallCard from '~/components/ProductCard/SmallCard';
+import WrapperList from '~/components/_common/WrapperList';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 
 const Wishlist = () => {
     useDocumentTitle('Wish list');

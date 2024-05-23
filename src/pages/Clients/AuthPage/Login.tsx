@@ -1,7 +1,7 @@
 import { ConfigProvider, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import useDocumentTitle from '~/hooks/useDocumentTitle';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 
 const Login = () => {
     useDocumentTitle('Sign In | MORATA');

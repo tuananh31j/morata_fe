@@ -3,6 +3,7 @@ module.exports = {
     env: { browser: true, es2020: true },
     extends: [
         'airbnb-base',
+        'eslint:recommended',
         'plugin:import/recommended',
         'plugin:import/typescript',
         'plugin:jsx-a11y/recommended',
@@ -11,11 +12,14 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'plugin:react/jsx-runtime',
         'plugin:@typescript-eslint/recommended',
+        'eslint-config-prettier',
+        'prettier',
     ],
     ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts'],
     parser: '@typescript-eslint/parser',
-    plugins: ['react', 'import', 'prettier'],
+    plugins: ['react-refresh', 'react', 'import', 'prettier'],
     rules: {
+        'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
         'import/extensions': 'off',
         'no-console': 'off',
         'global-require': 'off',
@@ -58,5 +62,11 @@ module.exports = {
                 jsxSingleQuote: true,
             },
         ],
+    },
+    settings: {
+        react: {
+            version: 'detect',
+        },
+        'import/resolver': { typescript: {} },
     },
 };

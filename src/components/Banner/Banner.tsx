@@ -1,7 +1,8 @@
 import { Typography } from 'antd';
+import Slideshow from '~/components/_common/Slideshow';
+import SlideItem from '~/components/Banner/SlideItem';
+
 const { Title, Paragraph } = Typography;
-import Slideshow from '../Slideshow';
-import SlideItem from './SlideItem';
 const Banner = () => {
     return (
         <div className='container m-10 mx-auto'>

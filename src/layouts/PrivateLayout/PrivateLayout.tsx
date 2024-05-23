@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import AdminSidebar from '../Components/AdminSidebar';
+import AdminSidebar from '~/layouts/_components/AdminSidebar';
 
 const PrivateLayout = () => {
     return (

@@ -1,17 +1,18 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
-import BackToTop from '~/components/BackToTop';
-import BreadcrumbDisplay from '~/components/BreadcrumbDisplay';
+import BackToTop from '~/components/_common/BackToTop';
+import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
+import Footer from '~/layouts/_components/Footer';
+import Header from '~/layouts/_components/Header';
 
 const MainLayout = () => {
     const location = useLocation();
     const isHomePage = location.pathname === '/';
+    const isProductDetailPage = location.pathname === '/productdetail';
     return (
-        <div className='bg__color'>
+        <div className='bg-[#f6f7f9]'>
             <Header />
             <div className='mx-3 min-h-[80vh] lg:mx-4'>
-                {!isHomePage && <BreadcrumbDisplay />}
+                {!isHomePage && !isProductDetailPage && <BreadcrumbDisplay />}
                 <Outlet />
             </div>
             <Footer />

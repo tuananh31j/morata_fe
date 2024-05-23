@@ -2,8 +2,8 @@ import { CloseOutlined } from '@ant-design/icons';
 import { ConfigProvider, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import useWindowSize from '~/hooks/useWindowSize';
-import SmallCard from '../Product/SmallCard';
+import useWindowSize from '~/hooks/_common/useWindowSize';
+import SmallCard from '../ProductCard/SmallCard';
 
 // fake quantity data get api new product
 const data = [1, 1, 1, 1];
@@ -20,6 +20,7 @@ const PopupProductList = () => {
                 clearTimeout(timeoutId);
             };
         }
+        return () => {};
     }, [windowsize.windowWidth]);
     return (
         <>

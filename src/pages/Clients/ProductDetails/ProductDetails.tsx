@@ -9,14 +9,15 @@ import {
 } from '@ant-design/icons';
 import { Button, ConfigProvider } from 'antd';
 
-import SmallCard from '~/components/Product/SmallCard';
-import ProgressBar from '~/components/ProgressBar';
-import RatingDisplay from '~/components/RatingDisplay';
-import WrapperList from '~/components/WrapperList';
+import SmallCard from '~/components/ProductCard/SmallCard';
+import ProgressBar from '~/components/_common/ProgressBar';
+import RatingDisplay from '~/components/_common/RatingDisplay';
+import WrapperList from '~/components/_common/WrapperList';
 import DescriptionProduct from './_component/Description/DescriptionProduct';
 import ThumnailProduct from './_component/Thumbnail/ThumnailProduct';
-import CarouselDisplay, { CarouselItem } from '~/components/CarouselDisplay';
-import useDocumentTitle from '~/hooks/useDocumentTitle';
+import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 
 // demo data product gallery
 const items = [
@@ -30,11 +31,12 @@ const items = [
 const data = [1, 1, 1, 1, 1, 1, 11, 1];
 
 const ProductDetails = () => {
-    useDocumentTitle('Tên sản phẩm');
+    useDocumentTitle('Apple iPad Air 4 10.9-inch Wi-Fi 256GB');
 
     return (
         <>
             {/* BeadCrumb */}
+            <BreadcrumbDisplay titleProduct={'Apple iPad Air 4 10.9-inch Wi-Fi 256GB'} />
             <div className='mt-[41px]'>
                 {/* Product Media and detail container */}
                 <div className='flex flex-col gap-[10px] lg:flex-row xl:px-[30px] xl:py-[40px]'>

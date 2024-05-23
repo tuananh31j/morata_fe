@@ -1,5 +1,6 @@
 import { Button, Typography } from 'antd';
-import Animation from '../Animation';
+import Animation from '../_common/Animation';
+
 const { Title, Paragraph } = Typography;
 const SlideItem = ({ status }: { status: boolean }) => {
     return (

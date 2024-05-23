@@ -13,6 +13,8 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "javascript.preferences.importModuleSpecifier": "non-relative",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "json.schemas": []
+    "json.schemas": [],
+    "explorer.compactFolders": false
 }

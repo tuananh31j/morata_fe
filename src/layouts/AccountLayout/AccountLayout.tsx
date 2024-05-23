@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
-import AccountSidebarLeft from '../Components/AccountSidebarLeft';
-import useDocumentTitle from '~/hooks/useDocumentTitle';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import { Col, Row } from 'antd';
+import AccountSidebarLeft from '~/layouts/_components/AccountSidebarLeft';
 
 const AccountLayout = () => {
     useDocumentTitle('Account');
