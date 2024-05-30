@@ -1,21 +1,22 @@
-import Banner from '~/components/Banner';
-import SmallCard from '~/components/ProductCard/SmallCard';
-import MediumCard from '~/components/ProductCard/MediumCard';
-import WrapperList from '~/components/_common/WrapperList';
-import CategoryCard from '~/components/CategoryCard';
-import ShopBenefits from '~/components/ShopBenefits';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
-import TopFeaturedProducts from '~/components/TopFeaturedProducts';
-import PopupProductList from '~/components/PopupProductList';
+import WrapperList from '~/components/_common/WrapperList';
+import Banner from '~/components/Banner';
+import MediumCard from '~/components/ProductCard/MediumCard';
+import SmallCard from '~/components/ProductCard/SmallCard';
+import ShopBenefits from '~/components/ShopBenefits';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
-import useGetAllProducts from '~/hooks/Queries/useGetAllProducts';
-
-const data = [1, 1, 1, 1, 1, 1, 11, 1];
+import useQueriesHomepage from '~/hooks/Queries/useQueriesHomepage';
+import { IProduct } from '~/types/product';
 
 const Home = () => {
     useDocumentTitle('Home');
-    const res = useGetAllProducts();
-    console.log(res.data);
+    // const { data: productsData } = useGetAllProducts(); // return res.data
+    // console.log('from home', productsData?.data?.docs);
+
+    const [getAllProductsList, getTopDealProductsList] = useQueriesHomepage();
+
+    const AllProductsList = getAllProductsList?.data?.data?.docs;
+    const TopDealsProductsList = getTopDealProductsList?.data?.data?.docs;
 
     return (
         <div>
@@ -28,27 +29,29 @@ const Home = () => {
             {/* @Hot Trending Products */}
             <WrapperList title='Hot Trending Products'>
                 <CarouselDisplay>
-                    {data.map((item, i) => (
-                        <CarouselItem key={i}>
-                            <SmallCard />
-                        </CarouselItem>
-                    ))}
+                    {AllProductsList?.map((item: IProduct, i: number) => {
+                        return (
+                            <CarouselItem key={i}>
+                                <SmallCard product={item} />
+                            </CarouselItem>
+                        );
+                    })}
                 </CarouselDisplay>
             </WrapperList>
 
             {/* @Top Deals Of The Day */}
             <WrapperList title='Top Deals Of The Day'>
                 <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
-                    {data.map((item, i) => (
+                    {TopDealsProductsList?.map((item: IProduct, i: number) => (
                         <CarouselItem key={i}>
-                            <MediumCard />
+                            <MediumCard product={item} />
                         </CarouselItem>
                     ))}
                 </CarouselDisplay>
             </WrapperList>
 
             {/* @Popular Categories */}
-            <WrapperList title='Popular Categories'>
+            {/* <WrapperList title='Popular Categories'>
                 <CarouselDisplay>
                     {data.map((item, i) => (
                         <CarouselItem key={i}>
@@ -56,14 +59,14 @@ const Home = () => {
                         </CarouselItem>
                     ))}
                 </CarouselDisplay>
-            </WrapperList>
+            </WrapperList> */}
 
             {/* @Top Featured Products */}
-            <WrapperList title='Top Featured Products'>
+            {/* <WrapperList title='Top Featured Products'>
                 <TopFeaturedProducts />
-            </WrapperList>
+            </WrapperList> */}
             {/* add popup productlist */}
-            <PopupProductList />
+            {/* <PopupProductList /> */}
         </div>
     );
 };

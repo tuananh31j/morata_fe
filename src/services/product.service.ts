@@ -7,6 +7,11 @@ const productService = {
         const res = await axiosClassic.get(`${endPoint}/all`);
         return res.data;
     },
+
+    async getTopDeals() {
+        const res = await axiosClassic.get(`${endPoint}/deals`);
+        return res.data;
+    },
 };
 
 export default productService;

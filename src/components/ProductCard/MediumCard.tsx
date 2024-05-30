@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import RatingDisplay from '../_common/RatingDisplay';
 import ProductActions from '../_common/ProductActions';
 import { useState } from 'react';
+import { PropTypeProduct } from '~/types/product';
+import { Currency } from '~/utils';
 
-const MediumCard = () => {
+const MediumCard = ({ product }: PropTypeProduct) => {
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {
         setIsActiveProductActions(!isActiveProductActions);
@@ -37,14 +39,16 @@ const MediumCard = () => {
                 </div>
                 <div className='mt-3'>
                     <h4 className='line-clamp-2 cursor-default text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
-                        Apple iPhone 11 Pro 256GB Space Gray {'-'} Unlocked
+                        {product.name}
                     </h4>
                     <div className='my-2 mb-3 flex flex-wrap items-end gap-1 sm:mb-2'>
                         <RatingDisplay rating={4} reviews={2} />
                     </div>
                     <div className='mb-3 flex gap-x-2'>
-                        <span className='text-base font-semibold leading-5 text-red-600'>$21000</span>
-                        <del className=' text-base font-semibold leading-5 text-gray-400'>$23000</del>
+                        <span className='text-base font-semibold leading-5 text-red-600'>
+                            {Currency.format(product.price)}
+                        </span>
+                        <del className=' text-base font-semibold leading-5 text-gray-400'>${product?.price}</del>
                     </div>
                     <ul className='mb-5'>
                         <li>

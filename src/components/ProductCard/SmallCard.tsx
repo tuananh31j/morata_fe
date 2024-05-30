@@ -4,8 +4,12 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import RatingDisplay from '../_common/RatingDisplay';
 import ProductActions from '../_common/ProductActions';
+import { PropTypeProduct } from '~/types/product';
+import { Currency } from '~/utils';
 
-const SmallCard = () => {
+const SmallCard = ({ product }: PropTypeProduct) => {
+    // console.log('from smallcard', product);
+
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {
         setIsActiveProductActions(!isActiveProductActions);
@@ -40,7 +44,7 @@ const SmallCard = () => {
                 {/* Name */}
                 <div className='mt-[15px]'>
                     <h4 className='line-clamp-2 cursor-default text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
-                        Apple iPhone 11 Pro 256GB Space Gray – Unlocked
+                        {product.name}
                     </h4>
 
                     {/* Review */}
@@ -48,7 +52,9 @@ const SmallCard = () => {
 
                     {/* Price */}
                     <div className='mb-3 mt-[10px]'>
-                        <span className='text-base font-semibold leading-5 text-[#222]'>$56.00</span>
+                        <span className='text-base font-semibold leading-5 text-[#222]'>
+                            {Currency.format(product.price)}
+                        </span>
                     </div>
 
                     {/* Add to cart btn */}
