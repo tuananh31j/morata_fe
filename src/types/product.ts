@@ -4,6 +4,7 @@ export interface IProduct {
     price: number;
     discountPercentage: number;
     rating: number;
+    thumbnail: string;
     stock: number;
     images: string[];
     categoryId: string;
@@ -13,7 +14,6 @@ export interface IProduct {
     isDeleted: boolean;
     createdAt: string;
     updatedAt: string;
-    id: string;
 }
 
 export type PropTypeProduct = {

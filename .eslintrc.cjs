@@ -36,6 +36,7 @@ module.exports = {
         'sort-imports': 'off',
         'no-useless-computed-key': 'off',
         'react/prop-types': 'off',
+        'no-underscore-dangle': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
         'spaced-comment': ['warn', 'always', { markers: ['/'] }],
         'prefer-destructuring': [

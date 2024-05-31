@@ -1,7 +1,8 @@
 import { Carousel } from 'antd';
-import { useRef, useState } from 'react';
-import SliderControls from '../SliderControls';
 import { CarouselRef } from 'antd/es/carousel';
+import { useRef, useState } from 'react';
+import { IProduct } from '~/types';
+import SliderControls from '../SliderControls';
 
 // interface ICardItemProps {
 //     [key: string]: any; // có api thì sẽ định nghĩa lại
@@ -9,9 +10,10 @@ import { CarouselRef } from 'antd/es/carousel';
 
 interface ISlideshowProps {
     ItemCard: React.ElementType;
+    Products?: IProduct[];
 }
 
-const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard }) => {
+const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, Products }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const ref = useRef<CarouselRef>(null);
     const handlePrev = () => {
@@ -19,12 +21,14 @@ const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard }) => {
             ref.current.prev();
         }
     };
+
     const handleNext = () => {
         if (ref.current) {
             ref.current.next();
         }
     };
-    const data = [1, 1, 1, 1, 1];
+    console.log(Products);
+    const data = [1, 1, 1, 1];
     return (
         <>
             <div className='relative'>
@@ -39,9 +43,10 @@ const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard }) => {
                         infinite
                         speed={300}
                     >
-                        {data.map((item, i) => (
-                            <ItemCard key={i} status={currentSlide === i} />
-                        ))}
+                        {Products?.map((item, i) => {
+                            return <ItemCard key={i} product={item} />;
+                        })}
+                        {!Products && data?.map((item, i) => <ItemCard key={i} status={currentSlide === i} />)}
                     </Carousel>
                     <SliderControls isButtonHandle={false} handlePrev={handlePrev} handleNext={handleNext} />
                 </div>
