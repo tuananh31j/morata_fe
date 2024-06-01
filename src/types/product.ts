@@ -14,8 +14,19 @@ export interface IProduct {
     isDeleted: boolean;
     createdAt: string;
     updatedAt: string;
+    sku: string;
 }
 
 export type PropTypeProduct = {
     product: IProduct;
 };
+export interface BrandId {
+    _id: string;
+    name: string;
+    description: string;
+}
+export interface CategoryId {
+    _id: string;
+    name: string;
+    description: string;
+}

@@ -5,8 +5,8 @@ import productService from '~/services/product.service';
 const useQueriesHomepage = () => {
     return useQueries({
         queries: [
-            { queryKey: [QUERY_KEY], queryFn: () => productService.getAll(), staleTime: Infinity },
-            { queryKey: [QUERY_KEY], queryFn: () => productService.getTopDeals(), staleTime: Infinity },
+            { queryKey: [QUERY_KEY], queryFn: () => productService.getAll() },
+            { queryKey: [QUERY_KEY], queryFn: () => productService.getTopDeals() },
         ],
     });
 };

@@ -4,6 +4,7 @@ import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import WrapperList from '~/components/_common/WrapperList';
 import Banner from '~/components/Banner';
 import CategoryCard from '~/components/CategoryCard';
+import PopupProductList from '~/components/PopupProductList';
 import MediumCard from '~/components/ProductCard/MediumCard';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import ShopBenefits from '~/components/ShopBenefits';
@@ -17,7 +18,7 @@ const Home = () => {
     // const { data: productsData } = useGetAllProducts(); // return res.data
     // console.log('from home', productsData?.data?.docs);
 
-    const [{ data: ProductsList, isFetching: FetchingAll }, { data: TopDeals, isFetching: FetchingDeals }] =
+    const [{ data: ProductsList, isLoading: LoadingAll }, { data: TopDeals, isLoading: LoadingDeals }] =
         useQueriesHomepage();
     const AllProductsList = ProductsList?.data?.docs;
     const TopDealsProductsList = TopDeals?.data?.docs;
@@ -33,7 +34,7 @@ const Home = () => {
             {/* @Hot Trending Products */}
             <WrapperList title='Hot Trending Products'>
                 <CarouselDisplay>
-                    {FetchingAll && (
+                    {LoadingAll && (
                         <>
                             <div className='flex gap-2'>
                                 <SmallSkeleton />
@@ -44,7 +45,7 @@ const Home = () => {
                             </div>
                         </>
                     )}
-                    {!FetchingAll &&
+                    {!LoadingAll &&
                         AllProductsList?.map((item: IProduct, i: number) => {
                             return (
                                 <CarouselItem key={i}>
@@ -57,7 +58,7 @@ const Home = () => {
 
             {/* @Top Deals Of The Day */}
             <WrapperList title='Top Deals Of The Day'>
-                {!FetchingDeals && (
+                {!LoadingDeals && (
                     <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
                         {TopDealsProductsList?.map((item: IProduct, i: number) => {
                             return (
@@ -68,7 +69,7 @@ const Home = () => {
                         })}
                     </CarouselDisplay>
                 )}
-                {FetchingDeals && (
+                {LoadingDeals && (
                     <div className='flex justify-between'>
                         <MediumSkeleton />
                         <MediumSkeleton />
@@ -87,8 +88,8 @@ const Home = () => {
 
             {/* @Top Featured Products */}
             <WrapperList title='Top Featured Products'>
-                {!FetchingAll && <TopFeaturedProducts product={AllProductsList} />}
-                {FetchingAll && (
+                {!LoadingDeals && <TopFeaturedProducts product={AllProductsList} />}
+                {LoadingDeals && (
                     <div className='flex gap-2'>
                         <MediumSkeleton />
                         <MediumSkeleton />
@@ -96,7 +97,7 @@ const Home = () => {
                 )}
             </WrapperList>
             {/* add popup productlist */}
-            {/* <PopupProductList /> */}
+            <PopupProductList product={TopDealsProductsList} propsLoading={LoadingDeals} />
         </div>
     );
 };

@@ -22,7 +22,7 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                     onMouseEnter={handleSetDateActive}
                     onMouseLeave={handleSetDateActive}
                 >
-                    <Link to={`/products/${product?._id}`} className='block w-full overflow-hidden'>
+                    <Link to={`/products/${product._id}`} className='block w-full overflow-hidden'>
                         <img
                             loading='lazy'
                             src={product.images[1]}
