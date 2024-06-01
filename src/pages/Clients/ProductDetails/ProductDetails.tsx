@@ -13,8 +13,8 @@ import SmallCard from '~/components/ProductCard/SmallCard';
 import ProgressBar from '~/components/_common/ProgressBar';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import WrapperList from '~/components/_common/WrapperList';
-import DescriptionProduct from './_component/Description/DescriptionProduct';
-import ThumnailProduct from './_component/Thumbnail/ThumnailProduct';
+import DescriptionProduct from './_components/Description/DescriptionProduct';
+import ThumnailProduct from './_components/Thumbnail/ThumnailProduct';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
@@ -247,7 +247,7 @@ const ProductDetails = () => {
                                         </div>
                                         <div className='flex'>
                                             <p className='w-[115px]  text-[#777777]'>Vendor: </p>
-                                            <span className='font-semibold text-black'>{product.brandId.name}</span>
+                                            {/* <span className='font-semibold text-black'>{product.brandId.name}</span> */}
                                         </div>
                                         <div className='flex'>
                                             <p className='w-[115px]  text-[#777777]'>Categories: </p>
