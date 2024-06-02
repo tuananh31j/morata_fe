@@ -33,17 +33,17 @@ const TitleDisplay = ({
                     <h1 className='text-start font-[400] capitalize md:text-[20px]'>{title}</h1>
                 </span>
             </div>
-            <div>
+            <div className='flex items-center'>
                 {!!seeMore && seeMore.path && (
                     <Link
                         to={seeMore.path}
-                        className='text-[10px] font-[400] capitalize hover:text-blue-800 hover:underline md:text-[14px]'
+                        className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
                     >
                         {seeMore.name} <RightOutlined className='text-[7px] md:text-[10px]' />
                     </Link>
                 )}
                 {!!seeMore && !seeMore.path && (
-                    <button className='text-[10px] font-[400] capitalize hover:text-blue-800 hover:underline md:text-[14px]'>
+                    <button className='text-[10px] font-[500] capitalize duration-500 hover:text-blue-800 md:text-[14px]'>
                         {seeMore.name} <RightOutlined className='text-[7px] md:text-[10px]' />
                     </button>
                 )}

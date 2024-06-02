@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useWindowSize from '~/hooks/_common/useWindowSize';
 import SmallCard from '../ProductCard/SmallCard';
+import { IProduct } from '~/types';
+import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
+import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 
 // fake quantity data get api new product
-const data = [1, 1, 1, 1];
-const PopupProductList = () => {
+const PopupProductList = ({ product, propsLoading }: { product: IProduct[]; propsLoading: boolean }) => {
     const [open, setOpen] = useState(false);
     const windowsize = useWindowSize();
     useEffect(() => {
@@ -64,8 +66,28 @@ const PopupProductList = () => {
                         </span>
                     </div>
                     {/* Content modal */}
-                    <div className='my-[25px] flex'>
-                        {data.map((_, index) => index < 4 && <SmallCard key={index} />)}
+                    <div className='mt-[25px]'>
+                        <CarouselDisplay responsiveCustom={{ laptop: 4, tablet: 4 }}>
+                            {propsLoading && (
+                                <>
+                                    <div className='flex gap-2'>
+                                        <SmallSkeleton />
+                                        <SmallSkeleton />
+                                        <SmallSkeleton />
+                                        <SmallSkeleton />
+                                        <SmallSkeleton />
+                                    </div>
+                                </>
+                            )}
+                            {!propsLoading &&
+                                product?.map((item: IProduct, i: number) => {
+                                    return (
+                                        <CarouselItem key={i}>
+                                            <SmallCard product={item} />
+                                        </CarouselItem>
+                                    );
+                                })}
+                        </CarouselDisplay>
                     </div>
                 </Modal>
             </ConfigProvider>

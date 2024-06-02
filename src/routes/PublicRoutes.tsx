@@ -50,7 +50,7 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: 'productdetail',
+                path: 'products/:id',
                 element: (
                     <Suspense>
                         <ProductDetailsPage />

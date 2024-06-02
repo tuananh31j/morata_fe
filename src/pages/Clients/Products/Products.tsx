@@ -7,7 +7,6 @@ import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import SortAndViewOptions from '~/pages/Clients/Products/_components/SortAndViewOptions';
 import { useSearchParams } from 'react-router-dom';
 import useGetProductsByCate from '~/hooks/Queries/useGetProductsByCate';
-import useGetAllProducts from '~/hooks/Queries/useGetAllProducts';
 
 const data = [11, 1, 1, 1, 1, 1, 1, 1];
 const Products = () => {
@@ -64,9 +63,9 @@ const Products = () => {
                             'my-5 grid gap-5'
                         )}
                     >
-                        {data.map((item, i) => (
-                            <SmallCard key={i} />
-                        ))}
+                        {/* {data.map((item, i) => (
+                            // <SmallCard key={i} />
+                        ))} */}
                     </div>
                     <Pagination className='text-center' defaultCurrent={1} total={500} />
                 </div>

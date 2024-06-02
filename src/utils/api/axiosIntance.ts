@@ -9,7 +9,7 @@ export const errorCatch = (error: any): string => {
     return message ? (typeof error.response.data.message === 'object' ? message[0] : message) : error.message;
 };
 const axiosOptions = {
-    baseURL: import.meta.env.VITE_REACT_API_URL,
+    baseURL: 'http://localhost:5000/api/v1',
     headers: getContentType(),
     withCredentials: true,
 };
