@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import theme from '~/store/slice/themeSlice';
+import authReducer from './slice/authSlice';
 
 const store = configureStore({
-    reducer: { theme },
+    reducer: { theme, authReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

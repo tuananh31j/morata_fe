@@ -5,10 +5,18 @@ import clsx from 'clsx';
 import { Pagination } from 'antd';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import SortAndViewOptions from '~/pages/Clients/Products/_components/SortAndViewOptions';
+import { useSearchParams } from 'react-router-dom';
+import useGetProductsByCate from '~/hooks/Queries/useGetProductsByCate';
+import useGetAllProducts from '~/hooks/Queries/useGetAllProducts';
 
 const data = [11, 1, 1, 1, 1, 1, 1, 1];
 const Products = () => {
     useDocumentTitle('Products');
+    const [searchParams] = useSearchParams();
+    const cateId = searchParams.get('cate');
+    const LIMIT = 8;
+
+    // const {} = !!cateId ? useGetProductsByCate(cateId, { page: 1, limit: LIMIT }) : useGetAllProducts();
 
     const [gridCol, setGridCol] = useState<string>('');
     const handleClickGrid1 = () => {

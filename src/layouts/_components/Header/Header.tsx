@@ -274,14 +274,12 @@ const Header = () => {
                 <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:flex'>
                     {/* Header MENU bottom */}
                     <div className='flex items-center'>
-                        {/* Header MENU category */}
-                        <div
+                        {/* <div
                             className='flex items-center gap-3 border-r border-white pr-28 font-semibold'
                             onClick={toggleVisibility}
                         >
                             <MenuOutlined style={{ color: '#ffffff', fontSize: '16px' }} className='hidden lg:block' />
                             <button className='text-lg text-white'>Shop By Department</button>
-                            {/* đổ list catgory */}
                             {isVisible && (
                                 <ul className='absolute z-20 w-[305px] translate-y-28 border border-gray-200 bg-white shadow-lg transition-all duration-1000'>
                                     {categories.map((category, index) => (
@@ -291,15 +289,15 @@ const Header = () => {
                                     ))}
                                 </ul>
                             )}
-                        </div>
+                        </div> */}
 
                         {/* Header MENU bottom items */}
                         <Navbar />
                     </div>
-                    <div className='flex items-center gap-5'>
+                    {/* <div className='flex items-center gap-5'>
                         <DiscountIcon />
                         <p className='text-white'>Sale $20 Off Your First Order.</p>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
