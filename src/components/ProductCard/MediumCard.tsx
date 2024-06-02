@@ -44,7 +44,7 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                             {product.name}
                         </h4>
                         <div className='my-2 mb-3 flex flex-wrap items-end gap-1 sm:mb-2'>
-                            <RatingDisplay rating={4} reviews={2} />
+                            <RatingDisplay rating={product.rating} reviews={product.reviewIds.length || 0} />
                         </div>
                         <div className='mb-3 flex gap-x-2'>
                             <span

@@ -7,28 +7,33 @@ import {
     MenuOutlined,
     RedoOutlined,
 } from '@ant-design/icons';
-import { Button, ConfigProvider, InputNumber } from 'antd';
+import { Button, ConfigProvider } from 'antd';
 
+import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import SmallCard from '~/components/ProductCard/SmallCard';
+import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
+import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import ProgressBar from '~/components/_common/ProgressBar';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import WrapperList from '~/components/_common/WrapperList';
+import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
+import { useGetRelatedProduct } from '~/hooks/Queries/Products/useGetRelatedProduct';
+import useQueriesProductDetail from '~/hooks/Queries/useQueriesProductDetail';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import { IProduct } from '~/types';
+import { Currency } from '~/utils';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
 import ThumnailProduct from './_components/Thumbnail/ThumnailProduct';
-import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
-import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
-import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
-import { useParams } from 'react-router-dom';
-import useQueriesProductDetail from '~/hooks/Queries/useQueriesProductDetail';
-import { Currency } from '~/utils';
-import { IProduct } from '~/types';
-import { useGetRelatedProduct } from '~/hooks/Queries/Products/useGetRelatedProduct';
-import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
-import { useState } from 'react';
 
 const ProductDetails = () => {
+    const [valueQuantity, setQuantityValue] = useState(1);
     const { id } = useParams();
+    const location = useLocation();
     const [{ data: productDetail, isLoading }] = useQueriesProductDetail(id as string);
+    useEffect(() => {
+        setQuantityValue(1);
+    }, [location]);
     const product: IProduct = productDetail?.data;
     useDocumentTitle(`${product?.name}`);
     const body = {
@@ -37,12 +42,14 @@ const ProductDetails = () => {
     };
     const { data: relatedProduct, isLoading: relatedLoading } = useGetRelatedProduct(body);
     const oldPrice = product?.price * (1 + product?.discountPercentage / 100);
-    const [valueQuantity, setQuantityValue] = useState(1);
     const handleIncrement = () => {
         if (valueQuantity < product?.stock) setQuantityValue(valueQuantity + 1);
     };
     const handleDecrement = () => {
         if (valueQuantity > 1) setQuantityValue(valueQuantity - 1);
+    };
+    const handleAddToCart = (data: any) => {
+        console.log(data);
     };
     return (
         <>
@@ -125,13 +132,7 @@ const ProductDetails = () => {
                                             >
                                                 -
                                             </Button>
-                                            <InputNumber
-                                                max={product.stock}
-                                                min={1}
-                                                readOnly
-                                                className='flex h-[48px] w-[30%] text-xl'
-                                                value={valueQuantity}
-                                            />
+                                            <span className='px-2'>{valueQuantity}</span>
                                             <Button
                                                 onClick={handleIncrement}
                                                 disabled={valueQuantity === product.stock}
@@ -153,6 +154,13 @@ const ProductDetails = () => {
                                                 }}
                                             >
                                                 <Button
+                                                    onClick={() =>
+                                                        handleAddToCart({
+                                                            quantity: valueQuantity,
+                                                            productId: product._id,
+                                                            userId: 'lksandasklsnd ',
+                                                        })
+                                                    }
                                                     size={'large'}
                                                     className='h-[50px] w-[100%] rounded-[30px] bg-[#222222] font-bold text-white hover:bg-[#16bcdc]'
                                                 >

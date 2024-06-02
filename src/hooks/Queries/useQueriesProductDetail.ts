@@ -5,7 +5,11 @@ import productService from '~/services/product.service';
 const useQueriesProductDetail = (id: string) => {
     return useQueries({
         queries: [
-            { queryKey: [QUERY_KEY, id], queryFn: () => productService.getDetail(id), refetchInterval: Infinity },
+            {
+                queryKey: [QUERY_KEY, id],
+                queryFn: () => productService.getDetail(id),
+                refetchInterval: Infinity,
+            },
         ],
     });
 };

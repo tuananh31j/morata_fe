@@ -8,13 +8,20 @@ const productService = {
         const res = await axiosClassic.get(`${endPoint}/all`);
         return res.data;
     },
-
+    async getLatest() {
+        const res = await axiosClassic.get(`${endPoint}/latest`);
+        return res.data;
+    },
     async getTopDeals() {
         const res = await axiosClassic.get(`${endPoint}/deals`);
         return res.data;
     },
     async getDetail(id: string) {
         const res = await axiosClassic.get(`${endPoint}/${id}`);
+        return res.data;
+    },
+    async getTopReviews() {
+        const res = await axiosClassic.get(`${endPoint}/reviews`);
         return res.data;
     },
     async getRelated(body: RequestRelated) {

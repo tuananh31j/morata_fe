@@ -27,7 +27,6 @@ const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, Products }) => {
             ref.current.next();
         }
     };
-    console.log(Products);
     const data = [1, 1, 1, 1];
     return (
         <>

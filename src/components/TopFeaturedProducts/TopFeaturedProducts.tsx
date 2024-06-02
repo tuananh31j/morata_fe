@@ -10,7 +10,7 @@ const TopFeaturedProducts = ({ product }: { product: IProduct[] }) => {
                 <Slideshow ItemCard={MediumCard} Products={product} />
             </div>
             <div className='grid h-full flex-1 grid-cols-3 gap-4'>
-                {product?.map((item: IProduct, i: number) => <FeatureCard key={i} product={item} />)}
+                {product?.map((item: IProduct, i: number) => i < 6 && <FeatureCard key={i} product={item} />)}
             </div>
         </div>
     );

@@ -11,6 +11,7 @@ import ShopBenefits from '~/components/ShopBenefits';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useQueriesHomepage from '~/hooks/Queries/useQueriesHomepage';
+import { ICategoryPopular } from '~/types/category';
 import { IProduct } from '~/types/product';
 
 const Home = () => {
@@ -18,11 +19,18 @@ const Home = () => {
     // const { data: productsData } = useGetAllProducts(); // return res.data
     // console.log('from home', productsData?.data?.docs);
 
-    const [{ data: ProductsList, isLoading: LoadingAll }, { data: TopDeals, isLoading: LoadingDeals }] =
-        useQueriesHomepage();
+    const [
+        { data: ProductsList, isLoading: LoadingAll },
+        { data: TopDeals, isLoading: LoadingDeals },
+        { data: TopReviews, isLoading: TopReviewsLoading },
+        { data: ProductLatest, isLoading: ProductLatestLoading },
+        { data: categories, isLoading: categoriesLoading },
+    ] = useQueriesHomepage();
     const AllProductsList = ProductsList?.data?.docs;
-    const TopDealsProductsList = TopDeals?.data?.docs;
-
+    const TopDealsProductsList = TopDeals?.data;
+    const TopReviewProductsList = TopReviews?.data;
+    const LatestList = ProductLatest?.data;
+    const categoryList = categories?.data;
     return (
         <div>
             {/* @Banner*/}
@@ -32,31 +40,32 @@ const Home = () => {
             <ShopBenefits />
 
             {/* @Hot Trending Products */}
-            <WrapperList title='Hot Trending Products'>
-                <CarouselDisplay>
-                    {LoadingAll && (
-                        <>
-                            <div className='flex gap-2'>
-                                <SmallSkeleton />
-                                <SmallSkeleton />
-                                <SmallSkeleton />
-                                <SmallSkeleton />
-                                <SmallSkeleton />
-                            </div>
-                        </>
-                    )}
-                    {!LoadingAll &&
-                        AllProductsList?.map((item: IProduct, i: number) => {
+            <WrapperList title='Hot Trending Products' seeMore={{ path: '/products', name: 'View All Products' }}>
+                {LoadingAll && (
+                    <>
+                        <div className='flex w-full justify-between overflow-hidden'>
+                            <SmallSkeleton />
+                            <SmallSkeleton />
+                            <SmallSkeleton />
+                            <SmallSkeleton />
+                            <SmallSkeleton />
+                        </div>
+                    </>
+                )}
+                {!LoadingAll && (
+                    <CarouselDisplay>
+                        {AllProductsList?.map((item: IProduct, i: number) => {
                             return (
                                 <CarouselItem key={i}>
                                     <SmallCard product={item} />
                                 </CarouselItem>
                             );
                         })}
-                </CarouselDisplay>
+                    </CarouselDisplay>
+                )}
             </WrapperList>
 
-            {/* @Top Deals Of The Day */}
+            {/* {/* @Top Deals Of The Day */}
             <WrapperList title='Top Deals Of The Day'>
                 {!LoadingDeals && (
                     <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
@@ -79,25 +88,52 @@ const Home = () => {
 
             {/* @Popular Categories */}
             <WrapperList title='Popular Categories'>
-                <CarouselDisplay>
-                    <CarouselItem>
-                        <CategoryCard />
-                    </CarouselItem>
-                </CarouselDisplay>
+                {!categoriesLoading && (
+                    <div className='flex h-[151px] flex-wrap justify-center gap-5 overflow-y-scroll md:justify-start'>
+                        {categoryList.map((item: ICategoryPopular, index: number) => {
+                            return <CategoryCard category={item} key={index} />;
+                        })}
+                    </div>
+                )}
             </WrapperList>
 
             {/* @Top Featured Products */}
-            <WrapperList title='Top Featured Products'>
-                {!LoadingDeals && <TopFeaturedProducts product={AllProductsList} />}
-                {LoadingDeals && (
-                    <div className='flex gap-2'>
+            <WrapperList title='Top Featured Products' seeMore={{ path: '/products', name: 'View All Products ' }}>
+                {!ProductLatestLoading && <TopFeaturedProducts product={LatestList} />}
+                {ProductLatestLoading && (
+                    <div className='flex justify-between gap-2'>
                         <MediumSkeleton />
                         <MediumSkeleton />
                     </div>
                 )}
             </WrapperList>
+            {/* @Top reviews product */}
+            <WrapperList title='Top Reviews'>
+                {TopReviewsLoading && (
+                    <>
+                        <div className='flex w-full justify-between overflow-hidden'>
+                            <SmallSkeleton />
+                            <SmallSkeleton />
+                            <SmallSkeleton />
+                            <SmallSkeleton />
+                            <SmallSkeleton />
+                        </div>
+                    </>
+                )}
+                {!TopReviewsLoading && (
+                    <CarouselDisplay>
+                        {TopReviewProductsList?.map((item: IProduct, i: number) => {
+                            return (
+                                <CarouselItem key={i}>
+                                    <SmallCard product={item} />
+                                </CarouselItem>
+                            );
+                        })}
+                    </CarouselDisplay>
+                )}
+            </WrapperList>
             {/* add popup productlist */}
-            <PopupProductList product={TopDealsProductsList} propsLoading={LoadingDeals} />
+            <PopupProductList product={AllProductsList} propsLoading={LoadingAll} />
         </div>
     );
 };

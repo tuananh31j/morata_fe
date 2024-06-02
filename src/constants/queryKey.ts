@@ -1,4 +1,8 @@
 export const QUERY_KEY = {
     PRODUCTS: 'product',
-    RELATED: 'RELATED',
+    LATEST: 'latest',
+    DEALS: 'deals',
+    REVIEWS: 'review',
+    RELATED: 'related',
+    CATEGORY: 'categories',
 };

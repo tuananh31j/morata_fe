@@ -74,11 +74,11 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                 {/* Discount */}
                 {product.discountPercentage > 0 ? (
-                    <div className='eft-0 absolute top-0  z-10 inline-block select-none rounded-sm bg-lime-600 px-2 text-sm leading-6 text-white'>
+                    <div className='absolute left-0 top-0  z-10 inline-block select-none rounded-sm bg-lime-600 px-2 text-sm leading-6 text-white'>
                         -{product.discountPercentage}%
                     </div>
                 ) : (
-                    <div className='absolute left-0 top-0 inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>
+                    <div className='absolute left-0 top-0 z-[50] inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>
                         New
                     </div>
                 )}
