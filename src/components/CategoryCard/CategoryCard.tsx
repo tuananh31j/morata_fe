@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ICategoryPopular } from '~/types/category';
+import { ICategoryPopular } from '~/types/Category';
 
 type CategoryPopularProps = {
     category: ICategoryPopular;
@@ -7,7 +7,7 @@ type CategoryPopularProps = {
 const SmallCategoryCard = ({ category }: CategoryPopularProps) => {
     return (
         <>
-            <Link to={`/products`} className=' relative mt-2 block rounded-[20px]'>
+            <Link to={`/products?cate=${category.categoryId}`} className=' relative mt-2 block rounded-[20px]'>
                 <div className='w-full overflow-hidden rounded-2xl border border-transparent'>
                     <img
                         loading='lazy'

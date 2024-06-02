@@ -1,18 +1,39 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProgressBar from '~/components/_common/ProgressBar';
-import { PropTypeProduct } from '~/types/product';
+import { PropTypeProduct } from '~/types/Product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
+import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import { debounce } from 'lodash';
 
 const MediumCard = ({ product }: PropTypeProduct) => {
+    const { mutate, isPending } = useMutationCart();
+    const navigate = useNavigate();
     const newPrice = product.price * (1 + product.discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {
         setIsActiveProductActions(!isActiveProductActions);
     };
+    const userId = useSelector((state: RootState) => state.authReducer.user);
+    const handleAddToCart = (productId: string) => {
+        if (userId) {
+            const data = {
+                userId: userId?._id,
+                productId,
+                quantity: 1,
+            };
+            mutate(data);
+        } else {
+            navigate('/auth/login');
+        }
+    };
+    const debounceAddToCart = debounce((id: string) => handleAddToCart(id), 500);
+
     return (
         <div className='relative rounded-2xl bg-white p-6 md:p-5'>
             <div className='sm:grid sm:grid-cols-2'>
@@ -22,7 +43,10 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                     onMouseEnter={handleSetDateActive}
                     onMouseLeave={handleSetDateActive}
                 >
-                    <Link to={`/products/${product._id}`} className='block w-full overflow-hidden'>
+                    <Link
+                        to={`/products/${product._id}?categoryId=${product.categoryId}`}
+                        className='block w-full overflow-hidden'
+                    >
                         <img
                             loading='lazy'
                             src={product.images[1]}
@@ -39,7 +63,7 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                     <ProductActions />
                 </div>
                 <div className='mt-3'>
-                    <Link to={`/products/${product._id}`}>
+                    <Link to={`/products/${product._id}?categoryId=${product.categoryId}`}>
                         <h4 className='line-clamp-2  text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
@@ -84,7 +108,10 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                             products
                         </div>
                     </Link>
-                    <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
+                    <button
+                        onClick={() => debounceAddToCart(product._id)}
+                        className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
+                    >
                         Add to Cart
                     </button>
                 </div>

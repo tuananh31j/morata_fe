@@ -11,8 +11,8 @@ import ShopBenefits from '~/components/ShopBenefits';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useQueriesHomepage from '~/hooks/Queries/useQueriesHomepage';
-import { ICategoryPopular } from '~/types/category';
-import { IProduct } from '~/types/product';
+import { ICategoryPopular } from '~/types/Category';
+import { IProduct } from '~/types/Product';
 
 const Home = () => {
     useDocumentTitle('Home');

@@ -5,6 +5,8 @@ import { CaretIcon, DiscountIcon, SearchIcon } from '~/components/_common/Icons'
 import UserToolbar from './UserToolbar';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 // navbar-mobi
 type MenuItem = Required<MenuProps>['items'][number];
@@ -45,6 +47,7 @@ const itemss: MenuItem[] = [
 // end
 
 const Header = () => {
+    const user = useSelector((state: RootState) => state.authReducer.user);
     const onClick: MenuProps['onClick'] = ({ key }) => {
         message.info(`Click on item ${key}`);
     };
@@ -82,7 +85,7 @@ const Header = () => {
     };
 
     return (
-        <div className='bg-blue-900 '>
+        <header className='bg-blue-900 '>
             <div className='mx-3 lg:mx-4'>
                 {/* thongtin-header-laptop */}
                 <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex '>
@@ -252,7 +255,7 @@ const Header = () => {
                     </form>
 
                     {/* ///icon-header-laptop */}
-                    <UserToolbar />
+                    <UserToolbar state={user} />
                 </div>
                 {/* ---seach-mobile--- */}
                 <div className='relative my-5 pb-10  lg:hidden'>
@@ -300,7 +303,7 @@ const Header = () => {
                     </div> */}
                 </div>
             </div>
-        </div>
+        </header>
     );
 };
 
