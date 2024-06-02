@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CarouselItem = ({ children }: { children: React.ReactNode }) => {
+const CarouselItem = ({ children }: { children: React.ReactElement }) => {
     return (
         <div>
             <div className='mx-[6px]  bg-transparent'>

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getContentType } from './apiHelper';
 
 const axiosOptions = {
-    baseURL: import.meta.env.VITE_REACT_API_URL,
+    baseURL: 'http://localhost:5555/api/v1',
     headers: getContentType(),
 };
 
