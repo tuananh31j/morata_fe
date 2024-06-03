@@ -2,7 +2,7 @@ import WrapperList from '~/components/_common/WrapperList';
 import CheckBoxDisplay from '../CheckBoxDisplay';
 import { useState } from 'react';
 import clsx from 'clsx';
-import { ICategory } from '~/types/category';
+import { ICategory } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
 
 const FilterItem = ({

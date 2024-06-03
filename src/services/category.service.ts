@@ -1,5 +1,5 @@
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { ICategory } from '~/types/category';
+import { ICategory } from '~/types/Category';
 import { axiosClassic } from '~/utils/api/axiosIntance';
 
 const endPoint = '/categories';

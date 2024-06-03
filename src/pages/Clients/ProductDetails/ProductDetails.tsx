@@ -8,9 +8,8 @@ import {
     RedoOutlined,
 } from '@ant-design/icons';
 import { Button, ConfigProvider } from 'antd';
-
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
@@ -25,22 +24,32 @@ import { IProduct } from '~/types';
 import { Currency } from '~/utils';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
 import ThumnailProduct from './_components/Thumbnail/ThumnailProduct';
+import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 const ProductDetails = () => {
     const [valueQuantity, setQuantityValue] = useState(1);
+    const { mutate } = useMutationCart();
+    const [searchParams] = useSearchParams();
+    const categoryId = searchParams.get('categoryId');
+    const navigate = useNavigate();
+    const user = useSelector((state: RootState) => state.authReducer.user);
     const { id } = useParams();
-    const location = useLocation();
     const [{ data: productDetail, isLoading }] = useQueriesProductDetail(id as string);
-    useEffect(() => {
-        setQuantityValue(1);
-    }, [location]);
+
     const product: IProduct = productDetail?.data;
     useDocumentTitle(`${product?.name}`);
     const body = {
-        cateId: product?.categoryId,
-        productId: id!,
+        cateId: categoryId!,
+        id: id!,
     };
-    const { data: relatedProduct, isLoading: relatedLoading } = useGetRelatedProduct(body);
+    console.log(body);
+    const { data: relatedProduct, isLoading: relatedLoading, refetch } = useGetRelatedProduct(body);
+    useEffect(() => {
+        setQuantityValue(1);
+        refetch();
+    }, [id, refetch]);
     const oldPrice = product?.price * (1 + product?.discountPercentage / 100);
     const handleIncrement = () => {
         if (valueQuantity < product?.stock) setQuantityValue(valueQuantity + 1);
@@ -49,7 +58,16 @@ const ProductDetails = () => {
         if (valueQuantity > 1) setQuantityValue(valueQuantity - 1);
     };
     const handleAddToCart = (data: any) => {
-        console.log(data);
+        if (user) {
+            const bodyAddToCart = {
+                ...data,
+                userId: user._id,
+            };
+            mutate(bodyAddToCart);
+            setQuantityValue(1);
+        } else {
+            navigate('/auth/login');
+        }
     };
     return (
         <>
@@ -158,7 +176,6 @@ const ProductDetails = () => {
                                                         handleAddToCart({
                                                             quantity: valueQuantity,
                                                             productId: product._id,
-                                                            userId: 'lksandasklsnd ',
                                                         })
                                                     }
                                                     size={'large'}

@@ -1,7 +1,7 @@
 import useResponsive from '~/hooks/_common/useResponsive';
 import { FC } from 'react';
 import FilterDrawer from '~/pages/Clients/Products/_components/FilterDrawer';
-import { ICategory } from '~/types/category';
+import { ICategory } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
 import CateFilterItem from '../_components/FilterItem/CateItem';
 import BrandFilterItem from '../_components/FilterItem/BrandItem';

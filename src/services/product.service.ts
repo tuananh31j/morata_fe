@@ -1,7 +1,6 @@
-import { IAllProductsResponse, IProduct } from '~/types';
+import { IAllProductsResponse, IProduct } from '~/types/Product';
 import { IParams } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { RequestRelated } from '~/types/request';
 import { axiosClassic } from '~/utils/api/axiosIntance';
 
 const endPoint = '/products';
@@ -31,9 +30,9 @@ const productService = {
         const res = await axiosClassic.get(`${endPoint}/reviews`);
         return res.data;
     },
-    async getRelated(body: RequestRelated) {
+    async getRelated(params: { id: string; cateId: string }) {
         const res = await axiosClassic.get(`${endPoint}/related`, {
-            data: body,
+            params,
         });
         return res.data;
     },

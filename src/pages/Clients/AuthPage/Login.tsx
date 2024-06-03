@@ -5,7 +5,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import { LoginFormData, loginSchema } from '~/types/Schemas/Auth';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import AuthService from '~/services/auth.service';
 import useMessage from '~/hooks/_common/useMessage';
 import { useDispatch } from 'react-redux';
@@ -13,6 +13,7 @@ import { setUser } from '~/store/slice/authSlice';
 import { setAccessToken, setUserInfo } from '~/utils/api/apiHelper';
 
 const Login = () => {
+    const queryClient = useQueryClient();
     useDocumentTitle('Sign In | MORATA');
     const dispatch = useDispatch();
     const navigator = useNavigate();
@@ -21,12 +22,14 @@ const Login = () => {
         mutationKey: ['login'],
         mutationFn: (body: LoginFormData) => AuthService.login(body),
         onSuccess: (data) => {
-            console.log(data);
+            navigator('/');
             dispatch(setUser(data.data.data.user));
             handleMessage({ type: 'success', content: 'successful authentication!' });
             setUserInfo(data.data.data.user);
             setAccessToken(data.data.data.accessToken);
-            navigator('/');
+            queryClient.invalidateQueries({
+                queryKey: ['CART'],
+            });
         },
         onError: () => {
             handleMessage({ type: 'error', content: 'Invalid information!' });

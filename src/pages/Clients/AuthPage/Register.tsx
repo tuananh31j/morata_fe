@@ -29,7 +29,7 @@ const Register = () => {
     } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema) });
     const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
         const dataCustom = {
-            username: `${data.firstName}${data.lastName}`,
+            username: `${data.firstName} ${data.lastName}`,
             email: data.email,
             password: data.password,
         };

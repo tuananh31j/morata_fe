@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { IBrand } from '~/types/Brand';
-import { ICategory } from '~/types/category';
+import { ICategory } from '~/types/Category';
 
 type ICheckBoxDisplay = {
     item: ICategory | IBrand;

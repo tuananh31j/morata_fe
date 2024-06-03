@@ -1,4 +1,4 @@
-import { ICategory } from '~/types/category';
+import { ICategory } from '~/types/Category';
 import FilterItem from './FilterItem';
 import { FC } from 'react';
 

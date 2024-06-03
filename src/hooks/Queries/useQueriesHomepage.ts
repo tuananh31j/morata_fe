@@ -19,7 +19,7 @@ const useQueriesHomepage = () => {
             },
             { queryKey: [QUERY_KEY.LATEST], queryFn: () => productService.getLatest(), refetchInterval: Infinity },
             {
-                queryKey: [QUERY_KEY.CATEGORIES],
+                queryKey: [QUERY_KEY.POPULARCATEGORIES],
                 queryFn: () => cateogoryService.getPopular(),
                 refetchInterval: Infinity,
             },

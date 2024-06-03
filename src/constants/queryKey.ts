@@ -1,4 +1,5 @@
 export const QUERY_KEY = {
+    CART: 'cart',
     PRODUCTS: 'products',
     CATEGORIES: 'categories',
     LATEST: 'latest',
