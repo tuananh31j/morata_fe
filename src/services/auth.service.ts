@@ -14,6 +14,9 @@ const AuthService = {
     getNewToken() {
         return axiosClassic.post<IAxiosResponse<{ accessToken: string }>>(`${URL}/refresh`);
     },
+    logout() {
+        return axiosClassic.post(`${URL}/logout`);
+    },
 };
 
 export default AuthService;

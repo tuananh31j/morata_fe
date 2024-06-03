@@ -11,7 +11,7 @@ import { RootState } from '~/store/store';
 import { debounce } from 'lodash';
 
 const SmallCard = ({ product }: PropTypeProduct) => {
-    const { mutate, isPending } = useMutationCart();
+    const { mutate } = useMutationCart();
     const navigate = useNavigate();
     // console.log('from smallcard', product);
     const newPrice = product.price * (1 + product.discountPercentage / 100);

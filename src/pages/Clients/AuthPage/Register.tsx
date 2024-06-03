@@ -1,27 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { ConfigProvider, Form, Input } from 'antd';
 import { motion } from 'framer-motion';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useMessage from '~/hooks/_common/useMessage';
-import AuthService from '~/services/auth.service';
+import useRegister from '~/hooks/Mutations/Auth/useRegister';
 import { RegisterFormData, registerSchema } from '~/types/Schemas/Auth';
 
 const Register = () => {
     useDocumentTitle('Sign Up | MORATA');
 
-    const navigator = useNavigate();
     const { handleMessage, contextHolder } = useMessage();
-    const { mutate, isPending, isError } = useMutation({
-        mutationKey: ['register'],
-        mutationFn: (body: { username: string; email: string; password: string }) => AuthService.register(body),
-        onSuccess: () => {
-            handleMessage({ type: 'success', content: 'successful authentication!' });
-            navigator('/auth/login');
-        },
-    });
+    const { mutate, isPending } = useRegister();
     const {
         control,
         handleSubmit,
@@ -34,8 +25,9 @@ const Register = () => {
             password: data.password,
         };
         mutate(dataCustom);
-        if (isPending) handleMessage({ type: 'loading', content: '...authenticating!' });
-        if (isError) handleMessage({ type: 'error', content: 'Invalid information!' });
+        if (isPending) {
+            handleMessage({ type: 'loading', content: '...authenticating!' });
+        }
     };
     return (
         <>

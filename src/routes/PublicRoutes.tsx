@@ -1,6 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
+import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
+import ProtectedRoute from '~/layouts/Protected/ProtectedRoute';
 import {
     AboutPage,
     AuthLayoutPage,
@@ -78,7 +80,9 @@ const PublicRoutes = [
                 path: 'account',
                 element: (
                     <Suspense>
-                        <AccountLayout />
+                        <ProtectedRouteAuth>
+                            <AccountLayout />
+                        </ProtectedRouteAuth>
                     </Suspense>
                 ),
                 children: [
@@ -92,7 +96,9 @@ const PublicRoutes = [
                 path: 'auth',
                 element: (
                     <Suspense>
-                        <AuthLayoutPage />
+                        <ProtectedRoute>
+                            <AuthLayoutPage />
+                        </ProtectedRoute>
                     </Suspense>
                 ),
                 children: [

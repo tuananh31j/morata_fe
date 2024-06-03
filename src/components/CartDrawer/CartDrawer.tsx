@@ -3,7 +3,6 @@ import { Avatar, Button, Drawer, Empty, InputNumber, List, Slider } from 'antd';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useMutationDecreaseCart } from '~/hooks/Mutations/cart/useDecreaseQuantity';

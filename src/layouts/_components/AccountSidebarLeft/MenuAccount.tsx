@@ -1,3 +1,4 @@
+import useLogout from '~/hooks/Mutations/Auth/useLogout';
 import MenuItem from './MenuItem';
 
 const menus = [
@@ -7,13 +8,17 @@ const menus = [
 ];
 
 const MenuAccount = () => {
+    const handleLogout = useLogout();
     return (
         <div className=' flex max-h-[100vh] flex-col justify-items-center'>
             <div className='m-4 flex flex-col justify-center gap-y-3'>
                 {menus.map((item, i) => (
                     <MenuItem name={item.name} key={i} path={item.path} />
                 ))}
-                <button className='mt-5 border p-2 transition-transform duration-200 ease-in-out hover:border-[#16bcdc] active:-translate-y-3'>
+                <button
+                    onClick={handleLogout}
+                    className='mt-5 border p-2 transition-transform duration-200 ease-in-out hover:border-[#16bcdc] active:-translate-y-3'
+                >
                     Đăng xuất
                 </button>
             </div>

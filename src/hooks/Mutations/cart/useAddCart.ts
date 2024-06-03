@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
-import useMessage from '~/hooks/_common/useMessage';
+import { QUERY_KEY } from '~/constants/queryKey';
 import { cartService } from '~/services/cart.service';
 import { setOpen } from '~/store/slice/cartSlice';
 import { AddCartBody } from '~/types/Cart';
@@ -13,7 +13,7 @@ export const useMutationCart = () => {
         mutationFn: (payload: AddCartBody) => cartService.addToCart(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['CART'],
+                queryKey: [QUERY_KEY.CART],
             });
             cartDispatch(setOpen());
         },

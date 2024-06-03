@@ -16,6 +16,8 @@ export const ProfilePage = lazy(() => import('~/pages/Clients/Account/Profile'))
 export const LoginPage = lazy(() => import('~/pages/Clients/AuthPage/Login'));
 export const RegisterPage = lazy(() => import('~/pages/Clients/AuthPage/Register'));
 export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
+export const ProductsList = lazy(() => import('~/pages/Admins/Product/ManageProducts'));
+export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
 export const NotFoundPage = lazy(() => import('~/pages/404'));
 export const ErrorPage = lazy(() => import('~/pages/Error'));
 

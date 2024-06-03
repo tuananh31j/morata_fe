@@ -10,6 +10,7 @@ import useGetProducts from '~/hooks/Queries/Products/useGetProducts';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import { IParams } from '~/types/Api';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { debounce } from 'lodash';
 
 const Products = () => {
     useDocumentTitle('Products');
@@ -63,10 +64,10 @@ const Products = () => {
         setCurrentPage(1);
         setRating(ratingFilter);
     };
-    const handleFilterPrice = (priceFilter: { min: number; max: number }) => {
+    const handleFilterPrice = debounce((priceFilter: { min: number; max: number }) => {
         setCurrentPage(1);
         setPrice(priceFilter);
-    };
+    }, 300);
 
     const handleSortByName = (sortValue: 1 | -1) => {
         setCurrentPage(1);

@@ -1,40 +1,18 @@
 import { ConfigProvider, Form, Input } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import { LoginFormData, loginSchema } from '~/types/Schemas/Auth';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import AuthService from '~/services/auth.service';
 import useMessage from '~/hooks/_common/useMessage';
-import { useDispatch } from 'react-redux';
-import { setUser } from '~/store/slice/authSlice';
-import { setAccessToken, setUserInfo } from '~/utils/api/apiHelper';
+import useLogin from '~/hooks/Mutations/Auth/useLogin';
 
 const Login = () => {
-    const queryClient = useQueryClient();
     useDocumentTitle('Sign In | MORATA');
-    const dispatch = useDispatch();
-    const navigator = useNavigate();
+
     const { handleMessage, contextHolder } = useMessage();
-    const { mutate, isPending } = useMutation({
-        mutationKey: ['login'],
-        mutationFn: (body: LoginFormData) => AuthService.login(body),
-        onSuccess: (data) => {
-            navigator('/');
-            dispatch(setUser(data.data.data.user));
-            handleMessage({ type: 'success', content: 'successful authentication!' });
-            setUserInfo(data.data.data.user);
-            setAccessToken(data.data.data.accessToken);
-            queryClient.invalidateQueries({
-                queryKey: ['CART'],
-            });
-        },
-        onError: () => {
-            handleMessage({ type: 'error', content: 'Invalid information!' });
-        },
-    });
+    const { mutate, isPending } = useLogin();
 
     const {
         control,
@@ -47,8 +25,9 @@ const Login = () => {
     const onSubmit: SubmitHandler<LoginFormData> = async (body) => {
         mutate(body);
 
-        if (isPending) handleMessage({ type: 'loading', content: '...authenticating!' });
-        // if (isError) handleMessage({ type: 'error', content: 'Invalid information!' });
+        if (isPending) {
+            handleMessage({ type: 'loading', content: '...authenticating!' });
+        }
     };
 
     return (

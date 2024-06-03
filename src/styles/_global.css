@@ -1,6 +1,6 @@
 /* reset css */
 @import 'normalize.css';
-
+@import 'react-toastify/dist/ReactToastify.css';
 /* fonts */
 /* @import 'Fonts.css'; */
 
