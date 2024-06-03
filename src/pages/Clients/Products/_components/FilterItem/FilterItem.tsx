@@ -2,29 +2,32 @@ import WrapperList from '~/components/_common/WrapperList';
 import CheckBoxDisplay from '../CheckBoxDisplay';
 import { useState } from 'react';
 import clsx from 'clsx';
+import { ICategory } from '~/types/category';
+import { IBrand } from '~/types/Brand';
 
 const FilterItem = ({
     data,
-    filterType,
+    filterName,
     boxType,
     colorType,
     children,
+    handleFilter,
 }: {
-    data?: number[] | string[];
-    filterType: string;
+    data?: IBrand[] | ICategory[];
+    filterName: string;
     boxType?: boolean;
     colorType?: boolean;
     children?: React.ReactNode;
+    handleFilter?: (id: string) => void;
 }) => {
     const [isFilter, setIsFilter] = useState<boolean>(false);
 
     const handleClick = () => {
-        console.log('ok');
         setIsFilter(!isFilter);
     };
     return (
-        <WrapperList border handleClick={handleClick} title={filterType}>
-            {!children && data && (
+        <WrapperList border handleClick={handleClick} title={filterName}>
+            {!children && handleFilter && data && (
                 <div
                     className={clsx(
                         {
@@ -36,7 +39,13 @@ const FilterItem = ({
                     )}
                 >
                     {data.map((item, i) => (
-                        <CheckBoxDisplay boxType={boxType} colorType={colorType} lable={item} key={i} />
+                        <CheckBoxDisplay
+                            handleFilter={handleFilter}
+                            boxType={boxType}
+                            colorType={colorType}
+                            item={item}
+                            key={i}
+                        />
                     ))}
                 </div>
             )}

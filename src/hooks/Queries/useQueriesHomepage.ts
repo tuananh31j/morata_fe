@@ -18,7 +18,11 @@ const useQueriesHomepage = () => {
                 refetchInterval: Infinity,
             },
             { queryKey: [QUERY_KEY.LATEST], queryFn: () => productService.getLatest(), refetchInterval: Infinity },
-            { queryKey: [QUERY_KEY.CATEGORY], queryFn: () => cateogoryService.getPopular(), refetchInterval: Infinity },
+            {
+                queryKey: [QUERY_KEY.CATEGORIES],
+                queryFn: () => cateogoryService.getPopular(),
+                refetchInterval: Infinity,
+            },
         ],
     });
 };

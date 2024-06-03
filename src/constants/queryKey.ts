@@ -6,4 +6,5 @@ export const QUERY_KEY = {
     REVIEWS: 'review',
     RELATED: 'related',
     POPULARCATEGORIES: 'poularCategories',
+    BRANDS: 'brands',
 };

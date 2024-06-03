@@ -17,6 +17,19 @@ export interface IProduct {
     sku: string;
 }
 
+export type IAllProductsResponse = {
+    docs: IProduct[];
+    totalDocs: number;
+    limit: number;
+    totalPages: number;
+    page: number;
+    pagingCounter: number;
+    hasPrevPage: boolean;
+    hasNextPage: boolean;
+    prevPage: number | null;
+    nextPage: number | null;
+};
+
 export type PropTypeProduct = {
     product: IProduct;
 };

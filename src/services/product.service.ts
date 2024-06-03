@@ -1,15 +1,19 @@
+import { IAllProductsResponse, IProduct } from '~/types';
+import { IParams } from '~/types/Api';
+import { IAxiosResponse } from '~/types/AxiosResponse';
 import { RequestRelated } from '~/types/request';
 import { axiosClassic } from '~/utils/api/axiosIntance';
 
 const endPoint = '/products';
 
 const productService = {
-    async getAll() {
-        const res = await axiosClassic.get(`${endPoint}/all`);
+    async getAll(params?: IParams) {
+        const res = await axiosClassic.get<IAxiosResponse<IAllProductsResponse>>(`${endPoint}/all`, { params });
         return res.data;
     },
-    async getProductsByCatregory(id: string, params: { page: number; limit: number }) {
-        const res = await axiosClassic.get(`${endPoint}/byCate/${id}`, { params });
+    async getProductsByCatregory(id: string, params: IParams) {
+        const res = await axiosClassic.get<IAxiosResponse<IProduct[]>>(`${endPoint}/byCate/${id}`, { params });
+        return res.data;
     },
     async getLatest() {
         const res = await axiosClassic.get(`${endPoint}/latest`);

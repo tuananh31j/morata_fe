@@ -3,12 +3,18 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import GridIcon from '~/components/_common/Icons/GridIcon';
 
+interface OptionType {
+    value: string;
+    label: string;
+    title?: string;
+}
 interface ISortAndViewOptionsProps {
     handleClickGrid1: () => void;
     handleClickGrid2: () => void;
     handleClickGrid3: () => void;
     handleClickGrid4: () => void;
     handleClickGrid5: () => void;
+    handleSortByName: (sort: 1 | -1) => void;
 }
 
 const SortAndViewOptions: React.FC<ISortAndViewOptionsProps> = ({
@@ -17,6 +23,7 @@ const SortAndViewOptions: React.FC<ISortAndViewOptionsProps> = ({
     handleClickGrid3,
     handleClickGrid4,
     handleClickGrid5,
+    handleSortByName,
 }) => {
     const [active, setActive] = useState<number>(4);
 
@@ -40,6 +47,18 @@ const SortAndViewOptions: React.FC<ISortAndViewOptionsProps> = ({
     const handleGrid5 = () => {
         handleClickGrid5();
         setActive(5);
+    };
+
+    const handleSelectChange = (value: string, option: OptionType | OptionType[]) => {
+        if (Array.isArray(option)) {
+            // Xử lý nếu là một mảng các option được chọn
+            return;
+        }
+        if (option) {
+            const { title } = option;
+            console.log('Title:', title);
+        }
+        handleSortByName(Number(value) as 1 | -1);
     };
 
     return (
@@ -83,18 +102,17 @@ const SortAndViewOptions: React.FC<ISortAndViewOptionsProps> = ({
                 style={{ width: 200 }}
                 placeholder='Sort'
                 optionFilterProp='children'
-                filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                filterSort={(optionA, optionB) =>
-                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                }
+                onChange={handleSelectChange}
                 options={[
                     {
                         value: '1',
                         label: 'A-Z',
+                        title: 'name',
                     },
                     {
-                        value: '2',
-                        label: 'Price',
+                        value: '-1',
+                        title: 'name',
+                        label: 'Z-A',
                     },
                 ]}
             />

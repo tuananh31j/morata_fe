@@ -16,8 +16,6 @@ import { IProduct } from '~/types/product';
 
 const Home = () => {
     useDocumentTitle('Home');
-    // const { data: productsData } = useGetAllProducts(); // return res.data
-    // console.log('from home', productsData?.data?.docs);
 
     const [
         { data: ProductsList, isLoading: LoadingAll },
@@ -133,7 +131,7 @@ const Home = () => {
                 )}
             </WrapperList>
             {/* add popup productlist */}
-            <PopupProductList product={AllProductsList} propsLoading={LoadingAll} />
+            {AllProductsList && <PopupProductList product={AllProductsList} propsLoading={LoadingAll} />}
         </div>
     );
 };
