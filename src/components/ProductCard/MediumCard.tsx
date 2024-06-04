@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ProgressBar from '~/components/_common/ProgressBar';
-import { PropTypeProduct } from '~/types/Product';
+import { PropTypeProduct } from '~/types/product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
@@ -10,9 +10,10 @@ import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { debounce } from 'lodash';
+import showMessage from '~/utils/ShowMessage';
 
 const MediumCard = ({ product }: PropTypeProduct) => {
-    const { mutate, isPending } = useMutationCart();
+    const { mutate } = useMutationCart();
     const navigate = useNavigate();
     const newPrice = product.price * (1 + product.discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
@@ -30,6 +31,7 @@ const MediumCard = ({ product }: PropTypeProduct) => {
             mutate(data);
         } else {
             navigate('/auth/login');
+            showMessage('You need to login first!', 'warning');
         }
     };
     const debounceAddToCart = debounce((id: string) => handleAddToCart(id), 500);

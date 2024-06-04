@@ -17,7 +17,7 @@ const Products = () => {
     const [searchParams] = useSearchParams();
     const cate = searchParams.get('cate');
     const navigator = useNavigate();
-    const LIMIT = 2;
+    const LIMIT = 8;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [sort, setSort] = useState<number>(1);
     const [brandId, setBrandId] = useState<string>('');

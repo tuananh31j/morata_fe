@@ -1,12 +1,10 @@
 import { CloseOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
 import { Drawer, DrawerProps, Dropdown, Menu, MenuProps, Space, message } from 'antd';
 import { useState } from 'react';
-import { CaretIcon, DiscountIcon, SearchIcon } from '~/components/_common/Icons';
-import UserToolbar from './UserToolbar';
-import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store/store';
+import { CaretIcon, SearchIcon } from '~/components/_common/Icons';
+import Navbar from './Navbar';
+import UserToolbar from './UserToolbar';
 
 // navbar-mobi
 type MenuItem = Required<MenuProps>['items'][number];
@@ -47,7 +45,6 @@ const itemss: MenuItem[] = [
 // end
 
 const Header = () => {
-    const user = useSelector((state: RootState) => state.authReducer.user);
     const onClick: MenuProps['onClick'] = ({ key }) => {
         message.info(`Click on item ${key}`);
     };
@@ -153,7 +150,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-                <div className='flex grid-cols-[280px,0.9fr,380px] items-center justify-between gap-10 border-[#3b50a3]  bg-blue-900 pt-5 lg:grid lg:border-b lg:p-0 lg:py-5'>
+                <div className='flex grid-cols-[280px,0.9fr,400px] items-center justify-between gap-10 border-[#3b50a3]  bg-blue-900 pt-5 lg:grid lg:border-b lg:p-0 lg:py-5'>
                     {/* icon-menu-mobi */}
                     <div className='lg:hidden'>
                         <Space>
@@ -255,7 +252,7 @@ const Header = () => {
                     </form>
 
                     {/* ///icon-header-laptop */}
-                    <UserToolbar state={user} />
+                    <UserToolbar />
                 </div>
                 {/* ---seach-mobile--- */}
                 <div className='relative my-5 pb-10  lg:hidden'>

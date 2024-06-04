@@ -1,14 +1,15 @@
+import clsx from 'clsx';
+import { debounce } from 'lodash';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { PropTypeProduct } from '~/types/Product';
+import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
+import { RootState } from '~/store/store';
+import { PropTypeProduct } from '~/types/product';
 import { Currency } from '~/utils';
+import showMessage from '~/utils/ShowMessage';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
-import clsx from 'clsx';
-import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store/store';
-import { debounce } from 'lodash';
 
 const SmallCard = ({ product }: PropTypeProduct) => {
     const { mutate } = useMutationCart();
@@ -30,6 +31,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
             mutate(data);
         } else {
             navigate('/auth/login');
+            showMessage('You need to login first!', 'warning');
         }
     };
     const debounceAddToCart = debounce((id: string) => handleAddToCart(id), 500);
@@ -38,7 +40,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
             <div className='group relative justify-between gap-5 rounded'>
                 {/* Image */}
                 <div
-                    className='group relative w-full'
+                    className='group relative flex h-[224px] w-full items-center'
                     data-active={isActiveProductActions ? 'card' : ''}
                     onMouseEnter={handleSetDateActive}
                     onMouseLeave={handleSetDateActive}
@@ -51,7 +53,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             loading='lazy'
                             src={product.images[0]}
                             alt=''
-                            className='absolute  w-full scale-100 transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
+                            className='z-1 absolute  w-full scale-100 transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
                         />
                         <img
                             loading='lazy'

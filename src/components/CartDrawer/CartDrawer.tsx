@@ -1,5 +1,5 @@
 import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Avatar, Button, Drawer, Empty, InputNumber, List, Slider } from 'antd';
+import { Button, Drawer, Empty, Image, InputNumber, List, Slider } from 'antd';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
@@ -10,14 +10,14 @@ import { useMutationIncreaseCart } from '~/hooks/Mutations/cart/useIncreaseQuant
 import { useMutationRemoveItem } from '~/hooks/Mutations/cart/useRemoveOne';
 import { setClose, setOpen } from '~/store/slice/cartSlice';
 import { RootState } from '~/store/store';
-import { CartData, CartItem } from '~/types/Cart';
+import { ICartDataResponse } from '~/types/cart/CartResponse';
 import { Currency } from '~/utils';
 
-type CartRenderItemType = {
-    productId: CartItem;
-    quantity: number;
+type PropsType = {
+    children: React.ReactNode;
+    item: ICartDataResponse;
 };
-const CartDrawer = ({ children, item }: { children: React.ReactNode; item: CartData }) => {
+const CartDrawer = ({ children, item }: PropsType) => {
     const { mutate: increase } = useMutationIncreaseCart();
     const { mutate: removeItem } = useMutationRemoveItem();
     const { mutate: decrease } = useMutationDecreaseCart();
@@ -26,7 +26,6 @@ const CartDrawer = ({ children, item }: { children: React.ReactNode; item: CartD
     const onClose = () => {
         cartDispatch(setClose());
     };
-
     const products = item?.items;
     const freeShippingThreshold = 1000;
     const totalOrderAmount = products?.reduce(
@@ -66,10 +65,9 @@ const CartDrawer = ({ children, item }: { children: React.ReactNode; item: CartD
             decrease(data);
         }
     };
-
     const debouncedIncrease = debounce((id: string) => handleIncreaseQuantity(id), 300);
     const debouncedDecrease = debounce((id: string) => handleDecreaseQuantity(id), 300);
-    const debouncedRemove = debounce((id: string) => handleRemoveCart(id), 300);
+    const debouncedRemove = debounce((id: string) => handleRemoveCart(id), 0);
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <span className='cursor-pointer' onClick={() => cartDispatch(setOpen())}>
@@ -106,12 +104,12 @@ const CartDrawer = ({ children, item }: { children: React.ReactNode; item: CartD
                             itemLayout='vertical'
                             className='h-[40vh] w-full overflow-x-hidden overflow-y-scroll'
                             dataSource={products}
-                            renderItem={(product: CartRenderItemType) => (
+                            renderItem={(product) => (
                                 <List.Item>
                                     <div className='flex w-full items-center justify-between'>
                                         <List.Item.Meta
                                             avatar={
-                                                <Avatar
+                                                <Image
                                                     className='h-[80px] w-[80px]'
                                                     src={product.productId.thumbnail}
                                                 />
@@ -137,26 +135,19 @@ const CartDrawer = ({ children, item }: { children: React.ReactNode; item: CartD
                                                                 }
                                                             )}
                                                         >
-                                                            {Currency.format(product.productId.price)}
+                                                            {Currency.format(
+                                                                product.productId.price * product.quantity
+                                                            )}
                                                         </span>
                                                         {product.productId.discountPercentage > 0 && (
                                                             <del className=' text-base font-semibold leading-5 text-gray-400'>
                                                                 {Currency.format(
                                                                     product.productId.price *
+                                                                        product.quantity *
                                                                         (1 + product.productId.discountPercentage / 100)
                                                                 )}
                                                             </del>
                                                         )}
-                                                    </div>
-                                                    <div>
-                                                        <span className='font-medium'>
-                                                            Total:{' '}
-                                                            <b className='text-[#22222]'>
-                                                                {Currency.format(
-                                                                    product.productId.price * product.quantity
-                                                                )}
-                                                            </b>
-                                                        </span>
                                                     </div>
                                                 </div>
                                             }

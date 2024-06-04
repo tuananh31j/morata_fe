@@ -9,55 +9,43 @@ import {
 } from '@ant-design/icons';
 import { Button, ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import SmallCard from '~/components/ProductCard/SmallCard';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
-import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import ProgressBar from '~/components/_common/ProgressBar';
 import RatingDisplay from '~/components/_common/RatingDisplay';
-import WrapperList from '~/components/_common/WrapperList';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
-import { useGetRelatedProduct } from '~/hooks/Queries/Products/useGetRelatedProduct';
-import useQueriesProductDetail from '~/hooks/Queries/useQueriesProductDetail';
+import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
+import useGetDetailProduct from '~/hooks/Queries/Products/useGetDetailProduct';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
-import { IProduct } from '~/types';
+import ProductRelated from '~/pages/Clients/ProductDetails/_components/ProductRelated/ProductRelated';
+import { RootState } from '~/store/store';
+import { IAddCartPayload } from '~/types/cart/CartPayload';
 import { Currency } from '~/utils';
+import showMessage from '~/utils/ShowMessage';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
 import ThumnailProduct from './_components/Thumbnail/ThumnailProduct';
-import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store/store';
 
 const ProductDetails = () => {
     const [valueQuantity, setQuantityValue] = useState(1);
     const { mutate } = useMutationCart();
-    const [searchParams] = useSearchParams();
-    const categoryId = searchParams.get('categoryId');
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { id } = useParams();
-    const [{ data: productDetail, isLoading }] = useQueriesProductDetail(id as string);
-
-    const product: IProduct = productDetail?.data;
+    const { data: productDetail, isLoading } = useGetDetailProduct(id as string);
+    const product = productDetail?.data;
     useDocumentTitle(`${product?.name}`);
-    const body = {
-        cateId: categoryId!,
-        id: id!,
-    };
-    console.log(body);
-    const { data: relatedProduct, isLoading: relatedLoading, refetch } = useGetRelatedProduct(body);
     useEffect(() => {
         setQuantityValue(1);
-        refetch();
-    }, [id, refetch]);
-    const oldPrice = product?.price * (1 + product?.discountPercentage / 100);
+    }, [id]);
+    const oldPrice = product ? product?.price * (1 + product?.discountPercentage / 100) : 0;
     const handleIncrement = () => {
-        if (valueQuantity < product?.stock) setQuantityValue(valueQuantity + 1);
+        if (valueQuantity < (product ? product.stock : 0)) setQuantityValue(valueQuantity + 1);
     };
     const handleDecrement = () => {
         if (valueQuantity > 1) setQuantityValue(valueQuantity - 1);
     };
-    const handleAddToCart = (data: any) => {
+    const handleAddToCart = (data: Omit<IAddCartPayload, 'userId'>) => {
         if (user) {
             const bodyAddToCart = {
                 ...data,
@@ -67,12 +55,13 @@ const ProductDetails = () => {
             setQuantityValue(1);
         } else {
             navigate('/auth/login');
+            showMessage('You need to login first!', 'warning');
         }
     };
     return (
         <>
             {/* BeadCrumb */}
-            {!isLoading && (
+            {!isLoading && product && (
                 <>
                     <BreadcrumbDisplay titleProduct={`${product.name}`} />
                     <div className='mt-[41px]'>
@@ -289,33 +278,14 @@ const ProductDetails = () => {
                             </div>
                         </div>
                         <DescriptionProduct />
-                        <WrapperList title='Related Products'>
-                            {!relatedLoading && (
-                                <CarouselDisplay>
-                                    {relatedProduct?.data.map((item: IProduct, i: number) => (
-                                        <CarouselItem key={i}>
-                                            <SmallCard product={item} />
-                                        </CarouselItem>
-                                    ))}
-                                </CarouselDisplay>
-                            )}
-                            {relatedLoading && (
-                                <div className='flex gap-2'>
-                                    <SmallSkeleton />
-                                    <SmallSkeleton />
-                                    <SmallSkeleton />
-                                </div>
-                            )}
-                        </WrapperList>
-                        {/* <WrapperList title='Recently Viewed Products'>
-                            <CarouselDisplay>
-                                {data.map((item, i) => (
-                                    <CarouselItem key={i}>
-                                        <SmallCard />
-                                    </CarouselItem>
-                                ))}
-                            </CarouselDisplay>
-                        </WrapperList> */}
+                        {!isLoading && productDetail && <ProductRelated relatedProduct={productDetail} />}
+                        {isLoading && (
+                            <div className='flex gap-2'>
+                                <SmallSkeleton />
+                                <SmallSkeleton />
+                                <SmallSkeleton />
+                            </div>
+                        )}
                     </div>
                 </>
             )}

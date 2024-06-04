@@ -1,16 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEY } from '~/constants/queryKey';
 import { cartService } from '~/services/cart.service';
+import { IActionCartPayload } from '~/types/cart/CartPayload';
 
 export const useMutationIncreaseCart = () => {
     const queryClient = useQueryClient();
-    const { mutate, ...rest } = useMutation({
+    return useMutation({
         mutationKey: ['INCREASECART'],
-        mutationFn: (payload: any) => cartService.increase(payload),
+        mutationFn: (payload: IActionCartPayload) => cartService.increase(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['CART'],
+                queryKey: [QUERY_KEY.CART],
             });
         },
     });
-    return { mutate, ...rest };
 };

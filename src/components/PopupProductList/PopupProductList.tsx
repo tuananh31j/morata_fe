@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useWindowSize from '~/hooks/_common/useWindowSize';
 import SmallCard from '../ProductCard/SmallCard';
-import { IProduct } from '~/types';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
+import { IProduct } from '~/types/product';
 
 // fake quantity data get api new product
 const PopupProductList = ({ product, propsLoading }: { product: IProduct[]; propsLoading: boolean }) => {
