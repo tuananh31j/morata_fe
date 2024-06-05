@@ -29,10 +29,10 @@ export type IAllProductsResponse = {
     prevPage: number | null;
     nextPage: number | null;
 };
-
 export type PropTypeProduct = {
     product: IProduct;
 };
+
 export interface BrandId {
     _id: string;
     name: string;

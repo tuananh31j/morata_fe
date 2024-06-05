@@ -1,14 +1,15 @@
+import clsx from 'clsx';
+import { debounce } from 'lodash';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { PropTypeProduct } from '~/types/Product';
+import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
+import { RootState } from '~/store/store';
+import { PropTypeProduct } from '~/types/product';
 import { Currency } from '~/utils';
+import showMessage from '~/utils/ShowMessage';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
-import clsx from 'clsx';
-import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store/store';
-import { debounce } from 'lodash';
 import Animation from '../_common/Animation';
 
 const SmallCard = ({ product }: PropTypeProduct) => {
@@ -31,6 +32,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
             mutate(data);
         } else {
             navigate('/auth/login');
+            showMessage('You need to login first!', 'warning');
         }
     };
     const debounceAddToCart = debounce((id: string) => handleAddToCart(id), 500);

@@ -29,24 +29,31 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
             )}
 
             {items.length > 1 && (
-                <div className='product-thumbnail-main w-[100%] lg:w-[375px] 2xl:w-[625px]'>
+                <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[625px]'>
                     <Carousel
                         dots={false}
                         ref={ref}
                         draggable
-                        className='overflow-hidden rounded-[15px]'
+                        className='ww flex justify-center overflow-hidden rounded-[15px]'
                         beforeChange={onChange}
                         afterChange={onChange}
                         infinite
                     >
-                        {items?.map((item, index: number) => <Image key={index} preview={true} src={item} />)}
+                        {items?.map((item, index: number) => (
+                            <Image
+                                className='lg:h-[475px] lg:w-[475px] 2xl:h-[625px] 2xl:w-[625px]'
+                                key={index}
+                                preview={true}
+                                src={item}
+                            />
+                        ))}
                     </Carousel>
                 </div>
             )}
             {items.length < 1 && (
                 <div className='product-thumbnail-main w-[100%]  lg:w-[375px] 2xl:w-[625px]'>
                     <div className='overflow-hidden rounded-[15px]'>
-                        <Image preview={true} src={thumbnail} />
+                        <Image preview={true} className='h-[625px] w-[625px]' src={thumbnail} />
                     </div>
                 </div>
             )}

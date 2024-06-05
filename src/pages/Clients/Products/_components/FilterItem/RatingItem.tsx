@@ -4,10 +4,10 @@ import { useFilters } from '~/hooks/_common/useFilters';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 
 const FilterRating = ({ filterName }: { filterName: string }) => {
-    const { updateQueryParam, queryParams } = useFilters();
+    const { updateFilterAttribute, queryParams } = useFilters();
 
     const onChange = (e: RadioChangeEvent) => {
-        updateQueryParam('rating', e.target.value);
+        updateFilterAttribute('rating', e.target.value);
     };
     return (
         <FilterWrap filterName={filterName}>

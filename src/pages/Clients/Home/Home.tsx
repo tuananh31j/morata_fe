@@ -1,4 +1,5 @@
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
+import CategoryPoPularSkeleton from '~/components/_common/skeleton/CategorySkeleton/CategoryPopular';
 import MediumSkeleton from '~/components/_common/skeleton/MediumSkeleton';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import WrapperList from '~/components/_common/WrapperList';
@@ -11,8 +12,6 @@ import ShopBenefits from '~/components/ShopBenefits';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useQueriesHomepage from '~/hooks/Queries/useQueriesHomepage';
-import { ICategoryPopular } from '~/types/Category';
-import { IProduct } from '~/types/Product';
 
 const Home = () => {
     useDocumentTitle('Home');
@@ -52,7 +51,7 @@ const Home = () => {
                 )}
                 {!LoadingAll && (
                     <CarouselDisplay>
-                        {AllProductsList?.map((item: IProduct, i: number) => {
+                        {AllProductsList?.map((item, i: number) => {
                             return (
                                 <CarouselItem key={i}>
                                     <SmallCard product={item} />
@@ -67,7 +66,7 @@ const Home = () => {
             <WrapperList title='Top Deals Of The Day'>
                 {!LoadingDeals && (
                     <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
-                        {TopDealsProductsList?.map((item: IProduct, i: number) => {
+                        {TopDealsProductsList?.map((item, i: number) => {
                             return (
                                 <CarouselItem key={i}>
                                     <MediumCard product={item} />
@@ -86,9 +85,19 @@ const Home = () => {
 
             {/* @Popular Categories */}
             <WrapperList title='Popular Categories'>
+                {categoriesLoading && (
+                    <div className='flex justify-center gap-5'>
+                        <CategoryPoPularSkeleton />
+                        <CategoryPoPularSkeleton />
+                        <CategoryPoPularSkeleton />
+                        <CategoryPoPularSkeleton />
+                        <CategoryPoPularSkeleton />
+                        <CategoryPoPularSkeleton />
+                    </div>
+                )}
                 {!categoriesLoading && (
                     <div className='flex h-[151px] flex-wrap justify-center gap-5 overflow-y-scroll md:justify-start'>
-                        {categoryList.map((item: ICategoryPopular, index: number) => {
+                        {categoryList?.map((item, index: number) => {
                             return <CategoryCard category={item} key={index} />;
                         })}
                     </div>
@@ -97,7 +106,7 @@ const Home = () => {
 
             {/* @Top Featured Products */}
             <WrapperList title='Top Featured Products' seeMore={{ path: '/products', name: 'View All Products ' }}>
-                {!ProductLatestLoading && <TopFeaturedProducts product={LatestList} />}
+                {!ProductLatestLoading && LatestList && <TopFeaturedProducts product={LatestList} />}
                 {ProductLatestLoading && (
                     <div className='flex justify-between gap-2'>
                         <MediumSkeleton />
@@ -120,7 +129,7 @@ const Home = () => {
                 )}
                 {!TopReviewsLoading && (
                     <CarouselDisplay>
-                        {TopReviewProductsList?.map((item: IProduct, i: number) => {
+                        {TopReviewProductsList?.map((item, i: number) => {
                             return (
                                 <CarouselItem key={i}>
                                     <SmallCard product={item} />

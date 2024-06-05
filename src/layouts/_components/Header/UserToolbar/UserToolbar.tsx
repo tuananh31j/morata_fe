@@ -1,55 +1,57 @@
-import CartDrawer from '~/components/CartDrawer';
-import IconButton from './IconButton';
-import WishListDrawer from '~/components/WishListDrawer';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { IUserLogin } from '~/types/User ';
-import useGetMyCart from '~/hooks/Queries/useGetMyCart';
-import { CartItem } from '~/types/Cart';
+import CartDrawer from '~/components/CartDrawer';
+import WishListDrawer from '~/components/WishListDrawer';
 import UserToolBarSkeleton from '~/components/_common/skeleton/UserToolKit/UserToolBarSkeleton';
+import useGetMyCart from '~/hooks/Queries/useGetMyCart';
+import { RootState } from '~/store/store';
+import IconButton from './IconButton';
 
-export type ItemsCartReduce = {
-    productId: CartItem;
-    quantity: number;
-};
-const UserToolbar = ({ state }: { state: IUserLogin | null }) => {
-    const { data, isLoading } = useGetMyCart(state?._id);
+const UserToolbar = () => {
+    const user = useSelector((state: RootState) => state.authReducer.user);
+    const { data, isLoading } = useGetMyCart(user?._id);
     const totalOrderAmount = data
-        ? data?.data?.items?.reduce(
-              (total: number, product: ItemsCartReduce) => total + product.productId.price * product.quantity,
-              0
-          )
+        ? data?.data?.items?.reduce((total: number, product) => total + product.productId.price * product.quantity, 0)
         : 0;
     const totalQuantityAmount = data
-        ? data?.data?.items?.reduce((total: number, product: ItemsCartReduce) => total + product.quantity, 0)
+        ? data?.data?.items?.reduce((total: number, product) => total + product.quantity, 0)
         : 0;
     return (
         <div className='justify-between gap-2 lg:flex'>
-            {isLoading && (
+            {isLoading && !data && (
                 <>
                     <UserToolBarSkeleton />
                     <UserToolBarSkeleton />
                     <UserToolBarSkeleton />
                 </>
             )}
-            {state && !isLoading && (
+            {user && !isLoading && (
                 <>
                     <Link className='cursor-pointer' to={'account/profile'}>
-                        <IconButton name={`${state.username}`} subName='Hello' icon='UserOutlined' />
+                        <IconButton name={`${user.username}`} subName='Hello' icon='UserOutlined' />
                     </Link>
                     <WishListDrawer>
                         <IconButton count={0} name='my favorite' subName='favorite' icon='HeartOutlined' />
                     </WishListDrawer>
-                    <CartDrawer item={data?.data}>
-                        <IconButton
-                            name={`${totalOrderAmount}$`}
-                            count={totalQuantityAmount}
-                            subName='Your Cart'
-                            icon='ShoppingCartOutlined'
-                        />
-                    </CartDrawer>
+
+                    {data && (
+                        <CartDrawer item={data.data}>
+                            <IconButton
+                                name={`${totalOrderAmount}$`}
+                                count={totalQuantityAmount}
+                                subName='Your Cart'
+                                icon='ShoppingCartOutlined'
+                            />
+                        </CartDrawer>
+                    )}
+                    {!data && (
+                        <Link to={'/auth/login'}>
+                            <IconButton name='0$' count={0} subName='your cart' icon='ShoppingCartOutlined' />
+                        </Link>
+                    )}
                 </>
             )}
-            {!state && !isLoading && (
+            {!user && !isLoading && (
                 <>
                     <Link className='cursor-pointer' to={'/auth/login'}>
                         <IconButton name='account' subName='login' icon='UserOutlined' />

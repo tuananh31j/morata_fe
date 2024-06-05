@@ -1,13 +1,14 @@
+import useGetCategoriesAndBrands from '~/hooks/Queries/useGetCategoriesAndBrands';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import useGetProducts from '~/hooks/Queries/Products/useGetProducts';
+import { useFilters } from '~/hooks/_common/useFilters';
+
 import FilterProducts from './FilterSidebar';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import { Pagination } from 'antd';
-import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import SortAndViewOptions from '~/pages/Clients/Products/SortAndViewOptions';
-import useGetCategoriesAndBrands from '~/hooks/Queries/useGetCategoriesAndBrands';
-import useGetProducts from '~/hooks/Queries/Products/useGetProducts';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import { cn } from '~/utils';
-import { useFilters } from '~/hooks/_common/useFilters';
 
 const Products = () => {
     useDocumentTitle('Products');

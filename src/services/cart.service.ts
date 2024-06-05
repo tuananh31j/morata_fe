@@ -1,26 +1,28 @@
-import { AddCartBody, HandleCart } from '~/types/Cart';
+import { CART_ENDPOINT } from '~/constants/endpoint';
+import { IAxiosResponse } from '~/types/AxiosResponse';
+import { IActionCartPayload, IAddCartPayload } from '~/types/cart/CartPayload';
+import { ICartDataResponse } from '~/types/cart/CartResponse';
 import { instance } from '~/utils/api/axiosIntance';
 
-const endPoint = `carts`;
 export const cartService = {
     async getItemCart(id?: string) {
-        const res = await instance.get(`${endPoint}/${id}`);
+        const res = await instance.get<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.GET}/${id}`);
         return res.data;
     },
-    async addToCart(body: AddCartBody) {
-        const res = await instance.post(`${endPoint}/add`, body);
+    async addToCart(body: IAddCartPayload) {
+        const res = await instance.post<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.ADDCART}`, body);
         return res.data;
     },
-    async increase(body: HandleCart) {
-        const res = await instance.patch(`${endPoint}/increase`, body);
+    async increase(body: IActionCartPayload) {
+        const res = await instance.patch<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.INCREASE}`, body);
         return res.data;
     },
-    async removeCart(body: HandleCart) {
-        const res = await instance.patch(`${endPoint}/remove`, body);
+    async removeCart(body: IActionCartPayload) {
+        const res = await instance.patch<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.REMOVEITEM}`, body);
         return res.data;
     },
-    async decrease(body: HandleCart) {
-        const res = await instance.patch(`${endPoint}/decrease`, body);
+    async decrease(body: IActionCartPayload) {
+        const res = await instance.patch<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.DECREASE}`, body);
         return res.data;
     },
 };

@@ -3,14 +3,14 @@ import { useDispatch } from 'react-redux';
 import { QUERY_KEY } from '~/constants/queryKey';
 import { cartService } from '~/services/cart.service';
 import { setOpen } from '~/store/slice/cartSlice';
-import { AddCartBody } from '~/types/Cart';
+import { IAddCartPayload } from '~/types/cart/CartPayload';
 
 export const useMutationCart = () => {
     const cartDispatch = useDispatch();
     const queryClient = useQueryClient();
-    const { mutate, ...rest } = useMutation({
+    return useMutation({
         mutationKey: ['ADD_TO_CART'],
-        mutationFn: (payload: AddCartBody) => cartService.addToCart(payload),
+        mutationFn: (payload: IAddCartPayload) => cartService.addToCart(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.CART],
@@ -18,5 +18,4 @@ export const useMutationCart = () => {
             cartDispatch(setOpen());
         },
     });
-    return { mutate, ...rest };
 };
