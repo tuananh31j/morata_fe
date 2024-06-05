@@ -5,6 +5,17 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Form, Input, Button } from 'antd';
+import Dashboard from '~/pages/Admins/Dashboard';
+import {
+    ManageUsers,
+    CreateProduct,
+    ProductsList,
+    Suspense,
+    CreateUser,
+    UpdateUser,
+    UpdateProduct,
+    AdminProductDetail,
+} from './LazyRoutes';
 
 // Define the Zod schema
 const schema = z.object({
@@ -72,6 +83,97 @@ const PrivateRoutes = [
             {
                 path: 'ok',
                 element: <MyForm></MyForm>,
+            },
+            {
+                index: true,
+                path: 'dashboard',
+                element: (
+                    <Suspense>
+                        <Dashboard />,
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'dashboard',
+                element: (
+                    <Suspense>
+                        <Dashboard />,
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'product',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <ProductsList />,
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'list',
+                        element: (
+                            <Suspense>
+                                <ProductsList />,
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'create',
+                        element: (
+                            <Suspense>
+                                <CreateProduct />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'edit',
+                        element: (
+                            <Suspense>
+                                <UpdateProduct />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: '1/detail',
+                        element: (
+                            <Suspense>
+                                <AdminProductDetail />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+            {
+                path: 'user',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <ManageUsers />,
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'create',
+                        element: (
+                            <Suspense>
+                                <CreateUser />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'edit',
+                        element: (
+                            <Suspense>
+                                <UpdateUser />
+                            </Suspense>
+                        ),
+                    },
+                ],
             },
         ],
     },

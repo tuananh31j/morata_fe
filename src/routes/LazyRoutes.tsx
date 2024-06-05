@@ -18,6 +18,13 @@ export const RegisterPage = lazy(() => import('~/pages/Clients/AuthPage/Register
 export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
 export const NotFoundPage = lazy(() => import('~/pages/404'));
 export const ErrorPage = lazy(() => import('~/pages/Error'));
+export const ProductsList = lazy(() => import('~/pages/Admins/Product/index'));
+export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
+export const UpdateProduct = lazy(() => import('~/pages/Admins/Product/UpdateProduct'));
+export const AdminProductDetail = lazy(() => import('~/pages/Admins/Product/ProductDetail'));
+export const ManageUsers = lazy(() => import('~/pages/Admins/User/index'));
+export const CreateUser = lazy(() => import('~/pages/Admins/User/CreateUser'));
+export const UpdateUser = lazy(() => import('~/pages/Admins/User/UpdateUser'));
 
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<Loading />}>{children}</React.Suspense>;
