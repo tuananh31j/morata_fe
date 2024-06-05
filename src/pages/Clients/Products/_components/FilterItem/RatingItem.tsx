@@ -1,31 +1,45 @@
-import FilterItem from './FilterItem';
-import { FC } from 'react';
+import FilterWrap from './FilterWrap';
+import { Radio, RadioChangeEvent, Space } from 'antd';
+import { useFilters } from '~/hooks/_common/useFilters';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 
-type IBrandFilterProps = {
-    handleFilterRating: (ratingFilter: { min: number; max: number }) => void;
-};
+const FilterRating = ({ filterName }: { filterName: string }) => {
+    const { updateQueryParam, queryParams } = useFilters();
 
-const RateFilter: FC<IBrandFilterProps> = ({ handleFilterRating }) => {
+    const onChange = (e: RadioChangeEvent) => {
+        updateQueryParam('rating', e.target.value);
+    };
     return (
-        <FilterItem filterName='Rate'>
-            <span onClick={() => handleFilterRating({ min: 1, max: 1 })}>
-                <RatingDisplay rating={1} />
-            </span>
-            <span onClick={() => handleFilterRating({ min: 2, max: 2 })}>
-                <RatingDisplay rating={2} />
-            </span>
-            <span onClick={() => handleFilterRating({ min: 3, max: 3 })}>
-                <RatingDisplay rating={3} />
-            </span>
-            <span onClick={() => handleFilterRating({ min: 4, max: 4 })}>
-                <RatingDisplay rating={4} />
-            </span>
-            <span onClick={() => handleFilterRating({ min: 5, max: 5 })}>
-                <RatingDisplay rating={5} />
-            </span>
-        </FilterItem>
+        <FilterWrap filterName={filterName}>
+            <Radio.Group onChange={onChange} value={queryParams.rating || ''}>
+                <Space direction='vertical'>
+                    <Radio value={JSON.stringify({ min: 1, max: 1 })}>
+                        <span className='cursor-pointer'>
+                            <RatingDisplay rating={1} />
+                        </span>
+                    </Radio>
+                    <Radio value={JSON.stringify({ min: 2, max: 2 })}>
+                        <span className='cursor-pointer'>
+                            <RatingDisplay rating={2} />
+                        </span>
+                    </Radio>
+                    <Radio value={JSON.stringify({ min: 3, max: 3 })}>
+                        <span className='cursor-pointer'>
+                            <RatingDisplay rating={3} />
+                        </span>
+                    </Radio>
+                    <Radio value={JSON.stringify({ min: 4, max: 4 })}>
+                        <span className='cursor-pointer'>
+                            <RatingDisplay rating={4} />
+                        </span>
+                    </Radio>
+                    <Radio value={JSON.stringify({ min: 5, max: 5 })}>
+                        <RatingDisplay rating={5} />
+                    </Radio>
+                </Space>
+            </Radio.Group>
+        </FilterWrap>
     );
 };
 
-export default RateFilter;
+export default FilterRating;

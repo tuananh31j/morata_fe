@@ -50,7 +50,7 @@ const MenuItem = ({ name, id }: { name: string; id: string }) => {
         <li className='group list-none font-semibold'>
             <div className='flex items-center'>
                 <Link
-                    to={`/products?cate=${id}`}
+                    to={`/products?categoryId=${id}`}
                     className=' pr-2  text-[16px] uppercase text-white hover:text-[#16bcdc]   group-hover:border-white '
                 >
                     {name}

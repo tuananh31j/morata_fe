@@ -11,7 +11,7 @@ const useLogout = () => {
     const dispatch = useDispatch();
     const navigator = useNavigate();
     const handleLogout = () => {
-        queryClient.invalidateQueries({
+        queryClient.resetQueries({
             queryKey: [QUERY_KEY.CART],
         });
         localStorage.removeItem('user');

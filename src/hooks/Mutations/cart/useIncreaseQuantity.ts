@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEY } from '~/constants/queryKey';
 import { cartService } from '~/services/cart.service';
 
 export const useMutationIncreaseCart = () => {
@@ -8,7 +9,7 @@ export const useMutationIncreaseCart = () => {
         mutationFn: (payload: any) => cartService.increase(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['CART'],
+                queryKey: [QUERY_KEY.CART],
             });
         },
     });
