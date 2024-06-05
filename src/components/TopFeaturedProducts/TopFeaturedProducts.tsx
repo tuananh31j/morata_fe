@@ -1,4 +1,4 @@
-import { IProduct } from '~/types/product';
+import { IProduct } from '~/types/Product';
 import FeatureCard from '../ProductCard/FeatureCard';
 import MediumCard from '../ProductCard/MediumCard';
 import Slideshow from '../_common/Slideshow';

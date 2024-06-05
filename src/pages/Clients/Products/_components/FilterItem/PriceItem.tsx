@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { InputNumber, Slider } from 'antd';
 import { MinusOutlined } from '@ant-design/icons';
 import _, { debounce, parseInt } from 'lodash';
-import { useFilters } from '~/hooks/_common/useFilters';
+import useFilters from '~/hooks/_common/useFilters';
 
 const PriceFilterItem = () => {
     const [isDispatch, setIsDispatch] = useState<boolean>(false);

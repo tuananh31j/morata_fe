@@ -1,6 +1,6 @@
 import FilterWrap from './FilterWrap';
 import { Radio, RadioChangeEvent, Space } from 'antd';
-import { useFilters } from '~/hooks/_common/useFilters';
+import useFilters from '~/hooks/_common/useFilters';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 
 const FilterRating = ({ filterName }: { filterName: string }) => {

@@ -7,7 +7,7 @@ import RatingFilter from '../_components/FilterItem/RatingItem';
 import PriceFilterItem from '../_components/FilterItem/PriceItem';
 import FilterString from '../_components/FilterItem/FillterString';
 import FilterBox from '../_components/FilterItem/FilterBox';
-import { useFilters } from '~/hooks/_common/useFilters';
+import useFilters from '~/hooks/_common/useFilters';
 
 type IFilterProps = {
     categories: ICategory[];

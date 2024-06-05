@@ -48,7 +48,7 @@ const getBase64 = (file: FileType): Promise<string> =>
         reader.onload = () => resolve(reader.result as string);
         reader.onerror = (error) => reject(error);
     });
-const CreateProduct = () => {
+const UpdateProduct = () => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewThumbnalOpen, setPreviewThumbnalOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -262,4 +262,4 @@ const CreateProduct = () => {
     );
 };
 
-export default CreateProduct;
+export default UpdateProduct;

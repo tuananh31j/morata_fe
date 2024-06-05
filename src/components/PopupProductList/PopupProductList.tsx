@@ -6,7 +6,7 @@ import useWindowSize from '~/hooks/_common/useWindowSize';
 import SmallCard from '../ProductCard/SmallCard';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
-import { IProduct } from '~/types/product';
+import { IProduct } from '~/types/Product';
 
 // fake quantity data get api new product
 const PopupProductList = ({ product, propsLoading }: { product: IProduct[]; propsLoading: boolean }) => {

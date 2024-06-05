@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
 import { RootState } from '~/store/store';
-import { PropTypeProduct } from '~/types/product';
+import { PropTypeProduct } from '~/types/Product';
 import { Currency } from '~/utils';
 import showMessage from '~/utils/ShowMessage';
 import ProductActions from '../_common/ProductActions';

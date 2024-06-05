@@ -5,7 +5,7 @@ import WrapperList from '~/components/_common/WrapperList';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import { useGetRelatedProduct } from '~/hooks/Queries/Products/useGetRelatedProduct';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { IProduct } from '~/types/product';
+import { IProduct } from '~/types/Product';
 
 const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IProduct> }) => {
     const product = relatedProduct.data;

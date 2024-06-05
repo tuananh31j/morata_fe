@@ -5,7 +5,7 @@ import { filterAttributes, resetFilter, updateGrid, updateQueryParams } from '~/
 import { useTypedSelector } from '~/store/store';
 import { IParams } from '~/types/Api';
 
-export const useFilters = () => {
+const useFilters = () => {
     const { pathname } = useLocation();
     const [searchParams] = useSearchParams();
     const dispatch = useDispatch();
@@ -30,6 +30,7 @@ export const useFilters = () => {
 
         dispatch(updateQueryParams({ key, value }));
     };
+
     const updateFilterAttribute = (key: keyof Omit<IParams, 'page' | 'sort'>, value: string) => {
         const newParams = new URLSearchParams(searchParams?.toString());
         newParams.delete('page');
@@ -41,6 +42,7 @@ export const useFilters = () => {
 
         dispatch(filterAttributes({ key, value }));
     };
+
     const updateGridClass = (className: string) => {
         dispatch(updateGrid(className));
     };
@@ -53,11 +55,13 @@ export const useFilters = () => {
     };
 
     return {
+        queryParams,
+        grid,
         updateGridClass,
         updateFilterAttribute,
         updateQueryParam,
-        grid,
-        queryParams,
         resetQueryParams,
     };
 };
+
+export default useFilters;
