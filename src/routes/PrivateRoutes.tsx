@@ -1,6 +1,16 @@
 import AdminLayout from '~/layouts/AdminLayout';
-import { CreateProduct, DashboardPage, ProductsList, Suspense } from './LazyRoutes';
 import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
+import {
+    ManageUsers,
+    CreateProduct,
+    ProductsList,
+    Suspense,
+    CreateUser,
+    UpdateUser,
+    DashboardPage,
+    UpdateProduct,
+    AdminProductDetail,
+} from './LazyRoutes';
 
 const PrivateRoutes = [
     {
@@ -59,6 +69,97 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <CreateProduct />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+            {
+                index: true,
+                path: 'dashboard',
+                element: (
+                    <Suspense>
+                        <DashboardPage />,
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'dashboard',
+                element: (
+                    <Suspense>
+                        <DashboardPage />,
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'product',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <ProductsList />,
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'list',
+                        element: (
+                            <Suspense>
+                                <ProductsList />,
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'create',
+                        element: (
+                            <Suspense>
+                                <CreateProduct />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'edit',
+                        element: (
+                            <Suspense>
+                                <UpdateProduct />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: '1/detail',
+                        element: (
+                            <Suspense>
+                                <AdminProductDetail />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+            {
+                path: 'user',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <ManageUsers />,
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'create',
+                        element: (
+                            <Suspense>
+                                <CreateUser />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'edit',
+                        element: (
+                            <Suspense>
+                                <UpdateUser />
                             </Suspense>
                         ),
                     },

@@ -1,7 +1,7 @@
 import FilterWrap from './FilterWrap';
 import { Radio, RadioChangeEvent, Space } from 'antd';
 import { IParams } from '~/types/Api';
-import { useFilters } from '~/hooks/_common/useFilters';
+import useFilters from '~/hooks/_common/useFilters';
 import { ICategory } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
 

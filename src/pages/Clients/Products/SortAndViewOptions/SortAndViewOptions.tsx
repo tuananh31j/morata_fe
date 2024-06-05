@@ -1,7 +1,7 @@
 import { Select } from 'antd';
 import clsx from 'clsx';
 import GridIcon from '~/components/_common/Icons/GridIcon';
-import { useFilters } from '~/hooks/_common/useFilters';
+import useFilters from '~/hooks/_common/useFilters';
 
 const SortAndViewOptions = () => {
     const { grid, updateGridClass } = useFilters();

@@ -1,4 +1,4 @@
-import { EllipsisOutlined, WarningOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, PlusOutlined, VerticalAlignBottomOutlined, WarningOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
@@ -11,7 +11,7 @@ type DataType = {
     thumbnail: string;
     price: number;
     stock: number;
-    category: string[];
+    category: string;
 };
 
 const ManageProducts = () => {
@@ -65,21 +65,16 @@ const ManageProducts = () => {
             title: 'Category',
             key: 'category',
             dataIndex: 'category',
-            render: (_, { category }) => (
-                <>
-                    {category.map((cat) => {
-                        let color = cat.length > 5 ? 'geekblue' : 'green';
-                        if (cat === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={cat}>
-                                {cat.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
+            render: (_, cat) => {
+                const color = 'geekblue';
+                return (
+                    <>
+                        <Tag color={color} key={cat.key}>
+                            {cat.category.toUpperCase()}
+                        </Tag>
+                    </>
+                );
+            },
         },
         {
             title: 'Action',
@@ -94,21 +89,14 @@ const ManageProducts = () => {
                             Delete
                         </Button>
                     </Tooltip>
-                </Space>
-            ),
-        },
-        {
-            title: 'Detail',
-            key: 'detail',
-            render: (_, record) => (
-                <Space size='middle'>
-                    <Tooltip title='Detail'>
+                    <Tooltip title='Get detail'>
                         <Button
                             type='link'
+                            href={`/admin/product/1/detail`}
                             icon={
                                 <EllipsisOutlined
                                     className='cursor-pointer rounded-full p-2  transition-colors hover:bg-gray-100'
-                                    style={{ fontSize: '1.5rem' }}
+                                    style={{ fontSize: '1.6rem' }}
                                 />
                             }
                         ></Button>
@@ -124,7 +112,7 @@ const ManageProducts = () => {
             thumbnail: 'https://picsum.photos/300/300',
             price: 200,
             stock: 10,
-            category: ['nice', 'developer'],
+            category: 'developer',
         },
         {
             key: '2',
@@ -132,7 +120,7 @@ const ManageProducts = () => {
             thumbnail: 'https://picsum.photos/300/300',
             price: 200,
             stock: 10,
-            category: ['loser'],
+            category: 'developer',
         },
         {
             key: '3',
@@ -140,7 +128,7 @@ const ManageProducts = () => {
             thumbnail: 'https://picsum.photos/300/300',
             price: 200,
             stock: 10,
-            category: ['cool', 'teacher'],
+            category: 'blue sky',
         },
         {
             key: '4',
@@ -148,7 +136,7 @@ const ManageProducts = () => {
             thumbnail: 'https://picsum.photos/300/300',
             price: 200,
             stock: 10,
-            category: ['cool', 'teacher', 'blue sky'],
+            category: 'blue sky',
         },
         {
             key: '5',
@@ -156,7 +144,7 @@ const ManageProducts = () => {
             thumbnail: 'https://picsum.photos/300/300',
             price: 200,
             stock: 10,
-            category: ['cool', 'teacher', 'blue sky'],
+            category: 'blue sky',
         },
         {
             key: '6',
@@ -164,7 +152,7 @@ const ManageProducts = () => {
             thumbnail: 'https://picsum.photos/300/300',
             price: 200,
             stock: 10,
-            category: ['cool', 'teacher', 'blue sky'],
+            category: 'blue sky',
         },
     ];
     const rowSelection = {
@@ -187,16 +175,28 @@ const ManageProducts = () => {
         const search = e.target.value;
         setInputSearchValue(search);
     };
-
     return (
         <div className='mx-6 mt-[100px]'>
-            <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500'>
-                <h2 className='mb-5 ml-2 mt-4 font-medium text-[#344767]'>Manage Products</h2>
-                <div className='flex justify-between'>
-                    <Button type='primary' href='/admin/products/add' className='mx-2'>
-                        Add new product
+            <div className='my-6 ml-2 flex items-center justify-between py-2 '>
+                <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Products</h1>
+                <Button size='large' icon={<PlusOutlined />} type='primary' href='/admin/products/add' className='mx-2'>
+                    Add product
+                </Button>
+            </div>
+            <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500 '>
+                <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] dark:text-white dark:opacity-80'>
+                    Inventory items
+                </h2>
+                <div className='my-2 flex justify-between'>
+                    <Search
+                        placeholder='Search name...'
+                        size='large'
+                        className='w-[18.75rem]'
+                        onChange={handleSearch}
+                    />
+                    <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
+                        Export
                     </Button>
-                    <Search placeholder='Search name...' size='middle' className='w-56' onChange={handleSearch} />
                 </div>
                 <Table
                     rowSelection={{

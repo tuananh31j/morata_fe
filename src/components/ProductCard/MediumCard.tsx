@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ProgressBar from '~/components/_common/ProgressBar';
-import { PropTypeProduct } from '~/types/product';
+import { PropTypeProduct } from '~/types/Product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
