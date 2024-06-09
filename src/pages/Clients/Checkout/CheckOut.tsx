@@ -1,45 +1,31 @@
 import { Button, ConfigProvider, Form, Input, Select } from 'antd';
-import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useMutationCreateOrder } from '~/hooks/Mutations/Checkout/useCreateOrder';
+import { useMutationCheckOutSession } from '~/hooks/Mutations/Checkout/useCreateOrderSession';
 import useGetMyCart from '~/hooks/Queries/useGetMyCart';
 import { RootState } from '~/store/store';
+import { ICheckoutForm } from '~/types/checkout/Checkout';
 import showMessage from '~/utils/ShowMessage';
 
-const demoDataProduct = [
-    {
-        name: 'Blink Home Security Camera System',
-        image: 'https://cdn.shopify.com/s/files/1/0836/9845/0750/files/55_64x64.png?v=1702563441',
-        price: 162,
-        quantity: 1,
-    },
-    {
-        name: 'Apple iPhone 11 Pro 256GB Space Gray – Unlocked',
-        price: 210,
-        image: 'https://cdn.shopify.com/s/files/1/0836/9845/0750/products/products_5_1_64x64.jpg?v=1697644653',
-        quantity: 1,
-    },
-];
-
 const CheckOut = () => {
-    // demo use hook useState
     const user = useSelector((state: RootState) => state.authReducer.user);
+    const { mutate: cashCheckout } = useMutationCreateOrder();
+    const { mutate: stripeCheckout } = useMutationCheckOutSession();
     const { data: orderItem } = useGetMyCart(user?._id);
-    const responsePayloadCheckout = () => {
-        return orderItem?.data.items.map((item) => ({
-            name: item.productId.name,
-            price: item.productId.price,
-            quantity: item.quantity,
-            image: item.productId.thumbnail,
-        }));
-    };
+    const responsePayloadCheckout = orderItem?.data.items.map((item) => ({
+        name: item.productId.name,
+        price: item.productId.price,
+        quantity: item.quantity,
+        image: item.productId.thumbnail,
+    }));
     const totalPrice = orderItem
         ? orderItem?.data?.items?.reduce(
               (total: number, product) => total + product.productId.price * product.quantity,
               0
           )
         : 0;
-    const handleOnsubmit = (value: any) => {
+    const handleOnsubmit = (value: ICheckoutForm) => {
         if (totalPrice > 1000) {
             showMessage(
                 'Your order has exceeded the checkout limit of $1000, please proceed to online checkout!',
@@ -48,20 +34,23 @@ const CheckOut = () => {
             );
         } else {
             const bodyData = {
-                customerInfor: {
+                customerInfo: {
                     name: user?.username,
                     email: user?.email,
                     phone: value.phone,
                 },
                 shippingAddress: value,
-                items: responsePayloadCheckout(),
+                items: responsePayloadCheckout,
                 totalPrice,
+                paymentMethod: 'cash',
             };
-            console.log(bodyData);
+            cashCheckout(bodyData);
         }
     };
     const handlePayStripe = () => {
-        console.log('ok chờ call api nhé');
+        stripeCheckout({
+            items: responsePayloadCheckout,
+        });
     };
     return (
         <>
@@ -88,8 +77,18 @@ const CheckOut = () => {
                             <span className='font-medium'>Stripe Pay</span>
                         </button>
                     </div>
-                    <h3 className='text-center text-[#777777]'>Or</h3>
-                    <hr />
+                    {totalPrice < 1000 ? (
+                        <>
+                            <h3 className='text-center text-[#777777]'>Or</h3>
+                            <hr />
+                        </>
+                    ) : (
+                        <>
+                            <h3 className='text-center text-red-500'>
+                                Your order has exceeded the checkout limit of $1000, please proceed to online checkout!
+                            </h3>
+                        </>
+                    )}
                     <Form name='checkout' onFinish={handleOnsubmit} layout='vertical' style={{ maxWidth: 600 }}>
                         <h3 className='text-[21px] font-semibold'>Contact</h3>
                         <div className='mt-[15px]'>
@@ -98,7 +97,11 @@ const CheckOut = () => {
                                 name='phone'
                                 rules={[{ required: true, message: 'Enter your phone number' }]}
                             >
-                                <Input placeholder='Email or phone number' className='mt-[5px] h-[48px]' />
+                                <Input
+                                    disabled={totalPrice > 1000}
+                                    placeholder='Email or phone number'
+                                    className='mt-[5px] h-[48px]'
+                                />
                             </Form.Item>
                         </div>
                         <h3 className='text-[21px] font-semibold'>Delivery</h3>
@@ -109,7 +112,11 @@ const CheckOut = () => {
                                 label='Country'
                                 rules={[{ required: true, message: 'Please select gender!' }]}
                             >
-                                <Select placeholder='select your country' className='h-[48px]'>
+                                <Select
+                                    disabled={totalPrice > 1000}
+                                    placeholder='select your country'
+                                    className='h-[48px]'
+                                >
                                     <Select.Option value='Việt Nam'>Viet Nam</Select.Option>
                                 </Select>
                             </Form.Item>
@@ -120,7 +127,11 @@ const CheckOut = () => {
                                 name='city'
                                 rules={[{ required: true, message: 'Enter an email or phone number' }]}
                             >
-                                <Select placeholder='select your city' className='h-[48px]'>
+                                <Select
+                                    disabled={totalPrice > 1000}
+                                    placeholder='select your city'
+                                    className='h-[48px]'
+                                >
                                     <Select.Option value='Hà Nội'>Ha Noi</Select.Option>
                                     <Select.Option value='Hồ Chí Minh'>Ho Chi Minh</Select.Option>
                                 </Select>
@@ -132,7 +143,11 @@ const CheckOut = () => {
                                 name='state'
                                 rules={[{ required: true, message: 'Enter District' }]}
                             >
-                                <Input placeholder='District' className='mt-[5px] h-[48px]' />
+                                <Input
+                                    disabled={totalPrice > 1000}
+                                    placeholder='District'
+                                    className='mt-[5px] h-[48px]'
+                                />
                             </Form.Item>
                         </div>
                         <div className=''>
@@ -141,7 +156,11 @@ const CheckOut = () => {
                                 name='line1'
                                 rules={[{ required: true, message: 'Enter Street Address' }]}
                             >
-                                <Input placeholder='Street Address' className='mt-[5px] h-[48px]' />
+                                <Input
+                                    disabled={totalPrice > 1000}
+                                    placeholder='Street Address'
+                                    className='mt-[5px] h-[48px]'
+                                />
                             </Form.Item>
                         </div>
                         <div className=''>
@@ -150,7 +169,11 @@ const CheckOut = () => {
                                 name='line2'
                                 rules={[{ required: true, message: 'Enter Apartment, suite, etc.r' }]}
                             >
-                                <Input placeholder='Apartment, suite, etc' className='mt-[5px] h-[48px]' />
+                                <Input
+                                    disabled={totalPrice > 1000}
+                                    placeholder='Apartment, suite, etc'
+                                    className='mt-[5px] h-[48px]'
+                                />
                             </Form.Item>
                         </div>
                         <div className=''>
@@ -159,7 +182,11 @@ const CheckOut = () => {
                                 name='postal_code'
                                 rules={[{ required: true, message: 'Enter Zip Code' }]}
                             >
-                                <Input placeholder='0000000' className='mt-[5px] h-[48px]' />
+                                <Input
+                                    disabled={totalPrice > 1000}
+                                    placeholder='0000000'
+                                    className='mt-[5px] h-[48px]'
+                                />
                             </Form.Item>
                         </div>
 
@@ -176,8 +203,9 @@ const CheckOut = () => {
                                 }}
                             >
                                 <Button
+                                    disabled={totalPrice > 1000}
                                     htmlType='submit'
-                                    className='h-[58px] w-full text-[16px] font-semibold text-white'
+                                    className='h-[58px] w-full text-[16px] font-semibold text-white disabled:bg-[#3c535e] disabled:bg-opacity-70'
                                 >
                                     Order Now
                                 </Button>
@@ -206,6 +234,11 @@ const CheckOut = () => {
                                 </div>
                             </div>
                         ))}
+                        {!orderItem && (
+                            <div>
+                                <h3 className='text-center font-medium'>Not found product in your cart</h3>
+                            </div>
+                        )}
                         <div className='mt-[44px]'>
                             <div className='flex items-center justify-between'>
                                 <h3 className='text-[14px]'>Subtotal</h3>

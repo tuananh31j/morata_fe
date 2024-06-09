@@ -25,4 +25,7 @@ export const cartService = {
         const res = await instance.patch<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.DECREASE}`, body);
         return res.data;
     },
+    async removeAllCart(body: { userId: string }) {
+        await instance.patch(`${CART_ENDPOINT.GET}/removeAll`, body);
+    },
 };

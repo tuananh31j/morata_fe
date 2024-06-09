@@ -150,7 +150,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-                <div className='flex grid-cols-[280px,0.9fr,400px] items-center justify-between gap-10 border-[#3b50a3]  bg-blue-900 pt-5 lg:grid lg:border-b lg:p-0 lg:py-5'>
+                <div className='flex grid-cols-[280px,0.9fr,420px] items-center justify-between gap-10 border-[#3b50a3]  bg-blue-900 pt-5 lg:grid lg:border-b lg:p-0 lg:py-5'>
                     {/* icon-menu-mobi */}
                     <div className='lg:hidden'>
                         <Space>

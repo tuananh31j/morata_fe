@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import LoadingBar from '~/components/_common/Loading/LoadingBar';
 import { useMutationDecreaseCart } from '~/hooks/Mutations/cart/useDecreaseQuantity';
 import { useMutationIncreaseCart } from '~/hooks/Mutations/cart/useIncreaseQuantity';
@@ -12,7 +12,7 @@ import { useMutationRemoveItem } from '~/hooks/Mutations/cart/useRemoveOne';
 import { setClose, setOpen } from '~/store/slice/cartSlice';
 import { RootState } from '~/store/store';
 import { ICartDataResponse } from '~/types/cart/CartResponse';
-import { Currency } from '~/utils';
+import { Currency, cn } from '~/utils';
 
 type PropsType = {
     children: React.ReactNode;
@@ -24,8 +24,14 @@ const CartDrawer = ({ children, item }: PropsType) => {
     const { mutate: decrease } = useMutationDecreaseCart();
     const cart = useSelector((state: RootState) => state.cartReducer.cartOpen);
     const cartDispatch = useDispatch();
+    const location = useLocation();
     const onClose = () => {
         cartDispatch(setClose());
+    };
+    const handleOpenCart = () => {
+        if (location.pathname !== '/checkout') {
+            cartDispatch(setOpen());
+        }
     };
     const products = item ? item.items : null;
     const freeShippingThreshold = 1000;
@@ -70,7 +76,13 @@ const CartDrawer = ({ children, item }: PropsType) => {
     const debouncedRemove = debounce((id: string) => handleRemoveCart(id), 0);
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <span className='cursor-pointer' onClick={() => cartDispatch(setOpen())}>
+            <span
+                className={cn({
+                    ['cursor-pointer']: location.pathname !== '/checkout',
+                    ['cursor-not-allowed']: location.pathname === '/checkout',
+                })}
+                onClick={handleOpenCart}
+            >
                 {children}
             </span>
             <Drawer
