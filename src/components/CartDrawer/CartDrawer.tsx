@@ -1,5 +1,5 @@
 import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, ConfigProvider, Drawer, Empty, Image, InputNumber, List, Slider, Spin } from 'antd';
+import { Button, Drawer, Empty, Image, InputNumber, List, Slider } from 'antd';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';

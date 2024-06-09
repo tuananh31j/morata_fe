@@ -50,7 +50,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                     >
                         <Link
                             to={`/products/${product._id}?categoryId=${product.categoryId}`}
-                            className='flex w-full justify-center overflow-hidden'
+                            className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                         >
                             <img
                                 loading='lazy'
