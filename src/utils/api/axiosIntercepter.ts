@@ -5,6 +5,7 @@ import AuthService from '~/services/auth.service';
 
 instance.interceptors.request.use((config) => {
     const accessToken = getAccessToken();
+    console.log(accessToken);
 
     if (config && config.headers && accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;

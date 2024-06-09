@@ -27,7 +27,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
     const onClose = () => {
         cartDispatch(setClose());
     };
-    const products = item?.items;
+    const products = item ? item.items : null;
     const freeShippingThreshold = 1000;
     const totalOrderAmount = products
         ? products?.reduce((total: number, product) => total + product.productId.price * product.quantity, 0)
@@ -92,19 +92,24 @@ const CartDrawer = ({ children, item }: PropsType) => {
                 open={cart}
                 className={`relative z-10 ${isPending ? 'cursor-not-allowed' : ''} duration-300`}
             >
-                {!products ||
-                    (products.length < 1 && (
-                        <div className='flex flex-col items-center'>
-                            <Empty description={false} />
-                            <p className='text-center text-xl font-medium leading-6'>Your cart is empty.</p>
-                            <button
-                                onClick={onClose}
-                                className='mt-12 h-[48px] bg-[#222222] px-12 font-bold text-white'
-                            >
-                                RETURN TO SHOP
-                            </button>
-                        </div>
-                    ))}
+                {!products && (
+                    <div className='flex flex-col items-center'>
+                        <Empty description={false} />
+                        <p className='text-center text-xl font-medium leading-6'>Your cart is empty.</p>
+                        <button onClick={onClose} className='mt-12 h-[48px] bg-[#222222] px-12 font-bold text-white'>
+                            RETURN TO SHOP
+                        </button>
+                    </div>
+                )}
+                {products && products.length < 1 && (
+                    <div className='flex flex-col items-center'>
+                        <Empty description={false} />
+                        <p className='text-center text-xl font-medium leading-6'>Your cart is empty.</p>
+                        <button onClick={onClose} className='mt-12 h-[48px] bg-[#222222] px-12 font-bold text-white'>
+                            RETURN TO SHOP
+                        </button>
+                    </div>
+                )}
                 {products && products.length > 0 && (
                     <>
                         <List
@@ -219,13 +224,16 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 </Button>
                             </div>
                             <div className='mt-6'>
-                                <Button
-                                    className='h-[50px] bg-[#222222] text-sm font-semibold uppercase text-white'
-                                    type='default'
-                                    block
-                                >
-                                    Checkout
-                                </Button>
+                                <Link to={'/checkout'}>
+                                    <Button
+                                        onClick={onClose}
+                                        className='h-[50px] bg-[#222222] text-sm font-semibold uppercase text-white'
+                                        type='default'
+                                        block
+                                    >
+                                        CheckOut
+                                    </Button>
+                                </Link>
                             </div>
                             <div className='mt-6 flex justify-center text-center text-sm text-gray-500'>
                                 <p>
