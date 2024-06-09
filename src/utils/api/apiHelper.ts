@@ -11,7 +11,7 @@ export type IUser = {
 };
 
 export const getAccessToken = () => {
-    return localStorage.getItem('accesssToken');
+    return localStorage.getItem('accessToken');
 };
 
 export const setUserInfo = (data: IUser) => {

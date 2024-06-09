@@ -2,7 +2,7 @@ import { CART_ENDPOINT } from '~/constants/endpoint';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IActionCartPayload, IAddCartPayload } from '~/types/cart/CartPayload';
 import { ICartDataResponse } from '~/types/cart/CartResponse';
-import { instance } from '~/utils/api/axiosIntance';
+import instance from '~/utils/api/axiosIntance';
 
 export const cartService = {
     async getItemCart(id?: string) {

@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { QUERY_KEY } from '~/constants/queryKey';
-import useGetMyCart from '~/hooks/Queries/useGetMyCart';
 import AuthService from '~/services/auth.service';
 import { login } from '~/store/slice/authSlice';
 import { LoginFormData } from '~/types/Schemas/Auth';

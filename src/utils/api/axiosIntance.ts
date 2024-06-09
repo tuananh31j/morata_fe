@@ -1,8 +1,9 @@
-/* eslint-disable no-underscore-dangle */
 import axios from 'axios';
-import { getContentType } from './apiHelper';
+import { getAccessToken, getContentType, setAccessToken } from './apiHelper';
 import queryString from 'query-string';
 import { IParams } from '~/types/Api';
+import { AUTH_ENDPOINT } from '~/constants/endpoint';
+import { IAxiosResponse } from '~/types/AxiosResponse';
 
 const axiosOptions = {
     baseURL: import.meta.env.VITE_REACT_API_URL,
@@ -10,6 +11,44 @@ const axiosOptions = {
     withCredentials: true,
     paramsSerializer: (params: IParams) => queryString.stringify(params),
 };
+const instance = axios.create(axiosOptions);
 
-export const axiosClassic = axios.create(axiosOptions);
-export const instance = axios.create(axiosOptions);
+instance.interceptors.request.use(
+    (config) => {
+        const accessToken = getAccessToken();
+        console.log(accessToken);
+
+        if (config && config.headers && accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+            console.log(accessToken);
+        }
+
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+instance.interceptors.response.use(
+    (config) => config,
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response.status === 401 && error.config && !originalRequest._isRetry) {
+            originalRequest._isRetry = true;
+
+            try {
+                const { data } = await instance.post<IAxiosResponse<{ accessToken: string }>>(
+                    `${AUTH_ENDPOINT.REFRESH}`
+                );
+                setAccessToken(data.data.accessToken);
+                originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`;
+                return instance.request(originalRequest);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        throw error;
+    }
+);
+
+export default instance;
