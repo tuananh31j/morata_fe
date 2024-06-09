@@ -7,7 +7,7 @@ import {
     MenuOutlined,
     RedoOutlined,
 } from '@ant-design/icons';
-import { Button, ConfigProvider } from 'antd';
+import { Button, ConfigProvider, InputNumber } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -45,11 +45,15 @@ const ProductDetails = () => {
     const handleDecrement = () => {
         if (valueQuantity > 1) setQuantityValue(valueQuantity - 1);
     };
+    const onChangeInputQuantity = (e: number | null) => {
+        setQuantityValue(e ? e : 1);
+    };
     const handleAddToCart = (data: Omit<IAddCartPayload, 'userId'>) => {
         if (user) {
             const bodyAddToCart = {
                 ...data,
                 userId: user._id,
+                quantity: valueQuantity,
             };
             mutate(bodyAddToCart);
             setQuantityValue(1);
@@ -139,7 +143,14 @@ const ProductDetails = () => {
                                             >
                                                 -
                                             </Button>
-                                            <span className='px-2'>{valueQuantity}</span>
+                                            <InputNumber
+                                                min={1}
+                                                max={product.stock}
+                                                onChange={onChangeInputQuantity}
+                                                className='flex h-[48px] items-center'
+                                                value={valueQuantity}
+                                                controls={false}
+                                            />
                                             <Button
                                                 onClick={handleIncrement}
                                                 disabled={valueQuantity === product.stock}

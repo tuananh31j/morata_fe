@@ -28,3 +28,8 @@ export const AUTH_ENDPOINT = {
     REFRESH: '/auth/refresh',
     LOGOUT: '/auth/logout',
 };
+
+export const CHECKOUT_ENDPOINT = {
+    ORDERS: '/orders',
+    SESSION: '/create-checkout-session',
+};

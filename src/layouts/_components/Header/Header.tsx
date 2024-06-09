@@ -90,7 +90,7 @@ const Header = () => {
                         <div className='lg: inline-block text-left'>
                             <div>
                                 <Dropdown menu={{ items, onClick }}>
-                                    <button onClick={(e) => e.preventDefault()}>
+                                    <span onClick={(e) => e.preventDefault()}>
                                         <Space style={{ color: 'white' }}>
                                             <img
                                                 loading='lazy'
@@ -103,21 +103,21 @@ const Header = () => {
                                                 <CaretIcon />
                                             </div>
                                         </Space>
-                                    </button>
+                                    </span>
                                 </Dropdown>
                             </div>
                         </div>
                         <div className='lg: inline-block text-left'>
                             <div>
                                 <Dropdown menu={{ items, onClick }}>
-                                    <button onClick={(e) => e.preventDefault()}>
+                                    <span onClick={(e) => e.preventDefault()}>
                                         <Space style={{ color: 'white' }}>
                                             United States(USD $)
                                             <div className='border-r border-[#3b50a3] pr-5'>
                                                 <CaretIcon />
                                             </div>
                                         </Space>
-                                    </button>
+                                    </span>
                                 </Dropdown>
                             </div>
                         </div>
@@ -221,14 +221,14 @@ const Header = () => {
                             >
                                 <div>
                                     <Dropdown menu={{ items, onClick }}>
-                                        <button onClick={(e) => e.preventDefault()}>
+                                        <span onClick={(e) => e.preventDefault()}>
                                             <Space style={{ color: 'black' }}>
                                                 <h3 className='ml-4 mr-14'>All Categories</h3>
                                                 <div className='border-r border-[#3b50a3] pr-5'>
                                                     <CaretIcon />
                                                 </div>
                                             </Space>
-                                        </button>
+                                        </span>
                                     </Dropdown>
                                 </div>
                             </button>

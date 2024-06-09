@@ -3,6 +3,7 @@ import useWindowSize from '~/hooks/_common/useWindowSize';
 import DescriptionContent from './DescriptionContent';
 import AddInformationContent from './AddInformationContent';
 import ShipReturnContent from './ShipReturnContent';
+import ReviewsContent from '~/pages/Clients/ProductDetails/_components/Description/ReviewsContent';
 
 const { Panel } = Collapse;
 const DescriptionProduct = () => {
@@ -43,9 +44,7 @@ const DescriptionProduct = () => {
                         </Tabs.TabPane>
                         {/* REVIEWS */}
                         <Tabs.TabPane tab='REVIEWS' key='4'>
-                            <div className='product-desc-content'>
-                                <p>Product Description</p>
-                            </div>
+                            <ReviewsContent />
                         </Tabs.TabPane>
                     </Tabs>
                 )}
@@ -61,7 +60,7 @@ const DescriptionProduct = () => {
                             <ShipReturnContent />
                         </Panel>
                         <Panel header='REVIEWS' key='4'>
-                            <span>demo</span>
+                            <ReviewsContent />
                         </Panel>
                     </Collapse>
                 )}

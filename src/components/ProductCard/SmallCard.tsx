@@ -11,9 +11,10 @@ import showMessage from '~/utils/ShowMessage';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
 import Animation from '../_common/Animation';
+import { Spin } from 'antd';
 
 const SmallCard = ({ product }: PropTypeProduct) => {
-    const { mutate } = useMutationCart();
+    const { mutate, isPending } = useMutationCart();
     const navigate = useNavigate();
     // console.log('from smallcard', product);
     const newPrice = product.price * (1 + product.discountPercentage / 100);
@@ -49,7 +50,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                     >
                         <Link
                             to={`/products/${product._id}?categoryId=${product.categoryId}`}
-                            className='flex w-full justify-center overflow-hidden'
+                            className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                         >
                             <img
                                 loading='lazy'
@@ -98,7 +99,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             onClick={() => debounceAddToCart(product._id)}
                             className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
                         >
-                            Add to Cart
+                            {isPending ? <Spin /> : 'Add to cart'}
                         </button>
                     </div>
 

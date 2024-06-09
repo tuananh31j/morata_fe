@@ -71,7 +71,9 @@ const PublicRoutes = [
                 path: 'checkout',
                 element: (
                     <Suspense>
-                        <CheckoutPage />
+                        <ProtectedRouteAuth>
+                            <CheckoutPage />
+                        </ProtectedRouteAuth>
                     </Suspense>
                 ),
             },

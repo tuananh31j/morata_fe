@@ -34,21 +34,14 @@ const UserToolbar = () => {
                         <IconButton count={0} name='my favorite' subName='favorite' icon='HeartOutlined' />
                     </WishListDrawer>
 
-                    {data && (
-                        <CartDrawer item={data.data}>
-                            <IconButton
-                                name={`${totalOrderAmount}$`}
-                                count={totalQuantityAmount}
-                                subName='Your Cart'
-                                icon='ShoppingCartOutlined'
-                            />
-                        </CartDrawer>
-                    )}
-                    {!data && (
-                        <Link to={'/auth/login'}>
-                            <IconButton name='0$' count={0} subName='your cart' icon='ShoppingCartOutlined' />
-                        </Link>
-                    )}
+                    <CartDrawer item={data ? data.data : undefined}>
+                        <IconButton
+                            name={`${totalOrderAmount}$`}
+                            count={totalQuantityAmount}
+                            subName='Your Cart'
+                            icon='ShoppingCartOutlined'
+                        />
+                    </CartDrawer>
                 </>
             )}
             {!user && !isLoading && (

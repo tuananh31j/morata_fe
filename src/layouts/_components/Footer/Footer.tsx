@@ -48,13 +48,7 @@ const Footer = () => {
                                     <li className='flex h-[40px] w-[40px] justify-center rounded-[10px] bg-[#e92e2e] text-white'>
                                         <PinterestOutlined />
                                     </li>
-                                    <li className='flex h-[40px] w-[40px] justify-center overflow-hidden rounded-[10px] bg-[#203864] text-white'>
-                                        <img
-                                            loading='lazy'
-                                            src='https://cdn.freebiesupply.com/logos/large/2x/tumblr-icon-logo-png-transparent.png'
-                                            alt=''
-                                        />
-                                    </li>
+
                                     <li className='flex h-[40px] w-[40px] justify-center rounded-[10px] bg-[#f6ea3c] text-white'>
                                         <BellFilled />
                                     </li>

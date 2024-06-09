@@ -6,7 +6,8 @@ const useGetMyCart = (id?: string) => {
     return useQuery({
         queryKey: [QUERY_KEY.CART],
         queryFn: () => cartService.getItemCart(id),
-        retry: 1,
+        retry: 0,
+        enabled: !!id,
     });
 };
 
