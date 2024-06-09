@@ -1,10 +1,11 @@
 import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Empty, Image, InputNumber, List, Slider } from 'antd';
+import { Button, ConfigProvider, Drawer, Empty, Image, InputNumber, List, Slider, Spin } from 'antd';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import LoadingBar from '~/components/_common/Loading/LoadingBar';
 import { useMutationDecreaseCart } from '~/hooks/Mutations/cart/useDecreaseQuantity';
 import { useMutationIncreaseCart } from '~/hooks/Mutations/cart/useIncreaseQuantity';
 import { useMutationRemoveItem } from '~/hooks/Mutations/cart/useRemoveOne';
@@ -15,11 +16,11 @@ import { Currency } from '~/utils';
 
 type PropsType = {
     children: React.ReactNode;
-    item: ICartDataResponse;
+    item?: ICartDataResponse;
 };
 const CartDrawer = ({ children, item }: PropsType) => {
     const { mutate: increase } = useMutationIncreaseCart();
-    const { mutate: removeItem } = useMutationRemoveItem();
+    const { mutate: removeItem, isPending } = useMutationRemoveItem();
     const { mutate: decrease } = useMutationDecreaseCart();
     const cart = useSelector((state: RootState) => state.cartReducer.cartOpen);
     const cartDispatch = useDispatch();
@@ -28,10 +29,9 @@ const CartDrawer = ({ children, item }: PropsType) => {
     };
     const products = item?.items;
     const freeShippingThreshold = 1000;
-    const totalOrderAmount = products?.reduce(
-        (total: number, product) => total + product.productId.price * product.quantity,
-        0
-    );
+    const totalOrderAmount = products
+        ? products?.reduce((total: number, product) => total + product.productId.price * product.quantity, 0)
+        : 0;
     const marks = {
         0: `$0`,
         [totalOrderAmount]: `$${totalOrderAmount}`,
@@ -75,30 +75,37 @@ const CartDrawer = ({ children, item }: PropsType) => {
             </span>
             <Drawer
                 title={
-                    <div className='flex items-center justify-between'>
-                        <div className='font-bold uppercase text-[#222222]'>Shopping cart</div>
-                        <Button type='text' onClick={onClose}>
-                            <CloseOutlined className='transform text-xl transition duration-500 hover:rotate-180' />
-                        </Button>
-                    </div>
+                    <>
+                        <div className='h-[4px] w-full'>{isPending && <LoadingBar />}</div>
+                        <div className='flex items-center justify-between'>
+                            <div className='font-bold uppercase text-[#222222]'>Shopping cart</div>
+                            <Button type='text' onClick={onClose}>
+                                <CloseOutlined className='transform text-xl transition duration-500 hover:rotate-180' />
+                            </Button>
+                        </div>
+                    </>
                 }
                 width={450}
                 placement='right'
                 closable={false}
                 onClose={onClose}
                 open={cart}
-                className='relative z-10 '
+                className={`relative z-10 ${isPending ? 'cursor-not-allowed' : ''} duration-300`}
             >
-                {products?.length < 1 && (
-                    <div className='flex flex-col items-center'>
-                        <Empty description={false} />
-                        <p className='text-center text-xl font-medium leading-6'>Your cart is empty.</p>
-                        <button onClick={onClose} className='mt-12 h-[48px] bg-[#222222] px-12 font-bold text-white'>
-                            RETURN TO SHOP
-                        </button>
-                    </div>
-                )}
-                {products?.length > 0 && (
+                {!products ||
+                    (products.length < 1 && (
+                        <div className='flex flex-col items-center'>
+                            <Empty description={false} />
+                            <p className='text-center text-xl font-medium leading-6'>Your cart is empty.</p>
+                            <button
+                                onClick={onClose}
+                                className='mt-12 h-[48px] bg-[#222222] px-12 font-bold text-white'
+                            >
+                                RETURN TO SHOP
+                            </button>
+                        </div>
+                    ))}
+                {products && products.length > 0 && (
                     <>
                         <List
                             itemLayout='vertical'
