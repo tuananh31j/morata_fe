@@ -20,7 +20,7 @@ const initialState: IInitialState = {
     grid: '',
     queryParams: {
         page: '1',
-        limit: '2',
+        limit: '8',
         sort: '',
         price: '',
         rating: '',

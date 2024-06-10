@@ -20,7 +20,7 @@ const Products = () => {
     const onPageChange = (page: number) => {
         updateQueryParam('page', String(page));
     };
-
+    console.log(products?.data.totalPages);
     return (
         <>
             {/* <WrapperList border title='Popular Categories'>
@@ -62,7 +62,7 @@ const Products = () => {
                             <Pagination
                                 current={Number(queryParams.page)}
                                 defaultPageSize={Number(queryParams.limit)}
-                                total={products.data.totalPages}
+                                total={products.data.totalDocs}
                                 onChange={onPageChange}
                             />
                         )}

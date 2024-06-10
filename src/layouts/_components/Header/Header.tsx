@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import { CaretIcon, SearchIcon } from '~/components/_common/Icons';
 import Navbar from './Navbar';
 import UserToolbar from './UserToolbar';
-
+import SearchSkeleton from '~/components/_common/skeleton/SearchSkeleton';
+import { motion } from 'framer-motion';
 // navbar-mobi
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(label: React.ReactNode, key?: React.Key | null, children?: MenuItem[], type?: 'group'): MenuItem {
@@ -45,6 +46,7 @@ const itemss: MenuItem[] = [
 // end
 
 const Header = () => {
+    const [searchValue, setSearchValue] = useState('');
     const onClick: MenuProps['onClick'] = ({ key }) => {
         message.info(`Click on item ${key}`);
     };
@@ -80,7 +82,7 @@ const Header = () => {
     const onClose = () => {
         setOpen(false);
     };
-
+    console.log(searchValue);
     return (
         <header className='bg-blue-900 '>
             <div className='mx-3 lg:mx-4'>
@@ -212,7 +214,7 @@ const Header = () => {
                     </div>
                     {/* ///seach-header-laptop */}
                     <form className='hidden lg:block'>
-                        <div className='flex h-14 justify-center'>
+                        <div className='relative flex h-14 justify-center'>
                             <button
                                 id='dropdown-button'
                                 data-dropdown-toggle='dropdown'
@@ -235,6 +237,7 @@ const Header = () => {
                             <div className='relative flex w-full'>
                                 <div className='relative h-10 w-full '>
                                     <input
+                                        onChange={(e) => setSearchValue(e.target.value)}
                                         type='email'
                                         className='peer h-14 w-full  bg-white  outline outline-0 transition-all '
                                         placeholder='Search for products ...'
@@ -247,6 +250,19 @@ const Header = () => {
                                 >
                                     <SearchIcon className='m-1 h-5 w-5 text-white' />
                                 </button>
+                                {searchValue && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 100 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className='absolute right-0 top-[100%] z-10'
+                                    >
+                                        <div className='w-[33vw] bg-white  2xl:w-[40vw]'>
+                                            <SearchSkeleton />
+                                            <SearchSkeleton />
+                                        </div>
+                                    </motion.div>
+                                )}
                             </div>
                         </div>
                     </form>
