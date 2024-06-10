@@ -140,7 +140,7 @@ const Home = () => {
                 )}
             </WrapperList>
             {/* add popup productlist */}
-            {AllProductsList && <PopupProductList product={AllProductsList} propsLoading={LoadingAll} />}
+            {/* {AllProductsList && <PopupProductList product={AllProductsList} propsLoading={LoadingAll} />} */}
         </div>
     );
 };

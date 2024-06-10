@@ -20,7 +20,6 @@ const Products = () => {
     const onPageChange = (page: number) => {
         updateQueryParam('page', String(page));
     };
-    console.log(products?.data.totalPages);
     return (
         <>
             {/* <WrapperList border title='Popular Categories'>

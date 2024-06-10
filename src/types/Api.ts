@@ -4,6 +4,7 @@ export type IRankValue = {
 };
 export type IMix = number | string | IRankValue | null;
 export type IParams = Partial<{
+    search?: string;
     page: string;
     limit: string;
     sort: string;

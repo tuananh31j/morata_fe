@@ -1,13 +1,21 @@
 import { CloseOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
 import { Drawer, DrawerProps, Dropdown, Menu, MenuProps, Space, message } from 'antd';
-import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { debounce } from 'lodash';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import SearchCard from '~/components/ProductCard/SearchCard';
 import { CaretIcon, SearchIcon } from '~/components/_common/Icons';
+import SearchSkeleton from '~/components/_common/skeleton/SearchSkeleton';
+import { useSearchProductQuery } from '~/hooks/Queries/Products/useSearchProducts';
+import { setCategoryId, setFocusSearch, setSearchValue } from '~/store/slice/headerSlice';
+import { RootState, useAppDispatch } from '~/store/store';
 import Navbar from './Navbar';
 import UserToolbar from './UserToolbar';
-import SearchSkeleton from '~/components/_common/skeleton/SearchSkeleton';
-import { motion } from 'framer-motion';
+import useGetCategories from '~/hooks/Queries/useGetCategories';
 // navbar-mobi
+
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(label: React.ReactNode, key?: React.Key | null, children?: MenuItem[], type?: 'group'): MenuItem {
     return {
@@ -46,30 +54,25 @@ const itemss: MenuItem[] = [
 // end
 
 const Header = () => {
-    const [searchValue, setSearchValue] = useState('');
-    const onClick: MenuProps['onClick'] = ({ key }) => {
-        message.info(`Click on item ${key}`);
-    };
-    const items: MenuProps['items'] = [
-        {
-            label: '1st menu item',
-            key: '1',
-        },
-        {
-            label: '2nd menu item',
-            key: '2',
-        },
-        {
-            label: '3rd menu item',
-            key: '3',
-        },
-    ];
+    const searchValue = useSelector((state: RootState) => state.headerReducer.searchValue);
+    const forcusSearch = useSelector((state: RootState) => state.headerReducer.forcusSearch);
+    const categoryId = useSelector((state: RootState) => state.headerReducer.categoryId);
+    const disPatch = useAppDispatch();
+
+    const debounceSearch = debounce((value) => {
+        disPatch(setSearchValue(value.length !== 0 ? value : ''));
+        disPatch(setFocusSearch(true));
+    }, 500);
+    const handleLeaveInput = debounce((value) => {
+        disPatch(setFocusSearch(false));
+    }, 100);
+
     // categroy
-    const [isVisible, setIsVisible] = useState(false);
-    const toggleVisibility = () => {
-        setIsVisible(!isVisible);
-    };
-    const categories = ['Electronics', 'Clothing', 'Home & Kitchen', 'Sports & Outdoors'];
+    // const [isVisible, setIsVisible] = useState(false);
+    // const toggleVisibility = () => {
+    //     setIsVisible(!isVisible);
+    // };
+    // const categories = ['Electronics', 'Clothing', 'Home & Kitchen', 'Sports & Outdoors'];
 
     // mobi
     const [open, setOpen] = useState(false);
@@ -82,7 +85,46 @@ const Header = () => {
     const onClose = () => {
         setOpen(false);
     };
-    console.log(searchValue);
+
+    const { data } = useGetCategories();
+    const categoryList = data?.data;
+    const additionalCategories = [
+        { label: 'All Category', key: '' },
+
+        // Thêm các category khác nếu cần
+    ];
+    const items: MenuProps['items'] = categoryList
+        ? [
+              ...additionalCategories,
+              ...categoryList.map((item) => ({
+                  label: item.name,
+                  key: item._id,
+              })),
+          ]
+        : [];
+    const {
+        data: searchResult,
+        isLoading,
+        refetch,
+    } = useSearchProductQuery({ search: searchValue, categoryId: categoryId.id! });
+    const onClick: MenuProps['onClick'] = (key) => {
+        const category = categoryList?.find((item) => item._id === key.key);
+        const categoryName = category ? category.name : '';
+        if (key.key === '') {
+            disPatch(setFocusSearch(false));
+            disPatch(setCategoryId({ id: '', name: 'All Categories' }));
+        } else if (key.key !== '') {
+            disPatch(setFocusSearch(true));
+            disPatch(setCategoryId({ id: key.key, name: categoryName }));
+        }
+    };
+    useEffect(() => {
+        // Chỉ gọi refetch khi categoryId thay đổi
+        if (categoryId.id) {
+            refetch();
+        }
+    }, [categoryId.id, refetch]);
+
     return (
         <header className='bg-blue-900 '>
             <div className='mx-3 lg:mx-4'>
@@ -225,7 +267,7 @@ const Header = () => {
                                     <Dropdown menu={{ items, onClick }}>
                                         <span onClick={(e) => e.preventDefault()}>
                                             <Space style={{ color: 'black' }}>
-                                                <h3 className='ml-4 mr-14'>All Categories</h3>
+                                                <h3 className='ml-4 mr-14'>{categoryId.name}</h3>
                                                 <div className='border-r border-[#3b50a3] pr-5'>
                                                     <CaretIcon />
                                                 </div>
@@ -237,29 +279,51 @@ const Header = () => {
                             <div className='relative flex w-full'>
                                 <div className='relative h-10 w-full '>
                                     <input
-                                        onChange={(e) => setSearchValue(e.target.value)}
-                                        type='email'
+                                        onFocus={(e) => {
+                                            if (e.target.value.length > 0) {
+                                                disPatch(setFocusSearch(true));
+                                            }
+                                        }}
+                                        onBlur={handleLeaveInput}
+                                        onChange={(e) => debounceSearch(e.target.value)}
+                                        type='text'
                                         className='peer h-14 w-full  bg-white  outline outline-0 transition-all '
                                         placeholder='Search for products ...'
                                     />
                                 </div>
                                 <button
-                                    disabled
                                     className='!absolute right-1 top-1 mr-1 select-none rounded bg-[#16bcdc] px-3 py-2'
                                     type='button'
                                 >
                                     <SearchIcon className='m-1 h-5 w-5 text-white' />
                                 </button>
-                                {searchValue && (
+
+                                {forcusSearch && (
                                     <motion.div
                                         initial={{ opacity: 0, y: 100 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.3 }}
-                                        className='absolute right-0 top-[100%] z-10'
+                                        className='absolute right-0 top-[100%] z-50'
                                     >
-                                        <div className='w-[33vw] bg-white  2xl:w-[40vw]'>
-                                            <SearchSkeleton />
-                                            <SearchSkeleton />
+                                        <div className='max-h-[33vh] w-[33vw] overflow-scroll overflow-x-hidden border-b-2 bg-white  2xl:w-[50.7vw]'>
+                                            {searchResult?.data.docs.map((item, index) => (
+                                                <SearchCard key={index} product={item} />
+                                            ))}
+                                            {isLoading && (
+                                                <>
+                                                    <SearchSkeleton />
+                                                    <SearchSkeleton />
+                                                    <SearchSkeleton />
+                                                </>
+                                            )}
+                                            {!searchResult && (
+                                                <div className='flex h-[20vh] w-full items-center justify-center'>
+                                                    <h3 className='font-medium'>
+                                                        No products found with the keyword:{' '}
+                                                        <b className='text-cyan-500'>{searchValue}</b>
+                                                    </h3>
+                                                </div>
+                                            )}
                                         </div>
                                     </motion.div>
                                 )}
@@ -308,7 +372,7 @@ const Header = () => {
                         </div> */}
 
                         {/* Header MENU bottom items */}
-                        <Navbar />
+                        <Navbar data={data ? data.data : []} />
                     </div>
                     {/* <div className='flex items-center gap-5'>
                         <DiscountIcon />

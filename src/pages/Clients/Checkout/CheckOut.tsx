@@ -34,6 +34,7 @@ const CheckOut = () => {
             );
         } else {
             const bodyData = {
+                userId: user?._id,
                 customerInfo: {
                     name: user?.username,
                     email: user?.email,
