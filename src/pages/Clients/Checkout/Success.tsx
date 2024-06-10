@@ -33,7 +33,7 @@ export default function Success() {
                         transition={{ delay: 1, duration: 1 }}
                         className='font-mono text-2xl text-red-600'
                     >
-                        Order Successful!
+                        Order Successfully!
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, x: -100 }}
@@ -41,7 +41,7 @@ export default function Success() {
                         transition={{ duration: 1, delay: 1.5 }}
                         className='font-mono text-xl  text-[#777777]'
                     >
-                        Morata. Thank you so much for order
+                        Thanks for choosing Morata
                     </motion.p>
                     <div className='mt-8 flex gap-10'>
                         <motion.button

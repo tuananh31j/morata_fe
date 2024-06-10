@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import CartDrawer from '~/components/CartDrawer';
 import WishListDrawer from '~/components/WishListDrawer';
 import UserToolBarSkeleton from '~/components/_common/skeleton/UserToolKit/UserToolBarSkeleton';
-import useGetMyCart from '~/hooks/Queries/useGetMyCart';
+import useGetMyCart from '~/hooks/Queries/Cart/useGetMyCart';
 import { RootState } from '~/store/store';
 import IconButton from './IconButton';
 

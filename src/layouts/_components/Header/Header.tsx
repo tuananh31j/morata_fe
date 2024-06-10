@@ -124,7 +124,6 @@ const Header = () => {
             refetch();
         }
     }, [categoryId.id, refetch]);
-
     return (
         <header className='bg-blue-900 '>
             <div className='mx-3 lg:mx-4'>
@@ -255,7 +254,7 @@ const Header = () => {
                         </Link>
                     </div>
                     {/* ///seach-header-laptop */}
-                    <form className='hidden lg:block'>
+                    <form className='hidden bg-white lg:block'>
                         <div className='relative flex h-14 justify-center'>
                             <button
                                 id='dropdown-button'
@@ -276,8 +275,8 @@ const Header = () => {
                                     </Dropdown>
                                 </div>
                             </button>
-                            <div className='relative flex w-full'>
-                                <div className='relative h-10 w-full '>
+                            <div className='relative flex  w-full items-center'>
+                                <div className='relative flex w-full'>
                                     <input
                                         onFocus={(e) => {
                                             if (e.target.value.length > 0) {
@@ -287,12 +286,27 @@ const Header = () => {
                                         onBlur={handleLeaveInput}
                                         onChange={(e) => debounceSearch(e.target.value)}
                                         type='text'
-                                        className='peer h-14 w-full  bg-white  outline outline-0 transition-all '
+                                        className='searchBox peer h-14 w-full  bg-white  outline outline-0 transition-all '
                                         placeholder='Search for products ...'
                                     />
+                                    {searchValue.length > 1 && (
+                                        <CloseOutlined
+                                            onClick={(e) => {
+                                                const closeButton = e.target as HTMLElement;
+                                                const inputElement = closeButton
+                                                    .closest('.relative')
+                                                    ?.querySelector('input');
+                                                if (inputElement) {
+                                                    inputElement.value = '';
+                                                }
+                                                disPatch(setSearchValue(''));
+                                            }}
+                                            className='mr-4 transform cursor-pointer text-base transition duration-500 hover:rotate-180'
+                                        />
+                                    )}
                                 </div>
                                 <button
-                                    className='!absolute right-1 top-1 mr-1 select-none rounded bg-[#16bcdc] px-3 py-2'
+                                    className='mr-1 h-[90%] select-none rounded bg-[#16bcdc] px-3 py-2'
                                     type='button'
                                 >
                                     <SearchIcon className='m-1 h-5 w-5 text-white' />
@@ -303,20 +317,25 @@ const Header = () => {
                                         initial={{ opacity: 0, y: 100 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.3 }}
-                                        className='absolute right-0 top-[100%] z-50'
+                                        className='absolute right-0 top-[100%] z-50 w-[33vw]  rounded-b-lg  border-b-[5px] border-[#1e3a8a]  bg-white 2xl:w-[50.7vw]'
                                     >
-                                        <div className='max-h-[33vh] w-[33vw] overflow-scroll overflow-x-hidden border-b-2 bg-white  2xl:w-[50.7vw]'>
+                                        <div className='my-2 flex items-center justify-between px-4'>
+                                            <span className='text-sm font-medium'>Search Result</span>
+                                            <CloseOutlined
+                                                onClick={handleLeaveInput}
+                                                className='transform cursor-pointer text-base transition duration-500 hover:rotate-180'
+                                            />
+                                        </div>
+                                        <div className='max-h-[33vh] overflow-scroll overflow-x-hidden'>
                                             {searchResult?.data.docs.map((item, index) => (
                                                 <SearchCard key={index} product={item} />
                                             ))}
                                             {isLoading && (
                                                 <>
                                                     <SearchSkeleton />
-                                                    <SearchSkeleton />
-                                                    <SearchSkeleton />
                                                 </>
                                             )}
-                                            {!searchResult && (
+                                            {!searchResult?.data.docs.length && !isLoading && (
                                                 <div className='flex h-[20vh] w-full items-center justify-center'>
                                                     <h3 className='font-medium'>
                                                         No products found with the keyword:{' '}

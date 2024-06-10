@@ -3,27 +3,25 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useMutationCreateOrder } from '~/hooks/Mutations/Checkout/useCreateOrder';
 import { useMutationCheckOutSession } from '~/hooks/Mutations/Checkout/useCreateOrderSession';
-import useGetMyCart from '~/hooks/Queries/useGetMyCart';
+import useGetMyCart from '~/hooks/Queries/Cart/useGetMyCart';
 import { RootState } from '~/store/store';
 import { ICheckoutForm } from '~/types/checkout/Checkout';
+import { Currency, cn } from '~/utils';
 import showMessage from '~/utils/ShowMessage';
 
 const CheckOut = () => {
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { mutate: cashCheckout } = useMutationCreateOrder();
     const { mutate: stripeCheckout } = useMutationCheckOutSession();
-    const { data: orderItem } = useGetMyCart(user?._id);
-    const responsePayloadCheckout = orderItem?.data.items.map((item) => ({
-        name: item.productId.name,
-        price: item.productId.price,
-        quantity: item.quantity,
-        image: item.productId.thumbnail,
-    }));
+    const { data: orderItem, responsePayloadCheckout } = useGetMyCart(user?._id);
     const totalPrice = orderItem
         ? orderItem?.data?.items?.reduce(
               (total: number, product) => total + product.productId.price * product.quantity,
               0
           )
+        : 0;
+    const totalQuantity = orderItem
+        ? orderItem.data.items.reduce((total: number, product) => total + product.quantity, 0)
         : 0;
     const handleOnsubmit = (value: ICheckoutForm) => {
         if (totalPrice > 1000) {
@@ -90,8 +88,30 @@ const CheckOut = () => {
                             </h3>
                         </>
                     )}
-                    <Form name='checkout' onFinish={handleOnsubmit} layout='vertical' style={{ maxWidth: 600 }}>
+                    <Form
+                        name='checkout'
+                        className={cn({
+                            ['opacity-65']: totalPrice > 1000,
+                        })}
+                        onFinish={handleOnsubmit}
+                        layout='vertical'
+                        style={{ maxWidth: 600 }}
+                    >
                         <h3 className='text-[21px] font-semibold'>Contact</h3>
+                        <div className='mt-[15px]'>
+                            <Form.Item
+                                label='Your Name'
+                                name='name'
+                                initialValue={user?.username}
+                                rules={[{ required: true, message: 'Enter your name' }]}
+                            >
+                                <Input
+                                    disabled={totalPrice > 1000}
+                                    placeholder='Your Name'
+                                    className='mt-[5px] h-[48px]'
+                                />
+                            </Form.Item>
+                        </div>
                         <div className='mt-[15px]'>
                             <Form.Item
                                 label='Phone Number'
@@ -105,6 +125,7 @@ const CheckOut = () => {
                                 />
                             </Form.Item>
                         </div>
+
                         <h3 className='text-[21px] font-semibold'>Delivery</h3>
 
                         <div className=''>
@@ -231,25 +252,26 @@ const CheckOut = () => {
                                     <span className='text-[14px]'>{item.productId.name}</span>
                                 </div>
                                 <div>
-                                    <span className='text-[14px]'>${item.productId.price}</span>
+                                    <span className='text-[14px]'>{Currency.format(item.productId.price)}</span>
                                 </div>
                             </div>
                         ))}
-                        {!orderItem && (
+                        {!orderItem?.data.items.length && (
                             <div>
                                 <h3 className='text-center font-medium'>Not found product in your cart</h3>
                             </div>
                         )}
                         <div className='mt-[44px]'>
                             <div className='flex items-center justify-between'>
-                                <h3 className='text-[14px]'>Subtotal</h3>
-                                <span>${totalPrice}</span>
+                                <h3 className='text-[14px]'>Total quantity</h3>
+                                <span>{totalQuantity} Product</span>
                             </div>
 
                             <div className='mt-[12px] flex justify-between '>
                                 <h3 className='text-[19px] font-medium'>Total </h3>
                                 <span className='text-[19px] font-medium'>
-                                    <span className='text-[12px] text-[#777777]'>CAD</span> ${totalPrice}
+                                    <span className='text-[12px] text-[#777777]'>CAD</span>{' '}
+                                    {Currency.format(totalPrice)}
                                 </span>
                             </div>
                         </div>
