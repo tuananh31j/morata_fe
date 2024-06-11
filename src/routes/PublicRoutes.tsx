@@ -8,6 +8,7 @@ import {
     AboutPage,
     AuthLayoutPage,
     CheckoutPage,
+    ContactPage,
     ErrorPage,
     HomePage,
     LoginPage,
@@ -75,6 +76,14 @@ const PublicRoutes = [
                         <ProtectedRouteAuth>
                             <CheckoutPage />
                         </ProtectedRouteAuth>
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'contact',
+                element: (
+                    <Suspense>
+                        <ContactPage />
                     </Suspense>
                 ),
             },

@@ -20,7 +20,7 @@ export const columns: TableColumnsType<DataType> = [
     {
         title: 'ID',
         dataIndex: '_id',
-        render: (value) => <PopupOrderDetails value={value} />,
+        render: (value) => <PopupOrderDetails id={value} />,
     },
     {
         title: 'Payments',

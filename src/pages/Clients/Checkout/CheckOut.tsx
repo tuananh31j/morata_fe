@@ -1,6 +1,7 @@
 import { Button, ConfigProvider, Form, Input, Select } from 'antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import MiniProduct from '~/components/ProductCard/MiniProduct';
 import { useMutationCreateOrder } from '~/hooks/Mutations/Checkout/useCreateOrder';
 import { useMutationCheckOutSession } from '~/hooks/Mutations/Checkout/useCreateOrderSession';
 import useGetMyCart from '~/hooks/Queries/Cart/useGetMyCart';
@@ -238,23 +239,7 @@ const CheckOut = () => {
                 <div className=' w-full'>
                     <div className='-order-1 flex flex-col gap-[15px] px-5 '>
                         {orderItem?.data.items.map((item, index) => (
-                            <div key={index} className='flex items-center gap-[14px]'>
-                                <div className='relative rounded-[2px]  border-[1px] '>
-                                    <img src={item.productId.thumbnail} alt='' width={80} />
-                                    <span
-                                        style={{ backgroundColor: 'rgba(0,0,0, 0.58)' }}
-                                        className='absolute -right-3 -top-3 z-10 rounded-full px-[9px] py-[2px] text-[12px] font-semibold text-white'
-                                    >
-                                        {item.quantity}
-                                    </span>
-                                </div>
-                                <div className='w-full'>
-                                    <span className='text-[14px]'>{item.productId.name}</span>
-                                </div>
-                                <div>
-                                    <span className='text-[14px]'>{Currency.format(item.productId.price)}</span>
-                                </div>
-                            </div>
+                            <MiniProduct quantity={item.quantity} productId={item.productId} key={index} />
                         ))}
                         {!orderItem?.data.items.length && (
                             <div>

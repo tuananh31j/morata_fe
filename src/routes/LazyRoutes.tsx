@@ -15,19 +15,21 @@ export const ProfilePage = lazy(() => import('~/pages/Clients/Account/Profile'))
 export const LoginPage = lazy(() => import('~/pages/Clients/AuthPage/Login'));
 export const RegisterPage = lazy(() => import('~/pages/Clients/AuthPage/Register'));
 export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
+export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
 
 // @page admin
 export const DashboardPage = lazy(() => import('~/pages/Admins/Dashboard'));
-export const ProductsList = lazy(() => import('~/pages/Admins/Product'));
 export const NotFoundPage = lazy(() => import('~/pages/404'));
 export const ErrorPage = lazy(() => import('~/pages/Error'));
+export const ProductsList = lazy(() => import('~/pages/Admins/Product/index'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
 export const UpdateProduct = lazy(() => import('~/pages/Admins/Product/UpdateProduct'));
 export const AdminProductDetail = lazy(() => import('~/pages/Admins/Product/ProductDetail'));
-export const ManageUsers = lazy(() => import('~/pages/Admins/User'));
-export const CreateUser = lazy(() => import('~/pages/Admins/User/CreateUser'));
-export const UpdateUser = lazy(() => import('~/pages/Admins/User/UpdateUser'));
+export const ManageUsers = lazy(() => import('~/pages/Admins/user/index'));
+export const CreateUser = lazy(() => import('~/pages/Admins/user/CreateUser'));
+export const UpdateUser = lazy(() => import('~/pages/Admins/user/UpdateUser'));
 
+// @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<Loading />}>{children}</React.Suspense>;
 };

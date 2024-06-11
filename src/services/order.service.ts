@@ -9,7 +9,7 @@ export type IMyOrder = IAxiosResponse<
 
 const orderService = {
     myOrder() {
-        return instance.get<IMyOrder>(`${ORDER_ENDPOINT.MY_ORDERS}`);
+        return instance.get<IAxiosResponse<IMyOrder[]>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
     cancelOrder(id: string) {
         return instance.post<void, { orderId: string }>(`${ORDER_ENDPOINT.MY_ORDERS}`, {
@@ -17,7 +17,7 @@ const orderService = {
         });
     },
     orderDetails(id: string) {
-        return instance.get<Omit<IOrder, '_id'>>(`${ORDER_ENDPOINT.ROOT}/${id}`);
+        return instance.get<IAxiosResponse<Omit<IOrder, '_id'>>>(`${ORDER_ENDPOINT.ROOT}/${id}`);
     },
 };
 

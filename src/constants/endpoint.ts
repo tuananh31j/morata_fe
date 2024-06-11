@@ -35,6 +35,6 @@ export const CHECKOUT_ENDPOINT = {
 };
 
 export const ORDER_ENDPOINT = {
-    ROOT: '/order',
+    ROOT: '/orders',
     MY_ORDERS: '/orders/user',
 };
