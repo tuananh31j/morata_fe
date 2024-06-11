@@ -8,4 +8,5 @@ export const QUERY_KEY = {
     RELATED: 'related',
     POPULARCATEGORIES: 'poularCategories',
     BRANDS: 'brands',
+    MY_ORDERS: 'myOrders',
 };

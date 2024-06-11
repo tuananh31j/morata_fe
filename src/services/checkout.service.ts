@@ -1,5 +1,5 @@
 import { CHECKOUT_ENDPOINT } from '~/constants/endpoint';
-import { instance } from '~/utils/api/axiosIntance';
+import instance from '~/utils/api/axiosIntance';
 
 export const checkoutService = {
     async createOrder(body: any) {

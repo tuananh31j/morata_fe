@@ -33,3 +33,8 @@ export const CHECKOUT_ENDPOINT = {
     ORDERS: '/orders',
     SESSION: '/create-checkout-session',
 };
+
+export const ORDER_ENDPOINT = {
+    ROOT: '/order',
+    MY_ORDERS: '/orders/user',
+};

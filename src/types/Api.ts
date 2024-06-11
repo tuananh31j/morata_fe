@@ -11,4 +11,6 @@ export type IParams = Partial<{
     brandId: string;
     categoryId: string;
     rating: string;
+    orderStatus: string;
+    paymentMethod: string;
 }>;
