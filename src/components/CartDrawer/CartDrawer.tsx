@@ -1,16 +1,15 @@
 import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Empty, Image, InputNumber, List, Slider } from 'antd';
+import { Button, Drawer, Empty, Image, InputNumber, List, Slider, Spin } from 'antd';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LoadingBar from '~/components/_common/Loading/LoadingBar';
+import { useMutationCheckOutSession } from '~/hooks/Mutations/Checkout/useCreateOrderSession';
 import { useMutationDecreaseCart } from '~/hooks/Mutations/cart/useDecreaseQuantity';
 import { useMutationIncreaseCart } from '~/hooks/Mutations/cart/useIncreaseQuantity';
 import { useMutationRemoveItem } from '~/hooks/Mutations/cart/useRemoveOne';
-import { setClose, setOpen } from '~/store/slice/cartSlice';
-import { RootState } from '~/store/store';
+import { useCart } from '~/hooks/_common/useCart';
 import { ICartDataResponse } from '~/types/cart/CartResponse';
 import { Currency } from '~/utils';
 
@@ -19,14 +18,11 @@ type PropsType = {
     item?: ICartDataResponse;
 };
 const CartDrawer = ({ children, item }: PropsType) => {
-    const { mutate: increase } = useMutationIncreaseCart();
-    const { mutate: removeItem, isPending } = useMutationRemoveItem();
-    const { mutate: decrease } = useMutationDecreaseCart();
-    const cart = useSelector((state: RootState) => state.cartReducer.cartOpen);
-    const cartDispatch = useDispatch();
-    const onClose = () => {
-        cartDispatch(setClose());
-    };
+    const { handleIncreaseQuantity } = useMutationIncreaseCart();
+    const { handleRemoveCart, isPending } = useMutationRemoveItem();
+    const { handleDecreaseQuantity } = useMutationDecreaseCart();
+    const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
+    const { handleOpenCart, onClose, cart } = useCart();
     const products = item ? item.items : null;
     const freeShippingThreshold = 1000;
     const totalOrderAmount = products
@@ -37,40 +33,23 @@ const CartDrawer = ({ children, item }: PropsType) => {
         [totalOrderAmount]: `$${totalOrderAmount}`,
         [freeShippingThreshold]: `$${freeShippingThreshold}`,
     };
-    const user = useSelector((state: RootState) => state.authReducer.user);
-    const handleIncreaseQuantity = (id: string) => {
-        if (user) {
-            const data = {
-                productId: id,
-                userId: user._id,
-            };
-            increase(data);
-        }
-    };
-    const handleRemoveCart = (id: string) => {
-        if (user) {
-            const data = {
-                productId: id,
-                userId: user._id,
-            };
-            removeItem(data);
-        }
-    };
-    const handleDecreaseQuantity = (id: string) => {
-        if (user) {
-            const data = {
-                productId: id,
-                userId: user._id,
-            };
-            decrease(data);
-        }
+    const responsePayloadCheckout = products?.map((product) => ({
+        name: product.productId.name,
+        price: product.productId.price,
+        quantity: product.quantity,
+        image: product.productId.thumbnail,
+    }));
+    const handlePayStripe = () => {
+        stripeCheckout({
+            items: responsePayloadCheckout,
+        });
     };
     const debouncedIncrease = debounce((id: string) => handleIncreaseQuantity(id), 300);
     const debouncedDecrease = debounce((id: string) => handleDecreaseQuantity(id), 300);
     const debouncedRemove = debounce((id: string) => handleRemoveCart(id), 0);
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <span className='cursor-pointer' onClick={() => cartDispatch(setOpen())}>
+            <span className={'cursor-pointer'} onClick={handleOpenCart}>
                 {children}
             </span>
             <Drawer
@@ -216,12 +195,30 @@ const CartDrawer = ({ children, item }: PropsType) => {
                         <div className='border-t border-gray-200 px-4 py-6'>
                             <div className='flex justify-between text-base font-bold text-gray-900'>
                                 <p className='text-xs uppercase '>Subtotal:</p>
-                                <p className='text-base text-[#cc1414]'>${totalOrderAmount}</p>
+                                <p className='text-base text-[#cc1414]'>{Currency.format(totalOrderAmount)}</p>
                             </div>
                             <div className='mt-6'>
-                                <Button className=' h-[50px] text-sm font-semibold uppercase' type='default' block>
-                                    view cart
-                                </Button>
+                                <button
+                                    onClick={handlePayStripe}
+                                    disabled={!products.length}
+                                    className='
+                                    flex
+                                    h-[48px] w-full items-center justify-center gap-5 rounded-[5px] bg-blue-700 text-sm font-semibold text-white duration-500 hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-65'
+                                >
+                                    {!PendingStripe && (
+                                        <>
+                                            <img
+                                                src='https://asset.brandfetch.io/idxAg10C0L/idTHPdqoDR.jpeg'
+                                                width={40}
+                                                height={40}
+                                                className='rounded-full'
+                                                alt=''
+                                            />
+                                            <span>PAY WITH STRIPE</span>
+                                        </>
+                                    )}
+                                    {PendingStripe && <Spin />}
+                                </button>
                             </div>
                             <div className='mt-6'>
                                 <Link to={'/checkout'}>
@@ -235,6 +232,14 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                     </Button>
                                 </Link>
                             </div>
+                            {totalOrderAmount > 1000 && (
+                                <div className='h-[30px]'>
+                                    <p className='px-2 text-yellow-500'>
+                                        Warning: Your order has exceeded the checkout limit of $1000, please proceed to
+                                        online checkout!
+                                    </p>
+                                </div>
+                            )}
                             <div className='mt-6 flex justify-center text-center text-sm text-gray-500'>
                                 <p>
                                     or{' '}

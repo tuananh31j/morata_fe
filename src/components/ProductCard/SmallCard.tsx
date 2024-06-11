@@ -70,7 +70,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                     {/* Name */}
                     <div className='mt-[15px] cursor-pointer'>
-                        <Link to={`/products/${product._id}?categoryId=${product.categoryId}`}>
+                        <Link to={`/products/${product._id}`}>
                             <h4 className=' cursor-pointer truncate text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                                 {product.name}
                             </h4>

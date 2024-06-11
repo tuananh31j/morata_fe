@@ -3,6 +3,7 @@ import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
 import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
 import ProtectedRoute from '~/layouts/Protected/ProtectedRoute';
+import Success from '~/pages/Clients/Checkout/Success';
 import {
     AboutPage,
     AuthLayoutPage,
@@ -112,6 +113,7 @@ const PublicRoutes = [
         ],
     },
     { path: '*', element: <Navigate to='/404' /> },
+    { path: '/success', element: <Success /> },
     { path: '/404', element: <NotFoundPage /> },
 ];
 

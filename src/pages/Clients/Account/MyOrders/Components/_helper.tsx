@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Table, Tooltip, type TableColumnsType, type TableProps } from 'antd';
+import { type TableColumnsType, type TableProps } from 'antd';
 import OrderStatusTag from './OrderStatusTag';
 import { OrderStatus } from '~/types/enum';
 import ActionLink from './ActionLink';
