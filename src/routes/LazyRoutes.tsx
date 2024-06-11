@@ -25,6 +25,7 @@ export const AdminProductDetail = lazy(() => import('~/pages/Admins/Product/Prod
 export const ManageUsers = lazy(() => import('~/pages/Admins/User/index'));
 export const CreateUser = lazy(() => import('~/pages/Admins/User/CreateUser'));
 export const UpdateUser = lazy(() => import('~/pages/Admins/User/UpdateUser'));
+export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
 
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
     return <React.Suspense fallback={<Loading />}>{children}</React.Suspense>;

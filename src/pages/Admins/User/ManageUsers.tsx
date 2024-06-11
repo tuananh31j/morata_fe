@@ -1,8 +1,16 @@
-import { EllipsisOutlined, PlusOutlined, VerticalAlignBottomOutlined, WarningOutlined } from '@ant-design/icons';
+import {
+    DeleteOutlined,
+    EditOutlined,
+    FilterOutlined,
+    PlusOutlined,
+    VerticalAlignBottomOutlined,
+    WarningOutlined,
+} from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, ConfigProvider, Modal, Select, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type DataType = {
     id?: string;
@@ -41,6 +49,7 @@ const ManageUsers = () => {
                 const searchValue = (typeof value === 'string' && value.toLowerCase()) || '';
                 return typeof value && record.username.toLowerCase().includes(searchValue);
             },
+            sorter: (a, b) => a.username.localeCompare(b.username),
         },
         {
             title: 'Email',
@@ -52,11 +61,29 @@ const ManageUsers = () => {
             title: 'Phone Number',
             dataIndex: 'phoneNumber',
             key: 'phoneNumber',
+            sorter: (a, b) => a.phoneNumber.localeCompare(b.phoneNumber),
         },
         {
             title: 'Role',
             dataIndex: 'role',
             key: 'role',
+            filters: [
+                {
+                    text: 'Admin',
+                    value: 'admin',
+                },
+                {
+                    text: 'Staff',
+                    value: 'staff',
+                },
+                {
+                    text: 'User',
+                    value: 'user',
+                },
+            ],
+            filterMode: 'tree',
+            filterSearch: true,
+            onFilter: (value, record) => record.role.startsWith(value as string),
             render: (role) => {
                 let color = 'geekblue';
                 if (role === 'staff') {
@@ -83,22 +110,18 @@ const ManageUsers = () => {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-                <Space size='middle'>
-                    <Tooltip title='Delete'>
-                        <Button type='primary' danger onClick={showModal}>
-                            Delete
-                        </Button>
+                <Space size={'middle'}>
+                    <Tooltip title='Update'>
+                        <Link to='/' className='text-blue-500'>
+                            <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
+                        </Link>
                     </Tooltip>
-                    <Tooltip title='Detail'>
-                        <Button
-                            type='link'
-                            icon={
-                                <EllipsisOutlined
-                                    className='cursor-pointer rounded-full p-2  transition-colors hover:bg-gray-100'
-                                    style={{ fontSize: '1.6rem' }}
-                                />
-                            }
-                        ></Button>
+                    <Tooltip title='Delete'>
+                        <DeleteOutlined
+                            onClick={showModal}
+                            className='rounded-full bg-red-100 p-2 text-red-500'
+                            style={{ fontSize: '1rem' }}
+                        />
                     </Tooltip>
                 </Space>
             ),
@@ -169,18 +192,22 @@ const ManageUsers = () => {
         }, 800);
         return () => clearTimeout(searchId);
     }, [inputSearchValue]);
-
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const search = e.target.value;
         setInputSearchValue(search);
     };
+    const handleChange = (value: string) => {
+        console.log(`selected ${value}`);
+    };
     return (
         <div className='mx-6 mt-[100px]'>
             <div className='my-6 ml-2 flex items-center justify-between '>
-                <h1 className='text-3xl font-semibold'>Manage Users</h1>
-                <Button size='large' icon={<PlusOutlined />} type='primary' href='/admin/user/create' className='mx-2'>
-                    Create user
-                </Button>
+                <h1 className='text-3xl font-semibold text-white dark:opacity-80'>Manage Users</h1>
+                <Link to='/admin/user/create'>
+                    <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
+                        Create user
+                    </Button>
+                </Link>
             </div>
             <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500'>
                 <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767]'>Account</h2>
@@ -191,10 +218,25 @@ const ManageUsers = () => {
                         className='w-[18.75rem]'
                         onChange={handleSearch}
                     />
-                    <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
-                        Export
-                    </Button>
+                    <div className='flex items-center gap-3'>
+                        <Select
+                            suffixIcon={<FilterOutlined />}
+                            defaultValue='lucy'
+                            placeholder={'Select fillters'}
+                            onChange={handleChange}
+                            options={[
+                                { value: 'jack', label: 'Jack' },
+                                { value: 'lucy', label: 'Lucy' },
+                                { value: 'Yiminghe', label: 'yiminghe' },
+                            ]}
+                            className='w-[10rem]'
+                        ></Select>
+                        <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
+                            Export
+                        </Button>
+                    </div>
                 </div>
+
                 <Table
                     rowSelection={{
                         type: 'checkbox',

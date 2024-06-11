@@ -1,7 +1,8 @@
 import {
+    DeleteOutlined,
+    EditOutlined,
     EllipsisOutlined,
     PlusOutlined,
-    SearchOutlined,
     VerticalAlignBottomOutlined,
     WarningOutlined,
 } from '@ant-design/icons';
@@ -9,6 +10,7 @@ import type { TableProps } from 'antd';
 import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type DataType = {
     id?: string;
@@ -18,6 +20,7 @@ type DataType = {
     price: number;
     stock: number;
     category: string;
+    status: string;
 };
 
 const ManageProducts = () => {
@@ -47,6 +50,8 @@ const ManageProducts = () => {
                 const searchValue = (typeof value === 'string' && value.toLowerCase()) || '';
                 return typeof value && record.name.toLowerCase().includes(searchValue);
             },
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            width: '30%',
         },
         {
             title: 'Thumbnail',
@@ -83,26 +88,55 @@ const ManageProducts = () => {
             },
         },
         {
+            title: 'Status',
+            key: 'status',
+            dataIndex: 'status',
+            sorter: (a, b) => a.status.localeCompare(b.status),
+            render: (_, record) => {
+                let color = 'green';
+                if (record.status === 'out of stock') color = 'red';
+                return (
+                    <>
+                        <Tag color={color} key={record.key}>
+                            {record.status.toUpperCase()}
+                        </Tag>
+                    </>
+                );
+            },
+        },
+        {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-                <Space size='middle'>
+                <Space>
                     <Tooltip title='Update'>
-                        <Button type='link'>Edit</Button>
+                        <Link to={`/admin/product/edit`} className='text-blue-500'>
+                            <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
+                        </Link>
                     </Tooltip>
                     <Tooltip title='Delete'>
-                        <Button type='primary' danger onClick={showModal}>
-                            Delete
-                        </Button>
+                        <DeleteOutlined
+                            onClick={showModal}
+                            className='rounded-full bg-red-100 p-2 text-red-500'
+                            style={{ fontSize: '1rem' }}
+                        />
                     </Tooltip>
+                </Space>
+            ),
+        },
+        {
+            title: 'Detail',
+            key: 'detail',
+            render: (_, record) => (
+                <Space size='middle'>
                     <Tooltip title='Get detail'>
                         <Button
                             type='link'
                             href={`/admin/product/1/detail`}
                             icon={
                                 <EllipsisOutlined
-                                    className='cursor-pointer rounded-full p-2  transition-colors hover:bg-gray-100'
-                                    style={{ fontSize: '1.6rem' }}
+                                    className='cursor-pointer rounded-full p-2 text-black  transition-colors hover:bg-gray-100'
+                                    style={{ fontSize: '1.25rem' }}
                                 />
                             }
                         ></Button>
@@ -119,6 +153,7 @@ const ManageProducts = () => {
             price: 200,
             stock: 10,
             category: 'developer',
+            status: 'out of stock',
         },
         {
             key: '2',
@@ -127,6 +162,8 @@ const ManageProducts = () => {
             price: 200,
             stock: 10,
             category: 'developer',
+
+            status: 'in stock',
         },
         {
             key: '3',
@@ -135,6 +172,7 @@ const ManageProducts = () => {
             price: 200,
             stock: 10,
             category: 'blue sky',
+            status: 'out of stock',
         },
         {
             key: '4',
@@ -143,6 +181,7 @@ const ManageProducts = () => {
             price: 200,
             stock: 10,
             category: 'blue sky',
+            status: 'in stock',
         },
         {
             key: '5',
@@ -151,6 +190,7 @@ const ManageProducts = () => {
             price: 200,
             stock: 10,
             category: 'blue sky',
+            status: 'in stock',
         },
         {
             key: '6',
@@ -159,6 +199,7 @@ const ManageProducts = () => {
             price: 200,
             stock: 10,
             category: 'blue sky',
+            status: 'out of stock',
         },
     ];
     const rowSelection = {
@@ -185,14 +226,14 @@ const ManageProducts = () => {
         <div className='mx-6 mt-[100px]'>
             <div className='my-6 ml-2 flex items-center justify-between py-2 '>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Products</h1>
-                <Button size='large' icon={<PlusOutlined />} type='primary' href='/admin/products/add' className='mx-2'>
-                    Add product
-                </Button>
+                <Link to='/admin/product/create'>
+                    <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
+                        Add product
+                    </Button>
+                </Link>
             </div>
             <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500 '>
-                <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] dark:text-white dark:opacity-80'>
-                    Inventory items
-                </h2>
+                <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] '>Inventory items</h2>
                 <div className='my-2 flex justify-between'>
                     <Search
                         placeholder='Search name...'
@@ -205,6 +246,7 @@ const ManageProducts = () => {
                     </Button>
                 </div>
                 <Table
+                    size='large'
                     rowSelection={{
                         type: 'checkbox',
                         ...rowSelection,

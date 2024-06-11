@@ -5,6 +5,7 @@ import {
     AboutPage,
     AuthLayoutPage,
     CheckoutPage,
+    ContactPage,
     ErrorPage,
     HomePage,
     LoginPage,
@@ -70,6 +71,14 @@ const PublicRoutes = [
                 element: (
                     <Suspense>
                         <CheckoutPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'contact',
+                element: (
+                    <Suspense>
+                        <ContactPage />
                     </Suspense>
                 ),
             },
