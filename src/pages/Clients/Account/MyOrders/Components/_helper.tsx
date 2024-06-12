@@ -1,5 +1,5 @@
 import React from 'react';
-import { type TableColumnsType, type TableProps } from 'antd';
+import { type TableColumnsType } from 'antd';
 import OrderStatusTag from './OrderStatusTag';
 import { OrderStatus } from '~/types/enum';
 import ActionLink from './ActionLink';
@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import PopupOrderDetails from './PopupOrderDetails';
 // import OrderStatusTag from './Components/OrderStatusTag';
 
-interface DataType {
+export interface DataType {
     key: React.Key;
     _id: string;
     paymentMethod: string;
@@ -35,8 +35,6 @@ export const columns: TableColumnsType<DataType> = [
                 value: 'cash',
             },
         ],
-        // specify the condition of filtering result
-        // here is that finding the name started with `value`
         onFilter: (value, record) => record.paymentMethod.indexOf(value as string) === 0,
     },
     {
@@ -44,8 +42,6 @@ export const columns: TableColumnsType<DataType> = [
         dataIndex: 'createdAt',
         showSorterTooltip: { target: 'full-header' },
         render: (value) => <span>{dayjs(value).format('DD/MM/YYYY')}</span>,
-        // sorter: (a, b) => a.name.length - b.name.length,
-        // sortDirections: ['descend'],
     },
     {
         title: 'Total price',
@@ -67,16 +63,16 @@ export const columns: TableColumnsType<DataType> = [
                 value: OrderStatus.confirmed,
             },
             {
-                text: 'Done',
-                value: OrderStatus.done,
-            },
-            {
                 text: 'Shipping',
                 value: OrderStatus.shipping,
             },
             {
                 text: 'Canceled',
                 value: OrderStatus.canceled,
+            },
+            {
+                text: 'Done',
+                value: OrderStatus.done,
             },
         ],
         onFilter: (value, record) => record.orderStatus.indexOf(value as string) === 0,
@@ -89,7 +85,3 @@ export const columns: TableColumnsType<DataType> = [
         // sortDirections: ['descend'],
     },
 ];
-
-export const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
-};

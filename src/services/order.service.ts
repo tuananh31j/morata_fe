@@ -4,7 +4,7 @@ import { ORDER_ENDPOINT } from '~/constants/endpoint';
 import { IOrder } from '~/types/Order';
 
 export type IMyOrder = IAxiosResponse<
-    Pick<IOrder, '_id' | 'orderStatus' | 'createdAt' | 'isPaid' | 'totalPrice' | 'paymentMethod'>[]
+    Pick<IOrder, '_id' | 'orderStatus' | 'createdAt' | 'totalPrice' | 'paymentMethod'>[]
 >;
 
 const orderService = {
