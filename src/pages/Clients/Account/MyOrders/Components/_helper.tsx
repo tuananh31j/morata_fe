@@ -80,7 +80,7 @@ export const columns: TableColumnsType<DataType> = [
     {
         title: 'Actions',
         dataIndex: 'orderStatus',
-        render: (value) => <ActionLink status={value} />,
+        render: (value, record) => <ActionLink status={value} orderId={record._id} />,
         // sorter: (a, b) => a.name.length - b.name.length,
         // sortDirections: ['descend'],
     },

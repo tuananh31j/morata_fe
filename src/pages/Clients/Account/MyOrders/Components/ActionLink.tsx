@@ -3,6 +3,7 @@ import { Button, ConfigProvider, Dropdown, MenuProps, Tag } from 'antd';
 import { OrderStatus } from '~/types/enum';
 import { TinyColor } from '@ctrl/tinycolor';
 import { Link } from 'react-router-dom';
+import PopupFormCancelOrder from './PopupFormCancelOrder';
 
 const colorsArr = ['#fc6076', '#ff9a44', '#ef9d43', '#e75516'];
 const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
@@ -33,14 +34,10 @@ const items: MenuProps['items'] = [
         ),
     },
 ];
-const ActionLink = ({ status }: { status: OrderStatus }) => {
+const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string }) => {
     switch (status) {
         case OrderStatus.pending:
-            return (
-                <Button type='primary' danger>
-                    Cancel
-                </Button>
-            );
+            return <PopupFormCancelOrder id={orderId} />;
         case OrderStatus.confirmed:
         case OrderStatus.shipping:
         case OrderStatus.canceled:

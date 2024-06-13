@@ -19,7 +19,7 @@ const MenuAccount = () => {
                     onClick={handleLogout}
                     className='mt-5 border p-2 transition-transform duration-200 ease-in-out hover:border-[#16bcdc] active:-translate-y-3'
                 >
-                    Đăng xuất
+                    Log out
                 </button>
             </div>
         </div>

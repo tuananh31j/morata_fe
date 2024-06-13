@@ -13,7 +13,7 @@ const PriceFilterItem = () => {
         : [0, 1000];
     const debouncedUpdateFilterAttribute = useMemo(
         () =>
-            debounce((value) => updateFilterAttribute('price', JSON.stringify({ min: value[0], max: value[1] })), 2000),
+            debounce((value) => updateFilterAttribute('price', JSON.stringify({ min: value[0], max: value[1] })), 500),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [isDispatch]
     );

@@ -1,58 +1,9 @@
-import { Button, Modal, Space, Table, TableProps, Tooltip } from 'antd';
+import { Button, Modal, Space, Tooltip } from 'antd';
 import { useState } from 'react';
 import SearchSkeleton from '~/components/_common/skeleton/SearchSkeleton';
 import WrapperList from '~/components/_common/WrapperList';
 import MiniProduct from '~/components/ProductCard/MiniProduct';
 import useOrderDetails from '~/hooks/Queries/useOrderDetails';
-
-interface productDataType {
-    key: string;
-    name: string;
-    image: string;
-    price: number;
-    quantity: number;
-}
-
-const productColumns: TableProps<productDataType>['columns'] = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Image',
-        dataIndex: 'image',
-        key: 'image',
-        render: (img) => <img src={img} alt='' />,
-    },
-    {
-        title: 'Price',
-        dataIndex: 'price',
-        key: 'price',
-    },
-    {
-        title: 'Quantity',
-        dataIndex: 'quantity',
-        key: 'quantity',
-    },
-];
-
-const productData: productDataType[] = [
-    {
-        key: '1',
-        name: 'prod 1',
-        image: 'img1',
-        price: 100,
-        quantity: 5,
-    },
-    {
-        key: '2',
-        name: 'prod 2',
-        image: 'img2',
-        price: 300,
-        quantity: 2,
-    },
-];
 
 const PopupOrderDetails = ({ id }: { id: string }) => {
     const { data, isLoading } = useOrderDetails(id);
@@ -73,7 +24,7 @@ const PopupOrderDetails = ({ id }: { id: string }) => {
 
             <Modal footer={''} open={isModalOpen} onCancel={handleCancel} width={1000}>
                 <WrapperList className='m-0' title='Your Order&#39;s Details'>
-                    <div className='grid grid-cols-2 items-start gap-4'>
+                    <div className='grid grid-cols-2 items-start gap-10'>
                         <div>
                             {/* SHIPPING ADDRESS */}
                             <div className='mt-1'>
