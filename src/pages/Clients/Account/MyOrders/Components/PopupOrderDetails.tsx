@@ -64,7 +64,7 @@ const PopupOrderDetails = ({ id }: { id: string }) => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-
+    console.log(data);
     return (
         <>
             <Tooltip placement='topLeft' title={id}>

@@ -19,13 +19,20 @@ const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IPr
         <>
             {!relatedLoading && (
                 <WrapperList title='Related Products'>
-                    <CarouselDisplay>
-                        {ListRelated?.data.map((item: IProduct, i: number) => (
-                            <CarouselItem key={i}>
-                                <SmallCard product={item} />
-                            </CarouselItem>
-                        ))}
-                    </CarouselDisplay>
+                    {ListRelated && (
+                        <CarouselDisplay>
+                            {ListRelated?.data.map((item: IProduct, i: number) => (
+                                <CarouselItem key={i}>
+                                    <SmallCard product={item} />
+                                </CarouselItem>
+                            ))}
+                        </CarouselDisplay>
+                    )}
+                    {!ListRelated?.data.length && (
+                        <div className='flex h-[344px] items-center justify-center '>
+                            <h3 className='text-xl font-semibold'>There are no related products</h3>
+                        </div>
+                    )}
                 </WrapperList>
             )}
             {relatedLoading && (

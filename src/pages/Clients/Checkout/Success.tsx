@@ -11,9 +11,16 @@ export default function Success() {
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { mutate } = useMutationRemoveAll();
     useEffect(() => {
-        if (user) {
-            mutate({ userId: user._id });
-        }
+        // Vô hiệu hóa nút quay lại trên trình duyệt
+        const handleDisableBackButton = () => {
+            window.history.pushState(null, '', window.location.pathname);
+        };
+
+        handleDisableBackButton();
+
+        window.addEventListener('popstate', handleDisableBackButton);
+
+        return () => window.removeEventListener('popstate', handleDisableBackButton);
     }, []);
     return (
         <>
@@ -45,7 +52,10 @@ export default function Success() {
                     </motion.p>
                     <div className='mt-8 flex gap-10'>
                         <motion.button
-                            onClick={() => navigate('/')}
+                            onClick={() => {
+                                mutate({ userId: user ? user._id : '' });
+                                navigate('/');
+                            }}
                             initial={{ opacity: 0, x: -100 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 2, duration: 1 }}
@@ -54,7 +64,10 @@ export default function Success() {
                             Back To Home
                         </motion.button>
                         <motion.button
-                            onClick={() => navigate('/account/my-orders')}
+                            onClick={() => {
+                                mutate({ userId: user ? user._id : '' });
+                                navigate('/account/my-orders');
+                            }}
                             initial={{ opacity: 0, x: 100 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 3, duration: 1 }}

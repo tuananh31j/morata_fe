@@ -38,3 +38,7 @@ export const ORDER_ENDPOINT = {
     ROOT: '/orders',
     MY_ORDERS: '/orders/user',
 };
+
+export const ATTRIBUTES_ENDPOINT = {
+    ALL: '/attributes',
+};
