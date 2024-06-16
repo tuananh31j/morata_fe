@@ -6,8 +6,7 @@ import { PropTypeProduct } from '~/types/Product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
-
-const PopupAttributes = lazy(() => import('~/components/_common/PopupAttributes'));
+import PopupAttributes from '~/components/_common/PopupAttributes';
 
 const MediumCard = ({ product }: PropTypeProduct) => {
     const newPrice = product.price * (1 + product.discountPercentage / 100);

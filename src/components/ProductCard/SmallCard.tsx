@@ -6,8 +6,7 @@ import { Currency } from '~/utils';
 import Animation from '../_common/Animation';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
-
-const PopupAttributes = lazy(() => import('~/components/_common/PopupAttributes'));
+import PopupAttributes from '~/components/_common/PopupAttributes';
 
 const SmallCard = ({ product }: PropTypeProduct) => {
     // console.log('from smallcard', product);
