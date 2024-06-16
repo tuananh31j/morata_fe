@@ -60,21 +60,16 @@ export default function PopupAttributes({ children, product }: { children: React
     return (
         <>
             <div onClick={showModal}>{children}</div>
-            <Modal
-                footer={[]}
-                title={product.name}
-                width={'65vw'}
-                open={isModalOpen}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <div className='flex'>
+            <Modal footer={[]} width={'65vw'} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <div className='flex items-center'>
                     <div>
                         <img src={product.thumbnail} width={425} height={425} alt='' />
                     </div>
                     <div className='w-[80%]'>
                         <div className='product-action'>
                             {/* Button add to cart and quantity */}
+                            <h3 className='text-xl font-medium'>{product.name}</h3>
+
                             <Form onFinish={handleOnSubmit} layout='vertical'>
                                 <div className='my-4'>
                                     {attributes &&
