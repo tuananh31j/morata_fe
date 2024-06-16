@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import WrapperList from '~/components/_common/WrapperList';
