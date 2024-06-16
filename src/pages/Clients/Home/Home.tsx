@@ -19,13 +19,12 @@ const Home = () => {
     const [
         { data: ProductsList, isLoading: LoadingAll },
         { data: TopDeals, isLoading: LoadingDeals },
-        { data: TopReviews, isLoading: TopReviewsLoading },
+        _,
         { data: ProductLatest, isLoading: ProductLatestLoading },
         { data: categories, isLoading: categoriesLoading },
     ] = useQueriesHomepage();
     const AllProductsList = ProductsList?.data?.docs;
     const TopDealsProductsList = TopDeals?.data;
-    const TopReviewProductsList = TopReviews?.data;
     const LatestList = ProductLatest?.data;
     const categoryList = categories?.data;
     return (
@@ -114,31 +113,7 @@ const Home = () => {
                     </div>
                 )}
             </WrapperList>
-            {/* @Top reviews product */}
-            <WrapperList title='Top Reviews'>
-                {TopReviewsLoading && (
-                    <>
-                        <div className='flex w-full justify-between overflow-hidden'>
-                            <SmallSkeleton />
-                            <SmallSkeleton />
-                            <SmallSkeleton />
-                            <SmallSkeleton />
-                            <SmallSkeleton />
-                        </div>
-                    </>
-                )}
-                {!TopReviewsLoading && (
-                    <CarouselDisplay>
-                        {TopReviewProductsList?.map((item, i: number) => {
-                            return (
-                                <CarouselItem key={i}>
-                                    <SmallCard product={item} />
-                                </CarouselItem>
-                            );
-                        })}
-                    </CarouselDisplay>
-                )}
-            </WrapperList>
+
             {/* add popup productlist */}
             {/* {AllProductsList && <PopupProductList product={AllProductsList} propsLoading={LoadingAll} />} */}
         </div>

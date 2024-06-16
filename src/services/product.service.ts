@@ -7,7 +7,7 @@ import { PRODUCT_ENDPOINT } from '~/constants/endpoint';
 const productService = {
     async getAll(params?: IParams) {
         const res = await instance.get<IAxiosResponse<IAllProductsResponse>>(`${PRODUCT_ENDPOINT.ALL}`, {
-            params: { page: 2, limit: 2 },
+            params,
         });
         return res.data;
     },

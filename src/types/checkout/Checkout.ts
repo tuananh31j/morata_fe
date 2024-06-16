@@ -13,14 +13,28 @@ export type ICheckoutCash = {
         email: string | undefined;
         phone: string | undefined;
     };
-    shippingAddress: any;
+    receiverInfo: {
+        name: string | undefined;
+        email: string | undefined;
+        phone: string | undefined;
+    };
+    shippingAddress: {
+        city: string;
+        country: string;
+        line1: string;
+        line2: string;
+        postal_code: string;
+        state: string;
+    };
     items: IPayloadItemsOrder[] | undefined;
     totalPrice: number;
     paymentMethod?: string;
 };
 
 export type ICheckoutForm = {
-    phone: string;
+    name: string | undefined;
+    email: string | undefined;
+    phone: string | undefined;
     city: string;
     country: string;
     line1: string;

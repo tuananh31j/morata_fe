@@ -1,4 +1,11 @@
-import { FireFilled } from '@ant-design/icons';
+import {
+    DockerOutlined,
+    FileProtectOutlined,
+    FireFilled,
+    HeartOutlined,
+    MenuOutlined,
+    RedoOutlined,
+} from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import ProgressBar from '~/components/_common/ProgressBar';
@@ -11,6 +18,7 @@ import ProductRelated from '~/pages/Clients/ProductDetails/_components/ProductRe
 import { Currency } from '~/utils';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
 import ThumnailProduct from './_components/Thumbnail/ThumnailProduct';
+import { Button, ConfigProvider } from 'antd';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -90,6 +98,77 @@ const ProductDetails = () => {
                                 )}
                                 {/* Produt action  */}
                                 <ActionDetail product={product} />
+                                <div className='mt-[15px] flex gap-5 text-sm'>
+                                    <ConfigProvider
+                                        theme={{
+                                            components: {
+                                                Button: {
+                                                    defaultBorderColor: 'none',
+                                                    defaultHoverBorderColor: 'none',
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <Button className='flex items-center'>
+                                            <HeartOutlined /> Add wishlist
+                                        </Button>
+                                        <Button className='flex items-center'>
+                                            <MenuOutlined /> Add compare
+                                        </Button>
+                                    </ConfigProvider>
+                                </div>
+                                {/* Roles for COD */}
+                                <div className='mt-[35px]'>
+                                    <ConfigProvider
+                                        theme={{
+                                            components: {
+                                                Button: {
+                                                    defaultBorderColor: 'none',
+                                                    defaultHoverBorderColor: 'none',
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <Button className='flex items-center text-base '>
+                                            <FileProtectOutlined /> Shipping and Returns
+                                        </Button>
+                                    </ConfigProvider>
+                                    <div className='ml-[15px] mt-[25px]'>
+                                        <p>
+                                            <DockerOutlined />{' '}
+                                            <span className='text-[#777777]'>
+                                                Estimate Delivery: <b className='text-black'>2 - 5 days</b>
+                                            </span>
+                                        </p>
+                                        <p className='mt-[15px]'>
+                                            <RedoOutlined />{' '}
+                                            <span className='text-[#777777]'>
+                                                Return within <b className='text-black'>30 days</b> of purchase. Taxes
+                                                are non-refundable.
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                {/* Availability product */}
+                                <div className='ml-[15px] mt-[35px] flex flex-col gap-2'>
+                                    <div className='flex '>
+                                        <p className='w-[115px] text-[#777777]'>Availability: </p>
+                                        {product.stock > 0 && <b className='text-green-500'>In Stock</b>}
+                                        {product.stock < 1 && <b className='text-red-500'>Out in Stock</b>}
+                                    </div>
+                                    <div className='flex'>
+                                        <p className='w-[115px]  text-[#777777]'>SKU: </p>
+                                        <span className='font-semibold text-black'>{product.sku}</span>
+                                    </div>
+                                    <div className='flex'>
+                                        <p className='w-[115px]  text-[#777777]'>Vendor: </p>
+                                        {/* <span className='font-semibold text-black'>{product.brandId.name}</span> */}
+                                    </div>
+                                    <div className='flex'>
+                                        <p className='w-[115px]  text-[#777777]'>Categories: </p>
+                                        {/* <span className='font-semibold text-black'>{product.categoryId.name}</span> */}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <DescriptionProduct />

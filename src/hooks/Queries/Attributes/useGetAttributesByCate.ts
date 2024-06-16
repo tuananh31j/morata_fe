@@ -6,6 +6,7 @@ export const useGetAllAtributes = (cateId: string) => {
     const { data, isSuccess, refetch, ...rest } = useQuery({
         queryKey: [QUERY_KEY.ATTRIBUTES, cateId],
         queryFn: () => attributesServices.getAllAttributesByCate(cateId),
+        enabled: !!cateId,
     });
 
     return { data, refetch, ...rest, isSuccess };
