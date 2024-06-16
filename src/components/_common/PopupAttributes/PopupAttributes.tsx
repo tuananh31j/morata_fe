@@ -123,7 +123,7 @@ export default function PopupAttributes({ children, product }: { children: React
                                             min={1}
                                             max={product.stock}
                                             onChange={onChangeInputQuantity}
-                                            className='flex h-[48px] items-center'
+                                            className='flex h-[48px] w-[60px] items-center'
                                             value={valueQuantity}
                                             controls={false}
                                         />
