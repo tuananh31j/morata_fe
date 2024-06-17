@@ -10,7 +10,9 @@ import {
     DashboardPage,
     UpdateProduct,
     AdminProductDetail,
+    OrdersDetail,
 } from './LazyRoutes';
+import ManageOrders from '~/pages/Admins/Order/ManageOrders';
 
 const PrivateRoutes = [
     {
@@ -159,6 +161,35 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <UpdateUser />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+            {
+                path: 'order',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <ManageOrders />,
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'list',
+                        element: (
+                            <Suspense>
+                                <ManageOrders />,
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: ':id/detail',
+                        element: (
+                            <Suspense>
+                                <OrdersDetail />
                             </Suspense>
                         ),
                     },

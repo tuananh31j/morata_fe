@@ -4,5 +4,6 @@ export enum OrderStatus {
     canceled = 'canceled',
     confirmed = 'confirmed',
     shipping = 'shipping',
+    delivered = 'delivered',
     done = 'done',
 }

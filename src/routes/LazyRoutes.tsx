@@ -28,6 +28,8 @@ export const AdminProductDetail = lazy(() => import('~/pages/Admins/Product/Prod
 export const ManageUsers = lazy(() => import('~/pages/Admins/User/index'));
 export const CreateUser = lazy(() => import('~/pages/Admins/User/CreateUser'));
 export const UpdateUser = lazy(() => import('~/pages/Admins/User/UpdateUser'));
+export const ManageOrders = lazy(() => import('~/pages/Admins/Order'));
+export const OrdersDetail = lazy(() => import('~/pages/Admins/Order/OrderDetail'));
 
 // @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
