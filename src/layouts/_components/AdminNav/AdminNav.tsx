@@ -24,7 +24,7 @@ const AdminNavbar = () => {
     ];
     return (
         <>
-            <nav className='duration-250 dark:bg-slate-850/8 fixed left-0 right-0 top-0 z-50 mx-6 mt-[0.313rem] flex flex-wrap items-center justify-between rounded-2xl border bg-[#DAE2FF] px-0 py-2 shadow-none ring-0 transition-all ease-in lg:flex-nowrap lg:justify-start xl:left-[21%]'>
+            <nav className='duration-250 dark:bg-slate-850/8  fixed left-0 right-0 top-0 z-50 flex flex-wrap items-center justify-between border bg-white px-0 py-2 shadow-none ring-0 transition-all ease-in lg:flex-nowrap lg:justify-start xl:left-[13rem]'>
                 <div className='flex-wrap-inherit mx-auto flex w-full items-center justify-between  px-4 py-2'>
                     <nav>
                         <Breadcrumb items={[{ title: 'Pages' }, { title: 'Dashboard' }]} className='text-sm' />

@@ -23,7 +23,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, amount, percentage, since,
                                     <p className='mb-0 font-sans text-sm font-semibold uppercase leading-normal opacity-70 '>
                                         {title}
                                     </p>
-                                    <h5 className='mb-2 mt-2 text-xl font-bold text-slate-600'>{amount}</h5>
+                                    <h5 className='text-md mb-2 mt-2 font-bold text-slate-600'>{amount}</h5>
                                 </div>
                             </div>
                             <div className='ml-4 flex items-center justify-center pb-2'>
@@ -37,7 +37,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, amount, percentage, since,
                                 >
                                     {percentage}%
                                 </span>
-                                {since}
+                                <span className='text-sm'>{since}</span>
                             </p>
                         </div>
                     </div>

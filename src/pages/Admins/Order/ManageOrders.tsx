@@ -110,7 +110,7 @@ const ManageOrders = () => {
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Orders</h1>
             </div>
             <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500 '>
-                <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] dark:text-white dark:opacity-80'>
+                <h2 className='mb-5 ml-2 text-xl font-medium text-white dark:text-black dark:opacity-80'>
                     Inventory items
                 </h2>
                 <div className='my-2 flex justify-between'>

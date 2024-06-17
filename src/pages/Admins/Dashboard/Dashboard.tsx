@@ -208,7 +208,7 @@ const Dashboard = () => {
         },
     ];
     return (
-        <div className='mx-6 mt-[7.5rem] sm:mt-[6.75rem]'>
+        <>
             <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
                 <StatsCard
                     title="Today's Money"
@@ -267,7 +267,7 @@ const Dashboard = () => {
                 <h3 className='my-4 ml-2 text-2xl font-medium'>Top products sale</h3>
                 <Table size='small' columns={columns} dataSource={data} />
             </div>
-        </div>
+        </>
     );
 };
 
