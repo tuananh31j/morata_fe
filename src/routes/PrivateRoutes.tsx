@@ -76,7 +76,6 @@ const PrivateRoutes = [
             },
             {
                 index: true,
-                path: 'dashboard',
                 element: (
                     <Suspense>
                         <DashboardPage />,
