@@ -11,4 +11,5 @@ export const QUERY_KEY = {
     MY_ORDERS: 'myOrders',
     ORDERS: 'orders',
     CHECKOUT: 'checkout',
+    ATTRIBUTES: 'attributes',
 };

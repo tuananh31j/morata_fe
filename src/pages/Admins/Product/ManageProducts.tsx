@@ -223,7 +223,7 @@ const ManageProducts = () => {
         setInputSearchValue(search);
     };
     return (
-        <div className='mx-6 mt-[100px]'>
+        <>
             <div className='my-6 ml-2 flex items-center justify-between py-2 '>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Products</h1>
                 <Link to='/admin/product/create'>
@@ -233,7 +233,7 @@ const ManageProducts = () => {
                 </Link>
             </div>
             <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500 '>
-                <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] '>Inventory items</h2>
+                <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] dark:text-black '>Inventory items</h2>
                 <div className='my-2 flex justify-between'>
                     <Search
                         placeholder='Search name...'
@@ -279,7 +279,7 @@ const ManageProducts = () => {
             >
                 <p>Are you sure want to delete this product?</p>
             </Modal>
-        </div>
+        </>
     );
 };
 

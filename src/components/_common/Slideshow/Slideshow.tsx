@@ -1,7 +1,7 @@
 import { Carousel } from 'antd';
 import { CarouselRef } from 'antd/es/carousel';
 import { useRef, useState } from 'react';
-import { IProduct } from '~/types';
+import { IProduct } from '~/types/Product';
 import SliderControls from '../SliderControls';
 
 // interface ICardItemProps {

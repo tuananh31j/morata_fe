@@ -25,9 +25,11 @@ export const ProductsList = lazy(() => import('~/pages/Admins/Product/index'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
 export const UpdateProduct = lazy(() => import('~/pages/Admins/Product/UpdateProduct'));
 export const AdminProductDetail = lazy(() => import('~/pages/Admins/Product/ProductDetail'));
-export const ManageUsers = lazy(() => import('~/pages/Admins/user/index'));
-export const CreateUser = lazy(() => import('~/pages/Admins/user/CreateUser'));
-export const UpdateUser = lazy(() => import('~/pages/Admins/user/UpdateUser'));
+export const ManageUsers = lazy(() => import('~/pages/Admins/User/index'));
+export const CreateUser = lazy(() => import('~/pages/Admins/User/CreateUser'));
+export const UpdateUser = lazy(() => import('~/pages/Admins/User/UpdateUser'));
+export const ManageOrders = lazy(() => import('~/pages/Admins/Order'));
+export const OrdersDetail = lazy(() => import('~/pages/Admins/Order/OrderDetail'));
 
 // @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {

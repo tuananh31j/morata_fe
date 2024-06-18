@@ -37,9 +37,21 @@ const CheckOut = () => {
                 customerInfo: {
                     name: user?.username,
                     email: user?.email,
+                    phone: '0383144530',
+                },
+                receiverInfo: {
+                    name: value.name,
+                    email: value.email,
                     phone: value.phone,
                 },
-                shippingAddress: value,
+                shippingAddress: {
+                    city: value.city,
+                    country: value.country,
+                    line1: value.line1,
+                    line2: value.line2,
+                    postal_code: value.postal_code,
+                    state: value.state,
+                },
                 items: responsePayloadCheckout,
                 totalPrice,
                 paymentMethod: 'cash',
@@ -115,18 +127,32 @@ const CheckOut = () => {
                         </div>
                         <div className='mt-[15px]'>
                             <Form.Item
+                                label='Your email'
+                                name='email'
+                                initialValue={user?.email}
+                                rules={[{ required: true, message: 'Enter your email' }]}
+                            >
+                                <Input
+                                    disabled={totalPrice > 1000}
+                                    placeholder='Your Email'
+                                    className='mt-[5px] h-[48px]'
+                                />
+                            </Form.Item>
+                        </div>
+                        <div className='mt-[15px]'>
+                            <Form.Item
                                 label='Phone Number'
                                 name='phone'
                                 rules={[{ required: true, message: 'Enter your phone number' }]}
                             >
                                 <Input
                                     disabled={totalPrice > 1000}
-                                    placeholder='Email or phone number'
+                                    placeholder='phone number'
                                     className='mt-[5px] h-[48px]'
                                 />
                             </Form.Item>
                         </div>
-
+                        <hr />
                         <h3 className='text-[21px] font-semibold'>Delivery</h3>
 
                         <div className=''>

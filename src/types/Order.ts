@@ -16,6 +16,11 @@ export interface IOrder {
         email: string;
         phone: string;
     };
+    receiverInfo: {
+        name: string;
+        email: string;
+        phone: string;
+    };
     shippingAddress: {
         city: string;
         country: string;
@@ -27,5 +32,14 @@ export interface IOrder {
     paymentMethod: string;
     isPaid: boolean;
     orderStatus: OrderStatus;
+    createdAt: string;
+}
+export interface IAllOrder {
+    _id: string;
+    name: string;
+    totalPrice: number;
+    paymentMethod: string;
+    orderStatus: string;
+    isPaid: boolean;
     createdAt: string;
 }

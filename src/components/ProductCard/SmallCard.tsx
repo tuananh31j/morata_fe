@@ -1,42 +1,21 @@
 import clsx from 'clsx';
-import { debounce } from 'lodash';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
-import { RootState } from '~/store/store';
+import { lazy, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PropTypeProduct } from '~/types/Product';
 import { Currency } from '~/utils';
-import showMessage from '~/utils/ShowMessage';
+import Animation from '../_common/Animation';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
-import Animation from '../_common/Animation';
-import { Spin } from 'antd';
+import PopupAttributes from '~/components/_common/PopupAttributes';
 
 const SmallCard = ({ product }: PropTypeProduct) => {
-    const { mutate, isPending } = useMutationCart();
-    const navigate = useNavigate();
     // console.log('from smallcard', product);
     const newPrice = product.price * (1 + product.discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {
         setIsActiveProductActions(!isActiveProductActions);
     };
-    const userId = useSelector((state: RootState) => state.authReducer.user);
-    const handleAddToCart = (productId: string) => {
-        if (userId) {
-            const data = {
-                userId: userId?._id,
-                productId,
-                quantity: 1,
-            };
-            mutate(data);
-        } else {
-            navigate('/auth/login');
-            showMessage('You need to login first!', 'warning');
-        }
-    };
-    const debounceAddToCart = debounce((id: string) => handleAddToCart(id), 500);
+
     return (
         <Animation>
             <div className='rounded-xl bg-white p-5'>
@@ -95,12 +74,11 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             </div>
                         </Link>
                         {/* Add to cart btn */}
-                        <button
-                            onClick={() => debounceAddToCart(product._id)}
-                            className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
-                        >
-                            {isPending ? <Spin /> : 'Add to cart'}
-                        </button>
+                        <PopupAttributes product={product}>
+                            <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
+                                Add to cart
+                            </button>
+                        </PopupAttributes>
                     </div>
 
                     {/* Discount */}
