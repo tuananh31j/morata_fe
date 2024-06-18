@@ -91,7 +91,7 @@ export default function ActionDetail({ product }: { product: IProduct }) {
                             </div>
                         )}
                     </div>
-                    <div className=' items-center md:flex '>
+                    <div className=' items-center gap-5 md:flex'>
                         <div className='mb-[15px] flex w-[100%] items-center gap-[5px] md:mb-0 lg:w-[28%]'>
                             <Button onClick={handleDecrement} disabled={valueQuantity < 2} className='h-[48px]'>
                                 -

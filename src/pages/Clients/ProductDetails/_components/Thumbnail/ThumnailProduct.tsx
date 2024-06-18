@@ -1,6 +1,7 @@
 import { Image } from 'antd';
 import Carousel, { CarouselRef } from 'antd/es/carousel';
 import { useRef, useState } from 'react';
+import SliderControls from '~/components/_common/SliderControls';
 // Set demo type as any
 const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: string }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -11,6 +12,12 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
     };
     const onChange = (slide: number) => {
         setCurrentSlide(slide);
+    };
+    const handlePrev = () => {
+        ref.current?.prev();
+    };
+    const handleNext = () => {
+        ref.current?.next();
     };
     return (
         <div className='product-thumbnail flex w-full gap-[16px]'>
@@ -30,24 +37,27 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
 
             {items.length > 1 && (
                 <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[625px]'>
-                    <Carousel
-                        dots={false}
-                        ref={ref}
-                        draggable
-                        className='ww flex justify-center overflow-hidden rounded-[15px]'
-                        beforeChange={onChange}
-                        afterChange={onChange}
-                        infinite
-                    >
-                        {items?.map((item, index: number) => (
-                            <Image
-                                className='lg:h-[475px] lg:w-[475px] 2xl:h-[625px] 2xl:w-[625px]'
-                                key={index}
-                                preview={true}
-                                src={item}
-                            />
-                        ))}
-                    </Carousel>
+                    <div className='group relative'>
+                        <Carousel
+                            dots={false}
+                            ref={ref}
+                            draggable
+                            className=' flex justify-center overflow-hidden rounded-[15px]'
+                            beforeChange={onChange}
+                            afterChange={onChange}
+                            infinite
+                        >
+                            {items?.map((item, index: number) => (
+                                <Image
+                                    className='lg:h-[475px] lg:w-[475px] 2xl:h-[625px] 2xl:w-[625px]'
+                                    key={index}
+                                    preview={true}
+                                    src={item}
+                                />
+                            ))}
+                        </Carousel>
+                        <SliderControls isButtonHandle={false} handlePrev={handlePrev} handleNext={handleNext} />
+                    </div>
                 </div>
             )}
             {items.length < 1 && (
