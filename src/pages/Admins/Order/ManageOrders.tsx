@@ -2,9 +2,9 @@ import { EyeOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 
 import { Button, Space, Table, TableColumnsType, TableProps, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
+import { Link } from 'react-router-dom';
 
 import useGetAllOrders from '~/hooks/Queries/useGetAllOrders';
-import useGetAllOrdersStatus from '~/hooks/Queries/useGetAllOrdersStatus';
 import { IAllOrder } from '~/types/Order';
 
 const ManageOrders = () => {
@@ -88,16 +88,12 @@ const ManageOrders = () => {
             render: (record) => (
                 <Space size='middle'>
                     <Tooltip title='Get detail'>
-                        <Button
-                            type='link'
-                            href={`/admin/order/${record._id}/detail`}
-                            icon={
-                                <EyeOutlined
-                                    className='cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100'
-                                    style={{ fontSize: '1.2rem' }}
-                                />
-                            }
-                        ></Button>
+                        <Link to={`/admin/order/${record._id}/detail`} className='text-cyan-500'>
+                            <EyeOutlined
+                                className='cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100'
+                                style={{ fontSize: '1.2rem' }}
+                            />
+                        </Link>
                     </Tooltip>
                 </Space>
             ),
