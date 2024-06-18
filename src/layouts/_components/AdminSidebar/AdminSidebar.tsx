@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const AdminSidebar = () => {
     const [active, setActive] = useState<number>(0);
-    const actives = [0, 1, 2, 3, 4, 5];
+    const actives = [0, 1, 2, 3, 4, 5, 6];
     // cách này hơi nông dân :v
     return (
         <>
@@ -68,6 +68,20 @@ const AdminSidebar = () => {
                         <li className='mt-[0.125rem] w-full' onClick={() => setActive(actives[2])}>
                             <Link
                                 className={`ease-nav-brand mx-2 my-0 flex items-center whitespace-nowrap rounded-lg px-4 py-[0.625rem] text-[10px] font-semibold text-slate-700 transition-colors ${active === actives[2] ? 'bg-[#EAEDFC]' : ''}   `}
+                                to='/admin/category'
+                            >
+                                <div className='mr-1 flex  items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-[0.625rem]'>
+                                    <ProductOutlined className='text-[#FFC107]' style={{ fontSize: '1.125rem' }} />
+                                </div>
+                                <span className='ease pointer-events-none ml-1 opacity-100 duration-300'>
+                                    Manage categories
+                                </span>
+                            </Link>
+                        </li>
+
+                        <li className='mt-[0.125rem] w-full' onClick={() => setActive(actives[3])}>
+                            <Link
+                                className={`ease-nav-brand mx-2 my-0 flex items-center whitespace-nowrap rounded-lg px-4 py-[0.625rem] text-[10px] font-semibold text-slate-700 transition-colors ${active === actives[2] ? 'bg-[#EAEDFC]' : ''}   `}
                                 to='order'
                             >
                                 <div className='mr-1 flex  items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-[0.625rem]'>
@@ -78,7 +92,7 @@ const AdminSidebar = () => {
                                 </span>
                             </Link>
                         </li>
-                        <li className='mt-[0.125rem] w-full' onClick={() => setActive(actives[3])}>
+                        <li className='mt-[0.125rem] w-full' onClick={() => setActive(actives[4])}>
                             <Link
                                 className={`ease-nav-brand mx-2 my-0 flex items-center whitespace-nowrap rounded-lg px-4 py-[0.625rem] text-[10px] font-semibold text-slate-700 transition-colors ${active === actives[3] ? 'bg-[#EAEDFC]' : ''}   `}
                                 to='/admin/user'
@@ -91,7 +105,7 @@ const AdminSidebar = () => {
                                 </span>
                             </Link>
                         </li>
-                        <li className='mt-[0.125rem] w-full' onClick={() => setActive(actives[4])}>
+                        <li className='mt-[0.125rem] w-full' onClick={() => setActive(actives[5])}>
                             <Link
                                 className={`ease-nav-brand mx-2 my-0 flex items-center whitespace-nowrap rounded-lg px-4 py-[0.625rem] text-[10px] font-semibold text-slate-700 transition-colors ${active === actives[4] ? 'bg-[#EAEDFC]' : ''}   `}
                                 to='/'
@@ -108,7 +122,7 @@ const AdminSidebar = () => {
                                 Account pages
                             </h6>
                         </li>
-                        <li className='mt-[0.125rem] w-full' onClick={() => setActive(actives[5])}>
+                        <li className='mt-[0.125rem] w-full' onClick={() => setActive(actives[6])}>
                             <Link
                                 className={`ease-nav-brand mx-2 my-0 flex items-center whitespace-nowrap rounded-lg px-4 py-[0.625rem] text-[10px] transition-colors ${active === actives[4] ? 'bg-[#EAEDFC]' : ''}`}
                                 to='/'

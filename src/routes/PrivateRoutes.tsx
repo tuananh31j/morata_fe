@@ -11,8 +11,11 @@ import {
     UpdateProduct,
     AdminProductDetail,
     OrdersDetail,
+    CategoryList,
 } from './LazyRoutes';
 import ManageOrders from '~/pages/Admins/Order/ManageOrders';
+import path from 'path';
+import ManageCategories from '~/pages/Admins/Category/CategoryList';
 
 const PrivateRoutes = [
     {
@@ -190,6 +193,19 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <OrdersDetail />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+            {
+                path: 'category',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <CategoryList />
                             </Suspense>
                         ),
                     },
