@@ -1,7 +1,10 @@
 export const QUERY_KEY = {
     CART: 'CART',
     PRODUCTS: 'products',
-    CATEGORIES: 'categories',
+    CATEGORIES: {
+        LIST: 'list',
+        CREATE: 'create',
+    },
     LATEST: 'latest',
     DEALS: 'deals',
     REVIEWS: 'review',

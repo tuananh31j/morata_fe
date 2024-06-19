@@ -16,6 +16,7 @@ import {
 import ManageOrders from '~/pages/Admins/Order/ManageOrders';
 import path from 'path';
 import ManageCategories from '~/pages/Admins/Category/CategoryList';
+import CreateCategory from '~/pages/Admins/Category/CreateCategory';
 
 const PrivateRoutes = [
     {
@@ -206,6 +207,14 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <CategoryList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'create',
+                        element: (
+                            <Suspense>
+                                <CreateCategory />
                             </Suspense>
                         ),
                     },

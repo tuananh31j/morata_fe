@@ -10,6 +10,7 @@ export const PRODUCT_ENDPOINT = {
 export const CATEGORY_ENDPOINT = {
     ALL: '/categories/all',
     POPULAR: '/categories/popular',
+    CREATE: '/categories',
 };
 export const CART_ENDPOINT = {
     GET: '/carts',

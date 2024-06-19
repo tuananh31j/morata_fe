@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import useGetCategories from '~/hooks/Queries/useGetCategories';
 
 type DataType = {
-    _id: string;
+    _id?: string;
     key?: string;
     name: string;
     description: string;
@@ -23,7 +23,6 @@ type DataType = {
 const CategoryList = () => {
     const { data: categories, isLoading: categoriesLoading } = useGetCategories();
     const categoryList = categories?.data;
-    console.log(categoryList);
 
     const [searchText, setSearch] = useState('');
     const [inputSearchValue, setInputSearchValue] = useState('');
@@ -137,7 +136,7 @@ const CategoryList = () => {
             <div className='my-6 ml-2 flex items-center justify-between py-2 '>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Categories</h1>
 
-                <Link to='/'>
+                <Link to='create'>
                     <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
                         Add category
                     </Button>
