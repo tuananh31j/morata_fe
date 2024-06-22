@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { MAIN_ROUTES } from '~/constants/router';
 import { ICategoryPopular } from '~/types/Category';
 
 type CategoryPopularProps = {
@@ -7,7 +8,10 @@ type CategoryPopularProps = {
 const SmallCategoryCard = ({ category }: CategoryPopularProps) => {
     return (
         <>
-            <Link to={`/products?categoryId=${category.categoryId}`} className=' relative mt-2 block rounded-[20px]'>
+            <Link
+                to={`${MAIN_ROUTES}?categoryId=${category.categoryId}`}
+                className=' relative mt-2 block rounded-[20px]'
+            >
                 <div className='w-full overflow-hidden rounded-2xl border border-transparent'>
                     <img
                         loading='lazy'

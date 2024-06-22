@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { MAIN_ROUTES } from '~/constants/router';
 import AuthService from '~/services/auth.service';
 import showMessage from '~/utils/ShowMessage';
 
@@ -11,7 +12,7 @@ const useRegister = () => {
         mutationFn: (body: { username: string; email: string; password: string }) => AuthService.register(body),
         onSuccess: () => {
             showMessage('successful authentication!', 'success');
-            navigator('/auth/login');
+            navigator(MAIN_ROUTES.LOGIN);
         },
     });
 };

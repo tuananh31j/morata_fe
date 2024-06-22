@@ -7,7 +7,7 @@ import {
     WarningOutlined,
 } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, ConfigProvider, Modal, Select, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Modal, Select, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -119,7 +119,7 @@ const ManageUsers = () => {
                     <Tooltip title='Delete'>
                         <DeleteOutlined
                             onClick={showModal}
-                            className='rounded-full bg-red-100 p-2 text-red-500'
+                            className='bg-red-100 text-red-500 rounded-full p-2'
                             style={{ fontSize: '1rem' }}
                         />
                     </Tooltip>
@@ -200,8 +200,8 @@ const ManageUsers = () => {
         console.log(`selected ${value}`);
     };
     return (
-        <div className='mx-6 mt-[100px]'>
-            <div className='my-6 ml-2 flex items-center justify-between '>
+        <>
+            <div className='flex items-center justify-between '>
                 <h1 className='text-3xl font-semibold text-white dark:opacity-80'>Manage Users</h1>
                 <Link to='/admin/user/create'>
                     <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
@@ -209,7 +209,7 @@ const ManageUsers = () => {
                     </Button>
                 </Link>
             </div>
-            <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500'>
+            <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500'>
                 <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767]'>Account</h2>
                 <div className='my-2 flex justify-between'>
                     <Search
@@ -270,7 +270,7 @@ const ManageUsers = () => {
             >
                 <p>Are you sure want to delete this product?</p>
             </Modal>
-        </div>
+        </>
     );
 };
 

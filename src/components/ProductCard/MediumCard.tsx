@@ -7,6 +7,7 @@ import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
 import PopupAttributes from '~/components/_common/PopupAttributes';
+import { MAIN_ROUTES } from '~/constants/router';
 
 const MediumCard = ({ product }: PropTypeProduct) => {
     const newPrice = product.price * (1 + product.discountPercentage / 100);
@@ -24,7 +25,7 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                     onMouseEnter={handleSetDateActive}
                     onMouseLeave={handleSetDateActive}
                 >
-                    <Link to={`/products/${product._id}`} className='block w-full overflow-hidden'>
+                    <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`} className='block w-full overflow-hidden'>
                         <img
                             loading='lazy'
                             src={product.images[1]}
@@ -41,7 +42,7 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                     <ProductActions />
                 </div>
                 <div className='mt-3'>
-                    <Link to={`/products/${product._id}?categoryId=${product.categoryId}`}>
+                    <Link to={`MAIN_ROUTES.PRODUCTS/${product._id}?categoryId=${product.categoryId}`}>
                         <h4 className='line-clamp-2  text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
@@ -57,24 +58,24 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                                 {Currency.format(product.price)}
                             </span>
                             {product?.discountPercentage > 0 && (
-                                <del className=' text-base font-semibold leading-5 text-gray-400'>
+                                <del className=' text-gray-400 text-base font-semibold leading-5'>
                                     {Currency.format(newPrice)}
                                 </del>
                             )}
                         </div>
                         <ul className='mb-5'>
                             <li>
-                                <span className="relative line-clamp-1 select-none pl-3 text-sm text-gray-600 after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:bg-gray-400 after:content-['']">
+                                <span className="text-gray-600 after:bg-gray-400 relative line-clamp-1 select-none pl-3 text-sm after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:content-['']">
                                     Screen Size 10.9 inch
                                 </span>
                             </li>
                             <li>
-                                <span className="relative line-clamp-1 select-none  text-ellipsis pl-3 text-sm text-gray-600 after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:bg-gray-400 after:content-['']">
+                                <span className="text-gray-600 after:bg-gray-400 relative  line-clamp-1 select-none text-ellipsis pl-3 text-sm after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:content-['']">
                                     Operating System iOS 14.0
                                 </span>
                             </li>
                             <li>
-                                <span className="relative line-clamp-1 select-none  text-ellipsis pl-3 text-sm text-gray-600 after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:bg-gray-400 after:content-['']">
+                                <span className="text-gray-600 after:bg-gray-400 relative  line-clamp-1 select-none text-ellipsis pl-3 text-sm after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:content-['']">
                                     Product Length 9.74 inch
                                 </span>
                             </li>

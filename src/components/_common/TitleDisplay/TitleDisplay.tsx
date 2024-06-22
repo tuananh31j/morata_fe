@@ -1,10 +1,9 @@
-import { MinusOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { ReactNode, useState } from 'react';
 
 const TitleDisplay = ({
-    seeMore,
+    option,
     title,
     border,
     onClick,
@@ -12,7 +11,7 @@ const TitleDisplay = ({
     title: string;
     onClick?: () => void;
     border?: boolean;
-    seeMore?: { path?: string; name: string };
+    option?: ReactNode;
 }) => {
     const [status, setStatus] = useState<boolean>(false);
     const handleClick = () => {
@@ -33,21 +32,7 @@ const TitleDisplay = ({
                     <h1 className='text-start font-[400] capitalize md:text-[20px]'>{title}</h1>
                 </span>
             </div>
-            <div className='flex items-center'>
-                {!!seeMore && seeMore.path && (
-                    <Link
-                        to={seeMore.path}
-                        className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
-                    >
-                        {seeMore.name} <RightOutlined className='text-[7px] md:text-[10px]' />
-                    </Link>
-                )}
-                {!!seeMore && !seeMore.path && (
-                    <button className='text-[10px] font-[500] capitalize duration-500 hover:text-blue-800 md:text-[14px]'>
-                        {seeMore.name} <RightOutlined className='text-[7px] md:text-[10px]' />
-                    </button>
-                )}
-            </div>
+            <div className='flex items-center'>{!!option && option}</div>
         </div>
     );
 };

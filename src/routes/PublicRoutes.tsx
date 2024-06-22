@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import { MAIN_ROUTES } from '~/constants/router';
 import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
 import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
@@ -38,7 +39,7 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: 'about',
+                path: MAIN_ROUTES.ABOUT,
                 element: (
                     <Suspense>
                         <AboutPage />
@@ -46,7 +47,7 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: 'products',
+                path: MAIN_ROUTES.PRODUCTS,
                 element: (
                     <Suspense>
                         <ProductsPage />
@@ -54,7 +55,7 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: 'products/:id',
+                path: `${MAIN_ROUTES.PRODUCTS}/:id`,
                 element: (
                     <Suspense>
                         <ProductDetailsPage />
@@ -62,7 +63,7 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: 'wishlist',
+                path: MAIN_ROUTES.WISH_LIST,
                 element: (
                     <Suspense>
                         <WishlistPage />
@@ -70,7 +71,7 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: 'checkout',
+                path: MAIN_ROUTES.CHECKOUT,
                 element: (
                     <Suspense>
                         <ProtectedRouteAuth>
@@ -80,7 +81,7 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: 'contact',
+                path: MAIN_ROUTES.CONTACT,
                 element: (
                     <Suspense>
                         <ContactPage />
@@ -88,8 +89,8 @@ const PublicRoutes = [
                 ),
             },
 
+            // @Account
             {
-                path: 'account',
                 element: (
                     <Suspense>
                         <ProtectedRouteAuth>
@@ -98,14 +99,14 @@ const PublicRoutes = [
                     </Suspense>
                 ),
                 children: [
-                    { index: true, element: <ProfilePage /> },
-                    { path: 'profile', element: <ProfilePage /> },
-                    { path: 'my-orders', element: <MyOrdersPage /> },
-                    { path: 'my-address', element: <MyAddressPage /> },
+                    { path: MAIN_ROUTES.PROFILE, element: <ProfilePage /> },
+                    { path: MAIN_ROUTES.MY_ORDERS, element: <MyOrdersPage /> },
+                    { path: MAIN_ROUTES.MY_ADDRESS, element: <MyAddressPage /> },
                 ],
             },
+
+            // @Auth
             {
-                path: 'auth',
                 element: (
                     <Suspense>
                         <ProtectedRoute>
@@ -114,16 +115,15 @@ const PublicRoutes = [
                     </Suspense>
                 ),
                 children: [
-                    { index: true, element: <LoginPage /> },
-                    { path: 'login', element: <LoginPage /> },
-                    { path: 'register', element: <RegisterPage /> },
+                    { path: MAIN_ROUTES.LOGIN, element: <LoginPage /> },
+                    { path: MAIN_ROUTES.REGISTER, element: <RegisterPage /> },
                 ],
             },
         ],
     },
-    { path: '*', element: <Navigate to='/404' /> },
-    { path: '/success', element: <Success /> },
-    { path: '/404', element: <NotFoundPage /> },
+    { path: '*', element: <Navigate to={MAIN_ROUTES.NOT_FOUND} /> },
+    { path: MAIN_ROUTES.SUCCESS_ORDER, element: <Success /> },
+    { path: MAIN_ROUTES.NOT_FOUND, element: <NotFoundPage /> },
 ];
 
 export default PublicRoutes;

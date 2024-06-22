@@ -6,7 +6,7 @@ const SearchCard = ({ product }: { product: IProduct }) => {
     return (
         <Animation>
             <div className='mb-4'>
-                <Link to={`/products/${product._id}`} className='flex items-center  gap-5  px-5'>
+                <Link to={`MAIN_ROUTES.PRODUCT/${product._id}`} className='flex items-center  gap-5  px-5'>
                     <div className='group relative border-2'>
                         <img src={product.thumbnail} width={80} alt='' />
                     </div>

@@ -3,6 +3,7 @@ import { Button, ConfigProvider, Form, InputNumber, Radio, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationCart } from '~/hooks/Mutations/cart/useAddCart';
 import { useGetAllAtributes } from '~/hooks/Queries/Attributes/useGetAttributesByCate';
 import { RootState } from '~/store/store';
@@ -40,7 +41,7 @@ export default function ActionDetail({ product }: { product: IProduct }) {
 
             setQuantityValue(1);
         } else {
-            navigate('/auth/login');
+            navigate(MAIN_ROUTES.LOGIN);
             showMessage('You need to login first!', 'warning');
         }
         console.log(data);

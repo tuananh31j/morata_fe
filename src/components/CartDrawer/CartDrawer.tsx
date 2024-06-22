@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
 import { Link } from 'react-router-dom';
 import LoadingBar from '~/components/_common/Loading/LoadingBar';
+import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationCheckOutSession } from '~/hooks/Mutations/Checkout/useCreateOrderSession';
 import { useMutationDecreaseCart } from '~/hooks/Mutations/cart/useDecreaseQuantity';
 import { useMutationIncreaseCart } from '~/hooks/Mutations/cart/useIncreaseQuantity';
@@ -109,7 +110,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                 <Link
                                                     style={{ color: '#0068c9' }}
                                                     className='text-[14px] font-bold text-[#0068c9]'
-                                                    to={`/products/${product.productId._id}`}
+                                                    to={`${MAIN_ROUTES.PRODUCTS}/${product.productId._id}`}
                                                 >
                                                     {product.productId.name}
                                                 </Link>
@@ -131,7 +132,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                             )}
                                                         </span>
                                                         {product.productId.discountPercentage > 0 && (
-                                                            <del className=' text-base font-semibold leading-5 text-gray-400'>
+                                                            <del className=' text-gray-400 text-base font-semibold leading-5'>
                                                                 {Currency.format(
                                                                     product.productId.price *
                                                                         product.quantity *
@@ -192,8 +193,8 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 )}
                             </div>
                         )}
-                        <div className='border-t border-gray-200 px-4 py-6'>
-                            <div className='flex justify-between text-base font-bold text-gray-900'>
+                        <div className='border-gray-200 border-t px-4 py-6'>
+                            <div className='text-gray-900 flex justify-between text-base font-bold'>
                                 <p className='text-xs uppercase '>Subtotal:</p>
                                 <p className='text-base text-[#cc1414]'>{Currency.format(totalOrderAmount)}</p>
                             </div>
@@ -221,7 +222,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 </button>
                             </div>
                             <div className='mt-6'>
-                                <Link to={'/checkout'}>
+                                <Link to={MAIN_ROUTES.CHECKOUT}>
                                     <Button
                                         onClick={onClose}
                                         className='h-[50px] bg-[#222222] text-sm font-semibold uppercase text-white'
@@ -240,7 +241,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                     </p>
                                 </div>
                             )}
-                            <div className='mt-6 flex justify-center text-center text-sm text-gray-500'>
+                            <div className='text-gray-500 mt-6 flex justify-center text-center text-sm'>
                                 <p>
                                     or{' '}
                                     <Button

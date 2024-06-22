@@ -1,3 +1,5 @@
+import { RightOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import CategoryPoPularSkeleton from '~/components/_common/skeleton/CategorySkeleton/CategoryPopular';
 import MediumSkeleton from '~/components/_common/skeleton/MediumSkeleton';
@@ -36,7 +38,17 @@ const Home = () => {
             <ShopBenefits />
 
             {/* @Hot Trending Products */}
-            <WrapperList title='Hot Trending Products' seeMore={{ path: '/products', name: 'View All Products' }}>
+            <WrapperList
+                title='Hot Trending Products'
+                option={
+                    <Link
+                        to='MAIN_ROUTES.PRODUCTS'
+                        className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
+                    >
+                        View all products <RightOutlined className='text-[7px] md:text-[10px]' />
+                    </Link>
+                }
+            >
                 {LoadingAll && (
                     <>
                         <div className='flex w-full justify-between overflow-hidden'>
@@ -104,7 +116,17 @@ const Home = () => {
             </WrapperList>
 
             {/* @Top Featured Products */}
-            <WrapperList title='Top Featured Products' seeMore={{ path: '/products', name: 'View All Products ' }}>
+            <WrapperList
+                title='Top Featured Products'
+                option={
+                    <Link
+                        to='MAIN_ROUTES.PRODUCTS'
+                        className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
+                    >
+                        View all products <RightOutlined className='text-[7px] md:text-[10px]' />
+                    </Link>
+                }
+            >
                 {!ProductLatestLoading && LatestList && <TopFeaturedProducts product={LatestList} />}
                 {ProductLatestLoading && (
                     <div className='flex justify-between gap-2'>

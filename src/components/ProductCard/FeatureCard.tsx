@@ -4,6 +4,7 @@ import { PropTypeProduct } from '~/types/Product';
 import RatingDisplay from '../_common/RatingDisplay';
 import { Currency } from '~/utils';
 import clsx from 'clsx';
+import { MAIN_ROUTES } from '~/constants/router';
 
 const FeatureCard = ({ product }: PropTypeProduct) => {
     const [isScale, setIsScale] = useState<boolean>(false);
@@ -19,7 +20,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
     return (
         <div className='rounded-xl bg-white p-5'>
             <div className='relative flex justify-between gap-5 rounded'>
-                <Link to={`/products/${product._id}`} className='relative block w-full max-w-24'>
+                <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`} className='relative block w-full max-w-24'>
                     <img
                         loading='lazy'
                         src={product.images[1]}
@@ -37,7 +38,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                     />
                 </Link>
                 <div>
-                    <Link className='cursor-pointer' to={`/products/${product._id}`}>
+                    <Link className='cursor-pointer' to={`MAIN_ROUTES.PRODUCTS/${product._id}`}>
                         <h4 className='line-clamp-2 text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
@@ -51,7 +52,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                                 {Currency?.format(product.price)}
                             </span>
                             {product.discountPercentage > 0 && (
-                                <del className=' text-[12px] font-semibold leading-5 text-gray-500'>
+                                <del className=' text-gray-500 text-[12px] font-semibold leading-5'>
                                     {Currency.format(newPrice)}
                                 </del>
                             )}

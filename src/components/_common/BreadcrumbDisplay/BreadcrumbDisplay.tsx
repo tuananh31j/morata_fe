@@ -1,5 +1,6 @@
 import { Breadcrumb, ConfigProvider } from 'antd';
 import { useLocation, Link } from 'react-router-dom';
+import { MAIN_ROUTES } from '~/constants/router';
 
 const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
     const location = useLocation();
@@ -56,7 +57,7 @@ const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
                         {titleProduct && (
                             <>
                                 <Breadcrumb.Item>
-                                    <Link to={'/products'}>Products</Link>
+                                    <Link to={MAIN_ROUTES.PRODUCTS}>Products</Link>
                                 </Breadcrumb.Item>
                                 <Breadcrumb.Item className='text-[#212224]'>{titleProduct}</Breadcrumb.Item>
                             </>

@@ -3,6 +3,7 @@ import { Avatar, Button, ConfigProvider, Drawer, List } from 'antd';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { MAIN_ROUTES } from '~/constants/router';
 
 const WishListDrawer = ({ children }: { children: React.ReactNode }) => {
     const [visible, setVisible] = useState(false);
@@ -86,7 +87,7 @@ const WishListDrawer = ({ children }: { children: React.ReactNode }) => {
                             },
                         }}
                     >
-                        <Link to={`/wishlist`} onClick={() => setVisible(false)}>
+                        <Link to={MAIN_ROUTES.WISH_LIST} onClick={() => setVisible(false)}>
                             <Button
                                 className='h-[50px] bg-[#222222] text-sm font-bold uppercase text-white'
                                 type='default'

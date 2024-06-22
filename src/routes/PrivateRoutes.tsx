@@ -12,15 +12,14 @@ import {
     AdminProductDetail,
     OrdersDetail,
     CategoryList,
+    CreateCategory,
 } from './LazyRoutes';
 import ManageOrders from '~/pages/Admins/Order/ManageOrders';
-import path from 'path';
-import ManageCategories from '~/pages/Admins/Category/CategoryList';
-import CreateCategory from '~/pages/Admins/Category/CreateCategory';
+import { ADMIN_ROUTES } from '~/constants/router';
 
 const PrivateRoutes = [
     {
-        path: '/admin',
+        path: ADMIN_ROUTES.DASHBOARD,
         element: (
             <ProtectedRouteAuth>
                 <AdminLayout />
@@ -28,14 +27,6 @@ const PrivateRoutes = [
         ),
         children: [
             {
-                path: 'dashboard',
-                element: (
-                    <Suspense>
-                        <DashboardPage />
-                    </Suspense>
-                ),
-            },
-            {
                 index: true,
                 element: (
                     <Suspense>
@@ -44,60 +35,7 @@ const PrivateRoutes = [
                 ),
             },
             {
-                path: 'products',
-                children: [
-                    {
-                        path: 'list',
-                        element: (
-                            <Suspense>
-                                <ProductsList />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        index: true,
-                        element: (
-                            <Suspense>
-                                <ProductsList />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'create',
-                        element: (
-                            <Suspense>
-                                <CreateProduct />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'edit',
-                        element: (
-                            <Suspense>
-                                <CreateProduct />
-                            </Suspense>
-                        ),
-                    },
-                ],
-            },
-            {
-                index: true,
-                element: (
-                    <Suspense>
-                        <DashboardPage />,
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'dashboard',
-                element: (
-                    <Suspense>
-                        <DashboardPage />,
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'product',
+                path: ADMIN_ROUTES.PRODUCTS,
                 children: [
                     {
                         index: true,
@@ -108,15 +46,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: 'list',
-                        element: (
-                            <Suspense>
-                                <ProductsList />,
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'create',
+                        path: ADMIN_ROUTES.PRODUCTS_CREATE,
                         element: (
                             <Suspense>
                                 <CreateProduct />
@@ -124,7 +54,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: 'edit',
+                        path: `${ADMIN_ROUTES.PRODUCTS_EDIT}/:id`, // @id
                         element: (
                             <Suspense>
                                 <UpdateProduct />
@@ -132,7 +62,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: '1/detail',
+                        path: `${ADMIN_ROUTES.PRODUCTS}/:id`, // @id
                         element: (
                             <Suspense>
                                 <AdminProductDetail />
@@ -142,7 +72,7 @@ const PrivateRoutes = [
                 ],
             },
             {
-                path: 'user',
+                path: ADMIN_ROUTES.USERS,
                 children: [
                     {
                         index: true,
@@ -153,7 +83,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: 'create',
+                        path: ADMIN_ROUTES.USERS_CREATE,
                         element: (
                             <Suspense>
                                 <CreateUser />
@@ -161,7 +91,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: 'edit',
+                        path: `${ADMIN_ROUTES.USERS_EDIT}/:id`,
                         element: (
                             <Suspense>
                                 <UpdateUser />
@@ -171,7 +101,7 @@ const PrivateRoutes = [
                 ],
             },
             {
-                path: 'order',
+                path: ADMIN_ROUTES.ORDERS,
                 children: [
                     {
                         index: true,
@@ -182,15 +112,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: 'list',
-                        element: (
-                            <Suspense>
-                                <ManageOrders />,
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: ':id/detail',
+                        path: `${ADMIN_ROUTES}/:id`,
                         element: (
                             <Suspense>
                                 <OrdersDetail />
@@ -200,7 +122,7 @@ const PrivateRoutes = [
                 ],
             },
             {
-                path: 'category',
+                path: ADMIN_ROUTES.CATEGORIES,
                 children: [
                     {
                         index: true,
@@ -211,7 +133,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: 'create',
+                        path: ADMIN_ROUTES.CATEGORIES_CREATE,
                         element: (
                             <Suspense>
                                 <CreateCategory />

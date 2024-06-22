@@ -57,12 +57,12 @@ const MyAddress = () => {
                     itemLayout='horizontal'
                     dataSource={addresses}
                     renderItem={(item) => (
-                        <List.Item className='border-b border-gray-200 py-2 '>
+                        <List.Item className='border-gray-200 border-b py-2 '>
                             <List.Item.Meta
                                 className=''
                                 avatar={
                                     <div className='rounded-full bg-blue-100 p-2'>
-                                        <HomeOutlined className='text-2xl text-red-500' />
+                                        <HomeOutlined className='text-red-500 text-2xl' />
                                     </div>
                                 }
                                 title={
@@ -81,7 +81,7 @@ const MyAddress = () => {
                                         <label className='text-gray-500'>{item.phone}</label>{' '}
                                         {/* Make phone number gray */}
                                         <div>
-                                            <span className='text-sm text-gray-500'>Mặc định</span>
+                                            <span className='text-gray-500 text-sm'>Mặc định</span>
                                             {/* Make "Mặc định" smaller and gray */}
                                         </div>
                                     </div>

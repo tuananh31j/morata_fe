@@ -7,6 +7,7 @@ import Animation from '../_common/Animation';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
 import PopupAttributes from '~/components/_common/PopupAttributes';
+import { MAIN_ROUTES } from '~/constants/router';
 
 const SmallCard = ({ product }: PropTypeProduct) => {
     // console.log('from smallcard', product);
@@ -28,7 +29,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                         onMouseLeave={handleSetDateActive}
                     >
                         <Link
-                            to={`/products/${product._id}?categoryId=${product.categoryId}`}
+                            to={`${MAIN_ROUTES.PRODUCTS}/${product._id}?categoryId=${product.categoryId}`}
                             className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                         >
                             <img
@@ -49,7 +50,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                     {/* Name */}
                     <div className='mt-[15px] cursor-pointer'>
-                        <Link to={`/products/${product._id}`}>
+                        <Link to={`MAIN_ROUTES.PRODUCTS/${product._id}`}>
                             <h4 className=' cursor-pointer truncate text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                                 {product.name}
                             </h4>
@@ -67,7 +68,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                                     {Currency.format(product.price)}
                                 </span>
                                 {product?.discountPercentage > 0 && (
-                                    <del className=' text-base font-semibold leading-5 text-gray-400'>
+                                    <del className=' text-gray-400 text-base font-semibold leading-5'>
                                         {Currency.format(newPrice)}
                                     </del>
                                 )}

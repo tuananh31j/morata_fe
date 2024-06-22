@@ -7,6 +7,7 @@ import SmallCard from '../ProductCard/SmallCard';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import { IProduct } from '~/types/Product';
+import { MAIN_ROUTES } from '~/constants/router';
 
 // fake quantity data get api new product
 const PopupProductList = ({ product, propsLoading }: { product: IProduct[]; propsLoading: boolean }) => {
@@ -44,7 +45,7 @@ const PopupProductList = ({ product, propsLoading }: { product: IProduct[]; prop
                     // Footer custom button view all product
                     footer={[
                         <div key='cancel' className='mb-[25px] flex w-full justify-center'>
-                            <Link to={'/products'}>
+                            <Link to={MAIN_ROUTES.PRODUCTS}>
                                 <div className='flex h-[50px] w-[182px] items-center justify-center  rounded-[30px] bg-[#222222] text-[12px] font-semibold text-white duration-500 hover:bg-cyan-500'>
                                     VIEW ALL PRODUCTS
                                 </div>

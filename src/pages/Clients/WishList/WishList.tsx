@@ -11,11 +11,11 @@ const Wishlist = () => {
                 Commodo sociosqu venenatis cras dolor sagittis integer luctus maecenas.
             </p>
             <div className=' grid grid-cols-2 gap-3 md:grid-cols-3  lg:grid-cols-4 2xl:grid-cols-5'>
+                {/* <SmallCard />
                 <SmallCard />
                 <SmallCard />
                 <SmallCard />
-                <SmallCard />
-                <SmallCard />
+                <SmallCard /> */}
             </div>
         </WrapperList>
     );

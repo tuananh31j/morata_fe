@@ -1,27 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useLocalStorage = (key: string, initialValue?: string | boolean) => {
-    const currentValue = () => {
+type SetValue<T> = T | ((val: T) => T);
+
+function useLocalStorage<T>(key: string, initialValue: T): [T, (value: SetValue<T>) => void] {
+    // eslint-disable-next-line consistent-return
+    const [storedValue, setStoredValue] = useState(() => {
         try {
-            const item = window.localStorage.getItem(key);
-            return item ? JSON.parse(item) : initialValue;
+            if (typeof window !== 'undefined') {
+                const item = window.localStorage.getItem(key);
+                return item ? JSON.parse(item) : initialValue;
+            }
         } catch (error) {
-            console.log('useLocalstorage: ', error);
+            console.log(error);
             return initialValue;
         }
-    };
-    const [storedValue, setStoredValue] = useState(currentValue);
+    });
 
-    const setValue = (value: string) => {
+    useEffect(() => {
         try {
-            setStoredValue(value);
-            window.localStorage.setItem(key, value);
+            const valueToStore = typeof storedValue === 'function' ? storedValue(storedValue) : storedValue;
+            if (typeof window !== 'undefined') {
+                window.localStorage.setItem(key, JSON.stringify(valueToStore));
+            }
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [key, storedValue]);
 
-    return [storedValue, setValue];
-};
+    return [storedValue, setStoredValue];
+}
 
 export default useLocalStorage;

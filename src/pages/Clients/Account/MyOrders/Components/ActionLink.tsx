@@ -12,7 +12,7 @@ const items: MenuProps['items'] = [
     {
         key: '1',
         label: (
-            <Link rel='noopener noreferrer' to='/products'>
+            <Link rel='noopener noreferrer' to='/'>
                 1st menu item
             </Link>
         ),
@@ -20,7 +20,7 @@ const items: MenuProps['items'] = [
     {
         key: '2',
         label: (
-            <Link rel='noopener noreferrer' to='/products'>
+            <Link rel='noopener noreferrer' to='/'>
                 2nd menu item
             </Link>
         ),
@@ -28,7 +28,7 @@ const items: MenuProps['items'] = [
     {
         key: '3',
         label: (
-            <Link rel='noopener noreferrer' to='/products'>
+            <Link rel='noopener noreferrer' to='/'>
                 3rd menu item
             </Link>
         ),

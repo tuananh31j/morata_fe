@@ -117,7 +117,7 @@ const ManageProducts = () => {
                     <Tooltip title='Delete'>
                         <DeleteOutlined
                             onClick={showModal}
-                            className='rounded-full bg-red-100 p-2 text-red-500'
+                            className='bg-red-100 text-red-500 rounded-full p-2'
                             style={{ fontSize: '1rem' }}
                         />
                     </Tooltip>
@@ -135,7 +135,7 @@ const ManageProducts = () => {
                             href={`/admin/product/1/detail`}
                             icon={
                                 <EllipsisOutlined
-                                    className='cursor-pointer rounded-full p-2 text-black  transition-colors hover:bg-gray-100'
+                                    className='hover:bg-gray-100 cursor-pointer rounded-full p-2  text-black transition-colors'
                                     style={{ fontSize: '1.25rem' }}
                                 />
                             }
@@ -224,7 +224,7 @@ const ManageProducts = () => {
     };
     return (
         <>
-            <div className='my-6 ml-2 flex items-center justify-between py-2 '>
+            <div className='flex items-center justify-between'>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Products</h1>
                 <Link to='/admin/product/create'>
                     <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
@@ -232,7 +232,7 @@ const ManageProducts = () => {
                     </Button>
                 </Link>
             </div>
-            <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500 '>
+            <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
                 <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] dark:text-black '>Inventory items</h2>
                 <div className='my-2 flex justify-between'>
                     <Search

@@ -21,7 +21,7 @@ type DataType = {
 };
 
 const CategoryList = () => {
-    const { data: categories, isLoading: categoriesLoading } = useGetCategories();
+    const { data: categories } = useGetCategories();
     const categoryList = categories?.data;
 
     const [searchText, setSearch] = useState('');
@@ -80,7 +80,7 @@ const CategoryList = () => {
                     <Tooltip title='Delete'>
                         <DeleteOutlined
                             onClick={showModal}
-                            className='rounded-full bg-red-100 p-2 text-red-500'
+                            className='bg-red-100 text-red-500 rounded-full p-2'
                             style={{ fontSize: '1rem' }}
                         />
                     </Tooltip>
@@ -98,7 +98,7 @@ const CategoryList = () => {
                             href={`/admin/product/1/detail`}
                             icon={
                                 <EllipsisOutlined
-                                    className='cursor-pointer rounded-full p-2 text-black  transition-colors hover:bg-gray-100'
+                                    className='hover:bg-gray-100 cursor-pointer rounded-full p-2  text-black transition-colors'
                                     style={{ fontSize: '1.25rem' }}
                                 />
                             }
@@ -132,8 +132,8 @@ const CategoryList = () => {
     };
 
     return (
-        <div className='mx-6 mt-[100px]'>
-            <div className='my-6 ml-2 flex items-center justify-between py-2 '>
+        <>
+            <div className='flex items-center justify-between'>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Categories</h1>
 
                 <Link to='create'>
@@ -143,7 +143,7 @@ const CategoryList = () => {
                 </Link>
             </div>
 
-            <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500 '>
+            <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
                 <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] '>Category List</h2>
 
                 <div className='my-2 flex justify-between'>
@@ -193,7 +193,7 @@ const CategoryList = () => {
             >
                 <p>Are you sure want to delete this category?</p>
             </Modal>
-        </div>
+        </>
     );
 };
 

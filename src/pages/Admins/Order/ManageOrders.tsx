@@ -1,6 +1,6 @@
 import { EyeOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 
-import { Button, Space, Table, TableColumnsType, TableProps, Tag, Tooltip } from 'antd';
+import { Button, Space, Table, TableProps, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import { Link } from 'react-router-dom';
 
@@ -90,7 +90,7 @@ const ManageOrders = () => {
                     <Tooltip title='Get detail'>
                         <Link to={`/admin/order/${record._id}/detail`} className='text-cyan-500'>
                             <EyeOutlined
-                                className='cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100'
+                                className='hover:bg-gray-100 cursor-pointer rounded-full p-2 transition-colors'
                                 style={{ fontSize: '1.2rem' }}
                             />
                         </Link>
@@ -101,11 +101,11 @@ const ManageOrders = () => {
     ];
 
     return (
-        <div className='mx-6 mt-[100px]'>
-            <div className='my-6 ml-2 flex items-center justify-between py-2 '>
+        <>
+            <div className='flex items-center justify-between'>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Orders</h1>
             </div>
-            <div className='transi m-2 rounded-2xl bg-gray-50 p-4 px-5 transition-all duration-500 '>
+            <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
                 <h2 className='mb-5 ml-2 text-xl font-medium text-white dark:text-black dark:opacity-80'>
                     Inventory items
                 </h2>
@@ -126,7 +126,7 @@ const ManageOrders = () => {
                     />
                 )}
             </div>
-        </div>
+        </>
     );
 };
 
