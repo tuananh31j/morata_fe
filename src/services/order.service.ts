@@ -12,7 +12,12 @@ const orderService = {
         return instance.get<IAxiosResponse<IOrder[]>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
     cancelOrder(id: string) {
-        return instance.post<void, { orderId: string }>(`${ORDER_ENDPOINT.MY_ORDERS}`, {
+        return instance.patch<void, { orderId: string }>(`${ORDER_ENDPOINT.CANCELED}`, {
+            orderId: id,
+        });
+    },
+    confirmOrder(id: string) {
+        return instance.patch<void, string>(`${ORDER_ENDPOINT.ROOT}/confirm`, {
             orderId: id,
         });
     },

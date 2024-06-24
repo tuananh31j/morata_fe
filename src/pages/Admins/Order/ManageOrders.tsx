@@ -88,7 +88,7 @@ const ManageOrders = () => {
             render: (record) => (
                 <Space size='middle'>
                     <Tooltip title='Get detail'>
-                        <Link to={`/admin/order/${record._id}/detail`} className='text-cyan-500'>
+                        <Link to={`/admin/orders/${record._id}/detail`} className='text-cyan-500'>
                             <EyeOutlined
                                 className='hover:bg-gray-100 cursor-pointer rounded-full p-2 transition-colors'
                                 style={{ fontSize: '1.2rem' }}
