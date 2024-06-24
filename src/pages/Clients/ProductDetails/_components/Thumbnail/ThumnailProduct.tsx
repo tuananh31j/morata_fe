@@ -12,6 +12,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
     const onChange = (slide: number) => {
         setCurrentSlide(slide);
     };
+    console.log(items);
     return (
         <div className='product-thumbnail flex w-full gap-[16px]'>
             {items.length > 1 && (
@@ -51,7 +52,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
                 </div>
             )}
             {items.length < 1 && (
-                <div className='product-thumbnail-main w-[100%]  lg:w-[375px] 2xl:w-[625px]'>
+                <div className='product-thumbnail-main w-[100%] lg:w-[375px] 2xl:w-[625px]'>
                     <div className='overflow-hidden rounded-[15px]'>
                         <Image preview={true} className='h-[625px] w-[625px]' src={thumbnail} />
                     </div>

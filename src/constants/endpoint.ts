@@ -6,10 +6,13 @@ export const PRODUCT_ENDPOINT = {
     DEALS: '/products/deals',
     REVIEWS: '/products/reviews',
     RELATED: '/products/related',
+    CREATE: '/products',
+    DELETE: '/products',
 };
 export const CATEGORY_ENDPOINT = {
     ALL: '/categories/all',
     POPULAR: '/categories/popular',
+    DETAIL: '/categories',
 };
 export const CART_ENDPOINT = {
     GET: '/carts',

@@ -6,6 +6,7 @@ export interface IProduct {
     rating: number;
     thumbnail: string;
     stock: number;
+    key: string;
     images: string[];
     categoryId: string;
     brandId: string;
@@ -31,6 +32,29 @@ export type IAllProductsResponse = {
 };
 export type PropTypeProduct = {
     product: IProduct;
+};
+export type IProductImages = {
+    file: File;
+    fileList: FileList;
+};
+export type IProductThumbnail = {
+    file: File;
+    fileList: FileList;
+};
+export type ITagsType = {
+    label: string;
+    value: string;
+};
+export type IProductForm = {
+    name: string;
+    price: number;
+    thumbnail: IProductThumbnail | null;
+    stock: number;
+    images: IProductImages | null;
+    categoryId: string | ITagsType;
+    brandId: string | ITagsType;
+    discountPercentage: number;
+    description: string;
 };
 
 export interface BrandId {

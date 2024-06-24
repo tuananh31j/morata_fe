@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import Loading from '~/components/_common/Loading/Loading';
 
-// @Page
+// @client page
 export const AboutPage = lazy(() => import('~/pages/Clients/About'));
 export const HomePage = lazy(() => import('~/pages/Clients/Home'));
 export const ProductsPage = lazy(() => import('~/pages/Clients/Products'));
@@ -17,7 +17,7 @@ export const RegisterPage = lazy(() => import('~/pages/Clients/AuthPage/Register
 export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
 export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
 
-// @page admin
+// @admin page
 export const DashboardPage = lazy(() => import('~/pages/Admins/Dashboard'));
 export const NotFoundPage = lazy(() => import('~/pages/404'));
 export const ErrorPage = lazy(() => import('~/pages/Error'));
@@ -25,9 +25,9 @@ export const ProductsList = lazy(() => import('~/pages/Admins/Product/index'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
 export const UpdateProduct = lazy(() => import('~/pages/Admins/Product/UpdateProduct'));
 export const AdminProductDetail = lazy(() => import('~/pages/Admins/Product/ProductDetail'));
-export const ManageUsers = lazy(() => import('~/pages/Admins/user/index'));
-export const CreateUser = lazy(() => import('~/pages/Admins/user/CreateUser'));
-export const UpdateUser = lazy(() => import('~/pages/Admins/user/UpdateUser'));
+export const ManageUsers = lazy(() => import('~/pages/Admins/User/index'));
+export const CreateUser = lazy(() => import('~/pages/Admins/User/CreateUser'));
+export const UpdateUser = lazy(() => import('~/pages/Admins/User/UpdateUser'));
 
 // @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {

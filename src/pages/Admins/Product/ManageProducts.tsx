@@ -9,27 +9,58 @@ import {
 import type { TableProps } from 'antd';
 import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useDeleteProduct from '~/hooks/Mutations/Product/useDeleteProduct';
+import useGetProducts from '~/hooks/Queries/Products/useGetProducts';
+import useGetCategories from '~/hooks/Queries/useGetCategories';
+import { ICategory } from '~/types/Category';
+import { IProduct } from '~/types/Product';
 
-type DataType = {
-    id?: string;
-    key: string;
-    name: string;
-    thumbnail: string;
-    price: number;
-    stock: number;
-    category: string;
-    status: string;
+type ICategoryCollection = {
+    [key: string]: string;
 };
 
 const ManageProducts = () => {
-    const [searchText, setSearch] = useState('');
-    const [inputSearchValue, setInputSearchValue] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchText, setSearch] = useState<string>('');
+    const [inputSearchValue, setInputSearchValue] = useState<string>('');
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
+    const [categories, setCategories] = useState<ICategoryCollection>({});
+    const { data } = useGetProducts({});
+    const productData = data?.data.docs;
+    const { data: categoryData } = useGetCategories();
+    const { mutate, isSuccess } = useDeleteProduct();
+    const productId = useRef<string>('');
+    const tags: string[] = [
+        'magenta',
+        'red',
+        'volcano',
+        'orange',
+        'gold',
+        'lime',
+        'green',
+        'cyan',
+        'blue',
+        'geekblue',
+        'purple',
+    ];
+    useEffect(() => {
+        (async () => {
+            if (categoryData) {
+                const categoryObject = categoryData?.data?.reduce((prev: ICategoryCollection, curr: ICategory) => {
+                    // add a key and value in original object
+                    prev[curr._id] = curr.name;
+                    return prev;
+                }, {});
+                setCategories(categoryObject);
+            }
+        })();
+    }, [productData, categoryData]);
 
-    const showModal = () => {
+    const showModal = (id: string) => {
         setIsModalOpen(true);
+        productId.current = id;
     };
 
     const handleOk = () => {
@@ -38,8 +69,15 @@ const ManageProducts = () => {
 
     const handleCancel = () => {
         setIsModalOpen(false);
+        productId.current = '';
+        setConfirmLoading(false);
     };
-    const columns: TableProps<DataType>['columns'] = [
+    const handleDeleteProduct = async () => {
+        setConfirmLoading(true);
+        mutate(productId.current);
+    };
+
+    const columns: TableProps<IProduct>['columns'] = [
         {
             title: 'Name',
             dataIndex: 'name',
@@ -57,7 +95,7 @@ const ManageProducts = () => {
             title: 'Thumbnail',
             dataIndex: 'thumbnail',
             key: 'thumbnail',
-            render: (url) => <img src={url} height={80} width={80} alt='thumbnail' />,
+            render: (url, record) => <img src={url} key={record._id} height={80} width={80} alt='thumbnail' />,
             responsive: ['md'],
         },
         {
@@ -74,49 +112,51 @@ const ManageProducts = () => {
         },
         {
             title: 'Category',
-            key: 'category',
             dataIndex: 'category',
+            key: 'category',
             render: (_, cat) => {
-                const color = 'geekblue';
+                const color = tags[Math.floor(Math.random() * tags.length)];
+                console.log(Math.floor(Math.random() * tags.length));
+                const getCategory = categories[`${cat.categoryId}`] || 'Unknown';
                 return (
                     <>
-                        <Tag color={color} key={cat.key}>
-                            {cat.category.toUpperCase()}
+                        <Tag color={color} key={cat.categoryId}>
+                            {`${getCategory}`}
                         </Tag>
                     </>
                 );
             },
         },
-        {
-            title: 'Status',
-            key: 'status',
-            dataIndex: 'status',
-            sorter: (a, b) => a.status.localeCompare(b.status),
-            render: (_, record) => {
-                let color = 'green';
-                if (record.status === 'out of stock') color = 'red';
-                return (
-                    <>
-                        <Tag color={color} key={record.key}>
-                            {record.status.toUpperCase()}
-                        </Tag>
-                    </>
-                );
-            },
-        },
+        // {
+        //     title: 'Status',
+        //     key: 'status',
+        //     dataIndex: 'status',
+        //     sorter: (a, b) => a.status.localeCompare(b.status),
+        //     render: (_, record) => {
+        //         let color = 'green';
+        //         if (record.status === 'out of stock') color = 'red';
+        //         return (
+        //             <>
+        //                 <Tag color={color} key={record.key}>
+        //                     {record.status.toUpperCase()}
+        //                 </Tag>
+        //             </>
+        //         );
+        //     },
+        // },
         {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-                <Space>
+                <Space key={record._id}>
                     <Tooltip title='Update'>
-                        <Link to={`/admin/product/edit`} className='text-blue-500'>
+                        <Link to={`/admin/products/edit`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
                     </Tooltip>
                     <Tooltip title='Delete'>
                         <DeleteOutlined
-                            onClick={showModal}
+                            onClick={() => showModal(record._id)}
                             className='rounded-full bg-red-100 p-2 text-red-500'
                             style={{ fontSize: '1rem' }}
                         />
@@ -128,11 +168,11 @@ const ManageProducts = () => {
             title: 'Detail',
             key: 'detail',
             render: (_, record) => (
-                <Space size='middle'>
+                <Space size='middle' key={record._id}>
                     <Tooltip title='Get detail'>
                         <Button
                             type='link'
-                            href={`/admin/product/1/detail`}
+                            href={`/admin/products/${record._id}/detail`}
                             icon={
                                 <EllipsisOutlined
                                     className='cursor-pointer rounded-full p-2 text-black  transition-colors hover:bg-gray-100'
@@ -145,68 +185,68 @@ const ManageProducts = () => {
             ),
         },
     ];
-    const data: DataType[] = [
-        {
-            key: '1',
-            name: 'John Brown',
-            thumbnail: 'https://picsum.photos/300/300',
-            price: 200,
-            stock: 10,
-            category: 'developer',
-            status: 'out of stock',
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            thumbnail: 'https://picsum.photos/300/300',
-            price: 200,
-            stock: 10,
-            category: 'developer',
+    // const data: DataType[] = [
+    //     {
+    //         key: '1',
+    //         name: 'John Brown',
+    //         thumbnail: 'https://picsum.photos/300/300',
+    //         price: 200,
+    //         stock: 10,
+    //         category: 'developer',
+    //         status: 'out of stock',
+    //     },
+    //     {
+    //         key: '2',
+    //         name: 'Jim Green',
+    //         thumbnail: 'https://picsum.photos/300/300',
+    //         price: 200,
+    //         stock: 10,
+    //         category: 'developer',
 
-            status: 'in stock',
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            thumbnail: 'https://picsum.photos/300/300',
-            price: 200,
-            stock: 10,
-            category: 'blue sky',
-            status: 'out of stock',
-        },
-        {
-            key: '4',
-            name: 'Walter White',
-            thumbnail: 'https://picsum.photos/300/300',
-            price: 200,
-            stock: 10,
-            category: 'blue sky',
-            status: 'in stock',
-        },
-        {
-            key: '5',
-            name: 'Walter White',
-            thumbnail: 'https://picsum.photos/300/300',
-            price: 200,
-            stock: 10,
-            category: 'blue sky',
-            status: 'in stock',
-        },
-        {
-            key: '6',
-            name: 'Walter White',
-            thumbnail: 'https://picsum.photos/300/300',
-            price: 200,
-            stock: 10,
-            category: 'blue sky',
-            status: 'out of stock',
-        },
-    ];
+    //         status: 'in stock',
+    //     },
+    //     {
+    //         key: '3',
+    //         name: 'Joe Black',
+    //         thumbnail: 'https://picsum.photos/300/300',
+    //         price: 200,
+    //         stock: 10,
+    //         category: 'blue sky',
+    //         status: 'out of stock',
+    //     },
+    //     {
+    //         key: '4',
+    //         name: 'Walter White',
+    //         thumbnail: 'https://picsum.photos/300/300',
+    //         price: 200,
+    //         stock: 10,
+    //         category: 'blue sky',
+    //         status: 'in stock',
+    //     },
+    //     {
+    //         key: '5',
+    //         name: 'Walter White',
+    //         thumbnail: 'https://picsum.photos/300/300',
+    //         price: 200,
+    //         stock: 10,
+    //         category: 'blue sky',
+    //         status: 'in stock',
+    //     },
+    //     {
+    //         key: '6',
+    //         name: 'Walter White',
+    //         thumbnail: 'https://picsum.photos/300/300',
+    //         price: 200,
+    //         stock: 10,
+    //         category: 'blue sky',
+    //         status: 'out of stock',
+    //     },
+    // ];
     const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+        onChange: (selectedRowKeys: React.Key[], selectedRows: IProduct[]) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         },
-        getCheckboxProps: (record: DataType) => ({
+        getCheckboxProps: (record: IProduct) => ({
             disabled: record.name === 'Disabled User', // Column configuration not to be checked
             name: record.name,
         }),
@@ -222,11 +262,19 @@ const ManageProducts = () => {
         const search = e.target.value;
         setInputSearchValue(search);
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            setConfirmLoading(false);
+            setIsModalOpen(!isModalOpen);
+        }
+    }, [isSuccess, isModalOpen]);
+
     return (
         <div className='mx-6 mt-[100px]'>
             <div className='my-6 ml-2 flex items-center justify-between py-2 '>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Products</h1>
-                <Link to='/admin/product/create'>
+                <Link to='/admin/products/create'>
                     <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
                         Add product
                     </Button>
@@ -247,12 +295,13 @@ const ManageProducts = () => {
                 </div>
                 <Table
                     size='large'
+                    rowKey={(record) => record._id}
                     rowSelection={{
                         type: 'checkbox',
                         ...rowSelection,
                     }}
                     columns={columns}
-                    dataSource={data}
+                    dataSource={productData}
                     pagination={{
                         pageSize: 4,
                     }}
@@ -272,7 +321,15 @@ const ManageProducts = () => {
                     <Button key='back' type='default' onClick={handleCancel}>
                         Cancel
                     </Button>,
-                    <Button key='button' danger type='primary' onClick={handleOk}>
+                    <Button
+                        key='button'
+                        danger
+                        loading={confirmLoading}
+                        type='primary'
+                        onClick={() => {
+                            handleDeleteProduct();
+                        }}
+                    >
                         Delete
                     </Button>,
                 ]}

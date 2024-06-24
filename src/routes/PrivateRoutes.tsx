@@ -1,24 +1,23 @@
 import AdminLayout from '~/layouts/AdminLayout';
-import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
 import {
-    ManageUsers,
+    AdminProductDetail,
     CreateProduct,
+    CreateUser,
+    DashboardPage,
+    ManageUsers,
     ProductsList,
     Suspense,
-    CreateUser,
-    UpdateUser,
-    DashboardPage,
     UpdateProduct,
-    AdminProductDetail,
+    UpdateUser,
 } from './LazyRoutes';
 
 const PrivateRoutes = [
     {
         path: '/admin',
         element: (
-            <ProtectedRouteAuth>
-                <AdminLayout />
-            </ProtectedRouteAuth>
+            // <ProtectedRouteAuth>
+            <AdminLayout />
+            // </ProtectedRouteAuth>
         ),
         children: [
             {
@@ -33,7 +32,7 @@ const PrivateRoutes = [
                 index: true,
                 element: (
                     <Suspense>
-                        <DashboardPage />
+                        <DashboardPage />,
                     </Suspense>
                 ),
             },
@@ -41,60 +40,6 @@ const PrivateRoutes = [
                 path: 'products',
                 children: [
                     {
-                        path: 'list',
-                        element: (
-                            <Suspense>
-                                <ProductsList />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        index: true,
-                        element: (
-                            <Suspense>
-                                <ProductsList />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'create',
-                        element: (
-                            <Suspense>
-                                <CreateProduct />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'edit',
-                        element: (
-                            <Suspense>
-                                <CreateProduct />
-                            </Suspense>
-                        ),
-                    },
-                ],
-            },
-            {
-                index: true,
-                path: 'dashboard',
-                element: (
-                    <Suspense>
-                        <DashboardPage />,
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'dashboard',
-                element: (
-                    <Suspense>
-                        <DashboardPage />,
-                    </Suspense>
-                ),
-            },
-            {
-                path: 'product',
-                children: [
-                    {
                         index: true,
                         element: (
                             <Suspense>
@@ -119,7 +64,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: 'edit',
+                        path: ':id/edit',
                         element: (
                             <Suspense>
                                 <UpdateProduct />
@@ -127,7 +72,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: '1/detail',
+                        path: ':id/detail',
                         element: (
                             <Suspense>
                                 <AdminProductDetail />

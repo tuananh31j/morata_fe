@@ -53,7 +53,7 @@ const AdminSidebar = () => {
                         <li className='mt-[0.125rem] w-full'>
                             <Link
                                 className='ease-nav-brand mx-2 my-0 flex items-center whitespace-nowrap rounded-lg px-4 py-[0.625rem] text-sm font-semibold text-slate-700 transition-colors hover:bg-[#EAEDFC] dark:text-white dark:opacity-80 dark:hover:bg-[#192555]'
-                                to='/admin/product/list'
+                                to='/admin/products/list'
                             >
                                 <div className='mr-1 flex  items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-[0.625rem]'>
                                     <ProductOutlined className='text-[#FFC107]' style={{ fontSize: '1.125rem' }} />

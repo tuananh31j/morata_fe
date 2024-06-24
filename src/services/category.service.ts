@@ -12,6 +12,10 @@ const categoryService = {
         const res = await instance.get<IAxiosResponse<ICategoryPopular[]>>(`${CATEGORY_ENDPOINT.POPULAR}`);
         return res.data;
     },
+    async getDetail(id: string) {
+        const res = await instance.get<IAxiosResponse<ICategory>>(`${CATEGORY_ENDPOINT.DETAIL}/${{ id }}`);
+        return res.data;
+    },
 };
 
 export default categoryService;
