@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import Animation from '~/components/_common/Animation';
+import { MAIN_ROUTES } from '~/constants/router';
 import { IProduct } from '~/types/Product';
 
 const SearchCard = ({ product }: { product: IProduct }) => {
     return (
         <Animation>
             <div className='mb-4'>
-                <Link to={`MAIN_ROUTES.PRODUCT/${product._id}`} className='flex items-center  gap-5  px-5'>
+                <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`} className='flex items-center  gap-5  px-5'>
                     <div className='group relative border-2'>
                         <img src={product.thumbnail} width={80} alt='' />
                     </div>

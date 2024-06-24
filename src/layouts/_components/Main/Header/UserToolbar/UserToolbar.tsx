@@ -28,7 +28,7 @@ const UserToolbar = () => {
             )}
             {user && !isLoading && (
                 <>
-                    <Link className='cursor-pointer' to={'account/profile'}>
+                    <Link className='cursor-pointer' to={MAIN_ROUTES.PROFILE}>
                         <IconButton name={`${user.username}`} subName='Hello' icon='UserOutlined' />
                     </Link>
                     <WishListDrawer>

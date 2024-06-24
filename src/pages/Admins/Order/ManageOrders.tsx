@@ -5,7 +5,7 @@ import Search from 'antd/es/input/Search';
 import { Link } from 'react-router-dom';
 
 import useGetAllOrders from '~/hooks/Queries/useGetAllOrders';
-import { IAllOrder } from '~/types/Order';
+import { IOrder } from '~/types/Order';
 
 const ManageOrders = () => {
     const { data } = useGetAllOrders();
@@ -13,7 +13,7 @@ const ManageOrders = () => {
 
     const orders = data?.data?.data;
 
-    const columns: TableProps<IAllOrder>['columns'] = [
+    const columns: TableProps<IOrder>['columns'] = [
         {
             title: 'ID',
             dataIndex: '_id',

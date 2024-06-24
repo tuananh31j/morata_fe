@@ -37,7 +37,7 @@ const Products = () => {
                     {categoies && brands && <FilterProducts categories={categoies.data} brands={brands.data} />}
                 </div>
                 <div className='w-full'>
-                    <SortAndViewOptions />
+                    <SortAndViewOptions totalProducts={products ? products.data.totalDocs : 0} />
                     <div
                         className={cn(
                             {
