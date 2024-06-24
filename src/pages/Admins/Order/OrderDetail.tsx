@@ -1,13 +1,12 @@
 import { ConfigProvider, Spin, Steps, Table, TableProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import PopupConfirmOrder from '~/components/_common/PopupOrderStatus/Confirm/PopupConfirmOrder';
 import useGetTheDetailedOrder from '~/hooks/Queries/useGetTheDetailedOrder';
 
 const OrderDetail = () => {
     const { id } = useParams();
-
     const { data, isLoading } = useGetTheDetailedOrder(id as string);
-
     const orderStatus = data?.data.data.orderStatus;
     const dataOrderDetail = data?.data?.data.items;
     const totalPrice = data?.data?.data?.totalPrice;
@@ -35,7 +34,7 @@ const OrderDetail = () => {
             };
             setCurrentStep(getStepIndex(orderStatus));
         }
-    }, [orderStatus]);
+    }, [data]);
 
     const steps = [
         { title: 'Pending' },
@@ -86,7 +85,7 @@ const OrderDetail = () => {
                                 <i data-lucide='dot' />
                                 <h4 className='text-default-600 text-sm'>{dataOrderDetail?.length} Products</h4>
                             </div>
-                            <Link to={`/admin/order/list`} className='text-primary ms-auto text-base font-medium'>
+                            <Link to={`/admin/orders`} className='ms-auto text-base font-medium text-primary'>
                                 Back to List
                             </Link>
                         </div>
@@ -101,7 +100,8 @@ const OrderDetail = () => {
                                             {data?.data?.data?.customerInfo.name}
                                         </h4>
                                         <p className='text-default-600 mb-4 text-sm'>
-                                            {data && Object.values(data.data.data.shippingAddress).join(', ')}
+                                            {data?.data.data.shippingAddress &&
+                                                Object.values(data.data.data.shippingAddress).join(', ')}
                                         </p>
                                         <h4 className='text-default-800 mb-1 text-base font-medium'>Email</h4>
                                         <p className='text-default-600 mb-4 text-sm'>
@@ -113,28 +113,30 @@ const OrderDetail = () => {
                                         </p>
                                     </div>
                                 </div>
-                                <div className='border-default-200 rounded-lg border'>
-                                    <div className='border-default-200 border-b p-4'>
-                                        <h4 className='text-default-800 text-sm font-medium'>Shipping Address</h4>
+                                {data?.data.data.receiverInfo && (
+                                    <div className='border-default-200 rounded-lg border'>
+                                        <div className='border-default-200 border-b p-4'>
+                                            <h4 className='text-default-800 text-sm font-medium'>Shipping Address</h4>
+                                        </div>
+                                        <div className='p-4'>
+                                            <h4 className='text-default-800 mb-1 text-base font-medium'>
+                                                {data?.data?.data?.receiverInfo.name}
+                                            </h4>
+                                            <p className='text-default-600 mb-4 text-sm'>
+                                                {data.data.data.shippingAddress &&
+                                                    Object.values(data.data.data.shippingAddress).join(', ')}
+                                            </p>
+                                            <h4 className='text-default-800 mb-1 text-base font-medium'>Email</h4>
+                                            <p className='text-default-600 mb-4 text-sm'>
+                                                {data?.data?.data?.receiverInfo.email}
+                                            </p>
+                                            <h4 className='text-default-800 mb-1 text-base font-medium'>Phone</h4>
+                                            <p className='text-default-600 mb-4 text-sm'>
+                                                {data?.data?.data?.receiverInfo.phone}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className='p-4'>
-                                        <h4 className='text-default-800 mb-1 text-base font-medium'>
-                                            {data?.data?.data?.receiverInfo.name}
-                                        </h4>
-                                        <p className='text-default-600 mb-4 text-sm'>
-                                            {data && Object.values(data.data.data.shippingAddress).join(', ')}
-                                        </p>
-                                        <h4 className='text-default-800 mb-1 text-base font-medium'>Email</h4>
-                                        <p className='text-default-600 mb-4 text-sm'>
-                                            {data?.data?.data?.receiverInfo.email}
-                                        </p>
-                                        <h4 className='text-default-800 mb-1 text-base font-medium'>Phone</h4>
-                                        <p className='text-default-600 mb-4 text-sm'>
-                                            {data?.data?.data?.receiverInfo.phone}
-                                        </p>
-                                    </div>
-                                </div>
-
+                                )}
                                 <div className='border-default-200 rounded-lg border'>
                                     <div className='border-default-200 border-b p-4'>
                                         <h4 className='text-default-800 text-sm font-medium'>Total Payment :</h4>
@@ -161,13 +163,20 @@ const OrderDetail = () => {
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className='md:col-span-2 xl:col-span-3'>
+                                    {currentStep === 0 && data && (
+                                        <div className='h-[24px]'>
+                                            <PopupConfirmOrder order={data.data.data}>
+                                                Confirm this order
+                                            </PopupConfirmOrder>
+                                        </div>
+                                    )}
                                     <Steps
                                         className='my-10'
                                         current={currentStep}
                                         items={filteredSteps.map((step, index) => ({
                                             title: step.title,
-                                            description: '',
                                         }))}
                                     />
                                     <Table columns={columns} dataSource={dataOrderDetail} />

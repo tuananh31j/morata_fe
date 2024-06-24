@@ -10,7 +10,7 @@ const useCancelOrder = () => {
         mutationFn: ({ orderId }: { orderId: string }) => orderService.cancelOrder(orderId),
         onSuccess() {
             showMessage('Cancel order successfully!', 'info');
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_ORDERS] });
         },
     });
 };

@@ -38,6 +38,7 @@ export const CHECKOUT_ENDPOINT = {
 export const ORDER_ENDPOINT = {
     ROOT: '/orders',
     MY_ORDERS: '/orders/user',
+    CANCELED: '/orders/cancel',
 };
 
 export const ATTRIBUTES_ENDPOINT = {

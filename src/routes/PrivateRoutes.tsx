@@ -112,7 +112,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: `${ADMIN_ROUTES}/:id`,
+                        path: `${ADMIN_ROUTES.ORDERS}/:id/detail`,
                         element: (
                             <Suspense>
                                 <OrdersDetail />

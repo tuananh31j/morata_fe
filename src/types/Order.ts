@@ -1,7 +1,7 @@
 import { OrderStatus } from './enum';
 
 export interface IOrder {
-    _id: string;
+    _id?: string;
     items: {
         name: string;
         quantity: number;
