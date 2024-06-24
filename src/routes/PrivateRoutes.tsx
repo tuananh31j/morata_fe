@@ -1,18 +1,17 @@
 import AdminLayout from '~/layouts/AdminLayout';
-import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
 import {
-    ManageUsers,
+    AdminProductDetail,
     CreateProduct,
+    CreateUser,
+    DashboardPage,
+    ManageUsers,
     ProductsList,
     Suspense,
-    CreateUser,
-    UpdateUser,
-    DashboardPage,
     UpdateProduct,
-    AdminProductDetail,
     OrdersDetail,
     CategoryList,
     CreateCategory,
+    UpdateUser,
 } from './LazyRoutes';
 import ManageOrders from '~/pages/Admins/Order/ManageOrders';
 import { ADMIN_ROUTES } from '~/constants/router';
@@ -21,16 +20,16 @@ const PrivateRoutes = [
     {
         path: ADMIN_ROUTES.DASHBOARD,
         element: (
-            <ProtectedRouteAuth>
-                <AdminLayout />
-            </ProtectedRouteAuth>
+            // <ProtectedRouteAuth>
+            <AdminLayout />
+            // </ProtectedRouteAuth>
         ),
         children: [
             {
                 index: true,
                 element: (
                     <Suspense>
-                        <DashboardPage />
+                        <DashboardPage />,
                     </Suspense>
                 ),
             },
@@ -54,7 +53,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: `${ADMIN_ROUTES.PRODUCTS_EDIT}/:id`, // @id
+                        path: ':id/edit',
                         element: (
                             <Suspense>
                                 <UpdateProduct />
@@ -62,7 +61,7 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: `${ADMIN_ROUTES.PRODUCTS}/:id`, // @id
+                        path: ':id/detail',
                         element: (
                             <Suspense>
                                 <AdminProductDetail />

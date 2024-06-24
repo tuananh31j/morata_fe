@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import Loading from '~/components/_common/Loading/Loading';
 
-// @Page
+// @client page
 export const AboutPage = lazy(() => import('~/pages/Clients/About'));
 export const HomePage = lazy(() => import('~/pages/Clients/Home'));
 export const ProductsPage = lazy(() => import('~/pages/Clients/Products'));
@@ -17,7 +17,7 @@ export const RegisterPage = lazy(() => import('~/pages/Clients/AuthPage/Register
 export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
 export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
 
-// @page admin
+// @admin page
 export const DashboardPage = lazy(() => import('~/pages/Admins/Dashboard'));
 export const NotFoundPage = lazy(() => import('~/pages/404'));
 export const ErrorPage = lazy(() => import('~/pages/Error'));

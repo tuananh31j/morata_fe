@@ -5,7 +5,7 @@ export interface ICategoryPopular {
     image: string;
 }
 export type ICategory = {
-    _id?: string;
+    _id: string;
     name: string;
     description: string;
 };

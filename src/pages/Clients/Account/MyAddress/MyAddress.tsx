@@ -62,7 +62,7 @@ const MyAddress = () => {
                                 className=''
                                 avatar={
                                     <div className='rounded-full bg-blue-100 p-2'>
-                                        <HomeOutlined className='text-red-500 text-2xl' />
+                                        <HomeOutlined className='text-2xl text-secondary' />
                                     </div>
                                 }
                                 title={

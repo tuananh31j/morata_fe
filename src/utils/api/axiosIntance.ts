@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAccessToken, getContentType, setAccessToken } from './apiHelper';
+import { getAccessToken, setAccessToken } from './apiHelper';
 import queryString from 'query-string';
 import { IParams } from '~/types/Api';
 import { AUTH_ENDPOINT } from '~/constants/endpoint';
@@ -7,7 +7,7 @@ import { IAxiosResponse } from '~/types/AxiosResponse';
 
 const axiosOptions = {
     baseURL: import.meta.env.VITE_REACT_API_URL,
-    headers: getContentType(),
+    // headers: getContentType(),
     withCredentials: true,
     paramsSerializer: (params: IParams) => queryString.stringify(params),
 };

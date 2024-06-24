@@ -1,4 +1,4 @@
-import { IAllProductsResponse, IProduct } from '~/types/Product';
+import { IAllProductsResponse, IProduct, IProductForm } from '~/types/Product';
 import { IParams } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import instance from '~/utils/api/axiosIntance';
@@ -37,6 +37,14 @@ const productService = {
         const res = await instance.get<IAxiosResponse<IProduct[]>>(`${PRODUCT_ENDPOINT.RELATED}`, {
             params,
         });
+        return res.data;
+    },
+    async createProduct(data: FormData) {
+        const res = await instance.post<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.CREATE}`, data);
+        return res.data;
+    },
+    async deleteProduct(id: string) {
+        const res = await instance.delete<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.DELETE}/${id}`);
         return res.data;
     },
 };
