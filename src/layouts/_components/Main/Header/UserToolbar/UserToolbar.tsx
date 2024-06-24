@@ -28,32 +28,36 @@ const UserToolbar = () => {
             )}
             {user && !isLoading && (
                 <>
-                    <Link className='cursor-pointer' to={'account/profile'}>
+                    <Link className='cursor-pointer text-white' to={'/profile'}>
                         <IconButton name={`${user.username}`} subName='Hello' icon='UserOutlined' />
                     </Link>
                     <WishListDrawer>
-                        <IconButton count={0} name='my favorite' subName='favorite' icon='HeartOutlined' />
+                        <div className='text-white'>
+                            <IconButton count={0} name='my favorite' subName='favorite' icon='HeartOutlined' />
+                        </div>
                     </WishListDrawer>
 
                     <CartDrawer item={data ? data.data : undefined}>
-                        <IconButton
-                            name={`${totalOrderAmount}$`}
-                            count={totalQuantityAmount}
-                            subName='Your Cart'
-                            icon='ShoppingCartOutlined'
-                        />
+                        <div className='text-white'>
+                            <IconButton
+                                name={`${totalOrderAmount}$`}
+                                count={totalQuantityAmount}
+                                subName='Your Cart'
+                                icon='ShoppingCartOutlined'
+                            />
+                        </div>
                     </CartDrawer>
                 </>
             )}
             {!user && !isLoading && (
                 <>
-                    <Link className='cursor-pointer' to={MAIN_ROUTES.LOGIN}>
+                    <Link className='cursor-pointer text-white' to={MAIN_ROUTES.LOGIN}>
                         <IconButton name='account' subName='login' icon='UserOutlined' />
                     </Link>
-                    <Link to={MAIN_ROUTES.LOGIN}>
+                    <Link to={MAIN_ROUTES.LOGIN} className='cursor-pointer text-white'>
                         <IconButton count={0} name='my favorite' subName='favorite' icon='HeartOutlined' />
                     </Link>
-                    <Link to={MAIN_ROUTES.LOGIN}>
+                    <Link to={MAIN_ROUTES.LOGIN} className='cursor-pointer text-white'>
                         <IconButton name='0$' count={0} subName='your cart' icon='ShoppingCartOutlined' />
                     </Link>
                 </>

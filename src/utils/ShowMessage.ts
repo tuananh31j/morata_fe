@@ -5,7 +5,7 @@ const showMessage = (message: string, type: 'warning' | 'error' | 'success' | 'i
         autoClose: option ? option : 1000,
         hideProgressBar: true,
         position: 'bottom-center',
-        className: 'bg-gray-800 text-white',
+        className: 'bg-gray-800',
     });
 };
 
