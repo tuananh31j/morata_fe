@@ -16,6 +16,7 @@ import useGetProducts from '~/hooks/Queries/Products/useGetProducts';
 import useGetCategories from '~/hooks/Queries/useGetCategories';
 import { ICategory } from '~/types/Category';
 import { IProduct } from '~/types/Product';
+import showMessage from '~/utils/ShowMessage';
 
 type ICategoryCollection = {
     [key: string]: string;
@@ -30,7 +31,7 @@ const ManageProducts = () => {
     const { data } = useGetProducts({});
     const productData = data?.data.docs;
     const { data: categoryData } = useGetCategories();
-    const { mutate, isSuccess } = useDeleteProduct();
+    const { mutate, isSuccess, isError } = useDeleteProduct();
     const productId = useRef<string>('');
     const tags: string[] = [
         'magenta',
@@ -116,7 +117,6 @@ const ManageProducts = () => {
             key: 'category',
             render: (_, cat) => {
                 const color = tags[Math.floor(Math.random() * tags.length)];
-                console.log(Math.floor(Math.random() * tags.length));
                 const getCategory = categories[`${cat.categoryId}`] || 'Unknown';
                 return (
                     <>
@@ -185,63 +185,6 @@ const ManageProducts = () => {
             ),
         },
     ];
-    // const data: DataType[] = [
-    //     {
-    //         key: '1',
-    //         name: 'John Brown',
-    //         thumbnail: 'https://picsum.photos/300/300',
-    //         price: 200,
-    //         stock: 10,
-    //         category: 'developer',
-    //         status: 'out of stock',
-    //     },
-    //     {
-    //         key: '2',
-    //         name: 'Jim Green',
-    //         thumbnail: 'https://picsum.photos/300/300',
-    //         price: 200,
-    //         stock: 10,
-    //         category: 'developer',
-
-    //         status: 'in stock',
-    //     },
-    //     {
-    //         key: '3',
-    //         name: 'Joe Black',
-    //         thumbnail: 'https://picsum.photos/300/300',
-    //         price: 200,
-    //         stock: 10,
-    //         category: 'blue sky',
-    //         status: 'out of stock',
-    //     },
-    //     {
-    //         key: '4',
-    //         name: 'Walter White',
-    //         thumbnail: 'https://picsum.photos/300/300',
-    //         price: 200,
-    //         stock: 10,
-    //         category: 'blue sky',
-    //         status: 'in stock',
-    //     },
-    //     {
-    //         key: '5',
-    //         name: 'Walter White',
-    //         thumbnail: 'https://picsum.photos/300/300',
-    //         price: 200,
-    //         stock: 10,
-    //         category: 'blue sky',
-    //         status: 'in stock',
-    //     },
-    //     {
-    //         key: '6',
-    //         name: 'Walter White',
-    //         thumbnail: 'https://picsum.photos/300/300',
-    //         price: 200,
-    //         stock: 10,
-    //         category: 'blue sky',
-    //         status: 'out of stock',
-    //     },
-    // ];
     const rowSelection = {
         onChange: (selectedRowKeys: React.Key[], selectedRows: IProduct[]) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -266,9 +209,15 @@ const ManageProducts = () => {
     useEffect(() => {
         if (isSuccess) {
             setConfirmLoading(false);
-            setIsModalOpen(!isModalOpen);
+            /* eslint-disable */
+            setIsModalOpen(false);
+            /* eslint-enable */
+            showMessage('Product has been deleted successfully', 'success');
         }
-    }, [isSuccess, isModalOpen]);
+        if (isError) {
+            showMessage('Product has been deleted failure', 'error');
+        }
+    }, [isSuccess, isError]);
 
     return (
         <>

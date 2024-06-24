@@ -19,6 +19,7 @@ import useCreateProduct from '~/hooks/Mutations/Product/useCreateProduct';
 import useGetCategoriesAndBrands from '~/hooks/Queries/useGetCategoriesAndBrands';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IProductForm } from '~/types/Product';
+import showMessage from '~/utils/ShowMessage';
 import { errorMessage } from '~/validation/Product';
 
 const ACCEPT_FILE_TYPE = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -51,8 +52,8 @@ const CreateProduct = () => {
     const [imagesfileList, setImagesFileList] = useState<UploadFile[]>([]);
     const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
     const categoriesAndBranData = useGetCategoriesAndBrands();
-    const { mutate: createProduct, data: createProductData, isError, error } = useCreateProduct();
-    const sku = useId();
+    const { mutate: createProduct, data: createProductData, isError, isSuccess, error, isPending } = useCreateProduct();
+    const sku = useId() + new Date().getMilliseconds();
     const [form] = Form.useForm();
     const dataIndex = {
         brands: 0,
@@ -138,7 +139,13 @@ const CreateProduct = () => {
                 },
             ]);
         }
-    }, [createProductData, isError, error, form]);
+        if (isSuccess) {
+            form.resetFields();
+            setImagesFileList([]);
+            setThumbnailFile([]);
+            showMessage('Create product successfully', 'success');
+        }
+    }, [createProductData, isError, error, form, isSuccess]);
     return (
         <>
             {!categoriesAndBranData?.[dataIndex.categories].isLoading &&
@@ -331,6 +338,8 @@ const CreateProduct = () => {
                                                 htmlType='submit'
                                                 icon={<PlusSquareOutlined />}
                                                 className='mr-3 px-5'
+                                                loading={isPending}
+                                                disabled={isPending}
                                                 size='large'
                                             >
                                                 Add product
