@@ -1,6 +1,6 @@
 import { OrderStatus } from './enum';
 
-export interface IOrderDetails {
+export interface IOrder {
     _id: string;
     items: {
         name: string;
@@ -34,12 +34,12 @@ export interface IOrderDetails {
     orderStatus: OrderStatus;
     createdAt: string;
 }
-export interface IOrder {
+export interface IAllOrder {
     _id: string;
     name: string;
     totalPrice: number;
     paymentMethod: string;
-    orderStatus: OrderStatus | string;
+    orderStatus: string;
     isPaid: boolean;
     createdAt: string;
 }

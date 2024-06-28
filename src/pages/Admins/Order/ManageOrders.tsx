@@ -1,24 +1,44 @@
 import { EyeOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 
 import { Button, Space, Table, TableProps, Tag, Tooltip } from 'antd';
+
 import Search from 'antd/es/input/Search';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import useGetAllOrders from '~/hooks/Queries/useGetAllOrders';
-import { IOrder } from '~/types/Order';
+import { filterOrders, setOrders, setSearchQuery } from '~/store/slice/orderSlice';
+import { RootState } from '~/store/store';
+import { IAllOrder } from '~/types/Order';
 
 const ManageOrders = () => {
+    const dispatch = useDispatch();
     const { data } = useGetAllOrders();
-    console.log('🚀 ~ ManageOrders ~ data:', data);
-
     const orders = data?.data?.data;
+    console.log('🚀 ~ ManageOrders ~ orders:', orders);
+    const searchQuery = useSelector((state: RootState) => state.orderReducer.searchQuery);
+    const filteredOrders = useSelector((state: any) => state.orderReducer.filteredData);
+    const filterStatus = useSelector((state: any) => state.orderReducer.filterStatus);
 
-    const columns: TableProps<IOrder>['columns'] = [
+    console.log('🚀 ~ ManageOrders ~ filterStatus:', filterStatus);
+    useEffect(() => {
+        if (data) {
+            dispatch(setOrders(data.data.data));
+        }
+    }, [data, dispatch]);
+
+    const handleSearchChange = (e: any) => {
+        dispatch(setSearchQuery(e.target.value));
+        dispatch(filterOrders(e.target.value));
+    };
+
+    const columns: TableProps<IAllOrder>['columns'] = [
         {
             title: 'ID',
             dataIndex: '_id',
             key: '_id',
-            render: (text) => <h4>{text}</h4>,
+            render: (text) => <span>{text}</span>,
         },
         {
             title: 'TotalPrice',
@@ -33,9 +53,13 @@ const ManageOrders = () => {
             key: 'paymentMethod',
             filters: [
                 { text: 'Card', value: 'card' },
-                { text: 'Cash', value: 'Cash' },
+                { text: 'Cash', value: 'cash' },
             ],
-            onFilter: (value, record) => record.paymentMethod.indexOf(value.toString()) === 0,
+            onFilter: (value, record) => {
+                console.log('🚀 ~ ManageOrders ~ record:', record);
+                console.log('🚀 ~ ManageOrders ~ value:', value);
+                return false;
+            },
         },
         {
             title: 'OrderStatus',
@@ -50,6 +74,37 @@ const ManageOrders = () => {
                 { text: 'Done', value: 'done' },
             ],
             onFilter: (value, record) => record.orderStatus.indexOf(value.toString()) === 0,
+            render: (orderStatus) => {
+                let color = '';
+                switch (orderStatus) {
+                    case 'pending':
+                        color = 'blue';
+                        break;
+                    case 'cancelled':
+                        color = 'red';
+                        break;
+                    case 'confirmed':
+                        color = 'green';
+                        break;
+                    case 'shipping':
+                        color = 'yellow';
+                        break;
+                    case 'delivered':
+                        color = 'cyan';
+                        break;
+                    case 'done':
+                        color = 'purple';
+                        break;
+                    default:
+                        color = 'gray';
+                        break;
+                }
+                return (
+                    <Tag color={color} key={orderStatus}>
+                        {orderStatus.toUpperCase()}
+                    </Tag>
+                );
+            },
         },
         {
             title: 'IsPaid',
@@ -101,8 +156,8 @@ const ManageOrders = () => {
     ];
 
     return (
-        <>
-            <div className='flex items-center justify-between'>
+        <div className='mx-6 mt-[100px]'>
+            <div className='my-6 ml-2 flex items-center justify-between py-2 '>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Orders</h1>
             </div>
             <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
@@ -110,23 +165,20 @@ const ManageOrders = () => {
                     Inventory items
                 </h2>
                 <div className='my-2 flex justify-between'>
-                    <Search placeholder='Search name...' size='large' className='w-[18.75rem]' />
+                    <Search
+                        placeholder='Search ID...'
+                        size='large'
+                        className='w-[18.75rem]'
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
                     <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
                         Export
                     </Button>
                 </div>
-                {orders && (
-                    <Table
-                        columns={columns}
-                        dataSource={orders}
-                        pagination={{
-                            pageSize: 4,
-                        }}
-                        rowKey={(record) => record._id}
-                    />
-                )}
+                {orders && <Table columns={columns} dataSource={filteredOrders} rowKey={(record) => record._id} />}
             </div>
-        </>
+        </div>
     );
 };
 
