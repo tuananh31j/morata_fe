@@ -23,7 +23,7 @@ const PopupOrderDetails = ({ id }: { id: string }) => {
             </Tooltip>
 
             <Modal footer={''} open={isModalOpen} onCancel={handleCancel} width={1000}>
-                <WrapperList className='m-0' title='Your Order&#39;s Details'>
+                <WrapperList classic className='m-0' title='Your Order&#39;s Details'>
                     <div className='grid grid-cols-2 items-start gap-10'>
                         <div>
                             {/* SHIPPING ADDRESS */}

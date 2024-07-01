@@ -51,7 +51,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                 Cancel
             </Button>
             <Modal open={isModalOpen} footer='' onCancel={handleCancel}>
-                <WrapperList className='m-0' title='Tell us the reason for cancellation'>
+                <WrapperList classic className='m-0' title='Tell us the reason for cancellation'>
                     <Form
                         onFinish={handleSubmit(onSubmit)}
                         className='w-full'

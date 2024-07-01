@@ -9,7 +9,7 @@ const FilterWrap = ({ filterName, children }: { filterName: string; children: Re
         setIsFilter(!isFilter);
     };
     return (
-        <WrapperList border handleClick={handleClick} title={filterName}>
+        <WrapperList classic lineButtonBox handleClick={handleClick} title={filterName}>
             <div className={clsx({ ['hidden']: isFilter })}>{children}</div>
         </WrapperList>
     );

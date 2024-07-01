@@ -7,19 +7,34 @@ interface IWrapperListProps {
     title: string;
     option?: ReactNode;
     className?: string;
-    border?: boolean;
+    outline?: boolean;
+    classic?: boolean;
+    lineButtonBox?: boolean;
     handleClick?: () => void;
 }
-const WrapperList: React.FC<IWrapperListProps> = ({ children, title, className, handleClick, border, option }) => {
+const WrapperList: React.FC<IWrapperListProps> = ({
+    children,
+    title,
+    className,
+    handleClick,
+    outline,
+    lineButtonBox,
+    classic,
+    option,
+}) => {
+    const outlineBoxClass =
+        'm-0 rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1';
+    const BaseClass = 'my-20 transition-all duration-300 ease-in';
+
+    const lineButtonBoxClass = 'border border-transparent border-b-slate-500 border-opacity-20 pb-4 my-0';
     return (
         <div
             className={cn(
-                { ['border border-transparent border-b-slate-500 border-opacity-20 pb-4']: border, ['my-20']: !border },
-                'transition-all duration-300 ease-in',
+                { [outlineBoxClass]: outline, [BaseClass]: classic, [lineButtonBoxClass]: lineButtonBox },
                 className
             )}
         >
-            <TitleDisplay onClick={handleClick && handleClick} border={!border} title={title} option={option} />
+            <TitleDisplay onClick={handleClick && handleClick} border={!lineButtonBox} title={title} option={option} />
             {children}
         </div>
     );

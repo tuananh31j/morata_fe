@@ -22,7 +22,7 @@ const Products = () => {
     };
     return (
         <>
-            {/* <WrapperList border title='Popular Categories'>
+            {/* <WrapperList classic border title='Popular Categories'>
                 <CarouselDisplay>
                     {data.map((item, i) => (
                         <CarouselItem key={i}>

@@ -17,7 +17,7 @@ const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IPr
     return (
         <>
             {!relatedLoading && (
-                <WrapperList title='Related Products'>
+                <WrapperList classic title='Related Products'>
                     {ListRelated && (
                         <CarouselDisplay>
                             {ListRelated?.data.map((item: IProduct, i: number) => (

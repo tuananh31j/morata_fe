@@ -4,7 +4,7 @@ import OrderTable from './Components/OrderTable';
 
 const MyOrders = () => {
     return (
-        <WrapperList title='My orders' className='my-0'>
+        <WrapperList classic title='My orders' className='my-0'>
             {/* @Content */}
             <ConfigProvider
                 theme={{

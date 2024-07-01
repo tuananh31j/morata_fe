@@ -29,7 +29,7 @@ const Profile = () => {
 
     return (
         <>
-            <WrapperList title='My Profile' className='my-0'>
+            <WrapperList classic title='My Profile' className='my-0'>
                 {/* @Content */}
                 <div className='flex items-center justify-center'>
                     <div className='w-[80%] rounded-2xl bg-white px-6 py-4'>
@@ -131,7 +131,7 @@ const Profile = () => {
                     <div>
                         <div className='text-center'>
                             <h3 className='mb-2 mt-[52px] block text-xl font-medium'>Thay đổi mật khẩu</h3>
-                            <p className='mx-auto mb-8 w-[55%] text-sm text-gray-500'>
+                            <p className='text-gray-500 mx-auto mb-8 w-[55%] text-sm'>
                                 Bạn cần tạo mật khẩu từ 6 đến 16 ký tự để bảo vệ tài khoản tốt hơn.
                             </p>
                         </div>

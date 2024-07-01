@@ -39,7 +39,7 @@ const MyAddress = () => {
 
     return (
         <>
-            <WrapperList title='My address' className='my-0'>
+            <WrapperList classic title='My address' className='my-0'>
                 {/* @Content */}
                 <div className='mb-4 flex items-center justify-between'>
                     <h2 className='text-xl font-bold text-[#32373d]'>Sổ địa chỉ nhận hàng </h2>

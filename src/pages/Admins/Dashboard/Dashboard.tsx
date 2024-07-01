@@ -5,11 +5,12 @@ import CardDataStats from './_components/CardDataStats';
 import EyeIcon from '~/components/_common/Icons/EyeIcon';
 import LineChart from './_components/Charts/LineChart';
 import PieChart from './_components/Charts/PieChart';
-import TopBrand from './_components/TopBrand';
+import TopBrand from './_components/Top5Table/TopBrands/TopBrand';
 import ResentActiviti from './_components/ResentActiviti';
 import OrderStatusStatistics from './_components/OrderStatusStatistics';
 import InCome from './_components/InCome';
 import BarChart from './_components/Charts/BarChart';
+import TopUser from './_components/Top5Table/TopUsers/TopUser';
 
 const DashboardNew: React.FC = () => {
     return (
@@ -37,13 +38,17 @@ const DashboardNew: React.FC = () => {
                     <OrderStatusStatistics />
                 </div>
                 <div className='col-span-12 xl:col-span-6'>
-                    <TopBrand />
+                    <TopBrand title='Top Brands' />
                 </div>
                 <div className='col-span-12 xl:col-span-6'>
-                    <TopBrand />
+                    <TopBrand title='Top Categories' />
                 </div>
                 <ResentActiviti />
                 <InCome />
+
+                <div className='col-span-12 xl:col-span-6'>
+                    <TopUser title='Top users' />
+                </div>
             </div>
         </>
     );

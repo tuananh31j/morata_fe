@@ -39,6 +39,7 @@ const Home = () => {
 
             {/* @Hot Trending Products */}
             <WrapperList
+                classic
                 title='Hot Trending Products'
                 option={
                     <Link
@@ -74,7 +75,7 @@ const Home = () => {
             </WrapperList>
 
             {/* {/* @Top Deals Of The Day */}
-            <WrapperList title='Top Deals Of The Day'>
+            <WrapperList classic title='Top Deals Of The Day'>
                 {!LoadingDeals && (
                     <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
                         {TopDealsProductsList?.map((item, i: number) => {
@@ -95,7 +96,7 @@ const Home = () => {
             </WrapperList>
 
             {/* @Popular Categories */}
-            <WrapperList title='Popular Categories'>
+            <WrapperList classic title='Popular Categories'>
                 {categoriesLoading && (
                     <div className='flex justify-center gap-5'>
                         <CategoryPoPularSkeleton />
@@ -117,6 +118,7 @@ const Home = () => {
 
             {/* @Top Featured Products */}
             <WrapperList
+                classic
                 title='Top Featured Products'
                 option={
                     <Link
@@ -137,7 +139,7 @@ const Home = () => {
             </WrapperList>
 
             {/* add popup productlist */}
-            {/* {AllProductsList && <PopupProductList product={AllProductsList} propsLoading={LoadingAll} />} */}
+            {AllProductsList && <PopupProductList product={AllProductsList} propsLoading={LoadingAll} />}
         </div>
     );
 };

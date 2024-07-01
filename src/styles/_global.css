@@ -246,3 +246,69 @@ input[type='search']::-webkit-search-cancel-button {
 [x-cloak] {
     display: none !important;
 }
+
+body {
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: #161724;
+}
+
+.avatar-list > .avatar:not(:first-child) {
+    margin-left: 20px;
+}
+
+.avatar {
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: inset 0 0 0 2px #4d4f6e;
+}
+
+.avatar-large {
+    width: 40px;
+    height: 40px;
+}
+
+.avatar-image {
+    max-width: 100%;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+
+.avatar-frame {
+    position: absolute;
+    pointer-events: none;
+}
+
+.avatar-large .avatar-frame {
+    top: -10%;
+    left: -10%;
+    max-width: 120%;
+}
+
+.avatar-frame {
+    top: -12.5%;
+    left: -12.5%;
+    max-width: 125%;
+}
+
+.anim-spin {
+    animation: spin 20s linear infinite;
+}
+
+.anim-hue {
+    animation: hue 20s linear infinite;
+}
+
+@keyframes hue {
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}

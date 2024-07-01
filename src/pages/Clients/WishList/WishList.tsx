@@ -6,7 +6,7 @@ const Wishlist = () => {
     useDocumentTitle('Wish list');
 
     return (
-        <WrapperList title='My wishlist'>
+        <WrapperList classic title='My wishlist'>
             <p className='pb-4 text-center text-[#777777]'>
                 Commodo sociosqu venenatis cras dolor sagittis integer luctus maecenas.
             </p>
