@@ -8,7 +8,6 @@ import PopupOrderDetails from './PopupOrderDetails';
 // import OrderStatusTag from './Components/OrderStatusTag';
 
 export interface DataType {
-    key: React.Key;
     _id: string;
     paymentMethod: string;
     orderStatus: string;

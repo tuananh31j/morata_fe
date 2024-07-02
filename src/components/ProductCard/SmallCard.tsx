@@ -1,14 +1,17 @@
 import clsx from 'clsx';
-import { lazy, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PropTypeProduct } from '~/types/Product';
 import { Currency } from '~/utils';
 import Animation from '../_common/Animation';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
 import PopupAttributes from '~/components/_common/PopupAttributes';
 import { MAIN_ROUTES } from '~/constants/router';
+import { IProductItem } from '~/types/Product';
 
+type PropTypeProduct = {
+    product: IProductItem;
+};
 const SmallCard = ({ product }: PropTypeProduct) => {
     // console.log('from smallcard', product);
     const newPrice = product.price * (1 + product.discountPercentage / 100);

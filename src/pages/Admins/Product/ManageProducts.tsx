@@ -15,7 +15,7 @@ import useDeleteProduct from '~/hooks/Mutations/Product/useDeleteProduct';
 import useGetProducts from '~/hooks/Queries/Products/useGetProducts';
 import useGetCategories from '~/hooks/Queries/useGetCategories';
 import { ICategory } from '~/types/Category';
-import { IProduct } from '~/types/Product';
+import { IProductItem } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';
 
 type ICategoryCollection = {
@@ -29,7 +29,7 @@ const ManageProducts = () => {
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const [categories, setCategories] = useState<ICategoryCollection>({});
     const { data } = useGetProducts({});
-    const productData = data?.data.docs;
+    const productData = data?.data.products;
     const { data: categoryData } = useGetCategories();
     const { mutate, isSuccess, isError } = useDeleteProduct();
     const productId = useRef<string>('');
@@ -78,7 +78,7 @@ const ManageProducts = () => {
         mutate(productId.current);
     };
 
-    const columns: TableProps<IProduct>['columns'] = [
+    const columns: TableProps<IProductItem>['columns'] = [
         {
             title: 'Name',
             dataIndex: 'name',
@@ -186,10 +186,10 @@ const ManageProducts = () => {
         },
     ];
     const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: IProduct[]) => {
+        onChange: (selectedRowKeys: React.Key[], selectedRows: IProductItem[]) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         },
-        getCheckboxProps: (record: IProduct) => ({
+        getCheckboxProps: (record: IProductItem) => ({
             disabled: record.name === 'Disabled User', // Column configuration not to be checked
             name: record.name,
         }),

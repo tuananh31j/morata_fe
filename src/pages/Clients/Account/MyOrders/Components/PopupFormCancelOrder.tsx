@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Flex, Form, Input, Modal } from 'antd';
+import { Button, Flex, Form, Input, Modal, Radio } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -69,11 +69,14 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                                 name='reason'
                                 control={control}
                                 render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        className='mb-1 h-[48px] rounded-[4px] font-semibold'
-                                        placeholder='Reason...'
-                                    />
+                                    <Radio.Group {...field}>
+                                        <Radio value={'Product did not meet expectations'}>
+                                            Product did not meet expectations
+                                        </Radio>
+                                        <Radio value={'Delayed delivery time'}>Delayed delivery time</Radio>
+                                        <Radio value={'Price and shipping fees'}>Price and shipping fees</Radio>
+                                        <Radio value={'Change of mind or needs'}>Change of mind or needs</Radio>
+                                    </Radio.Group>
                                 )}
                             />
                         </Form.Item>

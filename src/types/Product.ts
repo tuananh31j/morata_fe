@@ -1,4 +1,4 @@
-export interface IProduct {
+export interface IProductDetails {
     _id: string;
     name: string;
     price: number;
@@ -18,21 +18,27 @@ export interface IProduct {
     sku: string;
 }
 
+export type IProductItem = {
+    _id: string;
+    name: string;
+    price: number;
+    discountPercentage: number;
+    rating: number;
+    categoryId: string;
+    brandId: string;
+    stock: number;
+    images: string[];
+    thumbnail: string;
+    reviewIds: string[];
+};
+
 export type IAllProductsResponse = {
-    docs: IProduct[];
-    totalDocs: number;
-    limit: number;
-    totalPages: number;
+    products: IProductItem[];
     page: number;
-    pagingCounter: number;
-    hasPrevPage: boolean;
-    hasNextPage: boolean;
-    prevPage: number | null;
-    nextPage: number | null;
+    totalDocs: number;
+    totalPages: number;
 };
-export type PropTypeProduct = {
-    product: IProduct;
-};
+
 export type IProductImages = {
     file: File;
     fileList: FileList;
@@ -56,14 +62,3 @@ export type IProductForm = {
     discountPercentage: number;
     description: string;
 };
-
-export interface BrandId {
-    _id: string;
-    name: string;
-    description: string;
-}
-export interface CategoryId {
-    _id: string;
-    name: string;
-    description: string;
-}

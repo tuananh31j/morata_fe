@@ -1,7 +1,6 @@
 import { OrderStatus } from './enum';
 
-export interface IOrder {
-    _id: string;
+export interface IOrderDetails {
     items: {
         name: string;
         quantity: number;
@@ -34,12 +33,27 @@ export interface IOrder {
     orderStatus: OrderStatus;
     createdAt: string;
 }
-export interface IAllOrder {
+
+export interface IOrderResponse {
+    orders: Array<{
+        _id: string;
+        totalPrice: number;
+        paymentMethod: string;
+        isPaid: boolean;
+        orderStatus: OrderStatus;
+        createdAt: string;
+    }>;
+    page: number;
+    totalDocs: number;
+    totalPages: number;
+}
+
+export type IOrderHead = {
     _id: string;
     name: string;
     totalPrice: number;
     paymentMethod: string;
-    orderStatus: string;
+    orderStatus: OrderStatus;
     isPaid: boolean;
     createdAt: string;
-}
+};

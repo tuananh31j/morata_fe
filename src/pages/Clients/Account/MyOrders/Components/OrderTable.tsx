@@ -1,29 +1,16 @@
-import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
-import { columns, DataType } from './_helper';
+import { columns } from './_helper';
 import useGetMyOrders from '~/hooks/Queries/useGetMyOrders';
 
 const OrderTable: React.FC = () => {
-    const { data, isLoading, isError } = useGetMyOrders();
-    const [myOrdersWithKey, setMyOrdersWithKey] = useState<DataType[]>();
-    useEffect(() => {
-        if (data && !isError) {
-            const orders = data.data.data.map((item, index) => ({
-                ...item,
-                key: String(index),
-            })) as DataType[];
-            setMyOrdersWithKey(orders);
-        }
-    }, [data, isLoading, isError]);
-
-    // const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {};
-
+    const { data, isLoading } = useGetMyOrders();
     return (
         <>
-            {!isLoading && (
+            {!isLoading && data && (
                 <Table
+                    rowKey={(record) => record._id}
                     columns={columns}
-                    dataSource={myOrdersWithKey}
+                    dataSource={data.data.data.orders}
                     pagination={{
                         pageSize: 2,
                     }}

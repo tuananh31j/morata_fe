@@ -7,7 +7,6 @@ import { Currency } from '~/utils';
 
 const ProductDetail = () => {
     const { id } = useParams();
-    console.log(id);
     const { data, isLoading } = useGetDetailProduct(id!);
     const detailProduct = data?.data;
     return (

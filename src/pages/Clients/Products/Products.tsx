@@ -22,16 +22,6 @@ const Products = () => {
     };
     return (
         <>
-            {/* <WrapperList classic border title='Popular Categories'>
-                <CarouselDisplay>
-                    {data.map((item, i) => (
-                        <CarouselItem key={i}>
-                            <CategoryCard />
-                        </CarouselItem>
-                    ))}
-                </CarouselDisplay>
-            </WrapperList> */}
-
             <div className='block transition-all duration-300 ease-in-out md:flex md:gap-5'>
                 <div className='md:w-[30%]'>
                     {categoies && brands && <FilterProducts categories={categoies.data} brands={brands.data} />}
@@ -54,13 +44,13 @@ const Products = () => {
                         {isProductsLoading && <SmallSkeleton />}
                         {products &&
                             !Array.isArray(products.data) &&
-                            products.data.docs.map((item, i) => <SmallCard product={item} key={i} />)}
+                            products.data.products.map((item, i) => <SmallCard product={item} key={i} />)}
                     </div>
                     <div>
                         {products?.data && !Array.isArray(products.data) && (
                             <Pagination
                                 current={Number(queryParams.page)}
-                                defaultPageSize={products.data.limit}
+                                defaultPageSize={Number(queryParams.limit)}
                                 total={products.data.totalDocs}
                                 onChange={onPageChange}
                             />

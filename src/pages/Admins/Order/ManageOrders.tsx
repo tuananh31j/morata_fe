@@ -6,34 +6,35 @@ import Search from 'antd/es/input/Search';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { ADMIN_ROUTES } from '~/constants/router';
 
 import useGetAllOrders from '~/hooks/Queries/useGetAllOrders';
 import { filterOrders, setOrders, setSearchQuery } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
-import { IAllOrder } from '~/types/Order';
+import { OrderStatus } from '~/types/enum';
+import { IOrderHead } from '~/types/Order';
 
 const ManageOrders = () => {
     const dispatch = useDispatch();
     const { data } = useGetAllOrders();
-    const orders = data?.data?.data;
-    console.log('🚀 ~ ManageOrders ~ orders:', orders);
+    const orders = data?.data?.data.orders;
     const searchQuery = useSelector((state: RootState) => state.orderReducer.searchQuery);
     const filteredOrders = useSelector((state: any) => state.orderReducer.filteredData);
     const filterStatus = useSelector((state: any) => state.orderReducer.filterStatus);
 
-    console.log('🚀 ~ ManageOrders ~ filterStatus:', filterStatus);
     useEffect(() => {
         if (data) {
             dispatch(setOrders(data.data.data));
         }
-    }, [data, dispatch]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data]);
 
     const handleSearchChange = (e: any) => {
         dispatch(setSearchQuery(e.target.value));
         dispatch(filterOrders(e.target.value));
     };
 
-    const columns: TableProps<IAllOrder>['columns'] = [
+    const columns: TableProps<IOrderHead>['columns'] = [
         {
             title: 'ID',
             dataIndex: '_id',
@@ -46,6 +47,7 @@ const ManageOrders = () => {
             key: 'totalPrice',
             sorter: (a, b) => a.totalPrice - b.totalPrice,
             sortDirections: ['descend', 'ascend'],
+            render: (text, record) => <span>{text}</span>, // Update the render function to match the interface
         },
         {
             title: 'PaymentMethod',
@@ -56,8 +58,6 @@ const ManageOrders = () => {
                 { text: 'Cash', value: 'cash' },
             ],
             onFilter: (value, record) => {
-                console.log('🚀 ~ ManageOrders ~ record:', record);
-                console.log('🚀 ~ ManageOrders ~ value:', value);
                 return false;
             },
         },
@@ -66,33 +66,33 @@ const ManageOrders = () => {
             dataIndex: 'orderStatus',
             key: 'orderStatus',
             filters: [
-                { text: 'Pending', value: 'pending' },
-                { text: 'Cancelled', value: 'cancelled' },
-                { text: 'Confirmed', value: 'confirmed' },
-                { text: 'Shipping', value: 'shipping' },
-                { text: 'Delivered', value: 'delivered' },
-                { text: 'Done', value: 'done' },
+                { text: 'Pending', value: OrderStatus.pending },
+                { text: 'Canceled', value: OrderStatus.canceled },
+                { text: 'Confirmed', value: OrderStatus.confirmed },
+                { text: 'Shipping', value: OrderStatus.shipping },
+                { text: 'Delivered', value: OrderStatus.delivered },
+                { text: 'Done', value: OrderStatus.done },
             ],
             onFilter: (value, record) => record.orderStatus.indexOf(value.toString()) === 0,
             render: (orderStatus) => {
                 let color = '';
                 switch (orderStatus) {
-                    case 'pending':
+                    case OrderStatus.pending:
                         color = 'blue';
                         break;
-                    case 'cancelled':
+                    case OrderStatus.canceled:
                         color = 'red';
                         break;
-                    case 'confirmed':
+                    case OrderStatus.confirmed:
                         color = 'green';
                         break;
-                    case 'shipping':
+                    case OrderStatus.shipping:
                         color = 'yellow';
                         break;
-                    case 'delivered':
+                    case OrderStatus.delivered:
                         color = 'cyan';
                         break;
-                    case 'done':
+                    case OrderStatus.done:
                         color = 'purple';
                         break;
                     default:
@@ -143,7 +143,7 @@ const ManageOrders = () => {
             render: (record) => (
                 <Space size='middle'>
                     <Tooltip title='Get detail'>
-                        <Link to={`/admin/orders/${record._id}/detail`} className='text-cyan-500'>
+                        <Link to={`${ADMIN_ROUTES.ORDERS}/${record._id}/detail`} className='text-cyan-500'>
                             <EyeOutlined
                                 className='hover:bg-gray-100 cursor-pointer rounded-full p-2 transition-colors'
                                 style={{ fontSize: '1.2rem' }}
@@ -176,7 +176,7 @@ const ManageOrders = () => {
                         Export
                     </Button>
                 </div>
-                {orders && <Table columns={columns} dataSource={filteredOrders} rowKey={(record) => record._id} />}
+                {orders && <Table columns={columns} dataSource={orders} rowKey={(record) => record._id} />}
             </div>
         </div>
     );
