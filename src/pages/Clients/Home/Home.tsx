@@ -25,7 +25,7 @@ const Home = () => {
         { data: ProductLatest, isLoading: ProductLatestLoading },
         { data: categories, isLoading: categoriesLoading },
     ] = useQueriesHomepage();
-    const AllProductsList = ProductsList?.data?.docs;
+    const AllProductsList = ProductsList?.data?.products;
     const TopDealsProductsList = TopDeals?.data;
     const LatestList = ProductLatest?.data;
     const categoryList = categories?.data;

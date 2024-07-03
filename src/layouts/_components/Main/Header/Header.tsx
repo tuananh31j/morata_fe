@@ -317,7 +317,7 @@ const Header = () => {
                                         initial={{ opacity: 0, y: 100 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.3 }}
-                                        className='absolute right-0 top-[100%] z-50 w-[33vw]  rounded-b-lg  border-b-[5px] border-[#1e3a8a]  bg-white 2xl:w-[50.7vw]'
+                                        className='absolute right-0 top-[100%] z-50 w-[33vw]  rounded-b-lg  border-b-[5px] border-[#1e3a8a]  bg-white 2xl:w-[50.25vw]'
                                     >
                                         <div className='my-2 flex items-center justify-between px-4'>
                                             <span className='text-sm font-medium'>Search Result</span>
@@ -327,7 +327,7 @@ const Header = () => {
                                             />
                                         </div>
                                         <div className='max-h-[33vh] overflow-scroll overflow-x-hidden'>
-                                            {searchResult?.data.docs.map((item, index) => (
+                                            {searchResult?.data.products.map((item, index) => (
                                                 <SearchCard key={index} product={item} />
                                             ))}
                                             {isLoading && (
@@ -335,7 +335,7 @@ const Header = () => {
                                                     <SearchSkeleton />
                                                 </>
                                             )}
-                                            {!searchResult?.data.docs.length && !isLoading && (
+                                            {!searchResult?.data.products.length && !isLoading && (
                                                 <div className='flex h-[20vh] w-full items-center justify-center'>
                                                     <h3 className='font-medium'>
                                                         No products found with the keyword:{' '}
