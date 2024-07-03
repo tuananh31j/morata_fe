@@ -8,12 +8,12 @@ import { Link } from 'react-router-dom';
 import SearchCard from '~/components/ProductCard/SearchCard';
 import { CaretIcon, SearchIcon } from '~/components/_common/Icons';
 import SearchSkeleton from '~/components/_common/skeleton/SearchSkeleton';
-import { useSearchProductQuery } from '~/hooks/Queries/Products/useSearchProducts';
+import { useSearchProductQuery } from '~/hooks/products/Queries/useSearchProducts';
 import { setCategoryId, setFocusSearch, setSearchValue } from '~/store/slice/headerSlice';
 import { RootState, useAppDispatch } from '~/store/store';
 import Navbar from './Navbar';
 import UserToolbar from './UserToolbar';
-import useGetCategories from '~/hooks/Queries/useGetCategories';
+import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
 import { MAIN_ROUTES } from '~/constants/router';
 // navbar-mobi
 

@@ -15,8 +15,8 @@ import {
 import TextArea from 'antd/es/input/TextArea';
 import { AxiosError } from 'axios';
 import { useEffect, useId, useState } from 'react';
-import useCreateProduct from '~/hooks/Mutations/Product/useCreateProduct';
-import useGetCategoriesAndBrands from '~/hooks/Queries/useGetCategoriesAndBrands';
+import useCreateProduct from '~/hooks/products/Mutations/useCreateProduct';
+import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IProductForm } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';

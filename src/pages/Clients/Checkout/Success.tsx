@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
-import { useMutationRemoveAll } from '~/hooks/Mutations/cart/useRemoveAll';
+import { useMutationRemoveAll } from '~/hooks/cart/Mutations/useRemoveAll';
 import { RootState } from '~/store/store';
 
 export default function Success() {

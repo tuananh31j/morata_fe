@@ -2,7 +2,7 @@ import SmallCard from '~/components/ProductCard/SmallCard';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import WrapperList from '~/components/_common/WrapperList';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
-import { useGetRelatedProduct } from '~/hooks/Queries/Products/useGetRelatedProduct';
+import { useGetRelatedProduct } from '~/hooks/products/Queries/useGetRelatedProduct';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IProduct } from '~/types/Product';
 

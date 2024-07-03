@@ -1,7 +1,7 @@
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useFilters from '~/hooks/_common/useFilters';
-import useGetCategoriesAndBrands from '~/hooks/Queries/useGetCategoriesAndBrands';
-import useGetProducts from '~/hooks/Queries/Products/useGetProducts';
+import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
+import useGetProducts from '~/hooks/products/Queries/useGetProducts';
 
 import FilterProducts from './FilterSidebar';
 import SmallCard from '~/components/ProductCard/SmallCard';

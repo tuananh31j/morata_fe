@@ -1,7 +1,7 @@
 import { Tag } from 'antd';
 import { useParams } from 'react-router-dom';
 import RatingDisplay from '~/components/_common/RatingDisplay';
-import useGetDetailProduct from '~/hooks/Queries/Products/useGetDetailProduct';
+import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
 import ThumnailProduct from '~/pages/Clients/ProductDetails/_components/Thumbnail/ThumnailProduct';
 import { Currency } from '~/utils';
 

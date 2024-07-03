@@ -2,7 +2,7 @@ import { CheckOutlined } from '@ant-design/icons';
 import { ConfigProvider, Modal, Spin } from 'antd';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useConfirmOrder from '~/hooks/Mutations/Order/useConfirmOrder';
+import useConfirmOrder from '~/hooks/orders/Mutations/useConfirmOrder';
 import { IOrder } from '~/types/Order';
 
 export default function PopupConfirmOrder({ children, order }: { children: React.ReactNode; order: IOrder }) {

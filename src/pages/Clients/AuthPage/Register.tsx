@@ -5,7 +5,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useMessage from '~/hooks/_common/useMessage';
-import useRegister from '~/hooks/Mutations/Auth/useRegister';
+import useRegister from '~/hooks/auth/useRegister';
 import { RegisterFormData, registerSchema } from '~/types/Schemas/Auth';
 
 const Register = () => {

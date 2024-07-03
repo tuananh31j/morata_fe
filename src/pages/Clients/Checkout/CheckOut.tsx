@@ -2,9 +2,9 @@ import { Button, ConfigProvider, Form, Input, Select } from 'antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MiniProduct from '~/components/ProductCard/MiniProduct';
-import { useMutationCreateOrder } from '~/hooks/Mutations/Checkout/useCreateOrder';
-import { useMutationCheckOutSession } from '~/hooks/Mutations/Checkout/useCreateOrderSession';
-import useGetMyCart from '~/hooks/Queries/Cart/useGetMyCart';
+import { useMutationCreateOrder } from '~/hooks/checkout/useCreateOrder';
+import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
+import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { RootState } from '~/store/store';
 import { ICheckoutForm } from '~/types/checkout/Checkout';
 import { Currency, cn } from '~/utils';
@@ -96,7 +96,7 @@ const CheckOut = () => {
                         </>
                     ) : (
                         <>
-                            <h3 className='text-center text-red-500'>
+                            <h3 className='text-red-500 text-center'>
                                 Your order has exceeded the checkout limit of $1000, please proceed to online checkout!
                             </h3>
                         </>

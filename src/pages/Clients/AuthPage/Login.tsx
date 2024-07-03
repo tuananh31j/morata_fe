@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import { LoginFormData, loginSchema } from '~/types/Schemas/Auth';
 import useMessage from '~/hooks/_common/useMessage';
-import useLogin from '~/hooks/Mutations/Auth/useLogin';
+import useLogin from '~/hooks/auth/useLogin';
 
 const Login = () => {
     useDocumentTitle('Sign In | MORATA');

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
 
-import useGetAllOrders from '~/hooks/Queries/useGetAllOrders';
+import useGetAllOrders from '~/hooks/orders/Queries/useGetAllOrders';
 import { filterOrders, setOrders, setSearchQuery } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
 import { OrderStatus } from '~/types/enum';

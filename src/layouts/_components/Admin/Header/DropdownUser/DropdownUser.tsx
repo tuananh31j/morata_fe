@@ -5,7 +5,7 @@ import StaticImages from '~/assets';
 import ClickOutside from '~/components/_common/ClickOutside';
 import ExitIcon from '~/components/_common/Icons/ExitIcon';
 import MenuItem from './MenuItem';
-import useLogout from '~/hooks/Mutations/Auth/useLogout';
+import useLogout from '~/hooks/auth/useLogout';
 
 const DropdownUser = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);

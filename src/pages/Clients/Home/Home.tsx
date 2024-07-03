@@ -13,7 +13,7 @@ import SmallCard from '~/components/ProductCard/SmallCard';
 import ShopBenefits from '~/components/ShopBenefits';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
-import useQueriesHomepage from '~/hooks/Queries/useQueriesHomepage';
+import useQueriesHomepage from '~/hooks/useQueriesHomepage';
 
 const Home = () => {
     useDocumentTitle('Home');

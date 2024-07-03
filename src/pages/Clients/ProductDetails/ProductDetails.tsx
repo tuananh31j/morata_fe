@@ -11,7 +11,7 @@ import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import ProgressBar from '~/components/_common/ProgressBar';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
-import useGetDetailProduct from '~/hooks/Queries/Products/useGetDetailProduct';
+import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import ActionDetail from '~/pages/Clients/ProductDetails/_components/Action/ActionDetail';
 import ProductRelated from '~/pages/Clients/ProductDetails/_components/ProductRelated/ProductRelated';
@@ -61,7 +61,7 @@ const ProductDetails = () => {
                                     {product.discountPercentage > 0 && (
                                         <>
                                             <div className='mt-[15px]'>
-                                                <span className='text-[14px] font-medium leading-6 text-red-500'>
+                                                <span className='text-red-500 text-[14px] font-medium leading-6'>
                                                     Discount: {Currency.format(oldPrice - product.price)} (-
                                                     {product.discountPercentage}%)
                                                 </span>

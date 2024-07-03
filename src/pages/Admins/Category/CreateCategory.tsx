@@ -6,7 +6,7 @@ import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import useMessage from '~/hooks/_common/useMessage';
-import { useMutationCreateCategory } from '~/hooks/Mutations/Category/useCreateCategory';
+import { useMutationCreateCategory } from '~/hooks/categories/Mutations/useCreateCategory';
 import { ICategoryFormData } from '~/types/Category';
 
 const CreateCategory = () => {

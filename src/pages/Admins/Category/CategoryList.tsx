@@ -11,7 +11,7 @@ import { Button, Modal, Space, Table, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import useGetCategories from '~/hooks/Queries/useGetCategories';
+import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
 
 type DataType = {
     _id?: string;

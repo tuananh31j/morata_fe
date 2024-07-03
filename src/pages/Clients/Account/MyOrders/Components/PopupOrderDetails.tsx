@@ -3,7 +3,7 @@ import { useState } from 'react';
 import SearchSkeleton from '~/components/_common/skeleton/SearchSkeleton';
 import WrapperList from '~/components/_common/WrapperList';
 import MiniProduct from '~/components/ProductCard/MiniProduct';
-import useOrderDetails from '~/hooks/Queries/useOrderDetails';
+import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
 
 const PopupOrderDetails = ({ id }: { id: string }) => {
     const { data, isLoading } = useOrderDetails(id);
