@@ -9,6 +9,7 @@ interface IWrapperListProps {
     className?: string;
     outline?: boolean;
     classic?: boolean;
+    box?: boolean;
     lineButtonBox?: boolean;
     handleClick?: () => void;
 }
@@ -20,17 +21,25 @@ const WrapperList: React.FC<IWrapperListProps> = ({
     outline,
     lineButtonBox,
     classic,
+    box,
     option,
 }) => {
     const outlineBoxClass =
         'm-0 rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1';
     const BaseClass = 'my-20 transition-all duration-300 ease-in';
+    const BoxClass =
+        'm-0 rounded-sm border border-stroke bg-white p-10 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-5';
 
-    const lineButtonBoxClass = 'border border-transparent border-b-slate-500 border-opacity-20 pb-4 my-0';
+    const lineButtonBoxClass = 'border border-transparent border-b-slate-500 border-opacity-20 py-10';
     return (
         <div
             className={cn(
-                { [outlineBoxClass]: outline, [BaseClass]: classic, [lineButtonBoxClass]: lineButtonBox },
+                {
+                    [outlineBoxClass]: outline,
+                    [BaseClass]: classic,
+                    [lineButtonBoxClass]: lineButtonBox,
+                    [BoxClass]: box,
+                },
                 className
             )}
         >

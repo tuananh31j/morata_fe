@@ -1,4 +1,4 @@
-import { AppstoreOutlined, ProductOutlined, ProfileOutlined, UserOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, ProductOutlined, UserOutlined } from '@ant-design/icons';
 import { ADMIN_ROUTES } from '~/constants/router';
 
 export type IMenuItem = {
@@ -47,19 +47,19 @@ export const menuGroups = [
             },
         ],
     },
-    {
-        name: 'OTHERS',
-        menuItems: [
-            {
-                icon: <ProfileOutlined />,
-                label: 'Footer',
-                route: '/',
-            },
-            {
-                icon: <ProfileOutlined />,
-                label: 'Header',
-                route: '#',
-            },
-        ],
-    },
+    // {
+    //     name: 'OTHERS',
+    //     menuItems: [
+    //         {
+    //             icon: <ProfileOutlined />,
+    //             label: 'Footer',
+    //             route: '/',
+    //         },
+    //         {
+    //             icon: <ProfileOutlined />,
+    //             label: 'Header',
+    //             route: '#',
+    //         },
+    //     ],
+    // },
 ];
