@@ -1,15 +1,18 @@
 import instance from '~/utils/api/axiosIntance';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { ORDER_ENDPOINT } from '~/constants/endpoint';
-import { IOrderResponse, IOrderDetails } from '~/types/Order';
+import { IOrderResponse, IOrderDetails, IOrderParams } from '~/types/Order';
 import { OrderStatus } from '~/types/enum';
 
 const orderService = {
     myOrder() {
         return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
-    getAllOrders() {
-        return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.ROOT}`);
+    getAllOrders(params?: IOrderParams) {
+        console.log('🚀 ~ getAllOrders ~ params:', params);
+        return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.ROOT}`, {
+            params,
+        });
     },
     cancelOrder(id: string) {
         return instance.patch<void, { orderId: string }>(`${ORDER_ENDPOINT.CANCELED}`, {
