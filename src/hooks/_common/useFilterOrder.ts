@@ -1,36 +1,35 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
-import { filterAttributes, resetFilter, updateGrid, updateQueryParams } from '~/store/slice/filterSlice';
+import { resetFilter } from '~/store/slice/filterSlice';
+import { filterAttributesOrder, updateQueryParamsOrder } from '~/store/slice/orderSlice';
 import { useTypedSelector } from '~/store/store';
-import { IParams } from '~/types/Api';
+import { IOrderParams } from '~/types/Order';
 
-const useFilters = () => {
+const useFilterOrder = () => {
     const { pathname } = useLocation();
     const [searchParams] = useSearchParams();
     const dispatch = useDispatch();
     const navigator = useNavigate();
 
-    const { queryParams, grid } = useTypedSelector((state) => state.filters);
+    const { queryParams } = useTypedSelector((state) => state.orderReducer);
 
     useEffect(() => {
         searchParams?.forEach((value, key) => {
-            dispatch(updateQueryParams({ key: key as keyof IParams, value }));
+            dispatch(updateQueryParamsOrder({ key: key as keyof IOrderParams, value }));
         });
     }, []);
 
-    const updateQueryParam = (key: keyof IParams, value: string) => {
+    const updateQueryParam = (key: keyof IOrderParams, value: string) => {
         const newParams = new URLSearchParams(searchParams?.toString());
-
-        if (value) newParams.set(key, String(value));
-        else newParams.delete(key);
+        newParams.set(key, value);
 
         navigator(`${pathname}?${newParams.toString()}`);
 
-        dispatch(updateQueryParams({ key, value }));
+        dispatch(updateQueryParamsOrder({ key, value }));
     };
 
-    const updateFilterAttribute = (key: keyof Omit<IParams, 'page' | 'sort'>, value: string) => {
+    const updateFilterAttribute = (key: keyof Omit<IOrderParams, 'page' | 'sort'>, value: string) => {
         const newParams = new URLSearchParams(searchParams?.toString());
         newParams.delete('page');
         newParams.delete('sort');
@@ -39,13 +38,8 @@ const useFilters = () => {
 
         navigator(`${pathname}?${newParams.toString()}`);
 
-        dispatch(filterAttributes({ key, value }));
+        dispatch(filterAttributesOrder({ key, value }));
     };
-
-    const updateGridClass = (className: string) => {
-        dispatch(updateGrid(className));
-    };
-
     const resetQueryParams = () => {
         if (pathname) {
             dispatch(resetFilter());
@@ -55,12 +49,10 @@ const useFilters = () => {
 
     return {
         queryParams,
-        grid,
-        updateGridClass,
         updateFilterAttribute,
         updateQueryParam,
         resetQueryParams,
     };
 };
 
-export default useFilters;
+export default useFilterOrder;

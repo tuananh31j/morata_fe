@@ -57,3 +57,12 @@ export type IOrderHead = {
     isPaid: boolean;
     createdAt: string;
 };
+export type IOrderParams = {
+    paymentMethod: string;
+    isPaid: string;
+    orderStatus: string;
+    page: string;
+    limit: string;
+    sort: string;
+    search?: string;
+};

@@ -61,7 +61,7 @@ const ProductDetails = () => {
                                     {product.discountPercentage > 0 && (
                                         <>
                                             <div className='mt-[15px]'>
-                                                <span className='text-red-500 text-[14px] font-medium leading-6'>
+                                                <span className='text-red-500 text-sm leading-6 text-[#777777]'>
                                                     Discount: {Currency.format(oldPrice - product.price)} (-
                                                     {product.discountPercentage}%)
                                                 </span>

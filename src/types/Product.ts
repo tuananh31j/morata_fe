@@ -62,3 +62,5 @@ export type IProductForm = {
     discountPercentage: number;
     description: string;
 };
+
+export type PropTypeProduct = { product: IProduct };

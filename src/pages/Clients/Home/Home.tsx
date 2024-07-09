@@ -12,6 +12,7 @@ import MediumCard from '~/components/ProductCard/MediumCard';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import ShopBenefits from '~/components/ShopBenefits';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
+import { MAIN_ROUTES } from '~/constants/router';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useQueriesHomepage from '~/hooks/useQueriesHomepage';
 
@@ -43,7 +44,7 @@ const Home = () => {
                 title='Hot Trending Products'
                 option={
                     <Link
-                        to='MAIN_ROUTES.PRODUCTS'
+                        to={MAIN_ROUTES.PRODUCTS}
                         className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
                     >
                         View all products <RightOutlined className='text-[7px] md:text-[10px]' />
@@ -108,7 +109,7 @@ const Home = () => {
                     </div>
                 )}
                 {!categoriesLoading && (
-                    <div className='flex h-[151px] flex-wrap justify-center gap-5 overflow-y-scroll md:justify-start'>
+                    <div className='flex h-[151px] flex-wrap justify-center gap-5 md:justify-start'>
                         {categoryList?.map((item, index: number) => {
                             return <CategoryCard category={item} key={index} />;
                         })}
@@ -122,7 +123,7 @@ const Home = () => {
                 title='Top Featured Products'
                 option={
                     <Link
-                        to='MAIN_ROUTES.PRODUCTS'
+                        to={MAIN_ROUTES.PRODUCTS}
                         className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
                     >
                         View all products <RightOutlined className='text-[7px] md:text-[10px]' />

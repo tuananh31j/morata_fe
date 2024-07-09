@@ -94,21 +94,25 @@ export default function ActionDetail({ product }: { product: IProduct }) {
                     </div>
                     <div className=' items-center gap-5 md:flex'>
                         <div className='mb-[15px] flex w-[100%] items-center gap-[5px] md:mb-0 lg:w-[28%]'>
-                            <Button onClick={handleDecrement} disabled={valueQuantity < 2} className='h-[48px]'>
+                            <Button
+                                onClick={handleDecrement}
+                                disabled={valueQuantity < 2}
+                                className='h-[48px] w-[48px]'
+                            >
                                 -
                             </Button>
                             <InputNumber
                                 min={1}
                                 max={product.stock}
                                 onChange={onChangeInputQuantity}
-                                className='flex h-[48px] items-center'
+                                className='flex h-[48px] w-[48px] items-center px-2'
                                 value={valueQuantity}
                                 controls={false}
                             />
                             <Button
                                 onClick={handleIncrement}
                                 disabled={valueQuantity === product.stock}
-                                className='h-[48px]'
+                                className='h-[48px] w-[48px]'
                             >
                                 +
                             </Button>

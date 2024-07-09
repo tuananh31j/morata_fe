@@ -34,8 +34,6 @@ const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, Products }) => {
                 <div className='group'>
                     <Carousel
                         ref={ref}
-                        autoplay
-                        autoplaySpeed={4000}
                         centerPadding='50'
                         beforeChange={(from, to) => setCurrentSlide(to)}
                         draggable

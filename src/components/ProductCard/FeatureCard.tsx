@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PropTypeProduct } from '~/types/Product';
 import RatingDisplay from '../_common/RatingDisplay';
 import { Currency } from '~/utils';
 import clsx from 'clsx';
 import { MAIN_ROUTES } from '~/constants/router';
+import { IProduct } from '~/types/Product';
 
+type PropTypeProduct = { product: IProduct };
 const FeatureCard = ({ product }: PropTypeProduct) => {
     const [isScale, setIsScale] = useState<boolean>(false);
     const newPrice = product.price * (1 + product.discountPercentage / 100);
@@ -18,9 +19,12 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
     };
 
     return (
-        <div className='rounded-xl bg-white p-5'>
-            <div className='relative flex justify-between gap-5 rounded'>
-                <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`} className='relative block w-full max-w-24'>
+        <div className='rounded-xl bg-white p-8'>
+            <div className='relative grid grid-cols-12 justify-between gap-5 rounded'>
+                <Link
+                    to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}
+                    className='relative col-span-6 hidden w-full max-w-24 md:block'
+                >
                     <img
                         loading='lazy'
                         src={product.images[1]}
@@ -37,7 +41,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                         onMouseLeave={() => handleScale('close')}
                     />
                 </Link>
-                <div>
+                <div className='col-span-6'>
                     <Link className='cursor-pointer' to={`MAIN_ROUTES.PRODUCTS/${product._id}`}>
                         <h4 className='line-clamp-2 text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
@@ -52,7 +56,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                                 {Currency?.format(product.price)}
                             </span>
                             {product.discountPercentage > 0 && (
-                                <del className=' text-gray-500 text-[12px] font-semibold leading-5'>
+                                <del className=' text-gray-500 hidden text-[12px] font-semibold leading-5 lg:block'>
                                     {Currency.format(newPrice)}
                                 </del>
                             )}
@@ -60,7 +64,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                     </Link>
                 </div>
                 {product.discountPercentage > 0 && (
-                    <div className='absolute left-0 top-0 inline-block select-none rounded-sm bg-lime-600 px-3 text-sm text-white'>
+                    <div className='absolute left-0  top-0 inline-block select-none rounded-sm bg-lime-600 px-3 text-sm text-white'>
                         -5%
                     </div>
                 )}

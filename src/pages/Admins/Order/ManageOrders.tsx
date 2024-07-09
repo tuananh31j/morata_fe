@@ -7,34 +7,38 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
-
+import useFilterOrder from '~/hooks/_common/useFilterOrder';
 import useGetAllOrders from '~/hooks/orders/Queries/useGetAllOrders';
-import { filterOrders, setOrders, setSearchQuery } from '~/store/slice/orderSlice';
+
+import { setOrders, setSearchQuery, updateQueryParamsOrder } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
 import { OrderStatus } from '~/types/enum';
-import { IOrderHead } from '~/types/Order';
 
 const ManageOrders = () => {
     const dispatch = useDispatch();
-    const { data } = useGetAllOrders();
-    const orders = data?.data?.data.orders;
+    const { queryParams, updateQueryParam } = useFilterOrder();
+    const { data } = useGetAllOrders(queryParams);
+
     const searchQuery = useSelector((state: RootState) => state.orderReducer.searchQuery);
     const filteredOrders = useSelector((state: any) => state.orderReducer.filteredData);
-    const filterStatus = useSelector((state: any) => state.orderReducer.filterStatus);
 
     useEffect(() => {
         if (data) {
             dispatch(setOrders(data.data.data));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data]);
+    }, [data, dispatch, queryParams]);
 
-    const handleSearchChange = (e: any) => {
-        dispatch(setSearchQuery(e.target.value));
-        dispatch(filterOrders(e.target.value));
+    const handleSearchChange = (event: any) => {
+        updateQueryParam('search', event.target.value);
+        dispatch(setSearchQuery(event.target.value));
+    };
+    const onPageChange = (page: number, pageSize: number) => {
+        updateQueryParam('page', String(page));
+        dispatch(updateQueryParamsOrder({ key: 'page', value: String(page) }));
+        dispatch(updateQueryParamsOrder({ key: 'limit', value: String(pageSize) }));
     };
 
-    const columns: TableProps<IOrderHead>['columns'] = [
+    const columns: TableProps['columns'] = [
         {
             title: 'ID',
             dataIndex: '_id',
@@ -176,7 +180,20 @@ const ManageOrders = () => {
                         Export
                     </Button>
                 </div>
-                {orders && <Table columns={columns} dataSource={orders} rowKey={(record) => record._id} />}
+
+                <Table
+                    columns={columns}
+                    dataSource={filteredOrders.orders}
+                    rowKey={(record) => record._id}
+                    loading={!filteredOrders.orders}
+                    pagination={{
+                        total: data?.data?.data.totalDocs,
+                        pageSize: Number(queryParams.limit),
+                        current: Number(queryParams.page),
+                        onChange: onPageChange,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                    }}
+                />
             </div>
         </div>
     );

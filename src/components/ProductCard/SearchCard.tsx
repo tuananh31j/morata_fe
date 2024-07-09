@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import Animation from '~/components/_common/Animation';
 import { MAIN_ROUTES } from '~/constants/router';
-import { IProduct } from '~/types/Product';
+import { IProductItem } from '~/types/Product';
 
-const SearchCard = ({ product }: { product: IProduct }) => {
+const SearchCard = ({ product }: { product: IProductItem }) => {
     return (
         <Animation>
             <div className='mb-4'>

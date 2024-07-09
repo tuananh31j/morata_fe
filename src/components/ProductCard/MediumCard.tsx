@@ -30,22 +30,22 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                             loading='lazy'
                             src={product.images[1]}
                             alt=''
-                            className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 select-none transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
+                            className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 select-none object-cover transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
                         />
                         <img
                             loading='lazy'
                             src={product.thumbnail}
                             alt=''
-                            className='relative z-10  w-full select-none opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                            className='relative z-10  w-full select-none object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
                     <ProductActions />
                 </div>
-                <div className='mt-3'>
-                    <Link to={`MAIN_ROUTES.PRODUCTS/${product._id}?categoryId=${product.categoryId}`}>
-                        <h4 className='line-clamp-2  text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
+                <div className='mt-3 flex h-full flex-col'>
+                    <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}?categoryId=${product.categoryId}`}>
+                        <h1 className='line-clamp-2 h-10 flex-shrink-0 text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
-                        </h4>
+                        </h1>
                         <div className='my-2 mb-3 flex flex-wrap items-end gap-1 sm:mb-2'>
                             <RatingDisplay rating={product.rating} reviews={product.reviewIds.length || 0} />
                         </div>
