@@ -5,18 +5,25 @@ import CardDataStats from './_components/CardDataStats';
 import LineChart from './_components/Charts/LineChart';
 import BarChart from './_components/Charts/BarChart/BarChart';
 import TopUsers from './_components/TopUsers/TopUsers';
+import { useTotalStats } from '~/hooks/stats/useTotal';
 
 const DashboardNew: React.FC = () => {
+    const { data: totalStats } = useTotalStats();
+
+    const totalOrders = totalStats?.data.totalOrders;
+    const totalProducts = totalStats?.data.totalProducts;
+    const totalUsers = totalStats?.data.totalUsers;
+
     return (
         <>
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
-                <CardDataStats title='Total Orders' total='$45,2K' rate='4.35%' levelUp>
+                <CardDataStats title='Total Orders' total={totalOrders} rate='4.35%' levelUp>
                     <CartIcon />
                 </CardDataStats>
-                <CardDataStats title='Total Products' total='2.450' rate='2.59%' levelUp>
+                <CardDataStats title='Total Products' total={totalProducts} rate='2.59%' levelUp>
                     <ProductIcon />
                 </CardDataStats>
-                <CardDataStats title='Total Users' total='3.456' rate='0.95%' levelDown>
+                <CardDataStats title='Total Users' total={totalUsers} rate='0.95%' levelDown>
                     <UsersIcon />
                 </CardDataStats>
             </div>

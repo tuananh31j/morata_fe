@@ -15,4 +15,8 @@ export const QUERY_KEY = {
     ORDERS: 'orders',
     CHECKOUT: 'checkout',
     ATTRIBUTES: 'attributes',
+
+    // Stats
+    TOTAL_STATS: 'totalStats',
+    ORDER_MONTHLY: 'orderMonthly',
 };

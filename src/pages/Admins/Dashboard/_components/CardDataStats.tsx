@@ -4,7 +4,7 @@ import { cn } from '~/utils';
 
 interface CardDataStatsProps {
     title: string;
-    total: string;
+    total: number;
     rate: string;
     levelUp?: boolean;
     levelDown?: boolean;

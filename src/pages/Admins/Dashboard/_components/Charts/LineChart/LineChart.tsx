@@ -3,14 +3,19 @@ import ReactApexChart from 'react-apexcharts';
 import optionsLineChart from './_options';
 import { DatePicker, DatePickerProps } from 'antd';
 import WrapperList from '~/components/_common/WrapperList';
+import { useOrderMonthly } from '~/hooks/stats/useOrderMonthly';
 
 type ILineChartProps = { name: string; data: number[] };
 
-const LineChart: React.FC<ILineChartProps> = ({ name, data }) => {
+const LineChart: React.FC<ILineChartProps> = ({ name }) => {
+    const { data } = useOrderMonthly();
+    const orderMonthly = data?.data.map((item: any) => item.totalRevenue);
+    console.log(orderMonthly);
+
     const series = [
         {
             name,
-            data,
+            orderMonthly,
         },
     ];
 
@@ -30,7 +35,7 @@ const LineChart: React.FC<ILineChartProps> = ({ name, data }) => {
                     <div id='LineChart' className='-ml-5'>
                         <ReactApexChart
                             options={optionsLineChart}
-                            series={series}
+                            series={series.map((s) => ({ name: s.name, data: s.orderMonthly }))}
                             type='area'
                             height={350}
                             width={'100%'}
