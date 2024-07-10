@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import RatingDisplay from '../_common/RatingDisplay';
 import { Currency } from '~/utils';
 import clsx from 'clsx';
-import { MAIN_ROUTES } from '~/constants/router';
 import { IProduct } from '~/types/Product';
+import { generateLink } from './_helper';
 
 type PropTypeProduct = { product: IProduct };
 const FeatureCard = ({ product }: PropTypeProduct) => {
@@ -19,11 +19,11 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
     };
 
     return (
-        <div className='rounded-xl bg-white p-8'>
+        <div className='rounded-xl bg-white p-8.5'>
             <div className='relative grid grid-cols-12 justify-between gap-5 rounded'>
                 <Link
-                    to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}
-                    className='relative col-span-6 hidden w-full max-w-24 md:block'
+                    to={generateLink({ productId: product._id, categoryId: product.categoryId })}
+                    className='relative col-span-5 hidden w-full max-w-24 md:block'
                 >
                     <img
                         loading='lazy'
@@ -41,9 +41,9 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                         onMouseLeave={() => handleScale('close')}
                     />
                 </Link>
-                <div className='col-span-6'>
+                <div className='col-span-7'>
                     <Link className='cursor-pointer' to={`MAIN_ROUTES.PRODUCTS/${product._id}`}>
-                        <h4 className='line-clamp-2 text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
+                        <h4 className='line-clamp-2 text-ellipsis text-title-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
                         <RatingDisplay rating={product.rating} reviews={product.reviewIds.length} />

@@ -12,7 +12,7 @@ const OrderTable: React.FC = () => {
                     columns={columns}
                     dataSource={data.data.data.orders}
                     pagination={{
-                        pageSize: 2,
+                        pageSize: 8,
                     }}
                     showSorterTooltip={{ target: 'full-header' }}
                 />

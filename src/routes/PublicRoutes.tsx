@@ -4,7 +4,7 @@ import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
 import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
 import ProtectedRoute from '~/layouts/Protected/ProtectedRoute';
-import Success from '~/pages/Clients/Checkout/Success';
+import Success from '~/pages/Clients/OrderSuccess';
 import {
     AboutPage,
     AuthLayoutPage,

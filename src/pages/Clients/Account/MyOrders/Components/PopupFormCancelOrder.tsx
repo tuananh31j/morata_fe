@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Flex, Form, Input, Modal, Radio } from 'antd';
+import { Button, Flex, Form, Modal, Radio } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -10,7 +10,7 @@ import showMessage from '~/utils/ShowMessage';
 
 const schemaFormCancelOrder = z.object({
     reason: z.string({ message: 'You need to tell us the reason!' }),
-    details: z.string({ message: 'You need to tell us the details!' }),
+    description: z.string().optional(),
 });
 
 type IFormCancelOrder = z.infer<typeof schemaFormCancelOrder>;
@@ -27,9 +27,9 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
         resolver: zodResolver(schemaFormCancelOrder),
     });
 
-    const onSubmit: SubmitHandler<IFormCancelOrder> = async () => {
+    const onSubmit: SubmitHandler<IFormCancelOrder> = async (data) => {
         try {
-            await mutateAsync({ orderId: id });
+            await mutateAsync({ orderId: id, description: `${data.reason}, ${data.description || ''}` });
             setIsModalOpen(false);
             reset();
         } catch (error) {
@@ -69,7 +69,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                                 name='reason'
                                 control={control}
                                 render={({ field }) => (
-                                    <Radio.Group {...field}>
+                                    <Radio.Group {...field} className='flex flex-col'>
                                         <Radio value={'Product did not meet expectations'}>
                                             Product did not meet expectations
                                         </Radio>
@@ -81,13 +81,12 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                             />
                         </Form.Item>
                         <Form.Item
-                            validateStatus={errors.details ? 'error' : ''}
-                            help={errors.details?.message}
-                            required
-                            label='Details'
+                            validateStatus={errors.description ? 'error' : ''}
+                            help={errors.description?.message}
+                            label='Description'
                         >
                             <Controller
-                                name='details'
+                                name='description'
                                 control={control}
                                 render={({ field }) => <TextArea {...field} rows={5} />}
                             />

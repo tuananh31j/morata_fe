@@ -4,7 +4,6 @@ import orderService from '~/services/order.service';
 import { IOrderParams } from '~/types/Order';
 
 const useGetAllOrders = (params: IOrderParams) => {
-    console.log('🚀 ~ useGetAllOrders ~ params:', params);
     return useQuery({
         queryKey: [QUERY_KEY.ORDERS, ...Object.values(params)],
         queryFn: () => orderService.getAllOrders(params),

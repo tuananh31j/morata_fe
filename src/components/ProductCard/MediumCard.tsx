@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { lazy, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProgressBar from '~/components/_common/ProgressBar';
 import { PropTypeProduct } from '~/types/Product';
@@ -8,6 +8,7 @@ import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
 import PopupAttributes from '~/components/_common/PopupAttributes';
 import { MAIN_ROUTES } from '~/constants/router';
+import { generateLink } from './_helper';
 
 const MediumCard = ({ product }: PropTypeProduct) => {
     const newPrice = product.price * (1 + product.discountPercentage / 100);
@@ -42,8 +43,8 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                     <ProductActions />
                 </div>
                 <div className='mt-3 flex h-full flex-col'>
-                    <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}?categoryId=${product.categoryId}`}>
-                        <h1 className='line-clamp-2 h-10 flex-shrink-0 text-ellipsis text-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
+                    <Link to={generateLink({ productId: product._id, categoryId: product.categoryId })}>
+                        <h1 className='line-clamp-2 h-18 flex-shrink-0 text-ellipsis text-title-md font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h1>
                         <div className='my-2 mb-3 flex flex-wrap items-end gap-1 sm:mb-2'>

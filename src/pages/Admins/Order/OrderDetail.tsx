@@ -2,11 +2,11 @@ import { ConfigProvider, Spin, Steps, Table, TableProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import PopupConfirmOrder from '~/components/_common/PopupOrderStatus/Confirm/PopupConfirmOrder';
-import useGetTheDetailedOrder from '~/hooks/Queries/useGetTheDetailedOrder';
+import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
 
 const OrderDetail = () => {
     const { id } = useParams();
-    const { data, isLoading } = useGetTheDetailedOrder(id as string);
+    const { data, isLoading } = useOrderDetails(id as string);
     const orderStatus = data?.data.data.orderStatus;
     const dataOrderDetail = data?.data?.data.items;
     const totalPrice = data?.data?.data?.totalPrice;

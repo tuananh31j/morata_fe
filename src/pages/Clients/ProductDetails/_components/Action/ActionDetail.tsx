@@ -1,4 +1,3 @@
-import { DockerOutlined, FileProtectOutlined, HeartOutlined, MenuOutlined, RedoOutlined } from '@ant-design/icons';
 import { Button, ConfigProvider, Form, InputNumber, Radio, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

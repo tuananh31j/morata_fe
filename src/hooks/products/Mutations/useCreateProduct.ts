@@ -9,7 +9,6 @@ const useCreateProduct = () => {
     return useMutation({
         mutationFn: (data: FormData) => productService.createProduct(data),
         onSuccess: (res) => {
-            console.log(res);
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
         },
         onError(error) {

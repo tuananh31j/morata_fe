@@ -1,4 +1,4 @@
-import { IAllProductsResponse, IProduct, IProductForm } from '~/types/Product';
+import { IAllProductsResponse, IProduct } from '~/types/Product';
 import { IParams } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import instance from '~/utils/api/axiosIntance';
