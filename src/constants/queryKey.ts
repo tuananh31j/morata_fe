@@ -18,5 +18,7 @@ export const QUERY_KEY = {
 
     // Stats
     TOTAL_STATS: 'totalStats',
-    ORDER_MONTHLY: 'orderMonthly',
+    DAILY_STATS: 'dailyStats',
+    MONTHLY_STATS: 'monthlyStats',
+    YEARLY_STATS: 'yearlyStats',
 };

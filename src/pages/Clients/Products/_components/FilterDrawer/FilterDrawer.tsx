@@ -130,7 +130,7 @@ const FilterDrawer = () => {
                                 <InputNumber className='w-[48%]' min={1} max={10} defaultValue={3} />
                             </div>
                             <div className='  m-3  flex w-[80%] items-center justify-between  gap-3'>
-                                <button className='flex-1 rounded-md border border-gray-600 p-3 hover:bg-slate-400 hover:text-white'>
+                                <button className='border-gray-600 flex-1 rounded-md border p-3 hover:bg-slate-400 hover:text-white'>
                                     Reset
                                 </button>
                                 <button className='flex-1 rounded-md border border-blue-600 p-3 hover:bg-[#0068c9] hover:text-white'>

@@ -3,11 +3,11 @@ import { STATS_ENDPOINT } from '~/constants/endpoint';
 import { QUERY_KEY } from '~/constants/queryKey';
 import instance from '~/utils/api/axiosIntance';
 
-export const useOrderMonthly = () => {
+export const useDailyStats = () => {
     return useQuery({
-        queryKey: [QUERY_KEY.ORDER_MONTHLY],
+        queryKey: [QUERY_KEY.DAILY_STATS],
         queryFn: async () => {
-            const { data } = await instance.get(STATS_ENDPOINT.ORDER_MONTHLY);
+            const { data } = await instance.get(STATS_ENDPOINT.DAILY_STATS);
             return data;
         },
     });

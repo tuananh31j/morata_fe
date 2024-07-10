@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import optionsLineChart from './_options';
+
 import { DatePicker, DatePickerProps } from 'antd';
 import WrapperList from '~/components/_common/WrapperList';
-import { useOrderMonthly } from '~/hooks/stats/useOrderMonthly';
+import { optionsLineChart } from './_options';
+import { useMonthlyStats } from '~/hooks/stats/useMonthlyStats';
 
-type ILineChartProps = { name: string; data: number[] };
+const LineChart = () => {
+    const { data: result } = useMonthlyStats();
 
-const LineChart: React.FC<ILineChartProps> = ({ name }) => {
-    const { data } = useOrderMonthly();
-    const orderMonthly = data?.data.map((item: any) => item.totalRevenue);
-    console.log(orderMonthly);
+    const revenue = result?.data.map((item: any) => item.totalRevenue);
+    const months = result?.data.map((item: any) => item.month);
 
     const series = [
         {
-            name,
-            orderMonthly,
+            name: 'Revenue',
+            data: revenue || [0],
         },
     ];
 
@@ -25,7 +25,7 @@ const LineChart: React.FC<ILineChartProps> = ({ name }) => {
 
     return (
         <WrapperList
-            title='Revenue order'
+            title='Statistics Monthly'
             className='xl:col-span-12'
             option={<DatePicker onChange={onChange} picker='year' />}
             lineButtonBox
@@ -34,8 +34,8 @@ const LineChart: React.FC<ILineChartProps> = ({ name }) => {
                 <div>
                     <div id='LineChart' className='-ml-5'>
                         <ReactApexChart
-                            options={optionsLineChart}
-                            series={series.map((s) => ({ name: s.name, data: s.orderMonthly }))}
+                            options={optionsLineChart(months)}
+                            series={series}
                             type='area'
                             height={350}
                             width={'100%'}

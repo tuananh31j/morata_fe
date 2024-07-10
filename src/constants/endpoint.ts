@@ -50,5 +50,7 @@ export const ATTRIBUTES_ENDPOINT = {
 
 export const STATS_ENDPOINT = {
     TOTAL: '/stats/total',
-    ORDER_MONTHLY: '/stats/monthly',
+    DAILY_STATS: '/stats/daily',
+    MONTHLY_STATS: '/stats/monthly',
+    YEARLY_STATS: '/stats/yearly',
 };

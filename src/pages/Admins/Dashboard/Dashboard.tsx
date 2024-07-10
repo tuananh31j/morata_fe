@@ -2,10 +2,10 @@ import CartIcon from '~/components/_common/Icons/CartIcon';
 import ProductIcon from '~/components/_common/Icons/ProductIcon';
 import UsersIcon from '~/components/_common/Icons/UsersIcon';
 import CardDataStats from './_components/CardDataStats';
-import LineChart from './_components/Charts/LineChart';
-import BarChart from './_components/Charts/BarChart/BarChart';
-import TopUsers from './_components/TopUsers/TopUsers';
 import { useTotalStats } from '~/hooks/stats/useTotal';
+import LineChart from './_components/Charts/LineChart/LineChart';
+import DailyStats from './_components/Charts/BarChart/DailyStats';
+import YearlyStats from './_components/Charts/BarChart/YearlyStats';
 
 const DashboardNew: React.FC = () => {
     const { data: totalStats } = useTotalStats();
@@ -28,13 +28,21 @@ const DashboardNew: React.FC = () => {
                 </CardDataStats>
             </div>
 
-            <div className='mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5'>
-                <LineChart name='Revenue' data={[23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45]} />
-                <BarChart />
-                <div className='col-span-12 xl:col-span-6'>
-                    <TopUsers title='Top users' />
+            <div className='item-center mt-[5rem] grid grid-cols-1'>
+                <div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+                    <div>
+                        <DailyStats />
+                    </div>
+                    <div>
+                        <YearlyStats />
+                    </div>
+                </div>
+                <div>
+                    <LineChart />
                 </div>
             </div>
+
+            <div className='col-span-12 xl:col-span-6'>{/* <TopUsers title='Top users' /> */}</div>
         </>
     );
 };

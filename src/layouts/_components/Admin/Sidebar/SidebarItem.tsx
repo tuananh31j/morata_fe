@@ -18,10 +18,10 @@ const SidebarItem: FC<ISidebarItem> = ({ item, pageName, setPageName }) => {
     const location = useLocation();
 
     // eslint-disable-next-line no-shadow
-    const isActive = (item: any) => {
-        if (item.route === location.pathname) return true;
-        if (item.children) {
-            return item.children.some((child: any) => isActive(child));
+    const isActive = (path: any) => {
+        if (path.route === location.pathname) return true;
+        if (path.children) {
+            return path.children.some((child: any) => isActive(child));
         }
         return false;
     };
