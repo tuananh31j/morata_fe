@@ -1,4 +1,5 @@
-import { DollarOutlined, PlusOutlined, PlusSquareOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
+import { DollarOutlined, MinusCircleOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     Button,
     Form,
@@ -8,6 +9,7 @@ import {
     Input,
     InputNumber,
     Select,
+    Tag,
     Upload,
     UploadFile,
     UploadProps,
@@ -15,10 +17,14 @@ import {
 import TextArea from 'antd/es/input/TextArea';
 import { AxiosError } from 'axios';
 import { useEffect, useId, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { QUERY_KEY } from '~/constants/queryKey';
 import useCreateProduct from '~/hooks/products/Mutations/useCreateProduct';
+import { useGetAllAtributes } from '~/hooks/attributes/Queries/useGetAttributesByCate';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
+import productService from '~/services/product.service';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { IProductForm } from '~/types/Product';
+import { IProductForm, ITagsType } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';
 import { errorMessage } from '~/validation/Product';
 
@@ -28,9 +34,7 @@ const MAX_SIZE = 5000000;
 // const onFinishFailed: FormProps<IProductForm>['onFinishFailed'] = (errorInfo) => {
 //     console.log('Failed:', errorInfo);
 // };
-// const handleChangeCat = (value: string) => {
-//     console.log(`selected ${value}`);
-// };
+
 // const handleChangeBrand = (value: string) => {
 //     console.log(`selected ${value}`);
 // };
@@ -45,16 +49,25 @@ const getBase64 = (file: FileType): Promise<string> =>
     });
 
 const CreateProduct = () => {
+    const queryClient = useQueryClient();
     const [previewImagesOpen, setPreviewImagesOpen] = useState<boolean>(false);
     const [previewImages, setPreviewImages] = useState<string>('');
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
     const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
     const [imagesfileList, setImagesFileList] = useState<UploadFile[]>([]);
     const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
+    const [attribute, setAttribute] = useState<string>('');
+    const [categoryValue, setCategoryValue] = useState<ITagsType>({
+        label: '',
+        value: '',
+    });
     const categoriesAndBranData = useGetCategoriesAndBrands();
+    const { data: attributesData } = useGetAllAtributes('665941940c4435ccde506da4');
+
     const { mutate: createProduct, data: createProductData, isError, isSuccess, error, isPending } = useCreateProduct();
-    const sku = useId() + new Date().getMilliseconds();
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<IProductForm>();
+    const navigate = useNavigate();
+    const randomId = useId();
     const dataIndex = {
         brands: 0,
         categories: 1,
@@ -62,15 +75,15 @@ const CreateProduct = () => {
     const firstElement = 0;
     const categories = categoriesAndBranData?.[dataIndex.categories].data?.data;
     // get initial value for categorys
-    const initialCategory = {
-        label: categories?.[firstElement].name,
-        value: categories?.[firstElement]._id,
+    const initialCategory: ITagsType = {
+        label: categories?.[firstElement].name || "category's name",
+        value: categories?.[firstElement]._id || "category's id",
     };
     const brands = categoriesAndBranData?.[dataIndex.brands].data?.data;
     // get initial value for  brand
-    const initialBrand = {
-        label: brands?.[firstElement].name,
-        value: brands?.[firstElement]._id,
+    const initialBrand: ITagsType = {
+        label: brands?.[firstElement].name || "brand's name",
+        value: brands?.[firstElement]._id || "brand's id",
     };
     const handlePreview = async (file: UploadFile, multiple: boolean) => {
         if (!file.url && !file.preview) {
@@ -84,13 +97,20 @@ const CreateProduct = () => {
             setPreviewThumbnailOpen(true);
         }
     };
-
+    const randomUpperOrLowerCase = (char: string) => {
+        char = char.replace(' ', '');
+        return Math.floor(Math.random() * 2) === 0 ? char.toUpperCase() : char.toLowerCase();
+    };
     const handleChangeImages: UploadProps['onChange'] = ({ fileList: newFileList }) => setImagesFileList(newFileList);
     const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => setThumbnailFile(newFileList);
     const handleCreateProduct = (data: IProductForm) => {
+        const fistCharaterIndex = 0;
+        console.log(data);
         const { name, price, stock, images, thumbnail, description, brandId, categoryId } = data;
         const formData = new FormData();
         const dataTransfer = new DataTransfer();
+        const categoryIdValue = typeof categoryId === 'object' ? categoryId.value : categoryId;
+        const brandIdValue = typeof brandId === 'object' ? brandId.value : brandId;
 
         formData.append('name', name);
         formData.append('price', price.toString());
@@ -107,10 +127,10 @@ const CreateProduct = () => {
             formData.append('thumbnail', thumbnail?.file);
         }
         /* eslint-enable */
-        formData.append('categoryId', typeof categoryId === 'object' ? categoryId.value : categoryId);
-        formData.append('brandId', typeof brandId === 'object' ? brandId.value : brandId);
+        formData.append('categoryId', categoryIdValue);
+        formData.append('brandId', brandIdValue);
         formData.append('description', description);
-        formData.append('sku', sku.toString());
+        // formData.append('sku', "daikidNomdaadsa");
         // Mutation to create product
         createProduct(formData);
     };
@@ -120,11 +140,14 @@ const CreateProduct = () => {
             <div style={{ marginTop: 8 }}>Upload</div>
         </button>
     );
-
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
         handleCreateProduct(values);
     };
-
+    const handleChangeCat = (value: ITagsType) => {
+        console.log(`selected`, value);
+        setCategoryValue(value);
+    };
+    /* eslint-disable */
     useEffect(() => {
         if (isError) {
             const errorMessageRes = ((error as AxiosError)?.response?.data as IAxiosResponse<null>)?.message?.split(
@@ -144,14 +167,22 @@ const CreateProduct = () => {
             setImagesFileList([]);
             setThumbnailFile([]);
             showMessage('Create product successfully', 'success');
+            setTimeout(() => {
+                queryClient.prefetchQuery({
+                    queryKey: [QUERY_KEY.PRODUCTS],
+                    queryFn: () => productService.getAll(),
+                });
+            }, 1000);
+            navigate('/admin/products');
         }
     }, [createProductData, isError, error, form, isSuccess]);
+    /* eslint-enable */
     return (
         <>
             {!categoriesAndBranData?.[dataIndex.categories].isLoading &&
                 !categoriesAndBranData?.[dataIndex.brands].isLoading && (
                     <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-                        <div className='m-auto'>
+                        <div className='m-auto w-[60vw] sm:w-[50vw]'>
                             <Form
                                 layout='vertical'
                                 form={form}
@@ -159,8 +190,21 @@ const CreateProduct = () => {
                                 // onFinishFailed={onFinishFailed}
                                 autoComplete='off'
                             >
-                                <div className='grid grid-cols-2 gap-2'>
-                                    <div className='rounded-lg border border-opacity-90 p-2 px-4'>
+                                <Form.Item className='flex justify-end'>
+                                    <Button
+                                        type='primary'
+                                        htmlType='submit'
+                                        icon={<PlusSquareOutlined />}
+                                        className='mr-3 px-5'
+                                        loading={isPending}
+                                        disabled={isPending}
+                                        size='large'
+                                    >
+                                        Add product
+                                    </Button>
+                                </Form.Item>
+                                <div className='grid grid-cols-1 gap-4'>
+                                    <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
                                         <h3 className='my-2 text-lg font-medium text-[#08090F]'>General information</h3>
                                         <Form.Item<IProductForm>
                                             label='Product Name'
@@ -192,7 +236,7 @@ const CreateProduct = () => {
                                             <TextArea rows={4} className='w-full' />
                                         </Form.Item>
                                     </div>
-                                    <div className='rounded-lg border border-opacity-90 p-2 px-4'>
+                                    <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
                                         <h3 className='my-2 text-lg font-medium text-[#08090F]'>Pricing</h3>
                                         <Form.Item<IProductForm>
                                             className='font-medium text-[#08090F]'
@@ -230,7 +274,7 @@ const CreateProduct = () => {
                                             <InputNumber size='large' max={100} min={0} className='w-full' />
                                         </Form.Item>
                                     </div>
-                                    <div className='rounded-lg border border-opacity-90 p-2 px-4'>
+                                    <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
                                         <h3 className='my-2 text-lg font-medium text-[#08090F]'>Product Media</h3>
                                         <Form.Item<IProductForm>
                                             label='Product Images'
@@ -332,31 +376,10 @@ const CreateProduct = () => {
                                                 src={previewThumbnail}
                                             />
                                         )}
-                                        <Form.Item className='flex justify-end'>
-                                            <Button
-                                                type='primary'
-                                                htmlType='submit'
-                                                icon={<PlusSquareOutlined />}
-                                                className='mr-3 px-5'
-                                                loading={isPending}
-                                                disabled={isPending}
-                                                size='large'
-                                            >
-                                                Add product
-                                            </Button>
-                                            <Button
-                                                type='default'
-                                                htmlType='button'
-                                                icon={<VerticalAlignBottomOutlined />}
-                                                className='px-5'
-                                                size='large'
-                                            >
-                                                Import
-                                            </Button>
-                                        </Form.Item>
                                     </div>
-                                    <div className='rounded-lg border border-opacity-90 p-2 px-4'>
+                                    <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
                                         <h3 className='my-2 text-lg font-medium text-[#08090F]'>Tags</h3>
+
                                         <Form.Item<IProductForm>
                                             label='Product Category'
                                             name='categoryId'
@@ -366,7 +389,8 @@ const CreateProduct = () => {
                                         >
                                             <Select
                                                 size='large'
-                                                // onChange={handleChangeCat}
+                                                onChange={handleChangeCat}
+                                                labelInValue
                                                 className='w-full'
                                                 options={categories?.map((category) => ({
                                                     label: category.name,
@@ -374,6 +398,93 @@ const CreateProduct = () => {
                                                 }))}
                                             />
                                         </Form.Item>
+
+                                        <Form.Item
+                                            // name='attributes'
+                                            label='Attributes'
+                                            className='mr-2 font-medium text-[#08090F]'
+                                            // rules={[{ required: true, message: 'Please input your attribute!' }]}
+                                            // validateTrigger={['onChange', 'onBlur']}
+                                        >
+                                            <Input
+                                                placeholder='Input attribute name'
+                                                style={{ width: '30%' }}
+                                                onChange={(e) => setAttribute(e.target.value)}
+                                            />
+                                        </Form.Item>
+                                        <Form.List name='dynamicAttributes'>
+                                            {(fields, { add, remove }, { errors }) => {
+                                                return (
+                                                    <>
+                                                        {fields.map((field, index) => (
+                                                            <Form.Item
+                                                                label={index === 0 ? 'Attribute' : ''}
+                                                                className='font-medium text-[#08090F]'
+                                                                required={false}
+                                                                key={field.key}
+                                                            >
+                                                                <div className='flex items-center'>
+                                                                    <Form.Item
+                                                                        {...field}
+                                                                        validateTrigger={['onChange', 'onBlur']}
+                                                                        noStyle
+                                                                    >
+                                                                        <Input
+                                                                            style={{ width: '30%' }}
+                                                                            className='mr-2'
+                                                                        />
+                                                                    </Form.Item>
+                                                                    <div className='flex items-center gap-2'>
+                                                                        <Tag>
+                                                                            {categoryValue.label || 'category name'}
+                                                                        </Tag>
+                                                                        {fields.length > 0 ? (
+                                                                            <Button
+                                                                                htmlType='button'
+                                                                                type='dashed'
+                                                                                className='inline-block'
+                                                                                icon={<PlusOutlined />}
+                                                                            ></Button>
+                                                                        ) : null}
+                                                                        {fields.length > 0 ? (
+                                                                            <MinusCircleOutlined
+                                                                                className='dynamic-delete-button'
+                                                                                onClick={() => remove(field.name)}
+                                                                                style={{ fontSize: '1.15rem' }}
+                                                                            />
+                                                                        ) : null}
+                                                                    </div>
+                                                                </div>
+                                                            </Form.Item>
+                                                        ))}
+                                                        <Form.Item>
+                                                            <Button
+                                                                type='dashed'
+                                                                htmlType='button'
+                                                                size='large'
+                                                                onClick={() => {
+                                                                    if (initialCategory) {
+                                                                        setCategoryValue(
+                                                                            !categoryValue.value
+                                                                                ? initialCategory
+                                                                                : categoryValue
+                                                                        );
+                                                                    }
+                                                                    form.resetFields(['attributes']);
+                                                                    setAttribute('');
+                                                                    add(attribute);
+                                                                }}
+                                                                icon={<PlusOutlined />}
+                                                            >
+                                                                Add attribute
+                                                            </Button>
+                                                            <Form.ErrorList errors={errors} />
+                                                        </Form.Item>
+                                                    </>
+                                                );
+                                            }}
+                                        </Form.List>
+
                                         <Form.Item<IProductForm>
                                             label='Product Brand'
                                             name='brandId'
@@ -392,17 +503,9 @@ const CreateProduct = () => {
                                             />
                                         </Form.Item>
                                     </div>
-                                    <div className='rounded-lg border border-opacity-90 p-2 px-4'>
+                                    <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
                                         <h3 className='my-2 text-lg font-medium text-[#08090F]'>Inventory </h3>
                                         <div className='grid grid-cols-1 gap-2'>
-                                            {/* <Form.Item<IProductForm>
-                                            className='font-medium text-[#08090F]'
-                                            label='Product Sku'
-                                            name='sku'
-                                            rules={[{ required: true, message: 'Please input your sku!' }]}
-                                        >
-                                            <InputNumber size='large' className='w-full' />
-                                        </Form.Item> */}
                                             <Form.Item<IProductForm>
                                                 className='font-medium text-[#08090F]'
                                                 label='Product Stock'

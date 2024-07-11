@@ -2,37 +2,90 @@ import {
     DeleteOutlined,
     EditOutlined,
     EllipsisOutlined,
+    FilterOutlined,
     PlusOutlined,
-    VerticalAlignBottomOutlined,
     WarningOutlined,
 } from '@ant-design/icons';
-import type { TableProps } from 'antd';
-import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
+import type { CheckboxProps, FormProps, GetProp, MenuProps, RadioChangeEvent, TableProps } from 'antd';
+import { Button, Checkbox, Dropdown, Form, InputNumber, Modal, Radio, Rate, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { debounce } from 'lodash';
+import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import useGetAllBrands from '~/hooks/brands/useGetAllBrands';
+import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
 import useDeleteProduct from '~/hooks/products/Mutations/useDeleteProduct';
 import useGetProducts from '~/hooks/products/Queries/useGetProducts';
-import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
+import {
+    DEFAULT_VALUE,
+    IFilterOptions,
+    IFilterPayload,
+    IFilterStorage,
+    ILimitValue,
+    MAX_PRICE,
+    MIN_PRICE,
+    MIN_RATING,
+    resetAllFilters,
+    setFilter,
+} from '~/store/slice/AdminfilterProduct';
+import { RootState } from '~/store/store';
 import { ICategory } from '~/types/Category';
 import { IProductItem } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';
+import { errorMessage } from '~/validation/Product';
 
 type ICategoryCollection = {
     [key: string]: string;
 };
+type Iparams = {
+    [key: string]: string | number | boolean | ILimitValue;
+};
+
+type PriceRangeType = {
+    min?: number;
+    max?: number;
+};
 
 const ManageProducts = () => {
-    const [searchText, setSearch] = useState<string>('');
-    const [inputSearchValue, setInputSearchValue] = useState<string>('');
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const [categories, setCategories] = useState<ICategoryCollection>({});
-    const { data } = useGetProducts({});
-    const productData = data?.data.products;
     const { data: categoryData } = useGetCategories();
+    const { data: brandsData } = useGetAllBrands();
     const { mutate, isSuccess, isError } = useDeleteProduct();
     const productId = useRef<string>('');
+    const dispatch = useDispatch();
+    const [form] = Form.useForm<PriceRangeType>();
+    const filterOptions: IFilterOptions = useSelector((state: RootState) => state.AdminTableFilterProduct.filters);
+
+    // add params from redux to params object
+    const params: Iparams = {};
+    const filters: IFilterStorage = JSON.parse(localStorage.getItem('filters') || 'null');
+    const filtersData = filters?.filters;
+
+    /* eslint-disable */
+    if (!filters) {
+        for (const key in filterOptions) {
+            const element = filterOptions[key as keyof IFilterOptions];
+            if (element?.value) {
+                params[key] = typeof element?.value === 'object' ? JSON.stringify(element?.value) : element?.value;
+            }
+        }
+    } else {
+        for (const key in filtersData) {
+            const element = filtersData[key as keyof IFilterOptions];
+            const paramsValue = element?.value.value;
+
+            if (paramsValue && paramsValue !== DEFAULT_VALUE[key as keyof IFilterOptions]) {
+                params[key] = typeof paramsValue === 'object' ? JSON.stringify(paramsValue) : paramsValue;
+            }
+        }
+    }
+    /* eslint-enable */
+    const { data } = useGetProducts({ ...params });
+    const productData = data?.data.products;
+    const totalDocs = data?.data.totalDocs;
     const tags: string[] = [
         'magenta',
         'red',
@@ -46,18 +99,14 @@ const ManageProducts = () => {
         'geekblue',
         'purple',
     ];
-    useEffect(() => {
-        (async () => {
-            if (categoryData) {
-                const categoryObject = categoryData?.data?.reduce((prev: ICategoryCollection, curr: ICategory) => {
-                    // add a key and value in original object
-                    prev[curr._id] = curr.name;
-                    return prev;
-                }, {});
-                setCategories(categoryObject);
-            }
-        })();
-    }, [productData, categoryData]);
+    const categoriesOptions = categoryData?.data?.map((category) => ({
+        label: category.name,
+        value: category._id,
+    }));
+    const brandsOptions = brandsData?.data?.map((category) => ({
+        label: category.name,
+        value: category._id,
+    }));
 
     const showModal = (id: string) => {
         setIsModalOpen(true);
@@ -78,18 +127,78 @@ const ManageProducts = () => {
         mutate(productId.current);
     };
 
+    const handleSetFilter = (dataFilter: IFilterPayload) => {
+        dispatch(setFilter(dataFilter));
+    };
+    const onChangeCat: CheckboxProps['onChange'] = (e) => {
+        if (e.target.checked) {
+            handleSetFilter({
+                key: 'categoryId',
+                value: {
+                    value: '665941940c4435ccde506da4',
+                    checked: true,
+                },
+            });
+        } else {
+            handleSetFilter({
+                key: 'categoryId',
+                value: {
+                    value: '',
+                    checked: false,
+                },
+            });
+        }
+    };
+    const onChangeBrand: CheckboxProps['onChange'] = (e) => {
+        if (e.target.checked) {
+            handleSetFilter({
+                key: 'brandId',
+                value: {
+                    value: '66593ccf0c4435ccde506d7b',
+                    checked: true,
+                },
+            });
+        } else {
+            handleSetFilter({
+                key: 'brandId',
+                value: {
+                    value: '',
+                    checked: false,
+                },
+            });
+        }
+    };
+    const onChangeAvailable: CheckboxProps['onChange'] = (e) => {
+        if (e.target.checked) {
+            handleSetFilter({
+                key: 'isAvailable',
+                value: {
+                    value: true,
+                    checked: true,
+                },
+            });
+        } else {
+            handleSetFilter({
+                key: 'isAvailable',
+                value: {
+                    value: false,
+                    checked: false,
+                },
+            });
+        }
+    };
+
     const columns: TableProps<IProductItem>['columns'] = [
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
             render: (text) => <h4>{text}</h4>,
-            filteredValue: [searchText],
-            onFilter: (value, record) => {
-                const searchValue = (typeof value === 'string' && value.toLowerCase()) || '';
-                return typeof value && record.name.toLowerCase().includes(searchValue);
-            },
-            sorter: (a, b) => a.name.localeCompare(b.name),
+            // onFilter: (value, record) => {
+            //     const searchValue = (typeof value === 'string' && value.toLowerCase()) || '';
+            //     return typeof value && record.name.toLowerCase().includes(searchValue);
+            // },
+            // sorter: (a, b) => a.name.localeCompare(b.name),
             width: '30%',
         },
         {
@@ -115,6 +224,10 @@ const ManageProducts = () => {
             title: 'Category',
             dataIndex: 'category',
             key: 'category',
+            // filteredValue: [...filters],
+            // onFilter(value, record) {
+            //     return record.categoryId === value;
+            // },
             render: (_, cat) => {
                 const color = tags[Math.floor(Math.random() * tags.length)];
                 const getCategory = categories[`${cat.categoryId}`] || 'Unknown';
@@ -150,14 +263,14 @@ const ManageProducts = () => {
             render: (_, record) => (
                 <Space key={record._id}>
                     <Tooltip title='Update'>
-                        <Link to={`/admin/products/edit`} className='text-blue-500'>
+                        <Link to={`/admin/products/${record._id}/edit`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
                     </Tooltip>
                     <Tooltip title='Delete'>
                         <DeleteOutlined
                             onClick={() => showModal(record._id)}
-                            className='bg-red-100 text-red-500 rounded-full p-2'
+                            className='rounded-full bg-rose-200 p-2 text-red'
                             style={{ fontSize: '1rem' }}
                         />
                     </Tooltip>
@@ -194,17 +307,89 @@ const ManageProducts = () => {
             name: record.name,
         }),
     };
-    useEffect(() => {
-        const searchId = setTimeout(() => {
-            setSearch(inputSearchValue);
-        }, 800);
-        return () => clearTimeout(searchId);
-    }, [inputSearchValue]);
+    const onChange: TableProps<IProductItem>['onChange'] = (pagination) => {
+        handleSetFilter({
+            key: 'page',
+            value: {
+                value: pagination.current ?? 1,
+            },
+        });
+    };
+    // search with debounce
+    /* eslint-disable */
+    const debounceFn = useCallback(
+        debounce(
+            (search) =>
+                handleSetFilter({
+                    key: 'search',
+                    value: {
+                        value: search,
+                    },
+                }),
+            1000
+        ),
+        []
+    );
+    /* eslint-enable */
 
+    const handleChangeRating = (value: number) => {
+        const maxRating = value;
+        handleSetFilter({
+            key: 'rating',
+            value: {
+                value: { min: MIN_RATING, max: maxRating },
+            },
+        });
+    };
+
+    // search change
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const search = e.target.value;
-        setInputSearchValue(search);
+        debounceFn(search);
     };
+    const onFinish: FormProps<PriceRangeType>['onFinish'] = (values: PriceRangeType) => {
+        const { min, max } = values as { min: number; max: number };
+        handleSetFilter({
+            key: 'price',
+            value: {
+                value: { min, max },
+            },
+        });
+    };
+
+    const onChangeCategories = (e: RadioChangeEvent) => {
+        const categoryIdValue = e.target.value;
+        handleSetFilter({
+            key: 'categoryId',
+            value: {
+                value: categoryIdValue,
+                checked: true,
+            },
+        });
+    };
+    const onChangeBrands = (e: RadioChangeEvent) => {
+        const brandIdValue = e.target.value;
+        handleSetFilter({
+            key: 'brandId',
+            value: {
+                value: brandIdValue,
+                checked: true,
+            },
+        });
+    };
+
+    useEffect(() => {
+        (async () => {
+            if (categoryData) {
+                const categoryObject = categoryData?.data?.reduce((prev: ICategoryCollection, curr: ICategory) => {
+                    // add a key and value in original object
+                    prev[curr._id] = curr.name;
+                    return prev;
+                }, {});
+                setCategories(categoryObject);
+            }
+        })();
+    }, [productData, categoryData]);
 
     useEffect(() => {
         if (isSuccess) {
@@ -219,6 +404,148 @@ const ManageProducts = () => {
         }
     }, [isSuccess, isError]);
 
+    const items: MenuProps['items'] = [
+        {
+            key: 'Categories',
+            label: (
+                <div onClick={(e) => e?.stopPropagation()} className='px-2'>
+                    <Radio.Group onChange={onChangeCategories} defaultValue={null}>
+                        <Space direction='horizontal' className='grid grid-cols-2'>
+                            {categoriesOptions?.map((category) => {
+                                console.log(category.value === filtersData?.categoryId?.value?.value);
+                                return (
+                                    <Radio key={category.value} value={category.value}>
+                                        {category.label}
+                                    </Radio>
+                                );
+                            })}
+                            {/* Reset option */}
+                            <Radio value={!filtersData?.categoryId?.value?.value ?? false}>Reset</Radio>
+                        </Space>
+                    </Radio.Group>
+                </div>
+            ),
+        },
+        {
+            key: 'Brands',
+            label: (
+                <div onClick={(e) => e?.stopPropagation()} className='px-2'>
+                    <Radio.Group onChange={onChangeBrands} defaultValue={filtersData?.brandId?.value.value ?? null}>
+                        <Space direction='horizontal' className='grid grid-cols-2'>
+                            {brandsOptions?.map((brand) => (
+                                <Radio key={brand.value} value={brand.value}>
+                                    {brand.label}
+                                </Radio>
+                            ))}
+                            {/* Reset option */}
+                            <Radio value={''}>Reset</Radio>
+                        </Space>
+                    </Radio.Group>
+                </div>
+            ),
+        },
+        {
+            key: 'Available',
+            label: (
+                <div onClick={(e) => e?.stopPropagation()} className='px-2'>
+                    <Checkbox
+                        onChange={onChangeAvailable}
+                        defaultChecked={filtersData?.isAvailable?.value?.checked ?? false}
+                    >
+                        Available
+                    </Checkbox>
+                </div>
+            ),
+        },
+        {
+            key: 'Price range',
+            label: (
+                <div onClick={(e) => e?.stopPropagation()} className='px-2'>
+                    <span>Price range:</span>
+                    <Form
+                        name='price_range'
+                        onFinish={onFinish}
+                        autoComplete='off'
+                        form={form}
+                        layout='vertical'
+                        className='grid grid-cols-2 gap-3'
+                    >
+                        <Form.Item<PriceRangeType>
+                            label='Min'
+                            name='min'
+                            initialValue={
+                                filtersData?.price ? (filtersData?.price.value.value as ILimitValue)?.min : null
+                            }
+                            rules={[
+                                {
+                                    validator(_, min) {
+                                        if (!min && min !== 0) {
+                                            return errorMessage('Please input your price range!');
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                },
+                            ]}
+                        >
+                            <InputNumber min={MIN_PRICE} max={MAX_PRICE} placeholder='From' className='' />
+                        </Form.Item>
+                        <Form.Item<PriceRangeType>
+                            label='Max'
+                            name='max'
+                            initialValue={
+                                filtersData?.price ? (filtersData?.price.value.value as ILimitValue)?.max : null
+                            }
+                            rules={[
+                                {
+                                    validator(_, max) {
+                                        if (!max) {
+                                            return errorMessage('Please input your price range!');
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                },
+                            ]}
+                        >
+                            <InputNumber min={MIN_PRICE} max={MAX_PRICE} placeholder='To' className='' />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type='primary' htmlType='submit' className='w-full'>
+                                Apply
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            ),
+        },
+        {
+            key: 'Rating',
+            label: (
+                <div onClick={(e) => e?.stopPropagation()} className='px-2 pb-4'>
+                    <span>Rating:</span>
+                    <div className='mt-2'>
+                        <Rate
+                            allowClear={false}
+                            defaultValue={(filtersData?.rating?.value?.value as ILimitValue)?.max ?? 5}
+                            onChange={handleChangeRating}
+                        />
+                    </div>
+                </div>
+            ),
+        },
+        {
+            key: 'Reset all',
+            label: (
+                <Button
+                    type='primary'
+                    onClick={() => {
+                        dispatch(resetAllFilters());
+                    }}
+                >
+                    Reset
+                </Button>
+            ),
+        },
+    ];
     return (
         <>
             <div className='flex items-center justify-between'>
@@ -231,16 +558,33 @@ const ManageProducts = () => {
             </div>
             <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
                 <h2 className='mb-5 ml-2 text-xl font-medium text-[#344767] dark:text-black '>Inventory items</h2>
+
                 <div className='my-2 flex justify-between'>
-                    <Search
-                        placeholder='Search name...'
-                        size='large'
-                        className='w-[18.75rem]'
-                        onChange={handleSearch}
-                    />
-                    <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
-                        Export
-                    </Button>
+                    <div>
+                        <Search
+                            placeholder='Search name...'
+                            size='large'
+                            className='w-[18.75rem]'
+                            onChange={handleSearch}
+                            defaultValue={(filtersData?.search?.value?.value as string) ?? ''}
+                        />
+                    </div>
+                    <Dropdown
+                        menu={{ items }}
+                        trigger={['click']}
+                        dropdownRender={(menu) => (
+                            <div className='max-h-[250px] overflow-y-auto rounded-md bg-white'>
+                                <div className=' bg-white '>{menu}</div>
+                            </div>
+                        )}
+                    >
+                        <Button type='primary'>
+                            <Space>
+                                Filters
+                                <FilterOutlined />
+                            </Space>
+                        </Button>
+                    </Dropdown>
                 </div>
                 <Table
                     size='large'
@@ -250,9 +594,13 @@ const ManageProducts = () => {
                         ...rowSelection,
                     }}
                     columns={columns}
+                    loading={!productData}
+                    onChange={onChange}
                     dataSource={productData}
                     pagination={{
-                        pageSize: 4,
+                        pageSize: 10,
+                        total: totalDocs,
+                        current: Number(filtersData?.page?.value?.value ?? 1),
                     }}
                 />
             </div>
