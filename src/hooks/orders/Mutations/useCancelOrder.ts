@@ -11,7 +11,7 @@ const useCancelOrder = () => {
             orderService.cancelOrder({ orderId, description }),
         onSuccess() {
             showMessage('Cancel order successfully!', 'info');
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_ORDERS] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
         },
     });
 };

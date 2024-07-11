@@ -24,6 +24,7 @@ const ManageOrders = () => {
 
     useEffect(() => {
         if (data) {
+            console.log('object');
             dispatch(setOrders(data.data.data));
         }
     }, [data, dispatch, queryParams]);
