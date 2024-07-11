@@ -2,9 +2,9 @@ import { CloseOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
 import { Drawer, DrawerProps, Dropdown, Menu, MenuProps, Space } from 'antd';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SearchCard from '~/components/ProductCard/SearchCard';
 import { CaretIcon, SearchIcon } from '~/components/_common/Icons';
 import SearchSkeleton from '~/components/_common/skeleton/SearchSkeleton';
@@ -58,7 +58,7 @@ const Header = () => {
     const forcusSearch = useSelector((state: RootState) => state.headerReducer.forcusSearch);
     const categoryId = useSelector((state: RootState) => state.headerReducer.categoryId);
     const disPatch = useAppDispatch();
-
+    const location = useLocation();
     const debounceSearch = debounce((value) => {
         disPatch(setSearchValue(value.length !== 0 ? value : ''));
         disPatch(setFocusSearch(true));
@@ -106,7 +106,7 @@ const Header = () => {
         data: searchResult,
         isLoading,
         refetch,
-    } = useSearchProductQuery({ search: searchValue, categoryId: categoryId.id! });
+    } = useSearchProductQuery({ search: searchValue.length ? searchValue : '', categoryId: categoryId.id! });
     const onClick: MenuProps['onClick'] = (key) => {
         const category = categoryList?.find((item) => item._id === key.key);
         const categoryName = category ? category.name : '';
@@ -118,12 +118,24 @@ const Header = () => {
             disPatch(setCategoryId({ id: key.key, name: categoryName }));
         }
     };
+    const searchRef = useRef<HTMLFormElement>(null);
     useEffect(() => {
-        // Chỉ gọi refetch khi categoryId thay đổi
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+                disPatch(setFocusSearch(false));
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [disPatch]);
+    useEffect(() => {
         if (categoryId.id) {
             refetch();
         }
     }, [categoryId.id, refetch]);
+    useEffect(() => {
+        disPatch(setFocusSearch(false));
+    }, [location]);
     return (
         <header className='bg-blue-900 '>
             <div className='mx-3 lg:mx-4'>
@@ -254,8 +266,8 @@ const Header = () => {
                         </Link>
                     </div>
                     {/* ///seach-header-laptop */}
-                    <form className='hidden bg-white lg:block'>
-                        <div className='relative flex h-14 justify-center'>
+                    <form className='hidden bg-white lg:block' ref={searchRef}>
+                        <div className='relative flex h-14 justify-center '>
                             <button
                                 id='dropdown-button'
                                 data-dropdown-toggle='dropdown'
@@ -275,7 +287,7 @@ const Header = () => {
                                     </Dropdown>
                                 </div>
                             </button>
-                            <div className='relative flex  w-full items-center'>
+                            <div className='flex  w-full items-center'>
                                 <div className='relative flex w-full'>
                                     <input
                                         onFocus={(e) => {
@@ -311,13 +323,13 @@ const Header = () => {
                                 >
                                     <SearchIcon className='m-1 h-5 w-5 text-white' />
                                 </button>
-
                                 {forcusSearch && (
                                     <motion.div
                                         initial={{ opacity: 0, y: 100 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.3 }}
-                                        className='absolute right-0 top-[100%] z-50 w-[33vw]  rounded-b-lg  border-b-[5px] border-[#1e3a8a]  bg-white 2xl:w-[50.25vw]'
+                                        style={{ width: 'inherit' }}
+                                        className='w- absolute right-0 top-[100%]  z-50  rounded-b-lg border-b-[5px]  border-[#1e3a8a] bg-white'
                                     >
                                         <div className='my-2 flex items-center justify-between px-4'>
                                             <span className='text-sm font-medium'>Search Result</span>
@@ -356,11 +368,34 @@ const Header = () => {
                 {/* ---seach-mobile--- */}
                 <div className='relative my-5 pb-10  lg:hidden'>
                     <div className='relative h-10 w-full'>
-                        <input
-                            type='email'
-                            className='peer h-14 w-full  bg-white  p-4   outline outline-0 transition-all '
-                            placeholder='Search for products ...'
-                        />
+                        <div>
+                            <input
+                                onFocus={(e) => {
+                                    if (e.target.value.length > 0) {
+                                        disPatch(setFocusSearch(true));
+                                    }
+                                }}
+                                onBlur={handleLeaveInput}
+                                onChange={(e) => debounceSearch(e.target.value)}
+                                type='email'
+                                className='searchBox peer relative h-14 w-full bg-white  pl-4  outline outline-0 transition-all '
+                                placeholder='Search for products ...'
+                            />
+                            {searchValue.length > 1 && (
+                                <CloseOutlined
+                                    onClick={(e) => {
+                                        const closeButton = e.target as HTMLElement;
+                                        const inputElement = closeButton.closest('.relative')?.querySelector('input');
+                                        if (inputElement) {
+                                            inputElement.value = '';
+                                        }
+                                        disPatch(setSearchValue(''));
+                                    }}
+                                    className='absolute right-12 top-[50%] mr-4 transform cursor-pointer text-base transition duration-500 hover:rotate-180'
+                                />
+                            )}
+                        </div>
+
                         <button
                             disabled
                             className='absolute right-2 top-2 select-none rounded bg-[#16bcdc] p-[10px]'
@@ -368,6 +403,41 @@ const Header = () => {
                         >
                             <SearchIcon className='h-5 w-5 text-white' />
                         </button>
+                        {forcusSearch && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 100 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3 }}
+                                style={{ width: 'inherit' }}
+                                className='w- absolute right-0 top-[120%]  z-50  rounded-b-lg border-b-[5px]  border-[#1e3a8a] bg-white'
+                            >
+                                <div className='my-2 flex items-center justify-between px-4'>
+                                    <span className='text-sm font-medium'>Search Result</span>
+                                    <CloseOutlined
+                                        onClick={handleLeaveInput}
+                                        className='transform cursor-pointer text-base transition duration-500 hover:rotate-180'
+                                    />
+                                </div>
+                                <div className='max-h-[33vh] overflow-scroll overflow-x-hidden'>
+                                    {searchResult?.data.products.map((item, index) => (
+                                        <SearchCard key={index} product={item} />
+                                    ))}
+                                    {isLoading && (
+                                        <>
+                                            <SearchSkeleton />
+                                        </>
+                                    )}
+                                    {!searchResult?.data.products.length && !isLoading && (
+                                        <div className='flex h-[20vh] w-full items-center justify-center'>
+                                            <h3 className='font-medium'>
+                                                No products found with the keyword:{' '}
+                                                <b className='text-cyan-500'>{searchValue}</b>
+                                            </h3>
+                                        </div>
+                                    )}
+                                </div>
+                            </motion.div>
+                        )}
                     </div>
                 </div>
                 <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:flex'>
