@@ -43,6 +43,10 @@ const productService = {
         const res = await instance.post<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.CREATE}`, data);
         return res.data;
     },
+    async updateProduct(data: FormData, id: string) {
+        const res = await instance.patch<IAxiosResponse<IProduct>>(`${PRODUCT_ENDPOINT.UPDATE}/${id}`, data);
+        return res.data;
+    },
     async deleteProduct(id: string) {
         const res = await instance.delete<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.DELETE}/${id}`);
         return res.data;

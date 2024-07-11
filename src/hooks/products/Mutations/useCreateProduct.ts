@@ -1,18 +1,23 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QUERY_KEY } from '~/constants/queryKey';
+import { useMutation } from '@tanstack/react-query';
 import productService from '~/services/product.service';
 import showMessage from '~/utils/ShowMessage';
 
 const useCreateProduct = () => {
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (data: FormData) => productService.createProduct(data),
-        onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+        onSuccess: async (res) => {
+            console.log(res);
+            // queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+            // setTimeout( () => {
+            //      queryClient.prefetchQuery({
+            //         queryKey: [QUERY_KEY.PRODUCTS],
+            //         queryFn: () => productService.getAll(),
+            //     });
+            // },2000);
         },
         onError(error) {
-            console.log(error);
             showMessage(error.message, 'error');
         },
     });

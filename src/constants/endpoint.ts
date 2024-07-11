@@ -8,6 +8,7 @@ export const PRODUCT_ENDPOINT = {
     RELATED: '/products/related',
     CREATE: '/products',
     DELETE: '/products',
+    UPDATE: '/products',
 };
 export const CATEGORY_ENDPOINT = {
     ALL: '/categories/all',
@@ -24,6 +25,7 @@ export const CART_ENDPOINT = {
 };
 export const BRAND_ENDPOINT = {
     ALL: '/brands/all',
+    DETAIL: '/brands',
 };
 
 export const AUTH_ENDPOINT = {

@@ -15,6 +15,7 @@ export interface IProduct {
     isDeleted: boolean;
     createdAt: string;
     updatedAt: string;
+    description: string;
     sku: string;
 }
 
@@ -51,6 +52,10 @@ export type ITagsType = {
     label: string;
     value: string;
 };
+export type IAttribute = {
+    attribute: string;
+    categoryId: string | ITagsType;
+};
 export type IProductForm = {
     name: string;
     price: number;
@@ -61,6 +66,7 @@ export type IProductForm = {
     brandId: string | ITagsType;
     discountPercentage: number;
     description: string;
+    attributes: IAttribute[];
 };
 
 export type PropTypeProduct = { product: IProduct };

@@ -8,6 +8,10 @@ const brandService = {
         const res = await instance.get<IAxiosResponse<IBrand[]>>(`${BRAND_ENDPOINT.ALL}`);
         return res.data;
     },
+    async getBrand(id: string) {
+        const res = await instance.get<IAxiosResponse<IBrand>>(`${BRAND_ENDPOINT.DETAIL}/${id}`);
+        return res.data;
+    },
 };
 
 export default brandService;

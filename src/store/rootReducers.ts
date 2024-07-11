@@ -5,6 +5,7 @@ import cartReducer from '~/store/slice/cartSlice';
 import filterSlice from './slice/filterSlice';
 import headerReducer from '~/store/slice/headerSlice';
 import orderReducer from './slice/orderSlice';
+import AdminTableFilterProduct from './slice/AdminfilterProduct';
 
 const rootReducer = combineReducers({
     theme,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     filters: filterSlice.reducer,
     headerReducer,
     orderReducer,
+    AdminTableFilterProduct,
 });
 
 export default rootReducer;
