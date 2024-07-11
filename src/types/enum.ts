@@ -7,3 +7,5 @@ export enum OrderStatus {
     delivered = 'delivered',
     done = 'done',
 }
+
+export const ORDER_STATUS_ARR = Object.values(OrderStatus);

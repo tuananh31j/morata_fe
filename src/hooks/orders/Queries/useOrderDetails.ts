@@ -4,7 +4,7 @@ import orderService from '~/services/order.service';
 
 const useOrderDetails = (id: string) => {
     return useQuery({
-        queryKey: [QUERY_KEY.MY_ORDERS, id],
+        queryKey: [QUERY_KEY.ORDERS, id],
         queryFn: () => orderService.orderDetails(id),
     });
 };

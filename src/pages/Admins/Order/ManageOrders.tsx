@@ -6,10 +6,10 @@ import Search from 'antd/es/input/Search';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import OrderStatusTag from '~/components/OrderStatusTag';
 import { ADMIN_ROUTES } from '~/constants/router';
 import useFilterOrder from '~/hooks/_common/useFilterOrder';
 import useGetAllOrders from '~/hooks/orders/Queries/useGetAllOrders';
-
 import { setOrders, setSearchQuery, updateQueryParamsOrder } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
 import { OrderStatus } from '~/types/enum';
@@ -78,37 +78,7 @@ const ManageOrders = () => {
                 { text: 'Done', value: OrderStatus.done },
             ],
             onFilter: (value, record) => record.orderStatus.indexOf(value.toString()) === 0,
-            render: (orderStatus) => {
-                let color = '';
-                switch (orderStatus) {
-                    case OrderStatus.pending:
-                        color = 'blue';
-                        break;
-                    case OrderStatus.canceled:
-                        color = 'red';
-                        break;
-                    case OrderStatus.confirmed:
-                        color = 'green';
-                        break;
-                    case OrderStatus.shipping:
-                        color = 'yellow';
-                        break;
-                    case OrderStatus.delivered:
-                        color = 'cyan';
-                        break;
-                    case OrderStatus.done:
-                        color = 'purple';
-                        break;
-                    default:
-                        color = 'gray';
-                        break;
-                }
-                return (
-                    <Tag color={color} key={orderStatus}>
-                        {orderStatus.toUpperCase()}
-                    </Tag>
-                );
-            },
+            render: (orderStatus) => <OrderStatusTag status={orderStatus} />,
         },
         {
             title: 'IsPaid',
@@ -160,7 +130,7 @@ const ManageOrders = () => {
     ];
 
     return (
-        <div className='mx-6 mt-[100px]'>
+        <div className='mx-6'>
             <div className='my-6 ml-2 flex items-center justify-between py-2 '>
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Orders</h1>
             </div>

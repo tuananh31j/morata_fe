@@ -1,6 +1,6 @@
 import useLocalStorage from '~/hooks/_common/useLocalStorage';
 import { CloseOutlined } from '@ant-design/icons';
-import { menuGroups } from './menuGroups';
+import { menuGroups } from './_options';
 import SidebarItem from './SidebarItem';
 import ClickOutside from '~/components/_common/ClickOutside';
 import WelcomeBanner from '~/components/WelcomeBanner';

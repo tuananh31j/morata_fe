@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import SidebarDropdown from './SidebarDropdown';
-import { IMenuItem } from './menuGroups';
+import { IMenuItem } from './_options';
 import { FC } from 'react';
 
 export type ISidebarItem = {

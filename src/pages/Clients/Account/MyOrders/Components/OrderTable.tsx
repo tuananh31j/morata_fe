@@ -1,9 +1,12 @@
-import { Table } from 'antd';
-import { columns } from './_helper';
+import { Table, TableProps } from 'antd';
+import { columns, DataType } from './_helper';
 import useGetMyOrders from '~/hooks/orders/Queries/useGetMyOrders';
 
 const OrderTable: React.FC = () => {
     const { data, isLoading } = useGetMyOrders();
+    const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+        console.log('params', pagination, filters, sorter, extra);
+    };
     return (
         <>
             {!isLoading && data && (
@@ -14,6 +17,7 @@ const OrderTable: React.FC = () => {
                     pagination={{
                         pageSize: 8,
                     }}
+                    onChange={onChange}
                     showSorterTooltip={{ target: 'full-header' }}
                 />
             )}

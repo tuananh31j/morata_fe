@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, useLocation } from 'react-router-dom';
-import { IMenuItem } from './menuGroups';
+import { IMenuItem } from './_options';
 
 const SidebarDropdown = ({ item }: { item: Omit<IMenuItem, 'children' | 'icon'>[] }) => {
     const location = useLocation();

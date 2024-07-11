@@ -3,14 +3,16 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import orderService from '~/services/order.service';
 import showMessage from '~/utils/ShowMessage';
 
-export default function useConfirmOrder(orderId: string) {
+export default function useConfirmOrder() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationKey: ['CONFIRM_ORDER'],
         mutationFn: (id: string) => orderService.confirmOrder(id),
-        onSuccess: () => {
+        onSuccess: (_, id) => {
             showMessage('Order confirmed successfully.', 'success');
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS, id] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.MY_ORDERS] });
             setTimeout(() => {
                 queryClient.prefetchQuery({ queryKey: [QUERY_KEY.ORDERS], queryFn: () => orderService.getAllOrders() });
             }, 300);

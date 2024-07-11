@@ -29,7 +29,7 @@ export const ManageUsers = lazy(() => import('~/pages/Admins/User/index'));
 export const CreateUser = lazy(() => import('~/pages/Admins/User/CreateUser'));
 export const UpdateUser = lazy(() => import('~/pages/Admins/User/UpdateUser'));
 export const ManageOrders = lazy(() => import('~/pages/Admins/Order'));
-export const OrdersDetail = lazy(() => import('~/pages/Admins/Order/OrderDetail'));
+export const OrdersDetails = lazy(() => import('~/pages/Admins/Order/OrderDetails'));
 export const CategoryList = lazy(() => import('~/pages/Admins/Category/'));
 export const CreateCategory = lazy(() => import('~/pages/Admins/Category/CreateCategory'));
 

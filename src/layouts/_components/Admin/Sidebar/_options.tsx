@@ -26,6 +26,7 @@ export const menuGroups = [
                 icon: <ProductOutlined />,
                 label: 'Order',
                 route: ADMIN_ROUTES.ORDERS,
+                children: [{ label: 'History', route: ADMIN_ROUTES.PRODUCTS_CREATE }],
             },
             {
                 icon: <ProductOutlined />,

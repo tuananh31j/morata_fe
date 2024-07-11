@@ -8,7 +8,7 @@ import {
     ProductsList,
     Suspense,
     UpdateProduct,
-    OrdersDetail,
+    OrdersDetails,
     CategoryList,
     CreateCategory,
     UpdateUser,
@@ -114,7 +114,7 @@ const PrivateRoutes = [
                         path: `${ADMIN_ROUTES.ORDERS}/:id/detail`,
                         element: (
                             <Suspense>
-                                <OrdersDetail />
+                                <OrdersDetails />
                             </Suspense>
                         ),
                     },

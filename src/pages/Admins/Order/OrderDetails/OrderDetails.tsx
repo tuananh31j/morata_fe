@@ -1,8 +1,10 @@
-import { ConfigProvider, Spin, Steps, Table, TableProps } from 'antd';
-import { useEffect, useState } from 'react';
+import { ConfigProvider, Spin, Table } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import PopupConfirmOrder from '~/components/_common/PopupOrderStatus/Confirm/PopupConfirmOrder';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
+import { OrderStatus } from '~/types/enum';
+import StepsOrder from './_components/StepsOrder';
+import { orderItems } from '../_helper';
 
 const OrderDetail = () => {
     const { id } = useParams();
@@ -11,71 +13,9 @@ const OrderDetail = () => {
     const dataOrderDetail = data?.data?.data.items;
     const totalPrice = data?.data?.data?.totalPrice;
     const shippingFee = data?.data?.data.shippingFee;
-    const [currentStep, setCurrentStep] = useState(0);
-    useEffect(() => {
-        if (orderStatus) {
-            const getStepIndex = (status: string) => {
-                switch (status) {
-                    case 'pending':
-                        return 0;
-                    case 'confirmed':
-                        return 1;
-                    case 'shipping':
-                        return 2;
-                    case 'delivered':
-                        return 3;
-                    case 'cancelled':
-                        return 4;
-                    case 'done':
-                        return 5;
-                    default:
-                        return 0;
-                }
-            };
-            setCurrentStep(getStepIndex(orderStatus));
-        }
-    }, [data]);
-
-    const steps = [
-        { title: 'Pending' },
-        { title: 'Confirmed' },
-        { title: 'Shipping' },
-        { title: 'Delivered' },
-        { title: 'Done' },
-        { title: 'Cancelled' },
-    ];
-    const filteredSteps = steps.filter((step) => {
-        if (orderStatus === 'done') return step.title !== 'Cancelled';
-        if ((orderStatus as string) === 'cancelled') return step.title !== 'Done';
-        return true;
-    });
-    const columns: TableProps['columns'] = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Image',
-            dataIndex: 'image',
-            key: 'image',
-            render: (img) => <img src={img} alt='' width={100} />,
-        },
-        {
-            title: 'Quantity',
-            dataIndex: 'quantity',
-            key: 'quantity',
-        },
-        {
-            title: 'Price',
-            dataIndex: 'price',
-            key: 'price',
-            render: (price) => <span>${price}</span>,
-        },
-    ];
 
     return (
-        <div className='mt-6 w-full px-6'>
+        <div className='w-full px-6'>
             <div className='page-content h-full min-h-[85vh] rounded-lg bg-white'>
                 {!isLoading && (
                     <div className='border-default-200 rounded-lg'>
@@ -141,8 +81,8 @@ const OrderDetail = () => {
                                     <div className='border-default-200 border-b p-4'>
                                         <h4 className='text-default-800 text-sm font-medium'>Total Payment :</h4>
                                     </div>
-                                    <div className='px-4'>
-                                        <div className='border-default-200 flex justify-between border-b py-4'>
+                                    <div className='p-4'>
+                                        <div className='border-default-200 flex justify-between border-b pb-4'>
                                             <h4 className='text-default-700 text-sm'>Subtotal :</h4>
                                             <h4 className='text-default-800 text-sm font-medium'>${totalPrice}</h4>
                                         </div>
@@ -165,21 +105,15 @@ const OrderDetail = () => {
                                 </div>
 
                                 <div className='md:col-span-2 xl:col-span-3'>
-                                    {currentStep === 0 && data && (
+                                    {orderStatus === OrderStatus.pending && data && (
                                         <div className='h-[24px]'>
                                             <PopupConfirmOrder order={data.data.data}>
                                                 Confirm this order
                                             </PopupConfirmOrder>
                                         </div>
                                     )}
-                                    <Steps
-                                        className='my-10'
-                                        current={currentStep}
-                                        items={filteredSteps.map((step, index) => ({
-                                            title: step.title,
-                                        }))}
-                                    />
-                                    <Table columns={columns} dataSource={dataOrderDetail} />
+                                    {orderStatus && <StepsOrder orderStatus={orderStatus} />}
+                                    <Table columns={orderItems} dataSource={dataOrderDetail} />
                                 </div>
                             </div>
                         </div>

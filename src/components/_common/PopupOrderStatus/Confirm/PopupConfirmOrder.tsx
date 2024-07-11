@@ -3,27 +3,22 @@ import { ConfigProvider, Modal, Spin } from 'antd';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useConfirmOrder from '~/hooks/orders/Mutations/useConfirmOrder';
-import { IOrder } from '~/types/Order';
+import { IOrderDetails } from '~/types/Order';
 
-export default function PopupConfirmOrder({ children, order }: { children: React.ReactNode; order: IOrder }) {
+export default function PopupConfirmOrder({ children, order }: { children: React.ReactNode; order: IOrderDetails }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const { id } = useParams();
-    const { mutate, isSuccess, isPending, isError } = useConfirmOrder(id as string);
+    const { mutateAsync, isPending } = useConfirmOrder();
     const showModal = () => {
         setModalOpen(true);
     };
     const handleCancel = () => {
         setModalOpen(false);
     };
-    const handleConfirmOrder = () => {
+    const handleConfirmOrder = async () => {
         if (id) {
-            mutate(id);
-            if (isSuccess) {
-                setModalOpen(false);
-            }
-            if (isError) {
-                setModalOpen(false);
-            }
+            await mutateAsync(id);
+            setModalOpen(false);
         }
     };
 

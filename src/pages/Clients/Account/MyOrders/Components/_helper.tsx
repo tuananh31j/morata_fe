@@ -1,11 +1,9 @@
-import React from 'react';
 import { type TableColumnsType } from 'antd';
-import OrderStatusTag from './OrderStatusTag';
 import { OrderStatus } from '~/types/enum';
 import ActionLink from './ActionLink';
 import dayjs from 'dayjs';
 import PopupOrderDetails from './PopupOrderDetails';
-// import OrderStatusTag from './Components/OrderStatusTag';
+import OrderStatusTag from '~/components/OrderStatusTag';
 
 export interface DataType {
     _id: string;
@@ -14,6 +12,29 @@ export interface DataType {
     totalPrice: number;
     createdAt: string;
 }
+
+const filterStatusItems = [
+    {
+        text: 'Pending',
+        value: OrderStatus.pending,
+    },
+    {
+        text: 'Confirmed',
+        value: OrderStatus.confirmed,
+    },
+    {
+        text: 'Shipping',
+        value: OrderStatus.shipping,
+    },
+    {
+        text: 'Canceled',
+        value: OrderStatus.canceled,
+    },
+    {
+        text: 'Done',
+        value: OrderStatus.done,
+    },
+];
 
 export const columns: TableColumnsType<DataType> = [
     {
@@ -34,7 +55,6 @@ export const columns: TableColumnsType<DataType> = [
                 value: 'cash',
             },
         ],
-        onFilter: (value, record) => record.paymentMethod.indexOf(value as string) === 0,
     },
     {
         title: 'Date',
@@ -46,35 +66,12 @@ export const columns: TableColumnsType<DataType> = [
         title: 'Total price',
         dataIndex: 'totalPrice',
         showSorterTooltip: { target: 'full-header' },
-        sorter: (a, b) => a.totalPrice - b.totalPrice,
     },
     {
         title: 'Status',
         dataIndex: 'orderStatus',
         render: (value) => <OrderStatusTag status={value} />,
-        filters: [
-            {
-                text: 'Pending',
-                value: OrderStatus.pending,
-            },
-            {
-                text: 'Confirmed',
-                value: OrderStatus.confirmed,
-            },
-            {
-                text: 'Shipping',
-                value: OrderStatus.shipping,
-            },
-            {
-                text: 'Canceled',
-                value: OrderStatus.canceled,
-            },
-            {
-                text: 'Done',
-                value: OrderStatus.done,
-            },
-        ],
-        onFilter: (value, record) => record.orderStatus.indexOf(value as string) === 0,
+        filters: filterStatusItems,
     },
     {
         title: 'Actions',
