@@ -18,20 +18,20 @@ export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
 export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
 
 // @admin page
-export const DashboardPage = lazy(() => import('~/pages/Admins/Dashboard'));
+export const DashboardPage = lazy(() => import('~/pages/Admins/_dashboard_'));
 export const NotFoundPage = lazy(() => import('~/pages/404'));
 export const ErrorPage = lazy(() => import('~/pages/Error'));
-export const ProductsList = lazy(() => import('~/pages/Admins/Product/index'));
-export const CreateProduct = lazy(() => import('~/pages/Admins/Product/CreateProduct'));
-export const UpdateProduct = lazy(() => import('~/pages/Admins/Product/UpdateProduct'));
-export const AdminProductDetail = lazy(() => import('~/pages/Admins/Product/ProductDetail'));
-export const ManageUsers = lazy(() => import('~/pages/Admins/User/index'));
-export const CreateUser = lazy(() => import('~/pages/Admins/User/CreateUser'));
-export const UpdateUser = lazy(() => import('~/pages/Admins/User/UpdateUser'));
+export const ProductsList = lazy(() => import('~/pages/Admins/_product_/index'));
+export const CreateProduct = lazy(() => import('~/pages/Admins/_product_/CreateProduct'));
+export const UpdateProduct = lazy(() => import('~/pages/Admins/_product_/UpdateProduct'));
+export const AdminProductDetail = lazy(() => import('~/pages/Admins/_product_/ProductDetail'));
+export const ManageUsers = lazy(() => import('~/pages/Admins/_user_/index'));
+export const CreateUser = lazy(() => import('~/pages/Admins/_user_/CreateUser'));
+export const UpdateUser = lazy(() => import('~/pages/Admins/_user_/UpdateUser'));
 export const ManageOrders = lazy(() => import('~/pages/Admins/_order_/OrdersList'));
 export const OrdersDetails = lazy(() => import('~/pages/Admins/_order_/OrderDetails'));
-export const CategoryList = lazy(() => import('~/pages/Admins/Category/'));
-export const CreateCategory = lazy(() => import('~/pages/Admins/Category/CreateCategory'));
+export const CategoryList = lazy(() => import('~/pages/Admins/_category_'));
+export const CreateCategory = lazy(() => import('~/pages/Admins/_category_/CreateCategory'));
 
 // @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {
