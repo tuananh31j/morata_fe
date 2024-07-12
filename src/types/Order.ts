@@ -1,44 +1,45 @@
-import { OrderStatus } from './enum';
+import { OrderStatus, PaymentMethod } from './enum';
 
+export type IShippingAddress = {
+    city: string;
+    country: string;
+    line1: string;
+    line2: string;
+    postal_code: string;
+    state: string;
+};
+export type ICustomerInfo = {
+    name: string;
+    email: string;
+    phone: string;
+};
+
+export type IOrderItem = {
+    name: string;
+    quantity: number;
+    price: number;
+    image: string;
+};
 export interface IOrderDetails {
-    items: {
-        name: string;
-        quantity: number;
-        price: number;
-        image: string;
-    }[];
+    items: IOrderItem[];
     totalPrice: number;
     tax: number;
     shippingFee: number;
-    customerInfo: {
-        name: string;
-        email: string;
-        phone: string;
-    };
-    receiverInfo: {
-        name: string;
-        email: string;
-        phone: string;
-    };
-    shippingAddress: {
-        city: string;
-        country: string;
-        line1: string;
-        line2: string;
-        postal_code: string;
-        state: string;
-    };
-    paymentMethod: string;
+    customerInfo: ICustomerInfo;
+    receiverInfo: ICustomerInfo;
+    shippingAddress: IShippingAddress;
+    paymentMethod: PaymentMethod;
     isPaid: boolean;
     orderStatus: OrderStatus;
     createdAt: string;
+    description: string;
 }
 
 export interface IOrderResponse {
     orders: Array<{
         _id: string;
         totalPrice: number;
-        paymentMethod: string;
+        paymentMethod: PaymentMethod;
         isPaid: boolean;
         orderStatus: OrderStatus;
         createdAt: string;

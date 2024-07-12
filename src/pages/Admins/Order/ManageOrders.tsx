@@ -12,7 +12,7 @@ import useFilterOrder from '~/hooks/_common/useFilterOrder';
 import useGetAllOrders from '~/hooks/orders/Queries/useGetAllOrders';
 import { setOrders, setSearchQuery, updateQueryParamsOrder } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
-import { OrderStatus } from '~/types/enum';
+import { OrderStatus, PaymentMethod } from '~/types/enum';
 
 const ManageOrders = () => {
     const dispatch = useDispatch();
@@ -59,8 +59,8 @@ const ManageOrders = () => {
             dataIndex: 'paymentMethod',
             key: 'paymentMethod',
             filters: [
-                { text: 'Card', value: 'card' },
-                { text: 'Cash', value: 'cash' },
+                { text: 'Card', value: PaymentMethod.card },
+                { text: 'Cash', value: PaymentMethod.cash },
             ],
             onFilter: (value, record) => {
                 return false;

@@ -19,7 +19,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
     };
 
     return (
-        <div className='rounded-xl bg-white p-8.5'>
+        <div className='rounded-xl bg-white p-8'>
             <div className='relative grid grid-cols-12 justify-between gap-5 rounded'>
                 <Link
                     to={generateLink({ productId: product._id, categoryId: product.categoryId })}

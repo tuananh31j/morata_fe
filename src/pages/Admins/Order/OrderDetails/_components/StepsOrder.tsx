@@ -7,7 +7,7 @@ const StepsOrder = ({ orderStatus }: { orderStatus: OrderStatus }) => {
     return (
         <Steps
             status={orderStatus === OrderStatus.canceled ? 'error' : 'finish'}
-            className='my-10'
+            className='my-10 capitalize'
             current={steps.indexOf(orderStatus)}
             items={items}
         />

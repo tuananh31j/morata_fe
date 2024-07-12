@@ -1,3 +1,5 @@
+import { PaymentMethod } from '../enum';
+
 export type IPayloadItemsOrder =
     | {
           name: string;
@@ -28,7 +30,7 @@ export type ICheckoutCash = {
     };
     items: IPayloadItemsOrder[] | undefined;
     totalPrice: number;
-    paymentMethod?: string;
+    paymentMethod?: PaymentMethod;
 };
 
 export type ICheckoutForm = {

@@ -1,5 +1,5 @@
 import { type TableColumnsType } from 'antd';
-import { OrderStatus } from '~/types/enum';
+import { OrderStatus, PaymentMethod } from '~/types/enum';
 import ActionLink from './ActionLink';
 import dayjs from 'dayjs';
 import PopupOrderDetails from './PopupOrderDetails';
@@ -7,7 +7,7 @@ import OrderStatusTag from '~/components/OrderStatusTag';
 
 export interface DataType {
     _id: string;
-    paymentMethod: string;
+    paymentMethod: PaymentMethod;
     orderStatus: string;
     totalPrice: number;
     createdAt: string;
@@ -48,11 +48,11 @@ export const columns: TableColumnsType<DataType> = [
         filters: [
             {
                 text: 'Card',
-                value: 'card',
+                value: PaymentMethod.card,
             },
             {
                 text: 'Cash',
-                value: 'cash',
+                value: PaymentMethod.cash,
             },
         ],
     },

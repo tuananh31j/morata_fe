@@ -9,6 +9,7 @@ import { RootState } from '~/store/store';
 import { ICheckoutForm } from '~/types/checkout/Checkout';
 import { Currency, cn } from '~/utils';
 import showMessage from '~/utils/ShowMessage';
+import { PaymentMethod } from '~/types/enum';
 
 const CheckOut = () => {
     const user = useSelector((state: RootState) => state.authReducer.user);
@@ -54,7 +55,7 @@ const CheckOut = () => {
                 },
                 items: responsePayloadCheckout,
                 totalPrice,
-                paymentMethod: 'cash',
+                paymentMethod: PaymentMethod.cash,
             };
             cashCheckout(bodyData);
         }

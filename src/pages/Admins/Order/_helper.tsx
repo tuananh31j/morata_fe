@@ -83,7 +83,7 @@ import { ORDER_STATUS_ARR, OrderStatus } from '~/types/enum';
 //     },
 // ];
 
-export const orderItems: TableProps['columns'] = [
+export const orderItemsColums: TableProps['columns'] = [
     {
         title: 'Name',
         dataIndex: 'name',

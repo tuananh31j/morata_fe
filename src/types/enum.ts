@@ -8,4 +8,9 @@ export enum OrderStatus {
     done = 'done',
 }
 
+export enum PaymentMethod {
+    cash = 'cash',
+    card = 'card',
+}
+
 export const ORDER_STATUS_ARR = Object.values(OrderStatus);
