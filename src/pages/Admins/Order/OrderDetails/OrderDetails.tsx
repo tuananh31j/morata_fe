@@ -1,14 +1,18 @@
 import { ConfigProvider, Spin, Table } from 'antd';
 import { Link, useParams } from 'react-router-dom';
-import PopupConfirmOrder from '~/components/_common/PopupOrderStatus/Confirm/PopupConfirmOrder';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
 import { OrderStatus } from '~/types/enum';
 import StepsOrder from './_components/StepsOrder';
 import { orderItems } from '../_helper';
+import useConfirmOrder from '~/hooks/orders/Mutations/useConfirmOrder';
+import PopupStatusOrder from '~/components/_common/PopupOrderStatus/ChangeStatusOrder';
+import useFinishAnOrder from '~/hooks/orders/Mutations/useFinishAnOrder';
 
 const OrderDetail = () => {
     const { id } = useParams();
     const { data, isLoading } = useOrderDetails(id as string);
+    const { mutate, isPending: PendingConfirm } = useConfirmOrder();
+    const { mutate: finishOrder, isPending: PendingFinish } = useFinishAnOrder();
     const orderStatus = data?.data.data.orderStatus;
     const dataOrderDetail = data?.data?.data.items;
     const totalPrice = data?.data?.data?.totalPrice;
@@ -107,9 +111,34 @@ const OrderDetail = () => {
                                 <div className='md:col-span-2 xl:col-span-3'>
                                     {orderStatus === OrderStatus.pending && data && (
                                         <div className='h-[24px]'>
-                                            <PopupConfirmOrder order={data.data.data}>
+                                            <PopupStatusOrder
+                                                isPending={PendingConfirm}
+                                                mutate={mutate}
+                                                content={{
+                                                    title: 'Would you like to confirm this order?',
+                                                    btnCancel: 'Cancel',
+                                                    btnYes: 'Confirm',
+                                                }}
+                                                order={data.data.data}
+                                            >
                                                 Confirm this order
-                                            </PopupConfirmOrder>
+                                            </PopupStatusOrder>
+                                        </div>
+                                    )}
+                                    {orderStatus === OrderStatus.delivered && data && (
+                                        <div className='h-[24px]'>
+                                            <PopupStatusOrder
+                                                mutate={finishOrder}
+                                                isPending={PendingFinish}
+                                                content={{
+                                                    title: 'Would you like to finish this order?',
+                                                    btnCancel: 'Cancel',
+                                                    btnYes: 'Done',
+                                                }}
+                                                order={data.data.data}
+                                            >
+                                                Finish Order
+                                            </PopupStatusOrder>
                                         </div>
                                     )}
                                     {orderStatus && <StepsOrder orderStatus={orderStatus} />}

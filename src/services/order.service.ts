@@ -18,7 +18,12 @@ const orderService = {
         return instance.patch<void, { orderId: string; description?: string }>(`${ORDER_ENDPOINT.CANCELED}`, body);
     },
     confirmOrder(id: string) {
-        return instance.patch<void, string>(`${ORDER_ENDPOINT.ROOT}/confirm`, {
+        return instance.patch<void, string>(`${ORDER_ENDPOINT.CONFIRM}`, {
+            orderId: id,
+        });
+    },
+    finishOrder(id: string) {
+        return instance.patch<void, string>(`${ORDER_ENDPOINT.DONE}`, {
             orderId: id,
         });
     },
