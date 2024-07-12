@@ -39,7 +39,13 @@ const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
                         separator='>'
                         items={[
                             pathnames.length <= 0 ? { title: 'Home' } : { title: 'Home', href: '/' },
-                            ...pathnames.map((name) => ({ title: capatilize(name) })),
+
+                            ...pathnames.map((name) => ({
+                                title:
+                                    name === pathnames[pathnames.length - 1] && titleProduct
+                                        ? titleProduct
+                                        : capatilize(name),
+                            })),
                         ]}
                     />
                 </div>
