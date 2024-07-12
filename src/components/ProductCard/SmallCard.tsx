@@ -12,9 +12,9 @@ type PropTypeProduct = {
     product: IProductItem;
 };
 const SmallCard = ({ product }: PropTypeProduct) => {
-    // console.log('from smallcard', product);
     const newPrice = product.price * (1 + product.discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
+
     const handleSetDateActive = () => {
         setIsActiveProductActions(!isActiveProductActions);
     };
@@ -33,17 +33,20 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                         to={generateLink({ productId: product._id, categoryId: product.categoryId })}
                         className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                     >
-                        <img
-                            loading='lazy'
-                            src={product.images[0]}
-                            alt=''
-                            className='absolute  w-full scale-100 transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
-                        />
+                        {isActiveProductActions && (
+                            <img
+                                loading='lazy'
+                                src={product.images[0]}
+                                alt=''
+                                className='absolute w-full scale-100 transition-transform duration-700 ease-linear md:w-56'
+                            />
+                        )}
+
                         <img
                             loading='lazy'
                             src={product.thumbnail}
                             alt=''
-                            className='relative z-10 w-full opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                            className='relative z-10 w-full opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
                     <ProductActions />

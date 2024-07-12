@@ -27,12 +27,15 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                     onMouseLeave={handleSetDateActive}
                 >
                     <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`} className='block w-full overflow-hidden'>
-                        <img
-                            loading='lazy'
-                            src={product.images[1]}
-                            alt=''
-                            className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 select-none object-cover transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
-                        />
+                        {isActiveProductActions && (
+                            <img
+                                loading='lazy'
+                                src={product.images[1]}
+                                alt=''
+                                className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 select-none object-cover transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
+                            />
+                        )}
+
                         <img
                             loading='lazy'
                             src={product.thumbnail}
