@@ -44,6 +44,8 @@ export const ORDER_ENDPOINT = {
     ROOT: '/orders',
     MY_ORDERS: '/orders/user',
     CANCELED: '/orders/cancel',
+    CONFIRM: '/orders/confirm',
+    DONE: '/orders/done',
 };
 
 export const ATTRIBUTES_ENDPOINT = {

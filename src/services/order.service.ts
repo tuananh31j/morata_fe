@@ -21,6 +21,12 @@ const orderService = {
             orderId: id,
         });
     },
+    finishOrder(id: string) {
+        return instance.patch<void, string>(`${ORDER_ENDPOINT.DONE}`, {
+            orderId: id,
+        });
+    },
+
     orderDetails(id: string) {
         return instance.get<IAxiosResponse<IOrderDetails>>(`${ORDER_ENDPOINT.ROOT}/${id}`);
     },

@@ -1,27 +1,43 @@
 import { CheckOutlined } from '@ant-design/icons';
+import { UseMutateFunction } from '@tanstack/react-query';
 import { ConfigProvider, Modal, Spin } from 'antd';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useConfirmOrder from '~/hooks/orders/Mutations/useConfirmOrder';
 import { IOrderDetails } from '~/types/Order';
 
-export default function PopupConfirmOrder({ children, order }: { children: React.ReactNode; order: IOrderDetails }) {
+export default function PopupStatusOrder({
+    children,
+    order,
+    mutate,
+    isPending,
+    content,
+}: {
+    children: React.ReactNode;
+    order: IOrderDetails;
+    mutate: UseMutateFunction<string, Error, string, unknown>;
+    isPending?: boolean;
+    content: {
+        title: string;
+        description?: string;
+        btnYes?: string;
+        btnCancel?: string;
+    };
+}) {
     const [isModalOpen, setModalOpen] = useState(false);
     const { id } = useParams();
-    const { mutateAsync, isPending } = useConfirmOrder();
+    console.log(isPending);
     const showModal = () => {
         setModalOpen(true);
     };
     const handleCancel = () => {
         setModalOpen(false);
     };
-    const handleConfirmOrder = async () => {
+    const handleFinish = () => {
         if (id) {
-            await mutateAsync(id);
+            mutate(id);
             setModalOpen(false);
         }
     };
-
     return (
         <>
             <span
@@ -37,10 +53,10 @@ export default function PopupConfirmOrder({ children, order }: { children: React
                             onClick={handleCancel}
                             className='h-[42px] w-[82px] rounded-lg  bg-[#7777] bg-white duration-300 hover:bg-red hover:text-white'
                         >
-                            Cancel
+                            {content.btnCancel ? content.btnCancel : 'Cancel'}
                         </button>
                         <button
-                            onClick={handleConfirmOrder}
+                            onClick={handleFinish}
                             className='ml-4 h-[42px] w-[82px] rounded-lg bg-blue-500 text-white duration-300 hover:bg-blue-700'
                         >
                             {isPending ? (
@@ -54,7 +70,7 @@ export default function PopupConfirmOrder({ children, order }: { children: React
                                     <Spin />
                                 </ConfigProvider>
                             ) : (
-                                'Confirm'
+                                `${content.btnYes ? content.btnYes : 'Yes'}`
                             )}
                         </button>
                     </>,
@@ -66,7 +82,8 @@ export default function PopupConfirmOrder({ children, order }: { children: React
                 <div className='mb-6 flex flex-col items-center'>
                     <div className='flex flex-col items-center gap-2'>
                         <CheckOutlined className=' rounded-full border-2 p-5 text-4xl' />
-                        <h3 className='text-xl font-medium text-blue-700'>Would you like to confirm this order?</h3>
+                        <h3 className='text-xl font-medium text-blue-700'>{content.title}</h3>
+                        {content.description && <p>{content.description}</p>}
                     </div>
                 </div>
             </Modal>
