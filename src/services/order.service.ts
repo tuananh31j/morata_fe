@@ -8,7 +8,7 @@ const orderService = {
     myOrder() {
         return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
-    getAllOrders(params: Partial<IOrderParams>) {
+    getAllOrders(params?: Partial<IOrderParams>) {
         return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.ROOT}`, {
             params,
         });

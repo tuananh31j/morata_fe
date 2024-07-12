@@ -6,7 +6,7 @@ import useFilterOrder from '~/hooks/_common/useFilterOrder';
 
 export default function useConfirmOrder() {
     const queryClient = useQueryClient();
-    const { queryParams } = useFilterOrder();
+    const { queryParams, pagination } = useFilterOrder();
     return useMutation({
         mutationKey: ['CONFIRM_ORDER'],
         mutationFn: (id: string) => orderService.confirmOrder(id),
@@ -15,7 +15,7 @@ export default function useConfirmOrder() {
             setTimeout(() => {
                 queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS, id] });
                 queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.ORDERS, ...Object.values(queryParams)],
+                    queryKey: [QUERY_KEY.ORDERS, ...Object.values(queryParams), ...Object.values(pagination)],
                     queryFn: () => orderService.getAllOrders(),
                 });
             }, 500);

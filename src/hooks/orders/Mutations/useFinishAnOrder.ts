@@ -6,7 +6,7 @@ import showMessage from '~/utils/ShowMessage';
 
 export default function useFinishAnOrder() {
     const queryClient = useQueryClient();
-    const { queryParams } = useFilterOrder();
+    const { queryParams, pagination } = useFilterOrder();
     return useMutation({
         mutationKey: ['FINISH_ORDER'],
         mutationFn: (id: string) => orderService.finishOrder(id),
@@ -15,7 +15,7 @@ export default function useFinishAnOrder() {
             setTimeout(() => {
                 queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS, id] });
                 queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.ORDERS, ...Object.values(queryParams)],
+                    queryKey: [QUERY_KEY.ORDERS, ...Object.values(queryParams), ...Object.values(pagination)],
                     queryFn: () => orderService.getAllOrders(),
                 });
             }, 500);
