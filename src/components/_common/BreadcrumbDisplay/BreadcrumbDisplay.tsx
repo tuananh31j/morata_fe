@@ -9,11 +9,22 @@ const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
         // get current location
         const { pathname } = location;
 
-        // seperate the segments from the URL
-        const pathnames = pathname.split('/').filter((item) => item);
-
         // capitalize the first letter of the each segment
+
         const capatilize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+        // seperate the segments from the URL
+        const pathnames = pathname
+            .split('/')
+            .filter((item) => item)
+            .map((item) =>
+                item.includes('-')
+                    ? item
+                          .split('-')
+                          .map((word) => capatilize(word))
+                          .join(' ')
+                    : capatilize(item)
+            );
 
         return (
             <ConfigProvider
@@ -24,45 +35,13 @@ const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
                 }}
             >
                 <div className='breadcrumb-container flex h-[60px] w-full items-center font-semibold'>
-                    <Breadcrumb>
-                        {pathnames.length > 0 ? (
-                            <Breadcrumb.Item className='text-[#212224]'>
-                                <Link className='text-[#212224]' to='/'>
-                                    Home
-                                </Link>
-                            </Breadcrumb.Item>
-                        ) : (
-                            <Breadcrumb.Item className='text-[#212224]'>Home</Breadcrumb.Item>
-                        )}
-
-                        {!titleProduct && (
-                            <>
-                                {pathnames.map((name, index) => {
-                                    const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
-                                    const isLast = index === pathnames.length - 1;
-                                    return isLast ? (
-                                        <Breadcrumb.Item key={index} className='text-[#212224]'>
-                                            {capatilize(name)}
-                                        </Breadcrumb.Item>
-                                    ) : (
-                                        <Breadcrumb.Item key={index} className='text-[#212224]'>
-                                            <Link className='text-[#212224]' to={`${routeTo}`}>
-                                                {capatilize(name)}
-                                            </Link>
-                                        </Breadcrumb.Item>
-                                    );
-                                })}
-                            </>
-                        )}
-                        {titleProduct && (
-                            <>
-                                <Breadcrumb.Item>
-                                    <Link to={MAIN_ROUTES.PRODUCTS}>Products</Link>
-                                </Breadcrumb.Item>
-                                <Breadcrumb.Item className='text-[#212224]'>{titleProduct}</Breadcrumb.Item>
-                            </>
-                        )}
-                    </Breadcrumb>
+                    <Breadcrumb
+                        separator='>'
+                        items={[
+                            pathnames.length <= 0 ? { title: 'Home' } : { title: 'Home', href: '/' },
+                            ...pathnames.map((name) => ({ title: capatilize(name) })),
+                        ]}
+                    />
                 </div>
             </ConfigProvider>
         );
