@@ -6,3 +6,12 @@ export type IUserLogin = {
     createdAt: string;
     updatedAt: string;
 };
+
+export type IUserProfileResponse = {
+    username: string;
+    email: string;
+    avatar: string;
+    phone: string;
+    address: string;
+    role: string;
+};

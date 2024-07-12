@@ -56,3 +56,8 @@ export const STATS_ENDPOINT = {
     MONTHLY_STATS: '/stats/monthly',
     YEARLY_STATS: '/stats/yearly',
 };
+
+export const USER_ENDPOINT = {
+    PROFILE: '/users/private',
+    UPDATE: '/users/priavte',
+};

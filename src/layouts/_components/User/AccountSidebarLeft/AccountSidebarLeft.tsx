@@ -1,20 +1,25 @@
-import StaticImages from '~/assets';
 import MenuAccount from './MenuAccount';
+import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 
 const AccountSidebarLeft = () => {
+    const { data } = useGetProfile();
+    const profile = data?.data;
+
     return (
         <>
             <div className='hidden flex-col bg-white md:flex'>
                 <div className=''>
-                    <h1 className='py-3 text-center text-2xl font-semibold uppercase text-[#16bcdc]'>Tài khoản</h1>
+                    <h1 className='pt-5 text-center text-2xl font-semibold uppercase text-[#16bcdc]'>Account</h1>
                 </div>
-                <div className='mb-10 flex items-center justify-center gap-5'>
-                    <div className='w-[16%]'>
-                        <img src={StaticImages.userImageDf} className='w-full rounded-full' loading='lazy' alt='' />
+
+                <div className='my-5 flex items-center justify-center gap-5'>
+                    <div className='w-[30%]'>
+                        <img src={profile?.avatar} className='w-full rounded-full' loading='lazy' alt='' />
                     </div>
+
                     <div>
-                        <p className='text-[16px] capitalize'>Nguyễn Tuấn Anh</p>
-                        <p className='text-[14px] font-thin'>05464564523</p>
+                        <p className='text-[16px] capitalize'>{profile?.username}</p>
+                        <p className='text-[14px] font-thin'>{profile?.phone}</p>
                     </div>
                 </div>
                 <MenuAccount />

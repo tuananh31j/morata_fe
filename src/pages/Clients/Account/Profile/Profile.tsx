@@ -1,15 +1,17 @@
-import WrapperList from '~/components/_common/WrapperList';
-import StaticImages from '~/assets';
-import { Button, DatePicker, Form, Input, Modal, Radio } from 'antd';
-import dayjs from 'dayjs';
+import { Button, Form, Input, Modal } from 'antd';
 import { useState } from 'react';
+import WrapperList from '~/components/_common/WrapperList';
 import useWindowSize from '~/hooks/_common/useWindowSize';
+import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 
 const Profile = () => {
-    const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
+    // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
     const [open, setOpen] = useState<boolean>(false);
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const windowSize = useWindowSize();
+
+    const { data } = useGetProfile();
+    const profile = data?.data;
 
     const showModal = () => {
         setOpen(true);
@@ -36,61 +38,33 @@ const Profile = () => {
                         {/* User avatar */}
                         <div className='mb-6 flex items-center justify-center'>
                             <div className='mt-4 flex w-24 select-none items-center justify-center rounded-full'>
-                                <img
-                                    src={StaticImages.userImageDf}
-                                    loading='lazy'
-                                    alt='user'
-                                    className='w-full rounded-full '
-                                />
+                                <img src={profile?.avatar} loading='lazy' alt='user' className='w-full rounded-full ' />
                             </div>
                         </div>
-                        {/* End */}
-                        {/* Infomation */}
-                        {/* <div>
-                            <div className='mb-3 flex items-center justify-between border-b-[1.6px] pb-3'>
-                                <span className='text-gray-500'>Họ và tên</span>
-                                <span className='capitalize lg:font-medium'> quy khach</span>
-                            </div>
-                            <div className='mb-3 flex items-center justify-between border-b-[1.6px] pb-3'>
-                                <span className='text-gray-500'>Số điện thoại</span>
-                                <span className='capitalize lg:font-medium'> 0964863742</span>
-                            </div>
-                            <div className='mb-3 flex items-center justify-between border-b-[1.6px] pb-3'>
-                                <span className='text-gray-500'>Giới tính</span>
-                                <span className='capitalize lg:font-medium'> nam</span>
-                            </div>
-                        </div> */}
-                        {/* Edit btn infomation */}
-                        {/* <button className='mt-5 block w-full rounded-3xl border-black bg-black py-2 text-center text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc] lg:py-3 '>
-                            Chỉnh sửa thông tin
-                        </button> */}
+
                         <Form layout='vertical' className='w-full'>
-                            <div className=''>Giới tính</div>
-                            <Radio.Group name='gender' defaultValue={0}>
-                                <Radio value={0}>Nam</Radio>
-                                <Radio value={1}>Nữ</Radio>
-                            </Radio.Group>
                             <Form.Item label='Họ và tên' className='mt-1'>
-                                <Input placeholder='Họ và tên' className='py-3' value={'Nguyễn Tiến Đạt'} />
+                                <Input placeholder='Họ và tên' className='py-3' value={profile?.username} />
                             </Form.Item>
+
                             <Form.Item label='Số điện thoại'>
-                                <Input placeholder='Số điện thoại' value={'0964963742'} className='py-3' />
+                                <Input placeholder='Số điện thoại' value={profile?.phone} className='py-3' />
                             </Form.Item>
-                            <Form.Item label='Ngày sinh'>
+
+                            {/* <Form.Item label='Ngày sinh'>
                                 <DatePicker
                                     className='w-full py-3'
                                     defaultValue={dayjs('01/01/2015', dateFormatList[0])}
                                     format={dateFormatList[0]}
                                 />
-                            </Form.Item>
+                            </Form.Item> */}
+
                             <Form.Item label='Email' className='mt-1'>
-                                <Input placeholder='Email' className='py-3' value={''} />
+                                <Input placeholder='Email' className='py-3' value={profile?.email} />
                             </Form.Item>
+
                             <Form.Item>
                                 <div className='flex flex-wrap justify-between gap-5 md:flex-nowrap'>
-                                    {/* <Button type='primary' size='large' className='w-full'>
-                                        Cập nhật thông tin
-                                    </Button> */}
                                     <Button
                                         className='block w-full rounded-3xl bg-black text-center text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc] '
                                         size='large'
