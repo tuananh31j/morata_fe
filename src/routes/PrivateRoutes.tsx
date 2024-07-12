@@ -12,8 +12,8 @@ import {
     CategoryList,
     CreateCategory,
     UpdateUser,
+    ManageOrders,
 } from './LazyRoutes';
-import ManageOrders from '~/pages/Admins/Order/ManageOrders';
 import { ADMIN_ROUTES } from '~/constants/router';
 
 const PrivateRoutes = [

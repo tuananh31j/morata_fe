@@ -1,24 +1,25 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IParams } from '~/types/Api';
 
-type IInitialState = {
+export type IInitialState = {
     grid: string;
-    queryParams: IParams;
+    queryParams: Partial<IParams>;
 };
 
-type IParamsPayload = {
-    key: keyof IParams;
+export type IParamsPayload = {
+    key: keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating' | 'page' | 'sort'>;
     value: string;
 };
 
-type IFilterPayload = {
-    key: keyof Omit<IParams, 'page' | 'sort'>;
+export type IFilterPayload = {
+    key: keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating'>;
     value: string;
 };
 
 const initialState: IInitialState = {
     grid: '',
     queryParams: {
+        search: '',
         page: '1',
         limit: '8',
         sort: '',

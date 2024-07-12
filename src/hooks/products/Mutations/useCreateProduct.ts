@@ -8,7 +8,6 @@ const useCreateProduct = () => {
     return useMutation({
         mutationFn: (data: FormData) => productService.createProduct(data),
         onSuccess: async (res) => {
-            console.log(res);
             // queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
             // setTimeout( () => {
             //      queryClient.prefetchQuery({

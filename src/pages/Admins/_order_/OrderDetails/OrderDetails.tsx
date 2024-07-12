@@ -8,6 +8,7 @@ import { orderItemsColums } from '../_helper';
 import dayjs from 'dayjs';
 import PurchaseInformation from './_components/PurchaseInformation';
 import Header from './_components/Header';
+import { formatDate } from '~/utils/formatDate';
 
 const OrderDetail = () => {
     const { id } = useParams();
@@ -22,7 +23,6 @@ const OrderDetail = () => {
     const paymentMethod = data?.data?.data.paymentMethod;
     const tax = data?.data?.data.tax;
     const shippingAddress = data?.data.data.shippingAddress;
-    const formattedDate = dayjs(data?.data.data.createdAt).format('DD-MM-YYYY');
 
     return (
         <div className='w-full px-6'>
@@ -34,7 +34,7 @@ const OrderDetail = () => {
                             <PurchaseInformation
                                 totalPrice={totalPrice!}
                                 tax={tax!}
-                                created={formattedDate}
+                                created={formatDate(data.data.data.createdAt)}
                                 customerInfo={customerInfo!}
                                 description={description!}
                                 isPaid={isPaid!}

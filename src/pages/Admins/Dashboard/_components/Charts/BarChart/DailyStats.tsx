@@ -7,7 +7,6 @@ import { optionsBarChart } from './_option';
 
 const DailyStats: React.FC = () => {
     const { data: dailyStats } = useDailyStats();
-    console.log(dailyStats);
 
     const revenue = dailyStats?.data.map((item: any) => item.totalRevenue);
     const orders = dailyStats?.data.map((item: any) => item.totalOrders);
@@ -23,9 +22,7 @@ const DailyStats: React.FC = () => {
             data: revenue || [0],
         },
     ];
-    const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(date, dateString);
-    };
+    const onChange: DatePickerProps['onChange'] = (date, dateString) => {};
     return (
         <WrapperList title='Daily Statistics' option={<DatePicker onChange={onChange} picker='month' />} lineButtonBox>
             <div>

@@ -1,4 +1,4 @@
-import { DollarOutlined, MinusCircleOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { DollarOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import {
     Button,
@@ -11,7 +11,6 @@ import {
     Input,
     InputNumber,
     Select,
-    Tag,
     Upload,
     UploadFile,
     UploadProps,
@@ -21,7 +20,6 @@ import { AxiosError } from 'axios';
 import { useEffect, useId, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { QUERY_KEY } from '~/constants/queryKey';
-import { useGetAllAtributes } from '~/hooks/attributes/Queries/useGetAttributesByCate';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import productService from '~/services/product.service';
 import { IAxiosResponse } from '~/types/AxiosResponse';
@@ -30,8 +28,6 @@ import showMessage from '~/utils/ShowMessage';
 import { errorMessage } from '~/validation/Product';
 import useUpdateProduct from '~/hooks/products/Mutations/useUpdateProduct';
 import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
-import useGetDetailCategory from '~/hooks/categories/Queries/useGetDetailCategory';
-import useGetBrand from '~/hooks/brands/useGetBrand';
 
 const ACCEPT_FILE_TYPE = ['image/png', 'image/jpeg', 'image/jpg'];
 const MAX_SIZE = 5000000;
@@ -56,7 +52,6 @@ const getBase64 = (file: FileType): Promise<string> =>
 const UpdateProduct = () => {
     const queryClient = useQueryClient();
     const { id } = useParams();
-    const randomId = useId();
     const [previewImagesOpen, setPreviewImagesOpen] = useState<boolean>(false);
     const [previewImages, setPreviewImages] = useState<string>('');
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
@@ -127,7 +122,6 @@ const UpdateProduct = () => {
     const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => setThumbnailFile(newFileList);
 
     const handleCreateProduct = (data: IProductForm) => {
-        console.log(data);
         const formData = new FormData();
         const dataTransfer = new DataTransfer();
         const { name, price, stock, images, thumbnail, description, brandId, categoryId } = data;

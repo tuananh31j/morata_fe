@@ -105,7 +105,6 @@ const CreateProduct = () => {
     const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => setThumbnailFile(newFileList);
     const handleCreateProduct = (data: IProductForm) => {
         const fistCharaterIndex = 0;
-        console.log(data);
         const { name, price, stock, images, thumbnail, description, brandId, categoryId } = data;
         const formData = new FormData();
         const dataTransfer = new DataTransfer();
@@ -144,7 +143,6 @@ const CreateProduct = () => {
         handleCreateProduct(values);
     };
     const handleChangeCat = (value: ITagsType) => {
-        console.log(`selected`, value);
         setCategoryValue(value);
     };
     /* eslint-disable */

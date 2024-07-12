@@ -299,9 +299,7 @@ const ManageProducts = () => {
         },
     ];
     const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: IProductItem[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
+        onChange: (selectedRowKeys: React.Key[], selectedRows: IProductItem[]) => {},
         getCheckboxProps: (record: IProductItem) => ({
             disabled: record.name === 'Disabled User', // Column configuration not to be checked
             name: record.name,

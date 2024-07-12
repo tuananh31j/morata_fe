@@ -12,7 +12,6 @@ type PropTypeProduct = {
     product: IProductItem;
 };
 const SmallCard = ({ product }: PropTypeProduct) => {
-    // console.log('from smallcard', product);
     const newPrice = product.price * (1 + product.discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {

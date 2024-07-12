@@ -2,7 +2,6 @@ export type IRankValue = {
     min: number | string;
     max: string | number;
 };
-export type IMix = number | string | IRankValue | null;
 export type IParams = Partial<{
     search?: string;
     page: string;
@@ -16,3 +15,5 @@ export type IParams = Partial<{
     paymentMethod: string;
     isAvailable: boolean;
 }>;
+
+export type IPagination = { page: number; limit: number };

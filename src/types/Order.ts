@@ -49,6 +49,11 @@ export interface IOrderResponse {
     totalPages: number;
 }
 
+export type IOrderParams = {
+    orderStatus: string[] | null;
+    isPaid: string[] | null;
+    paymentMethod: string[] | null;
+};
 export type IOrderHead = {
     _id: string;
     name: string;
@@ -57,13 +62,4 @@ export type IOrderHead = {
     orderStatus: OrderStatus;
     isPaid: boolean;
     createdAt: string;
-};
-export type IOrderParams = {
-    paymentMethod: string;
-    isPaid: string;
-    orderStatus: string;
-    page: string;
-    limit: string;
-    sort: string;
-    search?: string;
 };

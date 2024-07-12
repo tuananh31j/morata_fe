@@ -15,11 +15,22 @@ const useFilters = () => {
 
     useEffect(() => {
         searchParams?.forEach((value, key) => {
-            dispatch(updateQueryParams({ key: key as keyof IParams, value }));
+            dispatch(
+                updateQueryParams({
+                    key: key as keyof Pick<
+                        IParams,
+                        'limit' | 'price' | 'brandId' | 'categoryId' | 'rating' | 'page' | 'sort'
+                    >,
+                    value,
+                })
+            );
         });
     }, []);
 
-    const updateQueryParam = (key: keyof IParams, value: string) => {
+    const updateQueryParam = (
+        key: keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating' | 'page' | 'sort'>,
+        value: string
+    ) => {
         const newParams = new URLSearchParams(searchParams?.toString());
 
         if (value) newParams.set(key, String(value));
@@ -30,7 +41,10 @@ const useFilters = () => {
         dispatch(updateQueryParams({ key, value }));
     };
 
-    const updateFilterAttribute = (key: keyof Omit<IParams, 'page' | 'sort'>, value: string) => {
+    const updateFilterAttribute = (
+        key: keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating'>,
+        value: string
+    ) => {
         const newParams = new URLSearchParams(searchParams?.toString());
         newParams.delete('page');
         newParams.delete('sort');
