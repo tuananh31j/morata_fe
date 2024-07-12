@@ -3,9 +3,9 @@ import MenuItem from './MenuItem';
 import { MAIN_ROUTES } from '~/constants/router';
 
 const menus = [
-    { name: 'Personal information', path: MAIN_ROUTES.PROFILE },
-    { name: 'My orders', path: MAIN_ROUTES.MY_ORDERS },
-    { name: 'My address', path: MAIN_ROUTES.MY_ADDRESS },
+    { name: 'My Profile', path: MAIN_ROUTES.PROFILE },
+    { name: 'My Orders', path: MAIN_ROUTES.MY_ORDERS },
+    { name: 'My Address', path: MAIN_ROUTES.MY_ADDRESS },
 ];
 
 const MenuAccount = () => {
