@@ -9,6 +9,7 @@ const SidebarDropdown = ({ item }: { item: IChildrenItem[] }) => {
                 {item.map((menuItem, index) => (
                     <li key={index}>
                         <NavLink
+                            end
                             to={menuItem.route}
                             className={({ isActive }) => {
                                 const classActive = isActive ? 'text-blue-700' : '';

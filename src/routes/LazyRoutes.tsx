@@ -32,6 +32,7 @@ export const ManageOrders = lazy(() => import('~/pages/Admins/_order_/OrdersList
 export const OrdersDetails = lazy(() => import('~/pages/Admins/_order_/OrderDetails'));
 export const CategoryList = lazy(() => import('~/pages/Admins/_category_'));
 export const CreateCategory = lazy(() => import('~/pages/Admins/_category_/CreateCategory'));
+export const UpdateCategory = lazy(() => import('~/pages/Admins/_category_/UpdateCategory'));
 
 // @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {

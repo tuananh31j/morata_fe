@@ -22,11 +22,18 @@ export const ADMIN_ROUTES = {
 
     USERS: '/admin/users',
     USERS_CREATE: '/admin/users/create',
+    USERS_CHATS: '/admin/users/chats',
+    USERS_REVIEWS: '/admin/users/reviews',
     USERS_EDIT: '/admin/users/edit', // @id
 
     ORDERS: '/admin/orders',
+    ORDERS_CANCELLATION: '/admin/orders/cancellation',
 
     CATEGORIES: '/admin/categories',
     CATEGORIES_CREATE: '/admin/categories/create',
-    CATEGORIES_EDIT: '/admin/categories/edit', // @id
+    CATEGORIES_EDIT: '/admin/categories/edit/:id', // @id
+
+    // SHOP
+    SHOP: '/admin/shop',
+    SHOP_SETTINGS: '/admin/shop',
 };

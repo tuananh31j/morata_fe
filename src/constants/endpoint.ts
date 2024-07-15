@@ -15,6 +15,7 @@ export const CATEGORY_ENDPOINT = {
     POPULAR: '/categories/popular',
     CREATE: '/categories',
     DETAIL: '/categories',
+    UPDATE: '/categories',
 };
 export const CART_ENDPOINT = {
     GET: '/carts',

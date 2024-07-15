@@ -4,6 +4,7 @@ export const QUERY_KEY = {
     CATEGORIES: {
         LIST: 'list',
         CREATE: 'create',
+        UPDATE: 'update',
     },
     LATEST: 'latest',
     DEALS: 'deals',
