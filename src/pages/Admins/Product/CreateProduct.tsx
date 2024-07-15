@@ -67,7 +67,6 @@ const CreateProduct = () => {
     const { mutate: createProduct, data: createProductData, isError, isSuccess, error, isPending } = useCreateProduct();
     const [form] = Form.useForm<IProductForm>();
     const navigate = useNavigate();
-    const randomId = useId();
     const dataIndex = {
         brands: 0,
         categories: 1,
@@ -167,12 +166,6 @@ const CreateProduct = () => {
             setImagesFileList([]);
             setThumbnailFile([]);
             showMessage('Create product successfully', 'success');
-            setTimeout(() => {
-                queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.PRODUCTS],
-                    queryFn: () => productService.getAll(),
-                });
-            }, 1000);
             navigate('/admin/products');
         }
     }, [createProductData, isError, error, form, isSuccess]);

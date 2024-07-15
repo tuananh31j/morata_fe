@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IParams } from '~/types/Api';
 
 export const MIN_PRICE = 0;
-export const MAX_PRICE = 10000;
+export const MAX_PRICE = 20000;
 export const MIN_RATING = 1;
 export const MAX_RATING = 5;
 export const DEFAULT_VALUE = {
@@ -14,6 +14,51 @@ export const DEFAULT_VALUE = {
     rating: { min: MIN_RATING, max: MAX_RATING },
     price: { min: MIN_PRICE, max: MAX_PRICE },
     isAvailable: true,
+    limit: 10,
+};
+const DEFAULT_STORAGE_VALUE = {
+    filters: {
+        categoryId: {
+            key: 'categoryId',
+            value: { value: '', checked: false },
+        },
+        brandId: {
+            key: 'brandId',
+            value: { value: '', checked: false },
+        },
+        page: {
+            key: 'page',
+            value: { value: 1 },
+        },
+        search: {
+            key: 'search',
+            value: { value: '' },
+        },
+        sort: {
+            key: 'sort',
+            value: {
+                value: {
+                    key: -1,
+                },
+            },
+        },
+        rating: {
+            key: 'rating',
+            value: { value: { min: MIN_RATING, max: MAX_RATING } },
+        },
+        price: {
+            key: 'price',
+            value: { value: { min: MIN_PRICE, max: MAX_PRICE } },
+        },
+        isAvailable: {
+            key: 'isAvailable',
+            value: { value: true, checked: true },
+        },
+        limit: {
+            key: 'limit',
+            value: { value: 10 },
+        },
+    },
 };
 
 export type ILimitValue = {
@@ -30,11 +75,11 @@ export type IOptions = {
     limit?: ILimitValue;
 };
 export type IFilterOptions = {
-    [key in keyof Omit<IParams, 'paymentMethod' | 'orderStatus' | 'limit'>]: IOptions;
+    [key in keyof Omit<IParams, 'paymentMethod' | 'orderStatus'>]: IOptions;
 };
 
 export type IFilterPayload = {
-    key: keyof Omit<IParams, 'paymentMethod' | 'orderStatus' | 'limit'>;
+    key: keyof Omit<IParams, 'paymentMethod' | 'orderStatus'>;
     value: IOptions;
 };
 export type IStorageValue = {
@@ -51,7 +96,12 @@ export type IFilterStorage = {
         sort: IStorageValue;
         rating: IStorageValue;
         isAvailable: IStorageValue;
+        limit: IStorageValue;
     };
+};
+export type IFilterParams = {
+    key: keyof Omit<IParams, 'paymentMethod' | 'orderStatus'>;
+    value: IOptions['value'];
 };
 export type IInitialFilterState = {
     filters: {
@@ -63,7 +113,9 @@ export type IInitialFilterState = {
         sort: IOptions;
         rating: IOptions;
         isAvailable: IOptions;
+        limit: IOptions;
     };
+    params: IParams;
 };
 
 const initialState: IInitialFilterState = {
@@ -84,7 +136,7 @@ const initialState: IInitialFilterState = {
         },
         isAvailable: {
             value: DEFAULT_VALUE.isAvailable,
-            checked: false,
+            checked: true,
         },
         sort: {
             value: {
@@ -97,7 +149,29 @@ const initialState: IInitialFilterState = {
         rating: {
             value: DEFAULT_VALUE.rating,
         },
+        limit: {
+            value: DEFAULT_VALUE.limit,
+        },
     },
+    params: {
+        categoryId: DEFAULT_VALUE.categoryId,
+        brandId: DEFAULT_VALUE.brandId,
+        page: DEFAULT_VALUE.page.toString(),
+        search: DEFAULT_VALUE.search,
+        limit: DEFAULT_VALUE.limit,
+        sort: JSON.stringify({ key: DEFAULT_VALUE.sort }),
+        rating: JSON.stringify({ min: MIN_RATING, max: MAX_RATING }),
+        price: JSON.stringify({ min: MIN_PRICE, max: MAX_PRICE }),
+        isAvailable: DEFAULT_VALUE.isAvailable,
+    },
+};
+
+const getFilters = () => {
+    return JSON.parse(localStorage.getItem('filters') || '{}') as IFilterStorage;
+};
+
+const setFilters = (filters: IFilterStorage) => {
+    localStorage.setItem('filters', JSON.stringify(filters));
 };
 
 const AdminTableFilterProduct = createSlice({
@@ -106,10 +180,9 @@ const AdminTableFilterProduct = createSlice({
     reducers: {
         setFilter: (state, action: PayloadAction<IFilterPayload>) => {
             const { key, value } = action.payload;
-            const filters = JSON.parse(localStorage.getItem('filters') || '{}');
-
+            const filters = getFilters();
             if (!filters?.filters) {
-                filters.filters = {};
+                filters.filters = DEFAULT_STORAGE_VALUE.filters;
             }
             // set page to 1 when filter change is not page
             if (key !== 'page') {
@@ -118,29 +191,46 @@ const AdminTableFilterProduct = createSlice({
             }
             // set filter to local storage
             filters.filters[key] = { key, value };
-            localStorage.setItem('filters', JSON.stringify(filters));
+            setFilters(filters);
 
             // set filter to state
-            state.filters[key] = value;
+            if (typeof value.value === 'object') {
+                const valueTransferToString = JSON.stringify(value.value);
+
+                value.value = valueTransferToString;
+                state.filters[key] = value;
+            } else {
+                state.filters[key] = value;
+            }
+            (state.params[key] as IOptions['value']) = value.value;
         },
         resetAllFilters: (state) => {
-            console.log('OK');
+            const filters = getFilters();
 
-            const filters = JSON.parse(localStorage.getItem('filters') || '{}');
             if (filters?.filters) {
-                filters.filters = initialState.filters;
+                const filtersKeys = Object.keys(filters.filters);
+                filtersKeys.forEach((key) => {
+                    if (key !== 'search') {
+                        filters.filters[key as keyof IFilterStorage['filters']].value.value =
+                            DEFAULT_STORAGE_VALUE.filters[key as keyof IFilterStorage['filters']].value.value;
+                    }
+                });
             } else {
-                filters.filters = {};
+                filters.filters = DEFAULT_STORAGE_VALUE.filters;
             }
 
             // reset all filters storage to default
-            localStorage.setItem('filters', JSON.stringify(filters));
-
+            setFilters(filters);
             // reset all redux filters to default
             state.filters = initialState.filters;
+        },
+        setFilterParams(state, action: PayloadAction<IFilterParams>) {
+            const { key, value } = action.payload;
+
+            (state.params[key] as IOptions['value']) = typeof value === 'object' ? JSON.stringify(value) : value;
         },
     },
 });
 
-export const { setFilter, resetAllFilters } = AdminTableFilterProduct.actions;
+export const { setFilter, resetAllFilters, setFilterParams } = AdminTableFilterProduct.actions;
 export default AdminTableFilterProduct.reducer;
