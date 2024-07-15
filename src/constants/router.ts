@@ -28,5 +28,5 @@ export const ADMIN_ROUTES = {
 
     CATEGORIES: '/admin/categories',
     CATEGORIES_CREATE: '/admin/categories/create',
-    CATEGORIES_EDIT: '/admin/categories/edit', // @id
+    CATEGORIES_EDIT: '/admin/categories/edit/:id', // @id
 };

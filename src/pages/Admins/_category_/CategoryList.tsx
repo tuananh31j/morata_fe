@@ -72,7 +72,7 @@ const CategoryList = () => {
             render: (_, record) => (
                 <Space>
                     <Tooltip title='Update'>
-                        <Link to={`/category`} className='text-blue-500'>
+                        <Link to={`edit/${record._id}`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
                     </Tooltip>
