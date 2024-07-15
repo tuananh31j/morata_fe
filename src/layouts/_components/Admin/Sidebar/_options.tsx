@@ -1,66 +1,72 @@
-import { AppstoreOutlined, ProductOutlined, UserOutlined } from '@ant-design/icons';
+import {
+    CommentOutlined,
+    LineChartOutlined,
+    ProductOutlined,
+    ProfileOutlined,
+    ShopOutlined,
+    ShoppingOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
 import { ADMIN_ROUTES } from '~/constants/router';
 
+export type IChildrenItem = {
+    label: string;
+    route: string;
+};
 export type IMenuItem = {
     icon: JSX.Element;
     label: string;
-    route: string;
-    children?: Omit<IMenuItem, 'icon'>[];
+    children: IChildrenItem[];
 };
 
-export type IMenuGroups = {
-    name: string;
-    menuItems: IMenuItem[];
-}[];
-
-export const menuGroups = [
+export const menuGroups: IMenuItem[] = [
     {
-        name: 'SYSTEMS',
-        menuItems: [
-            {
-                icon: <AppstoreOutlined />,
-                label: 'Dashboard',
-                route: ADMIN_ROUTES.DASHBOARD,
-            },
-            {
-                icon: <ProductOutlined />,
-                label: 'Order',
-                route: ADMIN_ROUTES.ORDERS,
-                children: [{ label: 'History', route: ADMIN_ROUTES.PRODUCTS_CREATE }],
-            },
-            {
-                icon: <ProductOutlined />,
-                label: 'Product',
-                route: ADMIN_ROUTES.PRODUCTS,
-                children: [{ label: 'Create', route: ADMIN_ROUTES.PRODUCTS_CREATE }],
-            },
-            {
-                icon: <ProductOutlined />,
-                label: 'Category',
-                route: ADMIN_ROUTES.CATEGORIES,
-                children: [{ label: 'Create', route: ADMIN_ROUTES.CATEGORIES_CREATE }],
-            },
-            {
-                icon: <UserOutlined />,
-                label: 'User',
-                route: ADMIN_ROUTES.USERS,
-                children: [{ label: 'Create', route: ADMIN_ROUTES.USERS_CREATE }],
-            },
+        icon: <LineChartOutlined />,
+        label: 'Data',
+        children: [{ label: 'Business Insights', route: 'orders/test' }],
+    },
+    {
+        icon: <ProfileOutlined />,
+        label: 'Order',
+        children: [
+            { label: 'All', route: 'orders/test' },
+            { label: 'Cancellation', route: 'orders/test' },
         ],
     },
-    // {
-    //     name: 'OTHERS',
-    //     menuItems: [
-    //         {
-    //             icon: <ProfileOutlined />,
-    //             label: 'Footer',
-    //             route: '/',
-    //         },
-    //         {
-    //             icon: <ProfileOutlined />,
-    //             label: 'Header',
-    //             route: '#',
-    //         },
-    //     ],
-    // },
+    {
+        icon: <ShoppingOutlined />,
+        label: 'Product',
+        children: [
+            { label: 'All', route: 'orders/test' },
+            { label: 'Create new product', route: '/admin/product/create' },
+        ],
+    },
+    {
+        icon: <CommentOutlined />,
+        label: 'Customer service',
+        children: [
+            { label: 'All users', route: 'orders/test' },
+            { label: 'Chat management', route: 'orders/test' },
+            { label: 'Review management', route: ADMIN_ROUTES.PRODUCTS_CREATE },
+            { label: 'Create new user', route: ADMIN_ROUTES.PRODUCTS_CREATE },
+        ],
+    },
+    {
+        icon: <ShopOutlined />,
+        label: 'Shop',
+        children: [
+            { label: 'Shop information', route: 'orders/test' },
+            { label: 'Shop settings', route: ADMIN_ROUTES.PRODUCTS_CREATE },
+        ],
+    },
+    {
+        icon: <ProductOutlined />,
+        label: 'Category',
+        children: [{ label: 'Create', route: ADMIN_ROUTES.CATEGORIES_CREATE }],
+    },
+    {
+        icon: <UserOutlined />,
+        label: 'User',
+        children: [{ label: 'Create', route: ADMIN_ROUTES.USERS_CREATE }],
+    },
 ];

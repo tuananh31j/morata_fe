@@ -1,6 +1,5 @@
 import { Breadcrumb, ConfigProvider } from 'antd';
-import { useLocation, Link } from 'react-router-dom';
-import { MAIN_ROUTES } from '~/constants/router';
+import { useLocation } from 'react-router-dom';
 
 const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
     const location = useLocation();

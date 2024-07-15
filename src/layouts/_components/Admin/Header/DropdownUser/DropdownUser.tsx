@@ -16,13 +16,10 @@ const DropdownUser = () => {
             <Link onClick={() => setDropdownOpen(!dropdownOpen)} className='flex items-center gap-4' to='#'>
                 <span className='hidden text-right lg:block'>
                     <span className='block text-sm font-medium text-black dark:text-white'>Thomas Anree</span>
-                    <span className='block text-xs'>UX Designer</span>
                 </span>
 
-                <span className='h-12 w-12 rounded-full'>
-                    <img src={StaticImages.userImageDf} alt='User' className='h-10 rounded-full border object-cover' />
-                </span>
-                <DownOutlined className='hidden fill-current sm:block' />
+                <img src={StaticImages.userImageDf} alt='User' className='h-8 w-8 rounded-full border object-cover' />
+                <DownOutlined className='hidden h-4 w-4 fill-current sm:block' />
             </Link>
 
             {/* <!-- Dropdown Start --> */}

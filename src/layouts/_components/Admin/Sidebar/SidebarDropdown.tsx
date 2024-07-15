@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Link, useLocation } from 'react-router-dom';
-import { IMenuItem } from './_options';
+import { NavLink } from 'react-router-dom';
+import { IChildrenItem } from './_options';
 
-const SidebarDropdown = ({ item }: { item: Omit<IMenuItem, 'children' | 'icon'>[] }) => {
-    const location = useLocation();
-    const path = location.pathname.split('/').pop();
-
+const SidebarDropdown = ({ item }: { item: IChildrenItem[] }) => {
     return (
         <>
             <ul className='mb-5.5 mt-4 flex flex-col gap-2.5 pl-6'>
-                {item.map((menuItem: any, index) => (
+                {item.map((menuItem, index) => (
                     <li key={index}>
-                        <Link
+                        <NavLink
                             to={menuItem.route}
-                            className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                path === menuItem.route || location.pathname === menuItem.route ? 'text-white' : ''
-                            }`}
+                            className={({ isActive }) => {
+                                const classActive = isActive ? 'text-blue-700' : '';
+                                return `group flex items-center gap-2.5 rounded-md px-4 text-sm font-thin duration-300 ease-in-out hover:text-white ${classActive}`;
+                            }}
                         >
                             {menuItem.label}
-                        </Link>
+                        </NavLink>
                     </li>
                 ))}
             </ul>

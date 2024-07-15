@@ -29,7 +29,7 @@ const PrivateRoutes = [
                 index: true,
                 element: (
                     <Suspense>
-                        <DashboardPage />,
+                        <DashboardPage />
                     </Suspense>
                 ),
             },
@@ -40,7 +40,7 @@ const PrivateRoutes = [
                         index: true,
                         element: (
                             <Suspense>
-                                <ProductsList />,
+                                <ProductsList />
                             </Suspense>
                         ),
                     },
@@ -77,7 +77,7 @@ const PrivateRoutes = [
                         index: true,
                         element: (
                             <Suspense>
-                                <ManageUsers />,
+                                <ManageUsers />
                             </Suspense>
                         ),
                     },
@@ -106,7 +106,7 @@ const PrivateRoutes = [
                         index: true,
                         element: (
                             <Suspense>
-                                <ManageOrders />,
+                                <ManageOrders />
                             </Suspense>
                         ),
                     },
@@ -115,6 +115,14 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <OrdersDetails />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: `test`,
+                        element: (
+                            <Suspense>
+                                <ManageOrders />
                             </Suspense>
                         ),
                     },

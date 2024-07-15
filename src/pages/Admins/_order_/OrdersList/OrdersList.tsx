@@ -10,11 +10,11 @@ const OrdersList = () => {
     const { updateQueryParam, queryParams, pagination: paginationValue } = useFilterOrder();
     const columns = ordersListColums(queryParams);
 
-    // Query
+    // @Query
     const { data } = useGetAllOrders(queryParams, paginationValue);
 
     // @event
-    const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+    const onChange: TableProps<DataType>['onChange'] = (pagination, filters) => {
         updateQueryParam(filters as IOrderParams, pagination.current || 1);
     };
 
