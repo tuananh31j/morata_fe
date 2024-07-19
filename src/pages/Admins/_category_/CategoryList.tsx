@@ -7,22 +7,33 @@ import {
     WarningOutlined,
 } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Modal, Space, Table, Tooltip } from 'antd';
+import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useGetAllAtributesNew } from '~/hooks/attributes/Queries/useGetAllAttributes';
 import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
 
 type DataType = {
     _id?: string;
     key?: string;
     name: string;
-    description: string;
+    attributeIds: string[];
+    attributeNames?: string[];
 };
 
 const CategoryList = () => {
     const { data: categories } = useGetCategories();
     const categoryList = categories?.data;
+
+    const { data } = useGetAllAtributesNew();
+    const attributes = data?.data;
+
+    // Add attributeNames to categoryList
+    const categoryListWithAttributes = categoryList?.map((category) => ({
+        ...category,
+        attributeNames: category.attributeIds?.map((id) => attributes?.find((attr) => attr._id === id)?.name || id),
+    }));
 
     const [searchText, setSearch] = useState('');
     const [inputSearchValue, setInputSearchValue] = useState('');
@@ -61,10 +72,21 @@ const CategoryList = () => {
             width: '20%',
         },
         {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
+            title: 'Attributes',
+            dataIndex: 'attributeNames',
+            key: 'attributeNames',
             width: '40%',
+            render: (_, { attributeNames }) => (
+                <>
+                    {attributeNames?.map((attributeName) => {
+                        return (
+                            <Tag color={'geekblue'} key={attributeName}>
+                                {attributeName.toUpperCase()}
+                            </Tag>
+                        );
+                    })}
+                </>
+            ),
         },
         {
             title: 'Action',
@@ -156,18 +178,22 @@ const CategoryList = () => {
                     </Button>
                 </div>
 
-                <Table
-                    size='large'
-                    rowSelection={{
-                        type: 'checkbox',
-                        ...rowSelection,
-                    }}
-                    columns={columns}
-                    dataSource={categoryList}
-                    pagination={{
-                        pageSize: 4,
-                    }}
-                />
+                {categoryListWithAttributes && attributes ? (
+                    <Table
+                        size='large'
+                        rowSelection={{
+                            type: 'checkbox',
+                            ...rowSelection,
+                        }}
+                        columns={columns}
+                        dataSource={categoryListWithAttributes}
+                        pagination={{
+                            pageSize: 4,
+                        }}
+                    />
+                ) : (
+                    <p>Loading...</p>
+                )}
             </div>
 
             <Modal

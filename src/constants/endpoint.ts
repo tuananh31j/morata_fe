@@ -51,6 +51,7 @@ export const ORDER_ENDPOINT = {
 
 export const ATTRIBUTES_ENDPOINT = {
     ALL: '/attributes',
+    All: '/attributes/all',
 };
 
 export const STATS_ENDPOINT = {
