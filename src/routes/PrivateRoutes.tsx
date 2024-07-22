@@ -14,8 +14,10 @@ import {
     UpdateUser,
     ManageOrders,
     UpdateCategory,
+    CreateAttribute,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
+import path from 'path';
 
 const PrivateRoutes = [
     {
@@ -153,6 +155,14 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <UpdateCategory />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: ADMIN_ROUTES.CATEGORIES_ATTRIBUTES,
+                        element: (
+                            <Suspense>
+                                <CreateAttribute />
                             </Suspense>
                         ),
                     },

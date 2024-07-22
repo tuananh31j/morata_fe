@@ -65,6 +65,7 @@ export const menuGroups: IMenuItem[] = [
         children: [
             { label: 'All', route: ADMIN_ROUTES.CATEGORIES },
             { label: 'Create', route: ADMIN_ROUTES.CATEGORIES_CREATE },
+            { label: 'Attributes', route: ADMIN_ROUTES.CATEGORIES_ATTRIBUTES },
         ],
     },
 ];

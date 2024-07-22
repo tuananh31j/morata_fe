@@ -9,3 +9,10 @@ export type IAttributeReponse = {
     categoryId: string;
     details: IAttributesValue[];
 };
+
+export type IAttributeResponseNew = {
+    _id: string;
+    name: string;
+    type: string;
+    values: string[];
+};
