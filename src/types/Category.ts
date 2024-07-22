@@ -23,5 +23,6 @@ export enum AttributeType {
 export type IAttributeFormData = {
     name: string;
     type: AttributeType;
-    values?: string[];
+    values: string[];
+    // inputValues?: string[];
 };

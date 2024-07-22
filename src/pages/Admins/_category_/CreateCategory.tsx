@@ -1,10 +1,7 @@
-import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Checkbox, Form, FormProps, GetProp, Input, Select } from 'antd';
+import { PlusSquareOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, FormProps, Input } from 'antd';
 import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm, Controller, useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { z } from 'zod';
 import useMessage from '~/hooks/_common/useMessage';
 import { useGetAllAtributesNew } from '~/hooks/attributes/Queries/useGetAllAttributes';
 import { useMutationCreateCategory } from '~/hooks/categories/Mutations/useCreateCategory';
@@ -13,11 +10,11 @@ import { ICategoryFormData } from '~/types/Category';
 const CreateCategory = () => {
     const navigate = useNavigate();
     const { mutate: createCategory, isPending } = useMutationCreateCategory();
+
     const { data } = useGetAllAtributesNew();
     const attributes = data?.data;
 
     const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string }[]>([]);
-    const [selectedAttributeIds, setSelectedAttributeIds] = useState<string[]>([]); // New state for selected attribute IDs
 
     useEffect(() => {
         if (attributes) {

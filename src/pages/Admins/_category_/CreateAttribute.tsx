@@ -1,180 +1,115 @@
 import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Form, Input } from 'antd';
-import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { Button, Form, FormProps, Input, Select } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
+import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
 import { IAttributeFormData } from '~/types/Category';
 
 const CreateAttribute = () => {
-    // const navigate = useNavigate();
-    // const { mutate: createCategory, isPending } = useMutationCreateCategory();
+    const navigate = useNavigate();
+    const { mutate: createAttribute, isPending } = useMutationCreateAttribute();
     const { handleMessage, contextHolder } = useMessage();
 
-    const attributeSchema = z.object({
-        name: z.string({ message: 'Category name is required!' }),
-        type: z.string({ message: 'Type is required!' }),
-        values: z.array(z.string({ message: 'PLease enter a value' })),
-    });
+    const [inputFields, setInputFields] = useState([{ id: Date.now(), value: '' }]);
 
-    const {
-        handleSubmit,
-        control,
-        formState: { errors },
-    } = useForm<IAttributeFormData>({
-        resolver: zodResolver(attributeSchema),
-    });
-
-    // const { fields, append, remove } = useFieldArray({
-    //     control,
-    //     name: 'values',
-    // });
-
-    // console.log(fields);
-
-    const onSubmit: SubmitHandler<IAttributeFormData> = async (body) => {
-        console.log('onsubmit:', body);
-        // createCategory(body);
-        // navigate('/admin/category', { replace: true });
-
-        // if (isPending) {
-        //     handleMessage({ type: 'loading', content: '...Creating!' });
-        // }
+    const handleAddField = () => {
+        // Check if the first input field is filled
+        if (inputFields[0].value.trim() === '') {
+            handleMessage({ type: 'error', content: 'Please enter at least one value!' });
+            return;
+        }
+        setInputFields([...inputFields, { id: Date.now(), value: '' }]);
     };
 
-    // const [options, setOptions] = useState([
-    //     'Apple',
-    //     'Pear',
-    //     'Orange',
-    //     'Banana',
-    //     'Mango',
-    //     'Strawberry',
-    //     'Pineapple',
-    //     'Watermelon',
-    //     'Kiwi',
-    // ]);
+    const handleRemoveField = (id: number) => {
+        setInputFields(inputFields.filter((field) => field.id !== id));
+    };
 
-    // const [isFirstClick, setIsFirstClick] = useState(true);
-    // console.log('from watch:', watch('newAttributes'));
+    const onFinish: FormProps<IAttributeFormData>['onFinish'] = (values) => {
+        // Filter out empty values
+        const inputValues = inputFields.map((field) => field.value).filter((value) => value.trim() !== '');
+        const payload = { ...values, values: inputValues };
+        console.log('Success:', payload);
 
-    // const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
-    //     console.log('checked = ', checkedValues);
-    // };
+        createAttribute(payload);
+        navigate('/admin/categories/create', { replace: true });
+
+        if (isPending) {
+            handleMessage({ type: 'loading', content: '...Creating!' });
+        }
+    };
 
     return (
         <>
             {contextHolder}
             <div className='mx-6 rounded-lg bg-white px-4 py-6'>
                 <div className='m-auto'>
-                    <Form layout='vertical' onFinish={handleSubmit(onSubmit)}>
+                    <Form layout='vertical' onFinish={onFinish}>
                         <div>
                             <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
                                 <h3 className='my-2 text-xl font-medium text-primary'>Create a new attribute</h3>
-                                <Form.Item
-                                    label='Attribute Name'
-                                    className='font-medium text-[#08090F]'
-                                    validateStatus={errors.name ? 'error' : ''}
-                                    help={errors.name?.message}
-                                >
-                                    <Controller
+
+                                <div className='flex gap-1'>
+                                    <Form.Item<IAttributeFormData>
+                                        label='Name'
                                         name='name'
-                                        control={control}
-                                        render={({ field }) => <Input {...field} size='large' />}
-                                    />
-                                </Form.Item>
+                                        className='w-1/2 font-medium text-[#08090F]'
+                                        rules={[{ required: true, message: 'Please enter attribute name!' }]}
+                                    >
+                                        <Input size='large' />
+                                    </Form.Item>
 
-                                {/* <Form.Item
-                                    label='Select Attributes'
-                                    className='font-medium text-[#08090F]'
-                                    validateStatus={errors.attributeIds ? 'error' : ''}
-                                    help={errors.attributeIds?.message}
-                                    // validateStatus={errors.attributes ? 'error' : ''}
-                                    // help={errors.attributes?.message}
-                                >
-                                    <Controller
-                                        name={`attributeIds`}
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Checkbox.Group
-                                                options={options}
-                                                defaultValue={['Apple']}
-                                                onChange={onChange}
-                                                className='grid grid-cols-3 gap-2'
+                                    <Form.Item<IAttributeFormData>
+                                        label='Type'
+                                        name='type'
+                                        className='w-1/2 font-medium text-[#08090F]'
+                                        rules={[{ required: true, message: 'Please choose a type!' }]}
+                                    >
+                                        <Select
+                                            className='h-[39.6px]'
+                                            placeholder='Select a type'
+                                            options={[
+                                                { value: 'manual', label: <span>Manual</span> },
+                                                { value: 'options', label: <span>Options</span> },
+                                            ]}
+                                        />
+                                    </Form.Item>
+                                </div>
+
+                                {inputFields.map((field, index) => (
+                                    <Form.Item
+                                        key={field.id}
+                                        name='values'
+                                        label='Add New Value'
+                                        className='mb-3 font-medium text-[#08090F]'
+                                        rules={[{ required: true, message: 'Please enter at least one value!' }]}
+                                    >
+                                        <div className='flex w-full justify-between'>
+                                            <Input
+                                                className='w-[93%]'
+                                                placeholder='Enter value'
+                                                value={field.value}
+                                                onChange={(e) => {
+                                                    const newFields = [...inputFields];
+                                                    newFields[index].value = e.target.value;
+                                                    setInputFields(newFields);
+                                                }}
                                             />
-                                        )}
-                                    />
-                                </Form.Item> */}
+                                            <Button
+                                                danger
+                                                className='flex items-center'
+                                                onClick={() => handleRemoveField(field.id)}
+                                            >
+                                                <DeleteOutlined />
+                                            </Button>
+                                        </div>
+                                    </Form.Item>
+                                ))}
 
-                                {/* <Form.Item
-                                    label='Category Description'
-                                    className='font-medium text-[#08090F]'
-                                    validateStatus={errors.description ? 'error' : ''}
-                                    help={errors.description?.message}
-                                >
-                                    <Controller
-                                        name='description'
-                                        control={control}
-                                        render={({ field }) => <TextArea {...field} rows={4} className='w-full' />}
-                                    />
-                                </Form.Item> */}
-
-                                {/* <Form.Item label='Create Attribute' className='font-medium text-[#08090F]'>
-                                    <Controller
-                                        name={`items[${index}].name`}
-                                        control={control}
-                                        defaultValue={item.name}
-                                        render={({ field }) => <input {...field} />}
-                                    />
-                                </Form.Item> */}
-
-                                {/* {fields.length > 0 &&
-                                    fields.map((item, index) => (
-                                        <Form.Item
-                                            key={item.id}
-                                            label='Add New Value'
-                                            className='marker: mb-3 font-medium text-[#08090F]'
-                                        >
-                                            <div className='flex w-full justify-between'>
-                                                <Controller
-                                                    name={`values`}
-                                                    control={control}
-                                                    render={({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            className='w-[93%]'
-                                                            placeholder='Enter value'
-                                                        />
-                                                    )}
-                                                />
-
-                                                <Button
-                                                    danger
-                                                    className='flex items-center'
-                                                    onClick={() => remove(index)}
-                                                >
-                                                    <DeleteOutlined />
-                                                </Button>
-                                            </div>
-                                        </Form.Item>
-                                    ))} */}
-
-                                {/* <Button
-                                    type='primary'
-                                    icon={<PlusCircleOutlined />}
-                                    onClick={() => {
-                                        if (isFirstClick) {
-                                        append({ name: '', values: [] });
-                                        setIsFirstClick(false);
-                                        } else {
-                                        const newAttribute = watch('attributes')[0].attribute || '';
-                                        console.log(watch('attributes')[0].attribute);
-
-                                        setOptions([...options, newAttribute]);
-                                        }
-                                    }}
-                                >
+                                <Button type='primary' icon={<PlusCircleOutlined />} onClick={handleAddField}>
                                     Add value
-                                </Button> */}
+                                </Button>
 
                                 <Form.Item className='flex justify-end'>
                                     <Button
