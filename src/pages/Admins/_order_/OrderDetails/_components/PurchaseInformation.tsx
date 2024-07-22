@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { PaymentMethod } from '~/types/enum';
+import { PaymentMethod } from '~/constants/enum';
 import { ICustomerInfo, IShippingAddress } from '~/types/Order';
 
 type IPurchaseInformationProps = {

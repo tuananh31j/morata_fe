@@ -2,7 +2,7 @@ import instance from '~/utils/api/axiosIntance';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { ORDER_ENDPOINT } from '~/constants/endpoint';
 import { IOrderResponse, IOrderDetails, IOrderParams } from '~/types/Order';
-import { OrderStatus } from '~/types/enum';
+import { OrderStatus } from '~/constants/enum';
 
 const orderService = {
     myOrder() {

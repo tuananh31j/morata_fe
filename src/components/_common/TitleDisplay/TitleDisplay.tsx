@@ -29,7 +29,7 @@ const TitleDisplay = ({
                 <span className='flex items-center gap-3'>
                     {!status && !!onClick && <MinusOutlined />}
                     {status && <PlusOutlined />}
-                    <h1 className='text-start text-[16px] font-medium capitalize text-black md:text-title-md'>
+                    <h1 className='text-start text-[16px] font-medium capitalize text-black md:text-title-sm'>
                         {title}
                     </h1>
                 </span>

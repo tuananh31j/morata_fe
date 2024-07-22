@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
 import TitleDisplay from '../TitleDisplay';
 import { cn } from '~/utils';
+import { Empty } from 'antd';
 
 interface IWrapperListProps {
     children: React.ReactNode;
+    hasData?: boolean;
     title: string;
     option?: ReactNode;
     className?: string;
@@ -15,6 +17,7 @@ interface IWrapperListProps {
 }
 const WrapperList: React.FC<IWrapperListProps> = ({
     children,
+    hasData = true,
     title,
     className,
     handleClick,
@@ -45,6 +48,7 @@ const WrapperList: React.FC<IWrapperListProps> = ({
         >
             <TitleDisplay onClick={handleClick && handleClick} border={!lineButtonBox} title={title} option={option} />
             {children}
+            {!hasData && <Empty />}
         </div>
     );
 };

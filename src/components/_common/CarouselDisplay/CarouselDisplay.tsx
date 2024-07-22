@@ -2,13 +2,16 @@ import { Carousel } from 'antd';
 import SliderControls from '../SliderControls';
 import { CarouselRef } from 'antd/es/carousel';
 import { useRef } from 'react';
+import { cn } from '~/utils';
 
 const CarouselDisplay = ({
     children,
     responsiveCustom,
+    className,
 }: {
     children: React.ReactNode;
     responsiveCustom?: { laptop?: number; tablet?: number; mobile?: number };
+    className?: string;
 }) => {
     const ref = useRef<CarouselRef>(null);
     const handlePrev = () => {
@@ -22,7 +25,7 @@ const CarouselDisplay = ({
         }
     };
     return (
-        <div className='group relative'>
+        <div className={cn('group relative', className)}>
             <Carousel
                 className=''
                 ref={ref}

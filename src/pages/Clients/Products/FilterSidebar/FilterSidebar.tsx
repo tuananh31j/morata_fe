@@ -19,7 +19,7 @@ const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
     const { resetQueryParams } = useFilters();
 
     return (
-        <div className='rounded-md border border-transparent bg-white p-4'>
+        <div className='rounded-md border border-transparent bg-white p-4 py-0'>
             {isMobile && <FilterDrawer />}
             {isTablet && (
                 <div className='relative hidden h-full md:block'>

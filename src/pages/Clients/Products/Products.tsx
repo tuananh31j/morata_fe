@@ -4,7 +4,7 @@ import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import useGetProducts from '~/hooks/products/Queries/useGetProducts';
 import FilterProducts from './FilterSidebar';
 import SmallCard from '~/components/ProductCard/SmallCard';
-import { Pagination } from 'antd';
+import { Empty, Pagination } from 'antd';
 import SortAndViewOptions from '~/pages/Clients/Products/SortAndViewOptions';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import { cn } from '~/utils';
@@ -44,6 +44,7 @@ const Products = () => {
                         {products &&
                             !Array.isArray(products.data) &&
                             products.data.products.map((item, i) => <SmallCard product={item} key={i} />)}
+                        {!products && <Empty />}
                     </div>
                     <div>
                         {products?.data && !Array.isArray(products.data) && (

@@ -1,4 +1,5 @@
 import { CheckOutlined } from '@ant-design/icons';
+import { Button, Result, Watermark } from 'antd';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -23,34 +24,35 @@ export default function Success() {
         return () => window.removeEventListener('popstate', handleDisableBackButton);
     }, []);
     return (
-        <div className='flex h-screen w-screen items-center justify-center'>
-            <div className='flex h-[50vh] w-[50vw] flex-col items-center justify-center gap-5 bg-[#FAFAFA] text-center '>
-                <div className='mb-6'>
-                    <CheckOutlined className='text-red-600 animate-pulse rounded-full border-2 p-5 text-4xl' />
-                </div>
-                <h1 className='font-mono text-red-600 text-2xl'>Order Successfully!</h1>
-                <p className='font-mono text-xl  text-[#777777]'>Thanks for choosing Morata</p>
-                <div className='mt-8 flex gap-10'>
-                    <button
+        <Watermark content={['Morata', 'Thank you!']}>
+            <div className='h-[100vh]' />
+            <Result
+                status='success'
+                title='Your electronic item has been successfully ordered!'
+                subTitle='You will receive a confirmation email with the shipping details shortly.'
+                className='fixed left-[50%] top-[50%] z-99999 -translate-x-[50%] -translate-y-[50%] rounded-md border border-transparent bg-gray-3 bg-opacity-65 p-10'
+                extra={[
+                    <Button
                         onClick={() => {
                             mutate({ userId: user ? user._id : '' });
-                            navigate('/');
+                            navigate(MAIN_ROUTES.MY_ORDERS, { replace: true });
                         }}
-                        className='font-mono h-[45px] w-[350px] rounded-lg bg-blue-700 text-xl text-white duration-300 hover:opacity-70'
-                    >
-                        Back To Home
-                    </button>
-                    <button
-                        onClick={() => {
-                            mutate({ userId: user ? user._id : '' });
-                            navigate(MAIN_ROUTES.MY_ORDERS);
-                        }}
-                        className='font-mono h-[45px] w-[350px] rounded-lg bg-green-600 text-xl text-white duration-300 hover:opacity-70'
+                        type='primary'
+                        key='home'
                     >
                         Check Status
-                    </button>
-                </div>
-            </div>
-        </div>
+                    </Button>,
+                    <Button
+                        key='my-order'
+                        onClick={() => {
+                            mutate({ userId: user ? user._id : '' });
+                            navigate('/', { replace: true });
+                        }}
+                    >
+                        Back To Home
+                    </Button>,
+                ]}
+            />
+        </Watermark>
     );
 }

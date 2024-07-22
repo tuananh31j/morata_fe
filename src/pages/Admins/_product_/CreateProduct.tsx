@@ -109,7 +109,7 @@ const CreateProduct = () => {
         const dataTransfer = new DataTransfer();
         const categoryIdValue = typeof categoryId === 'object' ? categoryId.value : categoryId;
         const brandIdValue = typeof brandId === 'object' ? brandId.value : brandId;
-
+        console.log('object', data);
         formData.append('name', name);
         formData.append('price', price.toString());
         formData.append('stock', stock.toString());

@@ -5,7 +5,7 @@ import PopupStatusOrder from '~/components/_common/PopupOrderStatus/ChangeStatus
 import useFinishAnOrder from '~/hooks/orders/Mutations/useFinishAnOrder';
 
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
-import { OrderStatus } from '~/types/enum';
+import { OrderStatus } from '~/constants/enum';
 import StepsOrder from './_components/StepsOrder';
 import { orderItemsColums } from '../_helper';
 import PurchaseInformation from './_components/PurchaseInformation';

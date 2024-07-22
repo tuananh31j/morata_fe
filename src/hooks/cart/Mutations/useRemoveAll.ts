@@ -12,7 +12,7 @@ export const useMutationRemoveAll = () => {
                 queryKey: [QUERY_KEY.CART],
             });
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.MY_ORDERS],
+                queryKey: [QUERY_KEY.ORDERS],
             });
         },
     });

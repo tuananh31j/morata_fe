@@ -1,4 +1,4 @@
-import { PaymentMethod } from '../enum';
+import { PaymentMethod } from '../../constants/enum';
 
 export type IPayloadItemsOrder =
     | {

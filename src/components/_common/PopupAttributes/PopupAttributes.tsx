@@ -74,6 +74,7 @@ export default function PopupAttributes({ children, product }: { children: React
                             <Form onFinish={handleOnSubmit} layout='vertical'>
                                 <div className='my-4'>
                                     {attributes &&
+                                        attributes.data &&
                                         attributes.data.length > 1 &&
                                         attributes.data.map((label, index) => (
                                             <Form.Item

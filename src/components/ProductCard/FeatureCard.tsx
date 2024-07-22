@@ -42,7 +42,10 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                     />
                 </Link>
                 <div className='col-span-7'>
-                    <Link className='cursor-pointer' to={`MAIN_ROUTES.PRODUCTS/${product._id}`}>
+                    <Link
+                        className='cursor-pointer'
+                        to={generateLink({ productId: product._id, categoryId: product.categoryId })}
+                    >
                         <h4 className='line-clamp-2 text-ellipsis text-title-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>

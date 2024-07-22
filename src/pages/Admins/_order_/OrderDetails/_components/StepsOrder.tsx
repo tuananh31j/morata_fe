@@ -1,5 +1,5 @@
 import { Steps } from 'antd';
-import { OrderStatus } from '~/types/enum';
+import { OrderStatus } from '~/constants/enum';
 import { renderSteps } from '../../_helper';
 
 const StepsOrder = ({ orderStatus }: { orderStatus: OrderStatus }) => {

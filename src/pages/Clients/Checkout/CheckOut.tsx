@@ -9,7 +9,7 @@ import { RootState } from '~/store/store';
 import { ICheckoutForm } from '~/types/checkout/Checkout';
 import { Currency, cn } from '~/utils';
 import showMessage from '~/utils/ShowMessage';
-import { PaymentMethod } from '~/types/enum';
+import { PaymentMethod } from '~/constants/enum';
 
 const CheckOut = () => {
     const user = useSelector((state: RootState) => state.authReducer.user);

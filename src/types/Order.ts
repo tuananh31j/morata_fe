@@ -1,4 +1,4 @@
-import { OrderStatus, PaymentMethod } from './enum';
+import { OrderStatus, PaymentMethod } from '../constants/enum';
 
 export type IShippingAddress = {
     city: string;

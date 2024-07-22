@@ -1,6 +1,6 @@
 import { Space, Tooltip, TableProps } from 'antd';
 import OrderStatusTag from '~/components/OrderStatusTag';
-import { ORDER_STATUS_ARR, OrderStatus, PaymentMethod } from '~/types/enum';
+import { ORDER_STATUS_ARR, OrderStatus, PaymentMethod } from '~/constants/enum';
 import IsPaidTag from '~/components/IsPaidTag';
 import { formatDate } from '~/utils/formatDate';
 import { Link } from 'react-router-dom';
@@ -20,8 +20,8 @@ export interface DataType {
 export const ordersListColums = (filtered: IOrderParams): TableProps['columns'] => {
     return [
         {
-            title: 'ID',
-            dataIndex: '_id',
+            title: 'pRODUCT',
+            dataIndex: ['_id', 'name', 'image'],
             key: '_id',
             render: (text) => <span>{text}</span>,
         },
