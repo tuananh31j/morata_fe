@@ -26,10 +26,13 @@ const Home = () => {
         { data: ProductsLatest, isLoading: isLoadingProductsLatest },
         { data: categories, isLoading: categoriesLoading },
     ] = useQueriesHomepage();
+
     const AllProductsList = ProductsList?.data?.products;
+
     const TopDealsProductsList = TopDeals?.data;
     const LatestList = ProductsLatest?.data;
     const categoryList = categories?.data;
+
     return (
         <div>
             {/* @Banner*/}
@@ -140,7 +143,7 @@ const Home = () => {
             </WrapperList>
 
             {/* add popup productlist */}
-            {AllProductsList && <PopupProductList product={AllProductsList} propsLoading={isLoadingProductsAll} />}
+            {/* {AllProductsList && <PopupProductList product={AllProductsList} propsLoading={isLoadingProductsAll} />} */}
         </div>
     );
 };

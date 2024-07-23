@@ -1,4 +1,4 @@
-import { IAllProductsResponse, IProduct } from '~/types/Product';
+import { IAllProductsResponse, IProduct, IAllProductResponseNew } from '~/types/Product';
 import { IParams } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import instance from '~/utils/api/axiosIntance';
@@ -11,6 +11,13 @@ const productService = {
         });
         return res.data;
     },
+
+    // new model
+    async getAllProducts() {
+        const res = await instance.get<IAxiosResponse<IAllProductResponseNew>>(`${PRODUCT_ENDPOINT.ALL}`);
+        return res.data;
+    },
+
     async getProductsByCategory(id: string, params: IParams) {
         const res = await instance.get<IAxiosResponse<IProduct[]>>(`${PRODUCT_ENDPOINT.BYCATE}/${id}`, {
             params,

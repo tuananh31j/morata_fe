@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 import RatingDisplay from '../_common/RatingDisplay';
 import { Currency } from '~/utils';
 import clsx from 'clsx';
-import { IProduct } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 import { generateLink } from './_helper';
 
-type PropTypeProduct = { product: IProduct };
+type PropTypeProduct = { product: IProductItemNew };
 const FeatureCard = ({ product }: PropTypeProduct) => {
+    const discountPercentage = 10;
+
     const [isScale, setIsScale] = useState<boolean>(false);
-    const newPrice = product.price * (1 + product.discountPercentage / 100);
+    const newPrice = product.variationIds[0].price * (1 + discountPercentage / 100);
     const handleScale = (status: string) => {
         if (status === 'open') {
             setIsScale(true);
@@ -49,16 +51,16 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                         <h4 className='line-clamp-2 text-ellipsis text-title-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
-                        <RatingDisplay rating={product.rating} reviews={product.reviewIds.length} />
+                        <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
                         <div className='mb-3 flex gap-x-2'>
                             <span
                                 className={clsx('text-base font-semibold leading-5', {
-                                    'text-red-600': product.discountPercentage,
+                                    'text-red-600': discountPercentage,
                                 })}
                             >
-                                {Currency?.format(product.price)}
+                                {Currency?.format(product.variationIds[0].price)}
                             </span>
-                            {product.discountPercentage > 0 && (
+                            {discountPercentage > 0 && (
                                 <del className=' text-gray-500 hidden text-[12px] font-semibold leading-5 lg:block'>
                                     {Currency.format(newPrice)}
                                 </del>
@@ -66,7 +68,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                         </div>
                     </Link>
                 </div>
-                {product.discountPercentage > 0 && (
+                {discountPercentage > 0 && (
                     <div className='absolute left-0  top-0 inline-block select-none rounded-sm bg-lime-600 px-3 text-sm text-white'>
                         -5%
                     </div>
