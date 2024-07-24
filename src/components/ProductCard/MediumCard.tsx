@@ -13,7 +13,7 @@ import { generateLink } from './_helper';
 const MediumCard = ({ product }: { product: IProductItemNew }) => {
     const discountPercentage = 10;
 
-    const newPrice = product.variationIds[0].price * (1 + discountPercentage / 100);
+    const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {
         setIsActiveProductActions(!isActiveProductActions);
@@ -61,7 +61,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                                     'text-red-600': discountPercentage > 0,
                                 })}
                             >
-                                {Currency.format(product.variationIds[0].price)}
+                                {Currency.format(product.variationIds?.[0].price)}
                             </span>
                             {discountPercentage > 0 && (
                                 <del className=' text-gray-400 text-base font-semibold leading-5'>
@@ -86,10 +86,10 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                                 </span>
                             </li>
                         </ul>
-                        <ProgressBar stock={product.variationIds[0].stock} />
+                        <ProgressBar stock={product.variationIds?.[0].stock} />
                         <div className='text-sx mb-6 leading-8'>
                             Sold:
-                            <span className='mx-1 font-semibold'>{product.variationIds[0].stock}/100</span>
+                            <span className='mx-1 font-semibold'>{product.variationIds?.[0].stock}/100</span>
                             products
                         </div>
                     </Link>

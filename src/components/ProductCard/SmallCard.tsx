@@ -7,6 +7,7 @@ import RatingDisplay from '../_common/RatingDisplay';
 import PopupAttributes from '~/components/_common/PopupAttributes';
 import { IProductItemNew } from '~/types/Product';
 import { generateLink } from './_helper';
+import { Image } from 'antd';
 
 type PropTypeProduct = {
     product: IProductItemNew;
@@ -15,7 +16,7 @@ type PropTypeProduct = {
 const SmallCard = ({ product }: PropTypeProduct) => {
     const discountPercentage = 10;
 
-    const newPrice = product.variationIds[0].price * (1 + discountPercentage / 100);
+    const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
 
     const handleSetDateActive = () => {
@@ -72,7 +73,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                                     'text-red-600': discountPercentage > 0,
                                 })}
                             >
-                                {Currency.format(product.variationIds[0].price)}
+                                {Currency.format(product.variationIds?.[0].price)}
                             </span>
                             {discountPercentage > 0 && (
                                 <del className=' text-gray-400 text-base font-semibold leading-5'>
@@ -81,6 +82,20 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             )}
                         </div>
                     </Link>
+
+                    {/* Variants */}
+                    <div className='my-2 flex gap-2'>
+                        {product.variationIds.map((variant, i) => (
+                            <Image
+                                key={i}
+                                width={45}
+                                height={45}
+                                preview={false}
+                                src={variant.image}
+                                className='rounded-lg border border-solid p-1 hover:border-[#0068C9]'
+                            />
+                        ))}
+                    </div>
 
                     {/* Add to cart btn */}
                     <PopupAttributes product={product}>

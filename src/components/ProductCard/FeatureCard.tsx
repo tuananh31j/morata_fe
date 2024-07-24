@@ -11,7 +11,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
     const discountPercentage = 10;
 
     const [isScale, setIsScale] = useState<boolean>(false);
-    const newPrice = product.variationIds[0].price * (1 + discountPercentage / 100);
+    const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const handleScale = (status: string) => {
         if (status === 'open') {
             setIsScale(true);
@@ -58,7 +58,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                                     'text-red-600': discountPercentage,
                                 })}
                             >
-                                {Currency?.format(product.variationIds[0].price)}
+                                {Currency?.format(product.variationIds?.[0].price)}
                             </span>
                             {discountPercentage > 0 && (
                                 <del className=' text-gray-500 hidden text-[12px] font-semibold leading-5 lg:block'>

@@ -23,7 +23,7 @@ export default function PopupAttributes({
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.authReducer.user);
     const handleIncrement = () => {
-        if (valueQuantity < (product ? product.variationIds[0].stock : 0)) setQuantityValue(valueQuantity + 1);
+        if (valueQuantity < (product ? product.variationIds?.[0].stock : 0)) setQuantityValue(valueQuantity + 1);
     };
     const handleDecrement = () => {
         if (valueQuantity > 1) setQuantityValue(valueQuantity - 1);
@@ -124,7 +124,7 @@ export default function PopupAttributes({
                                         </Button>
                                         <InputNumber
                                             min={1}
-                                            max={product.variationIds[0].stock}
+                                            max={product.variationIds?.[0].stock}
                                             onChange={onChangeInputQuantity}
                                             className='flex h-[48px] items-center'
                                             value={valueQuantity}
@@ -132,7 +132,7 @@ export default function PopupAttributes({
                                         />
                                         <Button
                                             onClick={handleIncrement}
-                                            disabled={valueQuantity === product.variationIds[0].stock}
+                                            disabled={valueQuantity === product.variationIds?.[0].stock}
                                             className='h-[48px]'
                                         >
                                             +
