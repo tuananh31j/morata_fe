@@ -1,15 +1,17 @@
-import { CheckOutlined } from '@ant-design/icons';
 import { Button, Result, Watermark } from 'antd';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationRemoveAll } from '~/hooks/cart/Mutations/useRemoveAll';
+import UseVNpayReturn from '~/hooks/orders/Queries/UseVNpayReturn';
 import { RootState } from '~/store/store';
 
 export default function Success() {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.authReducer.user);
+    const test = UseVNpayReturn();
+    console.log(test.data);
     const { mutate } = useMutationRemoveAll();
     useEffect(() => {
         // Vô hiệu hóa nút quay lại trên trình duyệt

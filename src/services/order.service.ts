@@ -33,6 +33,9 @@ const orderService = {
     orderStatus() {
         return instance.get<IAxiosResponse<OrderStatus[]>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
+    vnpayReturnStatusOrder() {
+        return instance.get<{ code: string; message: string; data?: any }>(`${ORDER_ENDPOINT.VNPAY_RETURN}`);
+    },
 };
 
 export default orderService;

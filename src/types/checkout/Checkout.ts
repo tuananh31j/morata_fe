@@ -10,11 +10,6 @@ export type IPayloadItemsOrder =
     | undefined;
 
 export type ICheckoutCash = {
-    customerInfo: {
-        name: string | undefined;
-        email: string | undefined;
-        phone: string | undefined;
-    };
     receiverInfo: {
         name: string | undefined;
         email: string | undefined;
