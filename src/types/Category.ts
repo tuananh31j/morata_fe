@@ -7,7 +7,7 @@ export interface ICategoryPopular {
 export type ICategory = {
     _id: string;
     name: string;
-    description: string;
+    attributeIds: string[];
 };
 
 export type ICategoryFormData = Omit<ICategory, '_id'>;

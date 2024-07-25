@@ -39,13 +39,13 @@ export type IAllProductsResponse = {
     totalDocs: number;
     totalPages: number;
 };
+export interface IThumbnailAntd extends File {
+    uid: string;
+    originFileObj: File;
+}
 
-export type IProductImages = {
-    file: File;
-    fileList: FileList;
-};
-export type IProductThumbnail = {
-    file: File;
+export type IProductFiles = {
+    file: IThumbnailAntd;
     fileList: FileList;
 };
 export type ITagsType = {
@@ -53,20 +53,36 @@ export type ITagsType = {
     value: string;
 };
 export type IAttribute = {
-    attribute: string;
-    categoryId: string | ITagsType;
+    _id: string;
+    type: string;
+    name: string;
+    attributeKey: string;
+    isRequired: boolean;
+    values?: string[];
+};
+export type IProductVariation = {
+    thumbnail?: {
+        file: File;
+        fileList: IThumbnailAntd[];
+    };
+    color: string;
+    price: number;
+    stock: number;
 };
 export type IProductForm = {
     name: string;
-    price: number;
-    thumbnail: IProductThumbnail | null;
-    stock: number;
-    images: IProductImages | null;
-    categoryId: string | ITagsType;
-    brandId: string | ITagsType;
+    thumbnail: IProductFiles | null;
+    images: IProductFiles | null;
+    categoryId: string;
+    brandId: string;
     discountPercentage: number;
     description: string;
     attributes: IAttribute[];
+    variations: IProductVariation[];
 };
 
+export type IProductParams = {
+    search: string | null;
+    categoryId: string | string[] | null;
+};
 export type PropTypeProduct = { product: IProduct };

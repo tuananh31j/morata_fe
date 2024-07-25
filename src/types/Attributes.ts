@@ -1,11 +1,12 @@
 export type IAttributesValue = {
     name: string;
-    value: string;
+    type: string;
+    attributeKey: string;
+    values: string[];
+    isRequired: boolean;
 };
 
 export type IAttributeReponse = {
     _id: string;
-    attribute: string;
-    categoryId: string;
-    details: IAttributesValue[];
+    attributeIds: IAttributesValue[];
 };

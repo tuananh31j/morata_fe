@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import cartReducer from '~/store/slice/cartSlice';
+import headerReducer from '~/store/slice/headerSlice';
 import theme from '~/store/slice/themeSlice';
 import authReducer from './slice/authSlice';
-import cartReducer from '~/store/slice/cartSlice';
+import filterProductSlice from './slice/filterProductSlice';
 import filterSlice from './slice/filterSlice';
-import headerReducer from '~/store/slice/headerSlice';
-import AdminTableFilterProduct from './slice/AdminfilterProduct';
 import filterSliceNew from './slice/filterSlice-new';
 
 const rootReducer = combineReducers({
@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
     filters: filterSlice.reducer,
     filtersNew: filterSliceNew.reducer,
     headerReducer,
-    AdminTableFilterProduct,
+    filterProduct: filterProductSlice,
 });
 
 export default rootReducer;

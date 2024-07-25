@@ -5,10 +5,11 @@ import {
     CreateUser,
     DashboardPage,
     ManageUsers,
-    ProductsList,
+    ManageProducts,
     Suspense,
     UpdateProduct,
     OrdersDetails,
+    ProductsListAll,
     CategoryList,
     CreateCategory,
     UpdateUser,
@@ -16,6 +17,8 @@ import {
     UpdateCategory,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
+import RedirectToProductList from '~/components/_common/RedirectToProductList/RedirectToProductList';
+import { Outlet } from 'react-router-dom';
 
 const PrivateRoutes = [
     {
@@ -35,18 +38,94 @@ const PrivateRoutes = [
                 ),
             },
             {
-                path: ADMIN_ROUTES.PRODUCTS,
+                path: ADMIN_ROUTES.PRODUCTS_LIST,
+                element: <ManageProducts />,
                 children: [
                     {
                         index: true,
                         element: (
                             <Suspense>
-                                <ProductsList />
+                                <ProductsListAll />
+                            </Suspense>
+                        ),
+                    },
+
+                    {
+                        path: 'all',
+                        element: (
+                            <Suspense>
+                                <ProductsListAll />
                             </Suspense>
                         ),
                     },
                     {
-                        path: ADMIN_ROUTES.PRODUCTS_CREATE,
+                        path: 'live',
+                        element: (
+                            <Suspense>
+                                <ProductsListAll />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'deleted',
+                        element: (
+                            <Suspense>
+                                <div>HEHE xóa rồi nhé</div>
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'hidden',
+                        element: (
+                            <Suspense>
+                                <div>HEHE ẩn rồi nhé</div>
+                            </Suspense>
+                        ),
+                    },
+                    // {
+                    //     path: ADMIN_ROUTES.PRODUCTS_CREATE,
+                    //     element: (
+                    //         <Suspense>
+                    //             <CreateProduct />
+                    //         </Suspense>
+                    //     ),
+                    // },
+                    // {
+                    //     path: ':id/edit',
+                    //     element: (
+                    //         <Suspense>
+                    //             <UpdateProduct />
+                    //         </Suspense>
+                    //     ),
+                    // },
+                    // {
+                    //     path: ':id/detail',
+                    //     element: (
+                    //         <Suspense>
+                    //             <AdminProductDetail />
+                    //         </Suspense>
+                    //     ),
+                    // },
+                ],
+            },
+            {
+                path: ADMIN_ROUTES.PRODUCTS,
+                element: (
+                    <Suspense>
+                        <Outlet />
+                    </Suspense>
+                ),
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <RedirectToProductList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'create',
                         element: (
                             <Suspense>
                                 <CreateProduct />

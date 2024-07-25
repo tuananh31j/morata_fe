@@ -149,7 +149,6 @@ const UpdateProduct = () => {
         // Mutation to create product
         updateProduct(formData);
     };
-    console.log(productDetail);
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type='button'>
             <PlusOutlined />

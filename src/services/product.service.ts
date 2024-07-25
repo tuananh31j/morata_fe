@@ -1,11 +1,11 @@
-import { IAllProductsResponse, IProduct } from '~/types/Product';
+import { IAllProductsResponse, IProduct, IProductParams } from '~/types/Product';
 import { IParams } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import instance from '~/utils/api/axiosIntance';
 import { PRODUCT_ENDPOINT } from '~/constants/endpoint';
 
 const productService = {
-    async getAll(params?: IParams) {
+    async getAll(params?: Partial<IProductParams>) {
         const res = await instance.get<IAxiosResponse<IAllProductsResponse>>(`${PRODUCT_ENDPOINT.ALL}`, {
             params,
         });

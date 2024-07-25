@@ -210,10 +210,10 @@ const AdminTableFilterProduct = createSlice({
             if (filters?.filters) {
                 const filtersKeys = Object.keys(filters.filters);
                 filtersKeys.forEach((key) => {
-                    if (key !== 'search') {
-                        filters.filters[key as keyof IFilterStorage['filters']].value.value =
-                            DEFAULT_STORAGE_VALUE.filters[key as keyof IFilterStorage['filters']].value.value;
-                    }
+                    // if (key !== 'search') {
+                    filters.filters[key as keyof IFilterStorage['filters']].value.value =
+                        DEFAULT_STORAGE_VALUE.filters[key as keyof IFilterStorage['filters']].value.value;
+                    // }
                 });
             } else {
                 filters.filters = DEFAULT_STORAGE_VALUE.filters;
