@@ -9,7 +9,7 @@ import { IProductItemNew } from '~/types/Product';
 const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IProductItemNew> }) => {
     const product = relatedProduct.data;
     const body = {
-        cateId: product.categoryId,
+        cateId: product.categoryId._id,
         id: product._id,
     };
     const { data: ListRelated, isLoading: relatedLoading } = useGetRelatedProduct(body);

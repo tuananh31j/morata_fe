@@ -47,8 +47,14 @@ export type IProductItemNew = {
     isAvailable: boolean;
     rating: number;
     reviewCount: number;
-    categoryId: string;
-    brandId: string;
+    categoryId: {
+        name: string;
+        _id: string;
+    };
+    brandId: {
+        name: string;
+        _id: string;
+    };
     variationIds: {
         _id: string;
         price: number;

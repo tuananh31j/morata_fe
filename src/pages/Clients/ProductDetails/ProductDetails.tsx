@@ -1,6 +1,6 @@
 import { DockerOutlined, RedoOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
@@ -167,17 +167,28 @@ const ProductDetails = () => {
                                         {product.isAvailable && <b className='text-green-500'>In Stock</b>}
                                         {!product.isAvailable && <b className='text-red-500'>Out in Stock</b>}
                                     </div>
-                                    <div className='flex'>
-                                        <p className='w-[115px]  text-[#777777]'>SKU: </p>
-                                        {/* <span className='font-semibold text-black'>{product.sku || 'N/A'}</span> */}
-                                    </div>
+
                                     <div className='flex'>
                                         <p className='w-[115px]  text-[#777777]'>Vendor: </p>
-                                        {/* <span className='font-semibold text-black'>{product.brandId.name}</span> */}
+                                        {product.brandId.name && (
+                                            <Link
+                                                to={`/products?brandId=${product.brandId._id}`}
+                                                className='font-semibold text-black'
+                                            >
+                                                {product.brandId.name}
+                                            </Link>
+                                        )}
                                     </div>
                                     <div className='flex'>
                                         <p className='w-[115px]  text-[#777777]'>Categories: </p>
-                                        {/* <span className='font-semibold text-black'>{product.categoryId.name}</span> */}
+                                        {product.brandId.name && (
+                                            <Link
+                                                to={`/products?categoryId=${product.categoryId._id}`}
+                                                className='font-semibold text-black'
+                                            >
+                                                {product.categoryId.name}
+                                            </Link>
+                                        )}
                                     </div>
                                 </div>
                             </div>
