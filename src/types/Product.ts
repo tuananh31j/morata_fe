@@ -32,7 +32,12 @@ export type IProductItem = {
     thumbnail: string;
     reviewIds: string[];
 };
-
+export type IAttributesProduct = Array<{
+    key: string;
+    value: string;
+    _id: string;
+    id: string;
+}>;
 export type IProductItemNew = {
     _id: string;
     name: string;
@@ -54,6 +59,7 @@ export type IProductItemNew = {
         image?: string;
         productId: string;
     }[];
+    attributes: IAttributesProduct;
 };
 
 export type IAllProductResponseNew = {

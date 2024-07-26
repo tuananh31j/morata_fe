@@ -1,47 +1,21 @@
-import { Button, ConfigProvider, Form, FormInstance, Input, Radio, Select } from 'antd';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Button, ConfigProvider, Form, FormInstance, Input, Radio, Select, Spin } from 'antd';
+import { useForm } from 'antd/es/form/Form';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import MiniProduct from '~/components/ProductCard/MiniProduct';
-import { useMutationCreateOrder } from '~/hooks/checkout/useCreateOrder';
-import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
+import { PaymentMethod } from '~/constants/enum';
 import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
+import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
+import { setOrder } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
 import { ICheckoutForm } from '~/types/checkout/Checkout';
-import { Currency, cn } from '~/utils';
-import showMessage from '~/utils/ShowMessage';
-import { PaymentMethod } from '~/constants/enum';
-import { useEffect, useState } from 'react';
-import { useForm } from 'antd/es/form/Form';
-import { useVnPayOrder } from '~/hooks/checkout/useVnPayOrder';
-
-interface SubmitButtonProps {
-    form: FormInstance;
-}
-const SubmitButton: React.FC<React.PropsWithChildren<SubmitButtonProps>> = ({ form, children }) => {
-    const [submittable, setSubmittable] = useState<boolean>(false);
-
-    // Watch all values
-    const values = Form.useWatch([], form);
-
-    useEffect(() => {
-        form.validateFields({ validateOnly: true })
-            .then(() => setSubmittable(true))
-            .catch(() => setSubmittable(false));
-    }, [form, values]);
-
-    return (
-        <Button type='primary' htmlType='submit' disabled={!submittable}>
-            {children}
-        </Button>
-    );
-};
+import { Currency } from '~/utils';
 
 const CheckOut = () => {
     const user = useSelector((state: RootState) => state.authReducer.user);
     const [form] = useForm();
-    const { mutate: cashCheckout } = useMutationCreateOrder();
-    const { mutate: vnPayCheckOut } = useVnPayOrder();
-    const { mutate: stripeCheckout } = useMutationCheckOutSession();
+    const { mutate: stripeCheckout, isPending } = useMutationCheckOutSession();
     const { data: orderItem, responsePayloadCheckout } = useGetMyCart(user?._id);
     const totalPrice = orderItem
         ? orderItem?.data?.items?.reduce(
@@ -52,9 +26,16 @@ const CheckOut = () => {
     const totalQuantity = orderItem
         ? orderItem.data.items.reduce((total: number, product) => total + product.quantity, 0)
         : 0;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleOnsubmit = (value: ICheckoutForm) => {
         const bodyData = {
             userId: user?._id,
+            customerInfo: {
+                name: user?.username,
+                email: user?.email,
+                phone: '',
+            },
             receiverInfo: {
                 name: value.name,
                 email: value.email,
@@ -70,21 +51,12 @@ const CheckOut = () => {
             },
             items: responsePayloadCheckout,
             totalPrice: value.paymentMethods === 1 ? totalPrice : totalPrice * 24560,
-            paymentMethod: PaymentMethod.cash,
+            paymentMethod: value.paymentMethods === 1 ? PaymentMethod.cash : PaymentMethod.card,
+            PaymentMethods: value.paymentMethods,
         };
-        if (value.paymentMethods === 1) {
-            if (totalPrice < 1000) {
-                cashCheckout(bodyData);
-            } else {
-                showMessage(
-                    'Your order has exceeded $1000. Please choose a different payment method.',
-                    'warning',
-                    3000
-                );
-            }
-        } else if (value.paymentMethods === 2) {
-            vnPayCheckOut(bodyData);
-        }
+
+        dispatch(setOrder({ Detail: bodyData }));
+        navigate('/checkout-details');
     };
     const handlePayStripe = () => {
         stripeCheckout({
@@ -107,14 +79,19 @@ const CheckOut = () => {
                             onClick={handlePayStripe}
                             className='flex h-[45px] w-full items-center justify-center gap-2 rounded-md bg-blue-700 text-white'
                         >
-                            <img
-                                src='https://asset.brandfetch.io/idxAg10C0L/idTHPdqoDR.jpeg'
-                                width={40}
-                                height={40}
-                                className='rounded-full'
-                                alt=''
-                            />
-                            <span className='font-medium'>Stripe Pay</span>
+                            {!isPending && (
+                                <>
+                                    <img
+                                        src='https://asset.brandfetch.io/idxAg10C0L/idTHPdqoDR.jpeg'
+                                        width={40}
+                                        height={40}
+                                        className='rounded-full'
+                                        alt=''
+                                    />
+                                    <span className='font-medium'>Stripe Pay</span>
+                                </>
+                            )}
+                            {isPending && <Spin />}
                         </button>
                     </div>
                     {totalPrice < 1000 ? (

@@ -1,5 +1,4 @@
 import { DockerOutlined, RedoOutlined } from '@ant-design/icons';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
@@ -9,7 +8,6 @@ import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
 import ActionDetail from '~/pages/Clients/ProductDetails/_components/Action/ActionDetail';
 import ProductRelated from '~/pages/Clients/ProductDetails/_components/ProductRelated/ProductRelated';
-import { setImages } from '~/store/slice/DetailProduct';
 import { RootState } from '~/store/store';
 import { Currency } from '~/utils';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
@@ -33,11 +31,11 @@ const ProductDetails = () => {
     useDocumentTitle(`${product?.name}`);
     const variant = useSelector((state: RootState) => state.DetailProduct.variant);
     const dispatch = useDispatch();
-    useEffect(() => {
-        if (product) {
-            dispatch(setImages(product.images));
-        }
-    }, [product]);
+    // useEffect(() => {
+    //     if (product) {
+    //         dispatch(setImages(product.images));
+    //     }
+    // }, [product]);
     return (
         <>
             {/* BeadCrumb */}
@@ -184,7 +182,7 @@ const ProductDetails = () => {
                                 </div>
                             </div>
                         </div>
-                        <DescriptionProduct review={product.rating} />
+                        <DescriptionProduct review={product.rating} product={product} />
                         {!isLoading && productDetail && <ProductRelated relatedProduct={productDetail} />}
                         {isLoading && (
                             <div className='flex gap-2'>

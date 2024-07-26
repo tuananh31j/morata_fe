@@ -2,9 +2,10 @@ import { Collapse, ConfigProvider, Tabs } from 'antd';
 import useWindowSize from '~/hooks/_common/useWindowSize';
 import AddInformationContent from '~/pages/Clients/ProductDetails/_components/Description/AddInformationContent';
 import ReviewsContent from '~/pages/Clients/ProductDetails/_components/Description/ReviewsContent';
+import { IProductItemNew } from '~/types/Product';
 
 const { Panel } = Collapse;
-const DescriptionProduct = ({ review }: { review: number }) => {
+const DescriptionProduct = ({ review, product }: { review: number; product: IProductItemNew }) => {
     const windowSize = useWindowSize();
     return (
         <div className='product-desc  rounded-md bg-white'>
@@ -34,7 +35,7 @@ const DescriptionProduct = ({ review }: { review: number }) => {
                         {/* ADDITIONAL INFORMATION */}
 
                         <Tabs.TabPane tab='ADDITIONAL INFORMATION' key='2'>
-                            <AddInformationContent />
+                            <AddInformationContent attributes={product.attributes} />
                         </Tabs.TabPane>
                         {/* SHIPPING & RETURN */}
                         {/* <Tabs.TabPane tab='SHIPPING & RETURN' key='3'>
@@ -52,7 +53,7 @@ const DescriptionProduct = ({ review }: { review: number }) => {
                             <DescriptionContent />
                         </Panel> */}
                         <Panel header='ADDITIONAL INFORMATION' key='2'>
-                            <AddInformationContent />
+                            <AddInformationContent attributes={product.attributes} />
                         </Panel>
                         {/* <Panel header='SHIPPING & RETURN' key='3'>
                             <ShipReturnContent />
