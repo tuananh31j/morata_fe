@@ -10,32 +10,32 @@ import showMessage from '~/utils/ShowMessage';
 const colorsArr = ['#fc6076', '#ff9a44', '#ef9d43', '#e75516'];
 const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
 const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
-const items: MenuProps['items'] = [
-    {
-        key: '1',
-        label: (
-            <Link rel='noopener noreferrer' to='/'>
-                1st menu item
-            </Link>
-        ),
-    },
-    {
-        key: '2',
-        label: (
-            <Link rel='noopener noreferrer' to='/'>
-                2nd menu item
-            </Link>
-        ),
-    },
-    {
-        key: '3',
-        label: (
-            <Link rel='noopener noreferrer' to='/'>
-                3rd menu item
-            </Link>
-        ),
-    },
-];
+// const items: MenuProps['items'] = [
+//     {
+//         key: '1',
+//         label: (
+//             <Link rel='noopener noreferrer' to='/'>
+//                 1st menu item
+//             </Link>
+//         ),
+//     },
+//     {
+//         key: '2',
+//         label: (
+//             <Link rel='noopener noreferrer' to='/'>
+//                 2nd menu item
+//             </Link>
+//         ),
+//     },
+//     {
+//         key: '3',
+//         label: (
+//             <Link rel='noopener noreferrer' to='/'>
+//                 3rd menu item
+//             </Link>
+//         ),
+//     },
+// ];
 
 const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string }) => {
     const { mutateAsync: finishOrder } = useFinishOrderClient();
@@ -58,7 +58,7 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
         case OrderStatus.delivered:
             return (
                 <Button onClick={() => handleFinishOrder()} type='primary'>
-                    I haveReceived
+                    I have Received
                 </Button>
             );
 
@@ -83,11 +83,11 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
                         },
                     }}
                 >
-                    <Dropdown menu={{ items }}>
-                        <Button type='primary' size='large'>
-                            Rate us!!
-                        </Button>
-                    </Dropdown>
+                    {/* <Dropdown menu={{ items }}> */}
+                    <Button type='primary' size='large'>
+                        Rate us!!
+                    </Button>
+                    {/* </Dropdown> */}
                 </ConfigProvider>
             );
 
