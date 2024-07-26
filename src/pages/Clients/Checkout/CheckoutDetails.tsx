@@ -1,4 +1,4 @@
-import { FileDoneOutlined, RightCircleFilled } from '@ant-design/icons';
+import { FileDoneOutlined, HomeTwoTone, IdcardTwoTone, RightCircleFilled, ShoppingTwoTone } from '@ant-design/icons';
 import { Badge, Button, Card, Descriptions, DescriptionsProps, Flex, Image, Space } from 'antd';
 
 const CheckoutDetails = () => {
@@ -33,7 +33,13 @@ const CheckoutDetails = () => {
     const items: DescriptionsProps['items'] = [
         {
             key: '0',
-            label: <span className='text-lg font-bold text-[#16bcdc]'>Your Info</span>,
+            label: (
+                <span className='flex items-center text-lg font-bold text-[#16bcdc]'>
+                    <Space>
+                        <IdcardTwoTone /> Your Info
+                    </Space>
+                </span>
+            ),
             children: '',
             span: 2,
         },
@@ -55,7 +61,13 @@ const CheckoutDetails = () => {
         },
         {
             key: '4',
-            label: <span className='text-lg font-bold text-[#16bcdc]'>Delivery Address</span>,
+            label: (
+                <span className='flex items-center text-lg font-bold text-[#16bcdc]'>
+                    <Space>
+                        <HomeTwoTone /> Shipping Address
+                    </Space>
+                </span>
+            ),
             children: '',
             span: 2,
         },
@@ -91,7 +103,13 @@ const CheckoutDetails = () => {
         },
         {
             key: '11',
-            label: <span className='text-lg font-bold text-[#16bcdc]'>Your Cart</span>,
+            label: (
+                <span className='flex items-center text-lg font-bold text-[#16bcdc]'>
+                    <Space>
+                        <ShoppingTwoTone /> Your Cart
+                    </Space>
+                </span>
+            ),
             children: '',
             span: 2,
         },

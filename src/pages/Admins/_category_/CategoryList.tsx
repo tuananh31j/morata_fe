@@ -69,13 +69,13 @@ const CategoryList = () => {
                 return typeof value && record.name.toLowerCase().includes(searchValue);
             },
             sorter: (a, b) => a.name.localeCompare(b.name),
-            width: '20%',
+            width: '30%',
         },
         {
             title: 'Attributes',
             dataIndex: 'attributeNames',
             key: 'attributeNames',
-            width: '40%',
+            width: '70%',
             render: (_, { attributeNames }) => (
                 <>
                     {attributeNames?.map((attributeName) => {
@@ -88,47 +88,47 @@ const CategoryList = () => {
                 </>
             ),
         },
-        {
-            title: 'Action',
-            key: 'action',
-            render: (_, record) => (
-                <Space>
-                    <Tooltip title='Update'>
-                        <Link to={`edit/${record._id}`} className='text-blue-500'>
-                            <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
-                        </Link>
-                    </Tooltip>
+        // {
+        //     title: 'Action',
+        //     key: 'action',
+        //     render: (_, record) => (
+        //         <Space>
+        //             <Tooltip title='Update'>
+        //                 <Link to={`edit/${record._id}`} className='text-blue-500'>
+        //                     <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
+        //                 </Link>
+        //             </Tooltip>
 
-                    <Tooltip title='Delete'>
-                        <DeleteOutlined
-                            onClick={showModal}
-                            className='bg-red-100 text-red-500 rounded-full p-2'
-                            style={{ fontSize: '1rem' }}
-                        />
-                    </Tooltip>
-                </Space>
-            ),
-        },
-        {
-            title: 'Detail',
-            key: 'detail',
-            render: (_, record) => (
-                <Space size='middle'>
-                    <Tooltip title='Get detail'>
-                        <Button
-                            type='link'
-                            href={`/admin/product/1/detail`}
-                            icon={
-                                <EllipsisOutlined
-                                    className='hover:bg-gray-100 cursor-pointer rounded-full p-2  text-black transition-colors'
-                                    style={{ fontSize: '1.25rem' }}
-                                />
-                            }
-                        ></Button>
-                    </Tooltip>
-                </Space>
-            ),
-        },
+        //             <Tooltip title='Delete'>
+        //                 <DeleteOutlined
+        //                     onClick={showModal}
+        //                     className='bg-red-100 text-red-500 rounded-full p-2'
+        //                     style={{ fontSize: '1rem' }}
+        //                 />
+        //             </Tooltip>
+        //         </Space>
+        //     ),
+        // },
+        // {
+        //     title: 'Detail',
+        //     key: 'detail',
+        //     render: (_, record) => (
+        //         <Space size='middle'>
+        //             <Tooltip title='Get detail'>
+        //                 <Button
+        //                     type='link'
+        //                     href={`/admin/product/1/detail`}
+        //                     icon={
+        //                         <EllipsisOutlined
+        //                             className='hover:bg-gray-100 cursor-pointer rounded-full p-2  text-black transition-colors'
+        //                             style={{ fontSize: '1.25rem' }}
+        //                         />
+        //                     }
+        //                 ></Button>
+        //             </Tooltip>
+        //         </Space>
+        //     ),
+        // },
     ];
 
     const rowSelection = {
