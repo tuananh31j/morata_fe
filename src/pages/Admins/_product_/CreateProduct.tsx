@@ -119,9 +119,9 @@ const CreateProduct = () => {
         }
         if (variations) {
             for (const [, value] of Object.entries(variations)) {
-                value.thumbnail?.fileList.forEach((file) => {
-                    Object.assign(file, { name: `${file.name}_${file.uid}` });
-                });
+                // value.thumbnail?.fileList.forEach((file) => {
+                //     Object.assign(file, { name: `${file.name}` });
+                // });
                 formData.append('variationImages', value.thumbnail?.fileList?.[firstElement].originFileObj as File);
                 Object.assign(value, {
                     imageUrlRef: value.thumbnail?.fileList[firstElement].name,
@@ -415,11 +415,15 @@ const CreateProduct = () => {
                                     rules={[
                                         {
                                             validator: async (_, variations: IProductVariation[]) => {
+                                                console.log(variations);
                                                 if (!variations || variations.length < 1) {
                                                     return errorMessage('Please input your variations!');
                                                 }
-                                                const variationEmpty = variations.some((variation) => !variation);
-                                                if (!variationEmpty) {
+                                                const variationEmpty = variations.some(
+                                                    (variation) => variation === undefined
+                                                );
+                                                console.log(variationEmpty);
+                                                if (variationEmpty) {
                                                     return errorMessage('Please input your variations!');
                                                 }
                                                 return Promise.resolve();
