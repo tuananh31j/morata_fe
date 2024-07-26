@@ -6,6 +6,7 @@ import filterSlice from './slice/filterSlice';
 import headerReducer from '~/store/slice/headerSlice';
 import AdminTableFilterProduct from './slice/AdminfilterProduct';
 import filterSliceNew from './slice/filterSlice-new';
+import DetailProduct from '~/store/slice/DetailProduct';
 
 const rootReducer = combineReducers({
     theme,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     filters: filterSlice.reducer,
     filtersNew: filterSliceNew.reducer,
     headerReducer,
+    DetailProduct,
     AdminTableFilterProduct,
 });
 

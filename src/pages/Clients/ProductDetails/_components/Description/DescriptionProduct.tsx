@@ -1,12 +1,10 @@
 import { Collapse, ConfigProvider, Tabs } from 'antd';
 import useWindowSize from '~/hooks/_common/useWindowSize';
-import DescriptionContent from './DescriptionContent';
-import AddInformationContent from './AddInformationContent';
-import ShipReturnContent from './ShipReturnContent';
+import AddInformationContent from '~/pages/Clients/ProductDetails/_components/Description/AddInformationContent';
 import ReviewsContent from '~/pages/Clients/ProductDetails/_components/Description/ReviewsContent';
 
 const { Panel } = Collapse;
-const DescriptionProduct = () => {
+const DescriptionProduct = ({ review }: { review: number }) => {
     const windowSize = useWindowSize();
     return (
         <div className='product-desc  rounded-md bg-white'>
@@ -30,37 +28,37 @@ const DescriptionProduct = () => {
                 {windowSize.windowWidth > 1024 && (
                     <Tabs className='mt-[25px] w-full px-5 font-semibold' centered={true}>
                         {/* Description */}
-                        <Tabs.TabPane tab='DESCRIPTION' key='1'>
+                        {/* <Tabs.TabPane tab='DESCRIPTION' key='1'>
                             <DescriptionContent />
-                        </Tabs.TabPane>
+                        </Tabs.TabPane> */}
                         {/* ADDITIONAL INFORMATION */}
 
                         <Tabs.TabPane tab='ADDITIONAL INFORMATION' key='2'>
                             <AddInformationContent />
                         </Tabs.TabPane>
                         {/* SHIPPING & RETURN */}
-                        <Tabs.TabPane tab='SHIPPING & RETURN' key='3'>
+                        {/* <Tabs.TabPane tab='SHIPPING & RETURN' key='3'>
                             <ShipReturnContent />
-                        </Tabs.TabPane>
+                        </Tabs.TabPane> */}
                         {/* REVIEWS */}
                         <Tabs.TabPane tab='REVIEWS' key='4'>
-                            <ReviewsContent />
+                            <ReviewsContent TopReviews={review} />
                         </Tabs.TabPane>
                     </Tabs>
                 )}
                 {windowSize.windowWidth < 1024 && (
                     <Collapse defaultActiveKey={['1']} className='mt-[25px]' expandIconPosition='end'>
-                        <Panel header='DESCRIPTION' key='1'>
+                        {/* <Panel header='DESCRIPTION' key='1'>
                             <DescriptionContent />
-                        </Panel>
+                        </Panel> */}
                         <Panel header='ADDITIONAL INFORMATION' key='2'>
                             <AddInformationContent />
                         </Panel>
-                        <Panel header='SHIPPING & RETURN' key='3'>
+                        {/* <Panel header='SHIPPING & RETURN' key='3'>
                             <ShipReturnContent />
-                        </Panel>
+                        </Panel> */}
                         <Panel header='REVIEWS' key='4'>
-                            <ReviewsContent />
+                            <ReviewsContent TopReviews={review} />
                         </Panel>
                     </Collapse>
                 )}

@@ -1,4 +1,4 @@
-import { IAllProductsResponse, IProduct, IAllProductResponseNew } from '~/types/Product';
+import { IAllProductsResponse, IProduct, IAllProductResponseNew, IProductItemNew } from '~/types/Product';
 import { IParams } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import instance from '~/utils/api/axiosIntance';
@@ -33,7 +33,7 @@ const productService = {
         return res.data;
     },
     async getDetail(id: string) {
-        const res = await instance.get<IAxiosResponse<IProduct>>(`${PRODUCT_ENDPOINT.PRODUCT}/${id}`);
+        const res = await instance.get<IAxiosResponse<IProductItemNew>>(`${PRODUCT_ENDPOINT.PRODUCT}/${id}`);
         return res.data;
     },
     async getTopReviews() {
@@ -41,7 +41,7 @@ const productService = {
         return res.data;
     },
     async getRelated(params: { id: string; cateId: string }) {
-        const res = await instance.get<IAxiosResponse<IProduct[]>>(`${PRODUCT_ENDPOINT.RELATED}`, {
+        const res = await instance.get<IAxiosResponse<IProductItemNew[]>>(`${PRODUCT_ENDPOINT.RELATED}`, {
             params,
         });
         return res.data;

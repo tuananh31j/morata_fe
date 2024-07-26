@@ -1,66 +1,23 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Form, Input, Modal, Rate } from 'antd';
 import { useState } from 'react';
-import RatingDisplay from '~/components/_common/RatingDisplay';
+import { useParams } from 'react-router-dom';
+import useGetReviewOfProduct from '~/hooks/review/Queries/useGetReviewOfProduct';
 
 const { TextArea } = Input;
-const demoReview = [
-    {
-        _id: '665c2a41ef3298410230be70',
-        rating: 5,
-        content:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-        userId: {
-            _id: '6654b44c014eafa882a4ca14',
-            username: 'Quốc',
-        },
-        productId: '665376a6180e66741bb67cb4',
-        createdAt: '2024-06-02T08:16:01.453Z',
-        updatedAt: '2024-06-02T08:16:01.453Z',
-    },
-    {
-        _id: '665c2a41ef3298410230be70',
-        rating: 2.5,
-        content:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-        userId: {
-            _id: '6654b44c014eafa882a4ca14',
-            username: 'Tạ Hiếu',
-        },
-        productId: '665376a6180e66741bb67cb4',
-        createdAt: '2024-06-02T08:16:01.453Z',
-        updatedAt: '2024-06-02T08:16:01.453Z',
-    },
-    {
-        _id: '665c2a41ef3298410230be70',
-        rating: 2.5,
-        content:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-        userId: {
-            _id: '6654b44c014eafa882a4ca14',
-            username: 'Tuấn Anh',
-        },
-        productId: '665376a6180e66741bb67cb4',
-        createdAt: '2024-06-02T08:16:01.453Z',
-        updatedAt: '2024-06-02T08:16:01.453Z',
-    },
-    {
-        _id: '665c2a41ef3298410230be70',
-        rating: 2.5,
-        content:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer ',
-        userId: {
-            _id: '6654b44c014eafa882a4ca14',
-            username: 'Minh Quang',
-        },
-        productId: '665376a6180e66741bb67cb4',
-        createdAt: '2024-06-02T08:16:01.453Z',
-        updatedAt: '2024-06-02T08:16:01.453Z',
-    },
-];
-export default function ReviewsContent() {
+
+export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [contentSee, setContentSee] = useState<{ [index: number]: boolean }>({});
+    const { id } = useParams();
+    const { data } = useGetReviewOfProduct(id as string);
+    const reviewContent = data?.data;
+    const fiveRatinCount = reviewContent?.filter((item) => item.rating > 4);
+    const fourRatingCount = reviewContent?.filter((item) => item.rating < 5 && item.rating > 3);
+    const threeRatingCount = reviewContent?.filter((item) => item.rating < 4 && item.rating > 2);
+    const twoRatingCount = reviewContent?.filter((item) => item.rating < 3 && item.rating > 1);
+    const oneRatingCount = reviewContent?.filter((item) => item.rating < 2 && item.rating > 0);
+
     const handleAddreview = () => {
         setIsModalVisible(true);
     };
@@ -80,85 +37,108 @@ export default function ReviewsContent() {
                 <div className='mx-auto flex max-w-[1280px] flex-col items-center gap-4 lg:flex-row lg:justify-between'>
                     <div>
                         <div className='flex gap-2'>
-                            <Rate allowHalf defaultValue={5} disabled={true} />
-                            <span className='text-base font-medium  text-[#777777]'>5.00 out of 5</span>
+                            <Rate allowHalf defaultValue={TopReviews} disabled={true} />
+                            <span className='text-base font-medium  text-[#777777]'>
+                                {TopReviews.toFixed(1)} out of 5
+                            </span>
                         </div>
                         <p className='text-center text-base font-medium text-[#777777] lg:text-start'>
-                            Base on 1 reviews
+                            Base on {reviewContent?.length} reviews
                         </p>
                     </div>
                     <div>
                         <div className='flex items-center gap-2'>
                             <Rate allowHalf className='text-[14px]' defaultValue={5} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>( 1 Reviews)</span>
+                            <span className='text-[14px] font-medium  text-[#777777]'>
+                                ( {fiveRatinCount?.length} Reviews)
+                            </span>
                         </div>
                         <div className='flex items-center gap-2'>
                             <Rate allowHalf className='text-[14px]' defaultValue={4} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>( 0 Reviews)</span>
+                            <span className='text-[14px] font-medium  text-[#777777]'>
+                                ( {fourRatingCount?.length} Reviews)
+                            </span>
                         </div>
                         <div className='flex items-center gap-2'>
                             <Rate allowHalf className='text-[14px]' defaultValue={3} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>( 0 Reviews)</span>
+                            <span className='text-[14px] font-medium  text-[#777777]'>
+                                ( {threeRatingCount?.length} Reviews)
+                            </span>
                         </div>
                         <div className='flex items-center gap-2'>
                             <Rate allowHalf className='text-[14px]' defaultValue={2} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>( 0 Reviews)</span>
+                            <span className='text-[14px] font-medium  text-[#777777]'>
+                                ( {twoRatingCount?.length} Reviews)
+                            </span>
                         </div>
                         <div className='flex items-center gap-2'>
                             <Rate allowHalf className='text-[14px]' defaultValue={1} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>( 0 Reviews)</span>
+                            <span className='text-[14px] font-medium  text-[#777777]'>
+                                ( {oneRatingCount?.length} Reviews)
+                            </span>
                         </div>
                     </div>
                     <div>
                         <button
                             onClick={handleAddreview}
-                            className='flex h-[40px] w-[240px] items-center justify-center bg-[#ffb800] font-bold text-white'
+                            disabled={true}
+                            className='flex h-[40px] w-[340px] items-center justify-center bg-[#ffb800] font-bold text-white'
                         >
-                            Write a review
+                            Purchase required for review.
                         </button>
                     </div>
                 </div>
                 <div className='mx-4 mt-6 max-h-[70vh] overflow-y-scroll '>
-                    {demoReview.map((item, index) => (
-                        <>
-                            <div key={index} className='mb-6 flex flex-col gap-2'>
-                                <Rate allowHalf defaultValue={item.rating} className='text-[16px]' />
-                                <div>
-                                    <div className='flex gap-2'>
-                                        <Avatar
-                                            shape='square'
-                                            size={32}
-                                            icon={<UserOutlined className='text-yellow-500' />}
-                                        />
-                                        <span className='text-[14px] text-yellow-500'>{item.userId.username}</span>
-                                    </div>
-                                    <div className='no-scrollbar mt-2  overflow-y-scroll'>
-                                        <p
-                                            className={`text-[16px]  text-[#777777] ${contentSee[index] ? '' : 'line-clamp-2'}`}
-                                        >
-                                            {item.content}
-                                        </p>
-                                        {item.content.length > 200 && !contentSee[index] && (
-                                            <button
-                                                onClick={() => toggleSeeMore(index)}
-                                                className='text-[14px] text-cyan-500 hover:underline'
+                    {reviewContent &&
+                        reviewContent.map((item, index) => (
+                            <>
+                                <div key={index} className='mb-6 flex flex-col gap-2'>
+                                    <Rate allowHalf defaultValue={item.rating} className='text-[16px]' />
+                                    <div>
+                                        <div className='flex gap-2'>
+                                            <Avatar
+                                                shape='square'
+                                                size={32}
+                                                icon={<UserOutlined className='text-yellow-500' />}
+                                            />
+                                            <span className='text-[14px] text-yellow-500'>{item.userId.username}</span>
+                                        </div>
+                                        <div className='no-scrollbar mt-2  overflow-y-scroll'>
+                                            <p
+                                                className={`text-[16px]  text-[#777777] ${contentSee[index] ? '' : 'line-clamp-2'}`}
                                             >
-                                                See More
-                                            </button>
-                                        )}
-                                        {contentSee[index] && (
-                                            <button
-                                                onClick={() => toggleSeeMore(index)}
-                                                className='text-[14px] text-cyan-500 hover:underline'
-                                            >
-                                                See Less
-                                            </button>
-                                        )}
+                                                {item.content}
+                                            </p>
+                                            {item.content.length > 200 && !contentSee[index] && (
+                                                <button
+                                                    onClick={() => toggleSeeMore(index)}
+                                                    className='text-[14px] text-cyan-500 hover:underline'
+                                                >
+                                                    See More
+                                                </button>
+                                            )}
+                                            {contentSee[index] && (
+                                                <button
+                                                    onClick={() => toggleSeeMore(index)}
+                                                    className='text-[14px] text-cyan-500 hover:underline'
+                                                >
+                                                    See Less
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
+                            </>
+                        ))}
+                    {!reviewContent?.length && (
+                        <>
+                            <div className='flex h-[264px] items-center justify-center'>
+                                <h3 className='text-center text-[#777777]'>
+                                    The product has not received any reviews yet.
+                                </h3>
                             </div>
                         </>
-                    ))}
+                    )}
                 </div>
             </div>
 

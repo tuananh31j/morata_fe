@@ -10,10 +10,10 @@ const useGetMyCart = (id?: string) => {
         enabled: !!id,
     });
     const responsePayloadCheckout = data?.data.items.map((item) => ({
-        name: item.productId.name,
-        price: item.productId.price,
+        name: item.productVariation.productId.name,
+        price: item.productVariation.price,
         quantity: item.quantity,
-        image: item.productId.thumbnail,
+        image: item.productVariation.image,
     }));
 
     return { data, ...rest, responsePayloadCheckout };

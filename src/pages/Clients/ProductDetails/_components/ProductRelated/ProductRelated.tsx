@@ -4,9 +4,9 @@ import WrapperList from '~/components/_common/WrapperList';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import { useGetRelatedProduct } from '~/hooks/products/Queries/useGetRelatedProduct';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { IProduct } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 
-const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IProduct> }) => {
+const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IProductItemNew> }) => {
     const product = relatedProduct.data;
     const body = {
         cateId: product.categoryId,
@@ -20,7 +20,7 @@ const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IPr
                 <WrapperList classic title='Related Products'>
                     {ListRelated && (
                         <CarouselDisplay>
-                            {ListRelated?.data.map((item: IProduct, i: number) => (
+                            {ListRelated?.data.map((item, i) => (
                                 <CarouselItem key={i}>
                                     <SmallCard product={item} />
                                 </CarouselItem>

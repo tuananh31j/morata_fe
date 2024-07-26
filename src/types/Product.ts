@@ -4,13 +4,13 @@ export interface IProduct {
     price: number;
     discountPercentage: number;
     rating: number;
+    reviewCount: number;
     thumbnail: string;
     stock: number;
     key: string;
     images: string[];
     categoryId: string;
     brandId: string;
-    reviewIds: string[];
     isAvailable: boolean;
     isDeleted: boolean;
     createdAt: string;
@@ -37,7 +37,9 @@ export type IProductItemNew = {
     _id: string;
     name: string;
     thumbnail: string;
+    discount: number;
     images: string[];
+    isAvailable: boolean;
     rating: number;
     reviewCount: number;
     categoryId: string;
