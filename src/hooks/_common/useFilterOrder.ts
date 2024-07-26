@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { initFilter, KEY_STATE_FILTER_PARAMS, updateFilterParams } from '~/store/slice/filterSlice-new';
@@ -10,7 +10,8 @@ const useFilterOrder = () => {
     const [searchParams] = useSearchParams();
     const { queryParams, pagination } = useTypedSelector((state) => state.filtersNew);
     const dispatch = useDispatch();
-    const navigator = useNavigate();
+    const navigate = useNavigate();
+
     useEffect(() => {
         const filter = { value: '' };
         const page = { value: 1 };
@@ -35,17 +36,22 @@ const useFilterOrder = () => {
         }
     }, []);
 
-    const updateQueryParam = (value: IOrderParams, page: number) => {
-        const newParams = new URLSearchParams(searchParams?.toString());
+    const updateQueryParam = useCallback(
+        (value: IOrderParams, page: number) => {
+            const newParams = new URLSearchParams(searchParams?.toString());
 
-        if (value) newParams.set(KEY_STATE_FILTER_PARAMS, JSON.stringify(value));
-        if (page) newParams.set('page', String(page));
-        else newParams.delete('page');
+            if (Object.keys(value).length > 0) newParams.set(KEY_STATE_FILTER_PARAMS, JSON.stringify(value));
+            else newParams.delete(KEY_STATE_FILTER_PARAMS);
 
-        navigator(`${pathname}?${newParams.toString()}`);
+            if (page) newParams.set('page', String(page));
+            else newParams.delete('page');
 
-        dispatch(updateFilterParams({ filter: value, page }));
-    };
+            navigate(`${pathname}?${newParams.toString()}`);
+
+            dispatch(updateFilterParams({ filter: value, page }));
+        },
+        [searchParams, pathname, navigate, dispatch]
+    );
 
     return { queryParams, pagination, updateQueryParam };
 };

@@ -27,6 +27,7 @@ export const ADMIN_ROUTES = {
     USERS_EDIT: '/admin/users/edit', // @id
 
     ORDERS: '/admin/orders',
+    ORDERS_LIST: '/admin/orders/list',
     ORDERS_CANCELLATION: '/admin/orders/cancellation',
 
     CATEGORIES: '/admin/categories',
