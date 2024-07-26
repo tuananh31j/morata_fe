@@ -6,10 +6,11 @@ import useMessage from '~/hooks/_common/useMessage';
 import { useGetAllAtributesNew } from '~/hooks/attributes/Queries/useGetAllAttributes';
 import { useMutationCreateCategory } from '~/hooks/categories/Mutations/useCreateCategory';
 import { ICategoryFormData } from '~/types/Category';
+import showMessage from '~/utils/ShowMessage';
 
 const CreateCategory = () => {
     const navigate = useNavigate();
-    const { mutate: createCategory, isPending } = useMutationCreateCategory();
+    const { mutate: createCategory, isPending, isSuccess, isError } = useMutationCreateCategory();
 
     const { data } = useGetAllAtributesNew();
     const attributes = data?.data;
@@ -46,10 +47,18 @@ const CreateCategory = () => {
         console.log('Success:', values);
 
         createCategory(values);
-        navigate('/admin/categories', { replace: true });
+
+        if (isSuccess) {
+            showMessage('Category created successfully!', 'success');
+            navigate('/admin/categories', { replace: true });
+        }
 
         if (isPending) {
             handleMessage({ type: 'loading', content: '...Creating!' });
+        }
+
+        if (isError) {
+            showMessage('Category creation failed!', 'error');
         }
     };
 
