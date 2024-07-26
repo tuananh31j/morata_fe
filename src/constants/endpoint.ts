@@ -21,8 +21,7 @@ export const CATEGORY_ENDPOINT = {
 export const CART_ENDPOINT = {
     GET: '/carts',
     ADDCART: '/carts/add',
-    INCREASE: '/carts/increase',
-    DECREASE: '/carts/decrease',
+    UPDATEQUANTITY: '/carts/update_quantity',
     REMOVEITEM: '/carts/remove',
 };
 export const BRAND_ENDPOINT = {
@@ -39,6 +38,7 @@ export const AUTH_ENDPOINT = {
 
 export const CHECKOUT_ENDPOINT = {
     ORDERS: '/orders',
+    VNPAY: '/create-checkout-with-vnpay',
     SESSION: '/create-checkout-session',
 };
 
@@ -67,4 +67,7 @@ export const STATS_ENDPOINT = {
 export const USER_ENDPOINT = {
     PROFILE: '/users/private',
     UPDATE: '/users/priavte',
+};
+export const REVIEW_ENDPOINT = {
+    GETOFPRODUCT: '/reviews',
 };

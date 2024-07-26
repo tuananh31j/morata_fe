@@ -21,7 +21,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
     };
     return (
         <div className='product-thumbnail flex w-full gap-[16px]'>
-            {items.length > 1 && (
+            {items.length > 0 && (
                 <div className='product-thumbnail-gallery hidden flex-col gap-2 lg:flex '>
                     {items?.map((item, index: number) => (
                         <div
@@ -35,7 +35,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
                 </div>
             )}
 
-            {items.length > 1 && (
+            {items.length > 0 && (
                 <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[625px]'>
                     <div className='group relative'>
                         <Carousel
@@ -49,7 +49,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
                         >
                             {items?.map((item, index: number) => (
                                 <Image
-                                    className='lg:h-[475px] lg:w-[475px] 2xl:h-[625px] 2xl:w-[625px]'
+                                    className='lg:h-[475px] lg:w-[475px] 2xl:h-[525px] 2xl:w-[625px]'
                                     key={index}
                                     preview={true}
                                     src={item}
@@ -60,13 +60,13 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
                     </div>
                 </div>
             )}
-            {items.length < 1 && (
+            {/* {items.length < 1 && (
                 <div className='product-thumbnail-main w-[100%] lg:w-[375px] 2xl:w-[625px]'>
                     <div className='overflow-hidden rounded-[15px]'>
                         <Image preview={true} className='h-[625px] w-[625px]' src={thumbnail} />
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

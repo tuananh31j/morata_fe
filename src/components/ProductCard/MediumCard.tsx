@@ -1,18 +1,29 @@
+import { Spin } from 'antd';
 import clsx from 'clsx';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ProgressBar from '~/components/_common/ProgressBar';
+import { MAIN_ROUTES } from '~/constants/router';
+import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
+import { RootState } from '~/store/store';
 import { IProductItemNew } from '~/types/Product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
-import PopupAttributes from '~/components/_common/PopupAttributes';
-import { MAIN_ROUTES } from '~/constants/router';
 import { generateLink } from './_helper';
 
 const MediumCard = ({ product }: { product: IProductItemNew }) => {
     const discountPercentage = 10;
-
+    const { mutate, isPending } = useMutationCart();
+    const user = useSelector((state: RootState) => state.authReducer.user);
+    const handleAddCart = () => {
+        mutate({
+            productVariation: product.variationIds[0]._id,
+            quantity: 1,
+            userId: user ? user._id : '',
+        });
+    };
     const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {
@@ -93,11 +104,13 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                             products
                         </div>
                     </Link>
-                    <PopupAttributes product={product}>
-                        <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
-                            Add to Cart
-                        </button>
-                    </PopupAttributes>
+                    <button
+                        onClick={handleAddCart}
+                        className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
+                    >
+                        {isPending && <Spin />}
+                        {!isPending && 'Add to cart'}
+                    </button>
                 </div>
             </div>
             {discountPercentage > 0 && (

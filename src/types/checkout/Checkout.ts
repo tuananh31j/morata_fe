@@ -10,6 +10,12 @@ export type IPayloadItemsOrder =
     | undefined;
 
 export type ICheckoutCash = {
+    userId?: string;
+    customerInfo: {
+        name: string | undefined;
+        email: string | undefined;
+        phone: string | undefined;
+    };
     receiverInfo: {
         name: string | undefined;
         email: string | undefined;
@@ -26,10 +32,12 @@ export type ICheckoutCash = {
     items: IPayloadItemsOrder[] | undefined;
     totalPrice: number;
     paymentMethod?: PaymentMethod;
+    PaymentMethods?: number;
 };
 
 export type ICheckoutForm = {
     name: string | undefined;
+    paymentMethods: number;
     email: string | undefined;
     phone: string | undefined;
     city: string;

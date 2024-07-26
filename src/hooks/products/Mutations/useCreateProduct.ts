@@ -6,16 +6,15 @@ import showMessage from '~/utils/ShowMessage';
 
 const useCreateProduct = () => {
     const queryClient = useQueryClient();
-    const { queryParams, pagination } = useTypedSelector((state) => state.filterProduct);
     return useMutation({
         mutationFn: (data: FormData) => productService.createProduct(data),
         onSuccess: async () => {
-            setTimeout(() => {
-                queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.PRODUCTS, ...Object.values(queryParams), ...Object.values(pagination)],
-                    queryFn: () => productService.getAll(),
-                });
-            }, 300);
+            // setTimeout(() => {
+            //     queryClient.prefetchQuery({
+            //         queryKey: [QUERY_KEY.PRODUCTS],
+            //         queryFn: () => productService.getAll(),
+            //     });
+            // }, 300);
         },
         onError(error) {
             showMessage(error.message, 'error');

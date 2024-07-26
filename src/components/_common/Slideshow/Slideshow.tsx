@@ -1,7 +1,7 @@
 import { Carousel } from 'antd';
 import { CarouselRef } from 'antd/es/carousel';
 import { useRef, useState } from 'react';
-import { IProduct } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 import SliderControls from '../SliderControls';
 
 // interface ICardItemProps {
@@ -10,7 +10,7 @@ import SliderControls from '../SliderControls';
 
 interface ISlideshowProps {
     ItemCard: React.ElementType;
-    Products?: IProduct[];
+    Products?: IProductItemNew[];
 }
 
 const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, Products }) => {

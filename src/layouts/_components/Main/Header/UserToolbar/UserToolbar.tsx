@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CartDrawer from '~/components/CartDrawer';
 import WishListDrawer from '~/components/WishListDrawer';
 import UserToolBarSkeleton from '~/components/_common/skeleton/UserToolKit/UserToolBarSkeleton';
@@ -11,8 +11,13 @@ import { MAIN_ROUTES } from '~/constants/router';
 const UserToolbar = () => {
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { data, isLoading } = useGetMyCart(user?._id);
+    const location = useLocation();
+    console.log(location);
     const totalOrderAmount = data
-        ? data?.data?.items?.reduce((total: number, product) => total + product.productId.price * product.quantity, 0)
+        ? data?.data?.items?.reduce(
+              (total: number, product) => total + product.productVariation.price * product.quantity,
+              0
+          )
         : 0;
     const totalQuantityAmount = data
         ? data?.data?.items?.reduce((total: number, product) => total + product.quantity, 0)
@@ -37,16 +42,25 @@ const UserToolbar = () => {
                         </div>
                     </WishListDrawer>
 
-                    <CartDrawer item={data ? data.data : undefined}>
-                        <div className='text-white'>
-                            <IconButton
-                                name={`${totalOrderAmount}$`}
-                                count={totalQuantityAmount}
-                                subName='Your Cart'
-                                icon='ShoppingCartOutlined'
-                            />
-                        </div>
-                    </CartDrawer>
+                    {location.pathname !== '/checkout-details' ? (
+                        <CartDrawer item={data ? data.data : undefined}>
+                            <div className='text-white'>
+                                <IconButton
+                                    name={`${totalOrderAmount}$`}
+                                    count={totalQuantityAmount}
+                                    subName='Your Cart'
+                                    icon='ShoppingCartOutlined'
+                                />
+                            </div>
+                        </CartDrawer>
+                    ) : (
+                        <IconButton
+                            name={`${totalOrderAmount}$`}
+                            count={totalQuantityAmount}
+                            subName='Your Cart'
+                            icon='ShoppingCartOutlined'
+                        />
+                    )}
                 </>
             )}
             {!user && !isLoading && (

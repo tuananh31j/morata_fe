@@ -1,13 +1,17 @@
 export interface ICartItem {
     _id: string;
-    name: string;
-    thumbnail: string;
-    discountPercentage: number;
+    color: string;
+    image: string;
     price: number;
+    productId: {
+        _id: string;
+        name: string;
+    };
+    stock: number;
 }
 
 export type ICartItemsResponse = {
-    productId: ICartItem;
+    productVariation: ICartItem;
     quantity: number;
 };
 
