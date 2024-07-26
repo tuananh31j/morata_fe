@@ -1,5 +1,6 @@
 import { Button, Form, Input, Modal } from 'antd';
 import { useState } from 'react';
+import StaticImages from '~/assets';
 import WrapperList from '~/components/_common/WrapperList';
 import useWindowSize from '~/hooks/_common/useWindowSize';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
@@ -38,7 +39,22 @@ const Profile = () => {
                         {/* User avatar */}
                         <div className='mb-6 flex items-center justify-center'>
                             <div className='mt-4 flex w-24 select-none items-center justify-center rounded-full'>
-                                <img src={profile?.avatar} loading='lazy' alt='user' className='w-full rounded-full ' />
+                                {profile && profile.avatar && (
+                                    <img
+                                        src={profile.avatar}
+                                        loading='lazy'
+                                        alt='user'
+                                        className='w-full rounded-full '
+                                    />
+                                )}
+                                {profile && !profile.avatar && (
+                                    <img
+                                        src={StaticImages.userImageDf}
+                                        loading='lazy'
+                                        alt='user'
+                                        className='w-full rounded-full '
+                                    />
+                                )}
                             </div>
                         </div>
 

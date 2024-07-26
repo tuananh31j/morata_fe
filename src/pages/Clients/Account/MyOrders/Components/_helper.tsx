@@ -1,5 +1,5 @@
 import { type TableColumnsType } from 'antd';
-import { OrderStatus, PaymentMethod } from '~/types/enum';
+import { OrderStatus, PaymentMethod } from '~/constants/enum';
 import ActionLink from './ActionLink';
 import dayjs from 'dayjs';
 import PopupOrderDetails from './PopupOrderDetails';

@@ -5,14 +5,18 @@ import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
 import PopupAttributes from '~/components/_common/PopupAttributes';
-import { IProductItem } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 import { generateLink } from './_helper';
+import { Image } from 'antd';
 
 type PropTypeProduct = {
-    product: IProductItem;
+    product: IProductItemNew;
 };
+
 const SmallCard = ({ product }: PropTypeProduct) => {
-    const newPrice = product.price * (1 + product.discountPercentage / 100);
+    const discountPercentage = 10;
+
+    const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
 
     const handleSetDateActive = () => {
@@ -54,30 +58,45 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                 {/* Name */}
                 <div className='mt-[15px] cursor-pointer'>
-                    <Link to={`MAIN_ROUTES.PRODUCTS/${product._id}`}>
+                    <Link to={generateLink({ productId: product._id, categoryId: product.categoryId })}>
                         <h4 className=' cursor-pointer truncate text-title-sm2 font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
 
                         {/* Review */}
-                        <RatingDisplay rating={product.rating} reviews={product.reviewIds.length} />
+                        <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
 
                         {/* Price */}
                         <div className='mb-3 mt-[10px] flex items-center gap-4'>
                             <span
                                 className={clsx('text-base font-semibold leading-5 text-[#222]', {
-                                    'text-red-600': product.discountPercentage > 0,
+                                    'text-red-600': discountPercentage > 0,
                                 })}
                             >
-                                {Currency.format(product.price)}
+                                {Currency.format(product.variationIds?.[0].price)}
                             </span>
-                            {product?.discountPercentage > 0 && (
+                            {discountPercentage > 0 && (
                                 <del className=' text-gray-400 text-base font-semibold leading-5'>
                                     {Currency.format(newPrice)}
                                 </del>
                             )}
                         </div>
                     </Link>
+
+                    {/* Variants */}
+                    <div className='my-2 flex gap-2'>
+                        {product.variationIds.map((variant, i) => (
+                            <Image
+                                key={i}
+                                width={45}
+                                height={45}
+                                preview={false}
+                                src={variant.image}
+                                className='rounded-lg border border-solid p-1 hover:border-[#0068C9]'
+                            />
+                        ))}
+                    </div>
+
                     {/* Add to cart btn */}
                     <PopupAttributes product={product}>
                         <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
@@ -87,9 +106,9 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                 </div>
 
                 {/* Discount */}
-                {product.discountPercentage > 0 ? (
+                {discountPercentage > 0 ? (
                     <div className='absolute left-0 top-0  z-10 inline-block select-none rounded-sm bg-lime-600 px-2 text-sm leading-6 text-white'>
-                        -{product.discountPercentage}%
+                        -{discountPercentage}%
                     </div>
                 ) : (
                     <div className='absolute left-0 top-0 z-[50] inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>

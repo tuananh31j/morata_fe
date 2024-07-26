@@ -44,6 +44,7 @@ export const CHECKOUT_ENDPOINT = {
 export const ORDER_ENDPOINT = {
     ROOT: '/orders',
     MY_ORDERS: '/orders/user',
+    VNPAY_RETURN: '/vnpay-return',
     CANCELED: '/orders/cancel',
     CONFIRM: '/orders/confirm',
     DONE: '/orders/done',
@@ -51,6 +52,8 @@ export const ORDER_ENDPOINT = {
 
 export const ATTRIBUTES_ENDPOINT = {
     ALL: '/attributes',
+    All: '/attributes/all',
+    CREATE: 'attributes',
 };
 
 export const STATS_ENDPOINT = {

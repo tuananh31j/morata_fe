@@ -15,9 +15,10 @@ import {
     UpdateUser,
     ManageOrders,
     UpdateCategory,
+    CreateAttribute,
+    RedirectToProductList,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
-import RedirectToProductList from '~/components/_common/RedirectToProductList/RedirectToProductList';
 import { Outlet } from 'react-router-dom';
 
 const PrivateRoutes = [
@@ -70,7 +71,7 @@ const PrivateRoutes = [
                         path: 'deleted',
                         element: (
                             <Suspense>
-                                <div>HEHE xóa rồi nhé</div>
+                                <div>Deleted</div>
                             </Suspense>
                         ),
                     },
@@ -78,7 +79,7 @@ const PrivateRoutes = [
                         path: 'hidden',
                         element: (
                             <Suspense>
-                                <div>HEHE ẩn rồi nhé</div>
+                                <div>Hidden</div>
                             </Suspense>
                         ),
                     },
@@ -232,6 +233,14 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <UpdateCategory />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: ADMIN_ROUTES.CATEGORIES_ATTRIBUTES,
+                        element: (
+                            <Suspense>
+                                <CreateAttribute />
                             </Suspense>
                         ),
                     },

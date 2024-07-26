@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProgressBar from '~/components/_common/ProgressBar';
-import { PropTypeProduct } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
@@ -10,8 +10,10 @@ import PopupAttributes from '~/components/_common/PopupAttributes';
 import { MAIN_ROUTES } from '~/constants/router';
 import { generateLink } from './_helper';
 
-const MediumCard = ({ product }: PropTypeProduct) => {
-    const newPrice = product.price * (1 + product.discountPercentage / 100);
+const MediumCard = ({ product }: { product: IProductItemNew }) => {
+    const discountPercentage = 10;
+
+    const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {
         setIsActiveProductActions(!isActiveProductActions);
@@ -51,17 +53,17 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                             {product.name}
                         </h1>
                         <div className='my-2 mb-3 flex flex-wrap items-end gap-1 sm:mb-2'>
-                            <RatingDisplay rating={product.rating} reviews={product.reviewIds.length || 0} />
+                            <RatingDisplay rating={product.rating} reviews={product.reviewCount || 0} />
                         </div>
                         <div className='mb-3 flex gap-x-2'>
                             <span
                                 className={clsx('text-base font-semibold leading-5', {
-                                    'text-red-600': product.discountPercentage > 0,
+                                    'text-red-600': discountPercentage > 0,
                                 })}
                             >
-                                {Currency.format(product.price)}
+                                {Currency.format(product.variationIds?.[0].price)}
                             </span>
-                            {product?.discountPercentage > 0 && (
+                            {discountPercentage > 0 && (
                                 <del className=' text-gray-400 text-base font-semibold leading-5'>
                                     {Currency.format(newPrice)}
                                 </del>
@@ -84,10 +86,10 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                                 </span>
                             </li>
                         </ul>
-                        <ProgressBar stock={product.stock} />
+                        <ProgressBar stock={product.variationIds?.[0].stock} />
                         <div className='text-sx mb-6 leading-8'>
                             Sold:
-                            <span className='mx-1 font-semibold'>{product.stock}/100</span>
+                            <span className='mx-1 font-semibold'>{product.variationIds?.[0].stock}/100</span>
                             products
                         </div>
                     </Link>
@@ -98,9 +100,9 @@ const MediumCard = ({ product }: PropTypeProduct) => {
                     </PopupAttributes>
                 </div>
             </div>
-            {product.discountPercentage > 0 && (
+            {discountPercentage > 0 && (
                 <div className='absolute left-[20px] top-[20px] z-10 inline-block select-none rounded-sm bg-lime-600 px-4 text-sm leading-6 text-white'>
-                    -{product.discountPercentage}%
+                    -{discountPercentage}%
                 </div>
             )}
         </div>

@@ -443,30 +443,9 @@ const Header = () => {
                 <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:flex'>
                     {/* Header MENU bottom */}
                     <div className='flex items-center'>
-                        {/* <div
-                            className='flex items-center gap-3 border-r border-white pr-28 font-semibold'
-                            onClick={toggleVisibility}
-                        >
-                            <MenuOutlined style={{ color: '#ffffff', fontSize: '16px' }} className='hidden lg:block' />
-                            <button className='text-lg text-white'>Shop By Department</button>
-                            {isVisible && (
-                                <ul className='absolute z-20 w-[305px] translate-y-28 border border-gray-200 bg-white shadow-lg transition-all duration-1000'>
-                                    {categories.map((category, index) => (
-                                        <li key={index} className='px-4 py-2 hover:bg-gray-100'>
-                                            {category}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div> */}
-
                         {/* Header MENU bottom items */}
                         <Navbar data={data ? data.data : []} />
                     </div>
-                    {/* <div className='flex items-center gap-5'>
-                        <DiscountIcon />
-                        <p className='text-white'>Sale $20 Off Your First Order.</p>
-                    </div> */}
                 </div>
             </div>
         </header>

@@ -12,11 +12,12 @@ export const QUERY_KEY = {
     RELATED: 'related',
     POPULARCATEGORIES: 'poularCategories',
     BRANDS: 'brands',
-    ORDERS: 'orders',
-    CHECKOUT: 'checkout',
     ATTRIBUTES: 'attributes',
     USERS: 'users',
 
+    ORDERS: 'orders',
+    CHECKOUT: 'checkout',
+    VNPAY_RETURN: 'vnpay-return',
     // Stats
     TOTAL_STATS: 'totalStats',
     DAILY_STATS: 'dailyStats',

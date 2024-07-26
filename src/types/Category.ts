@@ -10,4 +10,19 @@ export type ICategory = {
     attributeIds: string[];
 };
 
-export type ICategoryFormData = Omit<ICategory, '_id'>;
+export type ICategoryFormData = {
+    name: string;
+    attributeIds: string[];
+};
+
+export enum AttributeType {
+    options = 'options',
+    manual = 'manual',
+}
+
+export type IAttributeFormData = {
+    name: string;
+    type: AttributeType;
+    values: string[];
+    // inputValues?: string[];
+};

@@ -1,3 +1,4 @@
+import StaticImages from '~/assets';
 import MenuAccount from './MenuAccount';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 
@@ -12,9 +13,19 @@ const AccountSidebarLeft = () => {
                     <h1 className='pt-5 text-center text-2xl font-semibold uppercase text-[#16bcdc]'>Account</h1>
                 </div>
 
-                <div className='my-5 flex items-center justify-center gap-5'>
+                <div className='my-5 flex flex-col items-center justify-center gap-5'>
                     <div className='w-[30%]'>
-                        <img src={profile?.avatar} className='w-full rounded-full' loading='lazy' alt='' />
+                        {profile && profile.avatar && (
+                            <img src={profile.avatar} loading='lazy' alt='user' className='w-full rounded-full ' />
+                        )}
+                        {profile && !profile.avatar && (
+                            <img
+                                src={StaticImages.userImageDf}
+                                loading='lazy'
+                                alt='user'
+                                className='w-full rounded-full '
+                            />
+                        )}
                     </div>
 
                     <div>

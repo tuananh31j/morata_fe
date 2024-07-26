@@ -11,12 +11,15 @@ const FilterString = ({
     data,
 }: {
     filterName: string;
-    filterParams: keyof Omit<IParams, 'page' | 'sort'>;
+    filterParams: keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating' | 'page' | 'sort'>;
     data: ICategory[] | IBrand[];
 }) => {
     const { updateFilterAttribute, queryParams } = useFilters();
     const onChange = (e: RadioChangeEvent) => {
-        updateFilterAttribute(filterParams, String(e.target.value));
+        updateFilterAttribute(
+            filterParams as keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating'>,
+            String(e.target.value)
+        );
     };
     return (
         <FilterWrap filterName={filterName}>

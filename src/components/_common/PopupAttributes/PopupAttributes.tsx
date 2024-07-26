@@ -6,10 +6,16 @@ import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
 import { useGetAllAtributes } from '~/hooks/attributes/Queries/useGetAttributesByCate';
 import { RootState } from '~/store/store';
-import { IProductItem } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';
 
-export default function PopupAttributes({ children, product }: { children: React.ReactNode; product: IProductItem }) {
+export default function PopupAttributes({
+    children,
+    product,
+}: {
+    children: React.ReactNode;
+    product: IProductItemNew;
+}) {
     const [isModalOpen, setModalOpen] = useState(false);
     const { data: attributes } = useGetAllAtributes(product.categoryId);
     const [valueQuantity, setQuantityValue] = useState(1);
@@ -17,7 +23,7 @@ export default function PopupAttributes({ children, product }: { children: React
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.authReducer.user);
     const handleIncrement = () => {
-        if (valueQuantity < (product ? product.stock : 0)) setQuantityValue(valueQuantity + 1);
+        if (valueQuantity < (product ? product.variationIds?.[0].stock : 0)) setQuantityValue(valueQuantity + 1);
     };
     const handleDecrement = () => {
         if (valueQuantity > 1) setQuantityValue(valueQuantity - 1);
@@ -74,6 +80,7 @@ export default function PopupAttributes({ children, product }: { children: React
                             <Form onFinish={handleOnSubmit} layout='vertical'>
                                 <div className='my-4'>
                                     {attributes &&
+                                        attributes.data &&
                                         attributes.data.length > 1 &&
                                         attributes.data.map((label, index) => (
                                             <Form.Item
@@ -117,7 +124,7 @@ export default function PopupAttributes({ children, product }: { children: React
                                         </Button>
                                         <InputNumber
                                             min={1}
-                                            max={product.stock}
+                                            max={product.variationIds?.[0].stock}
                                             onChange={onChangeInputQuantity}
                                             className='flex h-[48px] items-center'
                                             value={valueQuantity}
@@ -125,7 +132,7 @@ export default function PopupAttributes({ children, product }: { children: React
                                         />
                                         <Button
                                             onClick={handleIncrement}
-                                            disabled={valueQuantity === product.stock}
+                                            disabled={valueQuantity === product.variationIds?.[0].stock}
                                             className='h-[48px]'
                                         >
                                             +

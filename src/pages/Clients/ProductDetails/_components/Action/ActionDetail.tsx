@@ -55,6 +55,7 @@ export default function ActionDetail({ product }: { product: IProduct }) {
                 <Form onFinish={handleOnSubmit} layout='vertical'>
                     <div className='my-4'>
                         {attributes &&
+                            attributes.data &&
                             attributes.data.length > 1 &&
                             attributes.data.map((label, index) => (
                                 <Form.Item

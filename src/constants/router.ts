@@ -12,6 +12,7 @@ export const MAIN_ROUTES = {
 
     NOT_FOUND: '/404',
     SUCCESS_ORDER: '/success',
+    VERIFY_ORDER: '/verify-order',
 };
 
 export const ADMIN_ROUTES = {
@@ -33,6 +34,7 @@ export const ADMIN_ROUTES = {
     CATEGORIES: '/admin/categories',
     CATEGORIES_CREATE: '/admin/categories/create',
     CATEGORIES_EDIT: '/admin/categories/edit/:id', // @id
+    CATEGORIES_ATTRIBUTES: '/admin/categories/attributes',
 
     // SHOP
     SHOP: '/admin/shop',

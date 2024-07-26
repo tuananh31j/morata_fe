@@ -33,6 +33,40 @@ export type IProductItem = {
     reviewIds: string[];
 };
 
+export type IProductItemNew = {
+    _id: string;
+    name: string;
+    thumbnail: string;
+    images: string[];
+    rating: number;
+    reviewCount: number;
+    categoryId: string;
+    brandId: string;
+    variationIds: {
+        _id: string;
+        price: number;
+        discountPercentage?: number;
+        stock: number;
+        sku: string;
+        color: string;
+        image?: string;
+        productId: string;
+    }[];
+};
+
+export type IAllProductResponseNew = {
+    success: boolean;
+    message: string;
+    status: number;
+    products: IProductItemNew[];
+    data: {
+        products: IProductItemNew[];
+        page: number;
+        totalDocs: number;
+        totalPages: number;
+    };
+};
+
 export type IAllProductsResponse = {
     products: IProductItem[];
     page: number;

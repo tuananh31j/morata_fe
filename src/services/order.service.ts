@@ -2,7 +2,7 @@ import instance from '~/utils/api/axiosIntance';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { ORDER_ENDPOINT } from '~/constants/endpoint';
 import { IOrderResponse, IOrderDetails, IOrderParams } from '~/types/Order';
-import { OrderStatus } from '~/types/enum';
+import { OrderStatus } from '~/constants/enum';
 
 const orderService = {
     myOrder() {
@@ -32,6 +32,9 @@ const orderService = {
     },
     orderStatus() {
         return instance.get<IAxiosResponse<OrderStatus[]>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
+    },
+    vnpayReturnStatusOrder() {
+        return instance.get<{ code: string; message: string; data?: any }>(`${ORDER_ENDPOINT.VNPAY_RETURN}`);
     },
 };
 

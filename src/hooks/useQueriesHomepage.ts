@@ -6,7 +6,12 @@ import productService from '~/services/product.service';
 const useQueriesHomepage = () => {
     return useQueries({
         queries: [
-            { queryKey: [QUERY_KEY.PRODUCTS], queryFn: () => productService.getAll(), refetchInterval: Infinity },
+            // { queryKey: [QUERY_KEY.PRODUCTS], queryFn: () => productService.getAll(), refetchInterval: Infinity },
+            {
+                queryKey: [QUERY_KEY.PRODUCTS],
+                queryFn: () => productService.getAllProducts(),
+                refetchInterval: Infinity,
+            },
             {
                 queryKey: [QUERY_KEY.DEALS],
                 queryFn: () => productService.getTopDeals(),

@@ -22,7 +22,7 @@ import { useGetAllAtributes } from '~/hooks/attributes/Queries/useGetAttributesB
 import useCreateProduct from '~/hooks/products/Mutations/useCreateProduct';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { IProductForm, IThumbnailAntd } from '~/types/Product';
+import { IProductFiles, IProductForm, IThumbnailAntd } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';
 import { errorMessage } from '~/validation/Product';
 import AttributesItem from './_component/AttributesItem';
@@ -52,37 +52,6 @@ const CreateProduct = () => {
     const [isChooseCategory, setIsChooseCategory] = useState<boolean>(false);
     const [categoryId, setCategoryId] = useState<string>('');
     const currentIndex = useRef<number>(0);
-    // const [attributesData, setAttributesData] = useState<any>([]);
-    // const [attributeKeys, setAttributeKeys] = useState<number[]>([]);
-    // const attributes = [
-    //     {
-    //         type: 'options',
-    //         name: 'RAM',
-    //         attributeKey: 'ram',
-    //         isRequired: false,
-    //         values: ['32', '64', '128', '256', '512'],
-    //     },
-    //     {
-    //         type: 'options',
-    //         name: 'Loại laptop',
-    //         isRequired: true,
-    //         attributeKey: 'type',
-    //         values: ['Gaming', 'Ultrabook', '2 in 1'],
-    //     },
-    //     {
-    //         type: 'options',
-    //         name: 'Kích thước màn hình',
-    //         attributeKey: 'screenSize',
-    //         isRequired: false,
-    //         values: ['14 inches', '16 inches', '24 inches'],
-    //     },
-    //     {
-    //         type: 'manual',
-    //         name: 'Model',
-    //         attributeKey: 'model',
-    //         isRequired: false,
-    //     },
-    // ];
     const { data: attributesRes } = useGetAllAtributes(categoryId);
     const attributesResData = attributesRes?.data.attributeIds;
     const categoriesAndBrandData = useGetCategoriesAndBrands();
@@ -112,6 +81,7 @@ const CreateProduct = () => {
 
     const handleChangeImages: UploadProps['onChange'] = ({ fileList: newFileList }) => setImagesFileList(newFileList);
     const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+        console.log(newFileList);
         setThumbnailFile(newFileList);
     };
     const handleChangeAttributeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => {
@@ -248,10 +218,11 @@ const CreateProduct = () => {
                                     label='Product Images'
                                     name='images'
                                     className='font-medium text-[#08090F]'
+                                    dependencies={['images']}
                                     rules={[
                                         {
-                                            validator: async (_, images) => {
-                                                if (!images) {
+                                            validator: async (_, images: IProductFiles) => {
+                                                if (images.fileList?.length < 1) {
                                                     return errorMessage('Please input your images!');
                                                 }
                                                 /* eslint-disable */
@@ -298,10 +269,11 @@ const CreateProduct = () => {
                                     label='Product Thumbnail'
                                     name='thumbnail'
                                     className='font-medium text-[#08090F]'
+                                    dependencies={['thumbnail']}
                                     rules={[
                                         {
-                                            validator: async (_, thumbnail) => {
-                                                if (!thumbnail) {
+                                            validator: async (_, thumbnail: IProductFiles) => {
+                                                if (thumbnail.fileList?.length < 1) {
                                                     return errorMessage('Please input your thumbnail!');
                                                 }
                                                 if (thumbnail?.file.size >= MAX_SIZE) {
@@ -450,8 +422,8 @@ const CreateProduct = () => {
                                                             name={[name, 'thumbnail']}
                                                             rules={[
                                                                 {
-                                                                    validator: async (_, thumbnail) => {
-                                                                        if (!thumbnail) {
+                                                                    validator: async (_, thumbnail: IProductFiles) => {
+                                                                        if (thumbnail?.fileList.length < 1) {
                                                                             return errorMessage(
                                                                                 'Please input your thumbnail!'
                                                                             );

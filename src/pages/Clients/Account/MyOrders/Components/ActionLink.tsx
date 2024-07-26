@@ -1,6 +1,6 @@
 import { MinusCircleOutlined } from '@ant-design/icons';
 import { Button, ConfigProvider, Dropdown, MenuProps, Tag } from 'antd';
-import { OrderStatus } from '~/types/enum';
+import { OrderStatus } from '~/constants/enum';
 import { TinyColor } from '@ctrl/tinycolor';
 import { Link } from 'react-router-dom';
 import PopupFormCancelOrder from './PopupFormCancelOrder';

@@ -15,26 +15,26 @@ const FilterRating = ({ filterName }: { filterName: string }) => {
                 <Space direction='vertical'>
                     <Radio value={JSON.stringify({ min: 1, max: 1 })}>
                         <span className='cursor-pointer'>
-                            <RatingDisplay rating={1} />
+                            <RatingDisplay reviews={1} rating={1} />
                         </span>
                     </Radio>
                     <Radio value={JSON.stringify({ min: 2, max: 2 })}>
                         <span className='cursor-pointer'>
-                            <RatingDisplay rating={2} />
+                            <RatingDisplay reviews={2} rating={2} />
                         </span>
                     </Radio>
                     <Radio value={JSON.stringify({ min: 3, max: 3 })}>
                         <span className='cursor-pointer'>
-                            <RatingDisplay rating={3} />
+                            <RatingDisplay reviews={3} rating={3} />
                         </span>
                     </Radio>
                     <Radio value={JSON.stringify({ min: 4, max: 4 })}>
                         <span className='cursor-pointer'>
-                            <RatingDisplay rating={4} />
+                            <RatingDisplay reviews={4} rating={4} />
                         </span>
                     </Radio>
                     <Radio value={JSON.stringify({ min: 5, max: 5 })}>
-                        <RatingDisplay rating={5} />
+                        <RatingDisplay reviews={5} rating={5} />
                     </Radio>
                 </Space>
             </Radio.Group>
