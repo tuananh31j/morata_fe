@@ -1,9 +1,9 @@
 import FilterWrap from './FilterWrap';
 import { Radio, RadioChangeEvent } from 'antd';
 import { IParams } from '~/types/Api';
-import useFilters from '~/hooks/_common/useFilters';
 import { ICategory } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
+import useFilter from '~/hooks/_common/useFilter';
 
 const FilterBox = ({
     filterName,
@@ -14,9 +14,9 @@ const FilterBox = ({
     filterParams: keyof Omit<IParams, 'page' | 'sort'>;
     data: ICategory[] | IBrand[];
 }) => {
-    const { updateFilterAttribute, queryParams } = useFilters();
+    const { query, updateQueryParam } = useFilter();
     const onChange = (e: RadioChangeEvent) => {
-        updateFilterAttribute(filterParams, String(e.target.value));
+        updateQueryParam({ ...query, [filterParams]: e.target.value.toString() });
     };
     return (
         <FilterWrap filterName={filterName}>
@@ -24,7 +24,7 @@ const FilterBox = ({
                 buttonStyle='solid'
                 className='flex flex-wrap gap-x-2 gap-y-6'
                 onChange={onChange}
-                value={queryParams[filterParams] || ''}
+                value={query[filterParams] || ''}
             >
                 {data.map((item) => (
                     <Radio.Button className='rounded-none border' key={item._id} value={item._id}>

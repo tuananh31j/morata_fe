@@ -1,46 +1,41 @@
 import FilterItem from './FilterWrap';
 import { useMemo, useState } from 'react';
-import { InputNumber, Slider } from 'antd';
+import { Form, InputNumber, Slider } from 'antd';
 import { MinusOutlined } from '@ant-design/icons';
 import _, { debounce, parseInt } from 'lodash';
-import useFilters from '~/hooks/_common/useFilters';
+import useFilter from '~/hooks/_common/useFilter';
+import { FormProps } from 'antd/lib/form';
 
+type FieldType = {
+    larger?: number;
+    smaller?: number;
+};
 const PriceFilterItem = () => {
     const [isDispatch, setIsDispatch] = useState<boolean>(false);
-    const { updateFilterAttribute, queryParams } = useFilters();
-    const queryObj = queryParams.price
-        ? _.map(Object.values(JSON.parse(queryParams.price)), (str) => parseInt(str as string))
-        : [0, 1000];
-    const debouncedUpdateFilterAttribute = useMemo(
-        () =>
-            debounce((value) => updateFilterAttribute('price', JSON.stringify({ min: value[0], max: value[1] })), 500),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [isDispatch]
-    );
-    const handleSliderChange = (value: number[]) => {
-        debouncedUpdateFilterAttribute(value);
+    // const { query, updateQueryParam } = useFilter();
+
+    const handleSubmit = (value: number[]) => {
+        console.log(value);
+        // updateQueryParam({ ...query, ['price[gte]']: value[0], ['price[lte]']: value[1] });
     };
+    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+        console.log('Success:', values);
+    };
+
     return (
         <FilterItem filterName='Price'>
-            <div>
-                <Slider min={0} max={1000} range defaultValue={queryObj} onChangeComplete={handleSliderChange} />
+            <Form onFinish={onFinish}>
                 <div className='flex items-center justify-center gap-3'>
-                    <InputNumber
-                        className='flex-1'
-                        value={Number(queryObj[0])}
-                        onBlur={() => setIsDispatch(!isDispatch)}
-                        onChange={(value) => handleSliderChange([value!, Number(queryObj[1])])}
-                    />
-                    <MinusOutlined />
-
-                    <InputNumber
-                        className='flex-1'
-                        value={Number(queryObj[1])}
-                        onBlur={() => setIsDispatch(!isDispatch)}
-                        onChange={(value) => handleSliderChange([Number(queryObj[0]), value!])}
-                    />
+                    <Form.Item>
+                        {' '}
+                        <InputNumber className='flex-1' onBlur={() => setIsDispatch(!isDispatch)} />
+                        <MinusOutlined />
+                    </Form.Item>
+                    <Form.Item>
+                        <InputNumber className='flex-1' onBlur={() => setIsDispatch(!isDispatch)} />
+                    </Form.Item>
                 </div>
-            </div>
+            </Form>
         </FilterItem>
     );
 };

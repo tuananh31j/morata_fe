@@ -7,7 +7,7 @@ import RatingFilter from '../_components/FilterItem/RatingItem';
 import PriceFilterItem from '../_components/FilterItem/PriceItem';
 import FilterString from '../_components/FilterItem/FillterString';
 import FilterBox from '../_components/FilterItem/FilterBox';
-import useFilters from '~/hooks/_common/useFilters';
+import useFilter from '~/hooks/_common/useFilter';
 
 type IFilterProps = {
     categories: ICategory[];
@@ -16,10 +16,10 @@ type IFilterProps = {
 
 const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
     const { isMobile, isTablet } = useResponsive();
-    const { resetQueryParams } = useFilters();
+    const { reset } = useFilter();
 
     return (
-        <div className='rounded-md border border-transparent bg-white p-4 py-0'>
+        <div className='rounded-md border border-transparent bg-white p-3 py-0'>
             {isMobile && <FilterDrawer />}
             {isTablet && (
                 <div className='relative hidden h-full md:block'>
@@ -28,7 +28,7 @@ const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
                     <RatingFilter filterName='Rating' />
                     <PriceFilterItem />
                     <button
-                        onClick={resetQueryParams}
+                        onClick={reset}
                         className='my-4 w-full rounded-md border border-[#1e3a8a] bg-white p-3 text-black hover:bg-[#1e3a8a] hover:text-white'
                     >
                         Reset All

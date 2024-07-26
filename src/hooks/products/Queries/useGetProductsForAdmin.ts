@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import productService from '~/services/product.service';
 
-const useGetAllProducts = (params?: any) => {
+const useGetProducts = (params?: any) => {
     return useQuery({
         queryKey: [QUERY_KEY.PRODUCTS, ...Object.values(params), Object.keys(params).join],
-        queryFn: () => productService.getAllProducts(params),
+        queryFn: () => productService.getAllProductForAdmin(params),
     });
 };
 
-export default useGetAllProducts;
+export default useGetProducts;

@@ -1,36 +1,36 @@
 import { Select } from 'antd';
 import GridIcon from '~/components/_common/Icons/GridIcon';
-import useFilters from '~/hooks/_common/useFilters';
+import useFilter from '~/hooks/_common/useFilter';
 import { cn } from '~/utils';
 
 const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
-    const { grid, updateGridClass, updateQueryParam } = useFilters();
-    const handleGrid2 = () => {
-        updateGridClass('2');
-    };
-    const handleGrid1 = () => {
-        updateGridClass('1');
-    };
-    const handleGrid3 = () => {
-        updateGridClass('3');
-    };
-    const handleGrid4 = () => {
-        updateGridClass('4');
-    };
-    const handleGrid5 = () => {
-        updateGridClass('5');
-    };
+    // const { query, updateQueryParam } = useFilter();
+    // const handleGrid2 = () => {
+    //     updateGridClass('2');
+    // };
+    // const handleGrid1 = () => {
+    //     updateGridClass('1');
+    // };
+    // const handleGrid3 = () => {
+    //     updateGridClass('3');
+    // };
+    // const handleGrid4 = () => {
+    //     updateGridClass('4');
+    // };
+    // const handleGrid5 = () => {
+    //     updateGridClass('5');
+    // };
 
-    const handleSelectChange = (value: string) => {
-        updateQueryParam('sort', value);
-    };
+    // const handleSelectChange = (value: string) => {
+    //     updateQueryParam('sort', value);
+    // };
 
     return (
         <div className='flex items-center justify-between rounded-md border border-transparent bg-white p-4'>
             <div>
                 <p className='text-gray-500 capitalize'>{totalProducts} Products</p>
             </div>
-            <div className='hidden items-center xl:flex xl:gap-4'>
+            {/* <div className='hidden items-center xl:flex xl:gap-4'>
                 <button
                     onClick={handleGrid2}
                     className={cn({ ['rounded-md bg-blue-300']: grid === '2' }, 'border border-transparent p-1')}
@@ -61,8 +61,8 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
                 >
                     <GridIcon color={grid && Number(grid) === 1 ? 'white' : 'gray'} col={1} />
                 </button>
-            </div>
-            <Select
+            </div> */}
+            {/* <Select
                 style={{ width: 200 }}
                 placeholder='Sort'
                 optionFilterProp='children'
@@ -89,7 +89,7 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
                         label: 'Price asc',
                     },
                 ]}
-            />
+            /> */}
         </div>
     );
 };

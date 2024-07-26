@@ -20,17 +20,38 @@ export interface IProduct {
 }
 
 export type IProductItem = {
+    isHide: boolean;
+    reviewCount: number;
     _id: string;
     name: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    categoryId: string;
-    brandId: string;
-    stock: number;
+    discount: number;
     images: string[];
-    thumbnail: string;
+    imageUrlRefs: string[];
+    thumbnail: string[];
+    thumbnailUrlRef: string[];
+    status: string;
+    isAvailable: boolean;
+    isDeleted: boolean;
+    attributes: {
+        key: string;
+        value: string;
+        _id?: string;
+    }[];
+    rating: number;
     reviewIds: string[];
+    variationIds: {
+        _id: string;
+        price: number;
+        image: string;
+        stock: number;
+        sku: string;
+        color: string;
+        productId: string;
+    }[];
+    brandId: string;
+    categoryId: string;
+    createdAt: string;
+    updatedAt: string;
 };
 
 export type IProductItemNew = {
@@ -55,16 +76,10 @@ export type IProductItemNew = {
 };
 
 export type IAllProductResponseNew = {
-    success: boolean;
-    message: string;
-    status: number;
     products: IProductItemNew[];
-    data: {
-        products: IProductItemNew[];
-        page: number;
-        totalDocs: number;
-        totalPages: number;
-    };
+    page: number;
+    totalDocs: number;
+    totalPages: number;
 };
 
 export type IAllProductsResponse = {

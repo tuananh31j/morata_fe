@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
-import useFilters from '~/hooks/_common/useFilters';
+import useFilter from '~/hooks/_common/useFilter';
 
 const MenuItem = ({ name, id }: { name: string; id: string }) => {
-    const { updateFilterAttribute } = useFilters();
+    const { query, updateQueryParam } = useFilter();
     return (
         <li className='group list-none font-semibold'>
             <div className='flex items-center'>
                 <Link
-                    onClick={() => updateFilterAttribute('categoryId', id)}
+                    onClick={() => updateQueryParam({ ...query, categoryId: id })}
                     to={`${MAIN_ROUTES.PRODUCTS}?categoryId=${id}`}
                     className=' pr-2  text-[16px] uppercase text-white hover:text-[#16bcdc]   group-hover:border-white '
                 >

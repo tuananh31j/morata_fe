@@ -1,6 +1,7 @@
 export const PRODUCT_ENDPOINT = {
     PRODUCT: '/products',
     ALL: '/products/all',
+    ALL_ADMIN: '/products/portal/all',
     LATEST: '/products/latest',
     BYCATE: '/products/bycate',
     DEALS: '/products/deals',

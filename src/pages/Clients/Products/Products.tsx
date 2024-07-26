@@ -1,44 +1,44 @@
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
-import useFilters from '~/hooks/_common/useFilters';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
-import useGetProducts from '~/hooks/products/Queries/useGetProducts';
+import useGetProducts from '~/hooks/products/Queries/useGetProductsForAdmin';
 import FilterProducts from './FilterSidebar';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import { Empty, Pagination } from 'antd';
 import SortAndViewOptions from '~/pages/Clients/Products/SortAndViewOptions';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
-import { cn } from '~/utils';
+import useFilter from '~/hooks/_common/useFilter';
+import useGetAllProducts from '~/hooks/products/Queries/useGetAllProducts';
 
 const Products = () => {
     useDocumentTitle('Products');
-    const { queryParams, grid, updateQueryParam } = useFilters();
+    const { query, updateQueryParam } = useFilter();
     // @Query
     const [{ data: brands }, { data: categoies }] = useGetCategoriesAndBrands();
-    const { data: products, isLoading: isProductsLoading } = useGetProducts(queryParams);
+    const { data: products, isLoading: isProductsLoading } = useGetAllProducts(query);
 
     const onPageChange = (page: number) => {
-        updateQueryParam('page', String(page));
+        updateQueryParam({ ...query, page: page.toString() });
     };
     return (
         <>
             <div className='block transition-all duration-300 ease-in-out md:flex md:gap-5'>
-                <div className='md:w-[30%]'>
+                <div className='md:w-[20%]'>
                     {categoies && brands && <FilterProducts categories={categoies.data} brands={brands.data} />}
                 </div>
                 <div className='w-full'>
                     <SortAndViewOptions totalProducts={products ? products.data.totalDocs : 0} />
                     <div
-                        className={cn(
-                            {
-                                ['grid-cols-1']: grid === '1',
-                                ['grid-cols-2']: grid === '2',
-                                ['grid-cols-3']: grid === '3',
-                                ['grid-cols-4']: grid === '4',
-                                ['grid-cols-5']: grid === '5',
-                                ['grid-cols-2 lg:grid-cols-4']: !grid,
-                            },
-                            'my-5 grid gap-5'
-                        )}
+                    // className={cn(
+                    //     {
+                    //         ['grid-cols-1']: grid === '1',
+                    //         ['grid-cols-2']: grid === '2',
+                    //         ['grid-cols-3']: grid === '3',
+                    //         ['grid-cols-4']: grid === '4',
+                    //         ['grid-cols-5']: grid === '5',
+                    //         ['grid-cols-2 lg:grid-cols-4']: !grid,
+                    //     },
+                    //     'my-5 grid gap-5'
+                    // )}
                     >
                         {isProductsLoading && <SmallSkeleton />}
                         {products &&
@@ -49,8 +49,8 @@ const Products = () => {
                     <div>
                         {products?.data && !Array.isArray(products.data) && (
                             <Pagination
-                                current={Number(queryParams.page)}
-                                defaultPageSize={Number(queryParams.limit)}
+                                current={Number(query.page)}
+                                defaultPageSize={Number(query.limit)}
                                 total={products.data.totalDocs}
                                 onChange={onPageChange}
                             />

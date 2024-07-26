@@ -16,4 +16,12 @@ export type IParams = Partial<{
     isAvailable: boolean;
 }>;
 
+export type Params = {
+    [key: string]: any;
+    page?: string;
+    sort?: string;
+    limit?: string;
+    fields?: string;
+};
+
 export type IPagination = { page: number; limit: number };

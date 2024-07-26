@@ -3,20 +3,20 @@ import { Button, Table, TableProps } from 'antd';
 import Search from 'antd/es/input/Search';
 import { DataType, ordersListColums } from '../_helper';
 import useGetAllOrders from '~/hooks/orders/Queries/useGetAllOrders';
-import useFilterOrder from '~/hooks/_common/useFilterOrder';
+// import useFilterOrder from '~/hooks/_common/useFilterOrder';
 import { IOrderParams } from '~/types/Order';
 
 const OrdersList = () => {
-    const { updateQueryParam, queryParams, pagination: paginationValue } = useFilterOrder();
-    const columns = ordersListColums(queryParams);
+    // const { updateQueryParam, queryParams, pagination: paginationValue } = useFilterOrder();
+    // const columns = ordersListColums(queryParams);
 
-    // @Query
-    const { data } = useGetAllOrders(queryParams, paginationValue);
+    // // @Query
+    // const { data } = useGetAllOrders(queryParams, paginationValue);
 
-    // @event
-    const onChange: TableProps<DataType>['onChange'] = (pagination, filters) => {
-        updateQueryParam(filters as IOrderParams, pagination.current || 1);
-    };
+    // // @event
+    // const onChange: TableProps<DataType>['onChange'] = (pagination, filters) => {
+    //     updateQueryParam(filters as IOrderParams, pagination.current || 1);
+    // };
 
     return (
         <div className='mx-6'>
@@ -31,7 +31,7 @@ const OrdersList = () => {
                     </Button>
                 </div>
 
-                <Table
+                {/* <Table
                     columns={columns}
                     dataSource={data?.data.data.orders}
                     rowKey={(record) => record._id}
@@ -42,7 +42,7 @@ const OrdersList = () => {
                         pageSize: paginationValue.limit,
                         total: data?.data?.data.totalDocs,
                     }}
-                />
+                /> */}
             </div>
         </div>
     );

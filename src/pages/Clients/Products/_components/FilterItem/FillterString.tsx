@@ -1,9 +1,9 @@
 import FilterWrap from './FilterWrap';
 import { Radio, RadioChangeEvent, Space } from 'antd';
 import { IParams } from '~/types/Api';
-import useFilters from '~/hooks/_common/useFilters';
 import { ICategory } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
+import useFilter from '~/hooks/_common/useFilter';
 
 const FilterString = ({
     filterName,
@@ -14,16 +14,13 @@ const FilterString = ({
     filterParams: keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating' | 'page' | 'sort'>;
     data: ICategory[] | IBrand[];
 }) => {
-    const { updateFilterAttribute, queryParams } = useFilters();
+    const { query, updateQueryParam } = useFilter();
     const onChange = (e: RadioChangeEvent) => {
-        updateFilterAttribute(
-            filterParams as keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating'>,
-            String(e.target.value)
-        );
+        updateQueryParam({ ...query, [filterParams]: e.target.value.toString() });
     };
     return (
         <FilterWrap filterName={filterName}>
-            <Radio.Group onChange={onChange} value={queryParams[filterParams]}>
+            <Radio.Group onChange={onChange} value={query[filterParams]}>
                 <Space direction='vertical'>
                     {data.map((item) => (
                         <Radio key={item._id} value={item._id}>

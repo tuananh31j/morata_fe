@@ -28,7 +28,7 @@ const IconButton: React.FC<IIconButtonProps> = ({ icon, name, subName, count }) 
             </Badge>
             <div className={hiddenShoppingCartOutlined}>
                 <span className='text-gray-400 block font-medium capitalize'>{subName}</span>
-                <span className='block capitalize text-white'>{name}</span>
+                <span className='block w-20 truncate capitalize text-white'>{name}</span>
             </div>
         </div>
     );

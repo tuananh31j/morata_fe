@@ -1,14 +1,14 @@
 import instance from '~/utils/api/axiosIntance';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { ORDER_ENDPOINT } from '~/constants/endpoint';
-import { IOrderResponse, IOrderDetails, IOrderParams } from '~/types/Order';
+import { IOrderResponse, IOrderDetails } from '~/types/Order';
 import { OrderStatus } from '~/constants/enum';
 
 const orderService = {
     myOrder() {
         return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
-    getAllOrders(params?: Partial<IOrderParams>) {
+    getAllOrders(params?: any) {
         return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.ROOT}`, {
             params,
         });
