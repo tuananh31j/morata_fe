@@ -6,7 +6,7 @@ const StepsOrder = ({ orderStatus }: { orderStatus: OrderStatus }) => {
     const { items, steps } = renderSteps({ currentStep: orderStatus });
     return (
         <Steps
-            status={orderStatus === OrderStatus.canceled ? 'error' : 'finish'}
+            status={orderStatus === OrderStatus.cancelled ? 'error' : 'finish'}
             className='my-10 capitalize'
             current={steps.indexOf(orderStatus)}
             items={items}

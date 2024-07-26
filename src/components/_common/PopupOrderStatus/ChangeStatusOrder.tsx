@@ -50,7 +50,7 @@ const PopupFormCancelOrder = ({
                 await finishOrder(id);
                 setIsModalOpen(false);
                 break;
-            case OrderStatus.canceled:
+            case OrderStatus.cancelled:
                 console.log('is cacelled status');
 
                 break;

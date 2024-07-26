@@ -7,12 +7,12 @@ import { RootState } from '~/store/store';
 import { Currency } from '~/utils';
 
 const CheckoutDetails = () => {
-    const information = useSelector((state: RootState) => state?.orderReducer.Detail);
-    // FAKE DATA
+    const information = useSelector((state: RootState) => state?.orderReducer?.Detail);
 
     const totalAmount = (information?.items as { price: number; quantity: number }[])?.reduce((acc, curr) => {
         return acc + curr.price * curr.quantity;
     }, 0);
+
     const items: DescriptionsProps['items'] = [
         {
             key: '0',

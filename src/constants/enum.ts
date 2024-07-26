@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 export enum OrderStatus {
     pending = 'pending',
-    canceled = 'cancelled',
+    cancelled = 'cancelled',
     confirmed = 'confirmed',
     shipping = 'shipping',
     delivered = 'delivered',

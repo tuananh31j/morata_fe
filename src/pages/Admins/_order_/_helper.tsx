@@ -58,10 +58,10 @@ export const orderItemsColums: TableProps['columns'] = [
 
 export const renderSteps = ({ currentStep }: { currentStep: OrderStatus }) => {
     let newArr = ORDER_STATUS_ARR;
-    if (currentStep === OrderStatus.canceled) {
+    if (currentStep === OrderStatus.cancelled) {
         newArr = ORDER_STATUS_ARR.filter((item) => item !== OrderStatus.confirmed);
     } else {
-        newArr = ORDER_STATUS_ARR.filter((item) => item !== OrderStatus.canceled);
+        newArr = ORDER_STATUS_ARR.filter((item) => item !== OrderStatus.cancelled);
     }
     const items = newArr.map((step) => ({
         title: step,

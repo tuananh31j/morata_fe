@@ -18,7 +18,7 @@ const OrderStatusTag = ({ status }: { status: OrderStatus }) => {
             );
         case OrderStatus.confirmed:
             return <Tag color='processing'>{status}</Tag>;
-        case OrderStatus.canceled:
+        case OrderStatus.cancelled:
             return (
                 <Tag icon={<CloseCircleOutlined />} color='error'>
                     {status}

@@ -1,21 +1,20 @@
-import { Button, Modal, Space, Tooltip } from 'antd';
+import { Badge, Button, Card, Flex, Image, Modal, Space, Tooltip } from 'antd';
 import { useState } from 'react';
-import SearchSkeleton from '~/components/_common/skeleton/SearchSkeleton';
 import WrapperList from '~/components/_common/WrapperList';
-import MiniProduct from '~/components/ProductCard/MiniProduct';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
+import { Currency } from '~/utils';
 
 const PopupOrderDetails = ({ id }: { id: string }) => {
-    const { data, isLoading } = useOrderDetails(id);
+    const { data } = useOrderDetails(id);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const orderDetails = data?.data.data;
     const showModal = () => {
         setIsModalOpen(true);
     };
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    console.log(data);
+
     return (
         <>
             <Tooltip placement='topLeft' title={id}>
@@ -24,52 +23,84 @@ const PopupOrderDetails = ({ id }: { id: string }) => {
 
             <Modal footer={''} open={isModalOpen} onCancel={handleCancel} width={1000}>
                 <WrapperList classic className='m-0' title='Your Order&#39;s Details'>
-                    <div className='grid grid-cols-2 items-start gap-10'>
-                        <div>
-                            {/* SHIPPING ADDRESS */}
-                            <div className='mt-1'>
-                                <span className='font-semibold text-[#0068c9]'>Address: </span>{' '}
-                                <span>{data && Object.values(data.data.data.shippingAddress).join(', ')}</span>
-                            </div>
-                            {/* PAYMENT METHOD */}
-                            <div className='mt-1'>
-                                <Space>
-                                    <span className='font-semibold text-[#0068c9]'>Payment method: </span>
-                                    <span>{data && data.data.data.paymentMethod}</span>
-                                </Space>
-                            </div>
-                            {/* SHIPPING FEE */}
-                            <div className='mt-1'>
-                                <Space>
-                                    <span className='font-semibold text-[#0068c9]'>Shipping fee: </span>
-                                    <span>{data && data.data.data.shippingFee}</span>
-                                </Space>
-                            </div>
-                            {/* TAX */}
-                            <div className='mt-1'>
-                                <Space>
-                                    <span className='font-semibold text-[#0068c9]'>Tax: </span>
-                                    <span>{data && data.data.data.tax}</span>
-                                </Space>
-                            </div>
-                        </div>
-                        <div className='flex flex-col gap-4'>
-                            {isLoading && <SearchSkeleton />}
-                            {data &&
-                                data.data.data.items.map((product, i) => (
-                                    <MiniProduct
-                                        key={i}
-                                        quantity={product.quantity}
-                                        productId={{
-                                            _id: 'ok',
-                                            name: product.name,
-                                            thumbnail: product.image,
-                                            discountPercentage: 1,
-                                            price: product.price,
-                                        }}
-                                    />
-                                ))}
-                        </div>
+                    <div className='grid grid-cols-3 items-start gap-5'>
+                        <Card title="Receiver's Info" size='small'>
+                            <p>Name: {orderDetails?.receiverInfo.name}</p>
+                            <p>Email: {orderDetails?.receiverInfo.email}</p>
+                            <p>Phone: {orderDetails?.receiverInfo.phone}</p>
+                        </Card>
+
+                        <Card title='Payment' size='small'>
+                            <p>Method: {orderDetails?.paymentMethod}</p>
+                            <p>Shipping Fee: {orderDetails?.shippingFee}</p>
+                            <p>Tax: {orderDetails?.tax}</p>
+                            <p>Paid Status: {orderDetails?.isPaid ? 'Paid' : "Haven't Paid"}</p>
+                        </Card>
+
+                        <Card title='Shipping Address' size='small'>
+                            <p>City: {orderDetails?.shippingAddress.city}</p>
+                            <p>Country: {orderDetails?.shippingAddress.country}</p>
+                            <p>
+                                Line : {orderDetails?.shippingAddress.line1}, {orderDetails?.shippingAddress.line2}
+                            </p>
+                            <p>Postal Code: {orderDetails?.shippingAddress.postal_code}</p>
+                            <p>District: {orderDetails?.shippingAddress.state}</p>
+                        </Card>
+
+                        <Card title='Products' size='small' className='col-span-3'>
+                            <Space direction='vertical' size={7} className='w-full'>
+                                {orderDetails?.items &&
+                                    orderDetails.items.map((product, i) => {
+                                        return (
+                                            <Card key={i} className='w-full p-0'>
+                                                <div className='flex'>
+                                                    <div className='flex w-[20%] items-center justify-center text-center'>
+                                                        <Image className='h-[70px] w-[70px]' src={product?.image} />
+                                                    </div>
+
+                                                    <div className='flex w-[20%] items-center justify-center text-center text-base font-normal'>
+                                                        <h3 className='font-medium'>{product?.name}</h3>
+                                                    </div>
+
+                                                    <div className='flex w-[20%] items-center justify-center text-center text-base font-normal'>
+                                                        <span>{product?.price && Currency.format(product.price)}</span>
+                                                    </div>
+
+                                                    <div className='flex w-[20%] items-center justify-center text-center text-base font-normal'>
+                                                        <span> x{product?.quantity}</span>
+                                                    </div>
+
+                                                    <div className='flex w-[20%] items-center justify-center text-center text-base font-normal'>
+                                                        <span>
+                                                            {product?.price &&
+                                                                Currency.format(product?.price * product?.quantity)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </Card>
+                                        );
+                                    })}
+
+                                <div className='total mt-3'>
+                                    <Flex justify='end'>
+                                        <Badge
+                                            color='#16bcdc'
+                                            count={orderDetails?.items ? orderDetails.items.length : 0}
+                                            className='mr-22 flex w-auto pr-2'
+                                        >
+                                            <Space>
+                                                <div className='text-lg font-semibold'>Total:</div>
+
+                                                <div className='text-lg font-semibold'>
+                                                    {orderDetails?.totalPrice &&
+                                                        Currency.format(orderDetails.totalPrice)}
+                                                </div>
+                                            </Space>
+                                        </Badge>
+                                    </Flex>
+                                </div>
+                            </Space>
+                        </Card>
                     </div>
                 </WrapperList>
             </Modal>

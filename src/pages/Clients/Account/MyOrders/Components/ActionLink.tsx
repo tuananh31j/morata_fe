@@ -38,14 +38,18 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
     switch (status) {
         case OrderStatus.pending:
             return <PopupFormCancelOrder id={orderId} />;
+
         case OrderStatus.confirmed:
         case OrderStatus.shipping:
-        case OrderStatus.canceled:
+            return <></>;
+
+        case OrderStatus.cancelled:
             return (
-                <Button type='primary' disabled>
-                    Invalid!!
+                <Button type='primary' danger disabled>
+                    Cancelled!!
                 </Button>
             );
+
         case OrderStatus.done:
             return (
                 <ConfigProvider
@@ -67,6 +71,7 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
                     </Dropdown>
                 </ConfigProvider>
             );
+
         default:
             return (
                 <Tag icon={<MinusCircleOutlined />} color='default'>

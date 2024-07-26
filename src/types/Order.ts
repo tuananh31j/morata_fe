@@ -52,7 +52,7 @@ export interface IOrderResponse {
         totalPrice: number;
         paymentMethod: PaymentMethod;
         isPaid: boolean;
-        orderStatus: OrderStatus;
+        currentOrderStatus: OrderStatus;
         createdAt: string;
     }>;
     page: number;

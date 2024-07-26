@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Flex, Form, Modal, Radio } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { concat } from 'lodash';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -17,7 +18,7 @@ type IFormCancelOrder = z.infer<typeof schemaFormCancelOrder>;
 
 const PopupFormCancelOrder = ({ id }: { id: string }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { mutateAsync } = useCancelOrder();
+    const { mutateAsync, isSuccess } = useCancelOrder();
     const {
         control,
         handleSubmit,
@@ -29,9 +30,20 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
 
     const onSubmit: SubmitHandler<IFormCancelOrder> = async (data) => {
         try {
-            await mutateAsync({ orderId: id, description: `${data.reason}, ${data.description || ''}` });
-            setIsModalOpen(false);
-            reset();
+            const reasonCombined = data.reason.concat(data.description ? `, ${data.description}` : '');
+
+            const payload = {
+                orderId: id,
+                reason: reasonCombined,
+            };
+
+            await mutateAsync(payload);
+
+            if (isSuccess) {
+                showMessage('Cancel order successfully!', 'success');
+                setIsModalOpen(false);
+                reset();
+            }
         } catch (error) {
             showMessage('Something wrong!', 'error');
         }
@@ -51,7 +63,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                 Cancel
             </Button>
             <Modal open={isModalOpen} footer='' onCancel={handleCancel}>
-                <WrapperList classic className='m-0' title='Tell us the reason for cancellation'>
+                <WrapperList classic className='m-0' title='Tell us why you are cancelling this order'>
                     <Form
                         onFinish={handleSubmit(onSubmit)}
                         className='w-full'

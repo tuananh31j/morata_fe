@@ -13,7 +13,7 @@ const orderService = {
             params,
         });
     },
-    cancelOrder(body: { orderId: string; reason: string }) {
+    cancelOrder(body: { orderId: string; reason?: string }) {
         return instance.patch<void, { orderId: string; reason?: string }>(`${ORDER_ENDPOINT.CANCELED}`, body);
     },
     confirmOrder({ orderId, reason }: { orderId: string; reason: string }) {
