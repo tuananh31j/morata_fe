@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
 import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
 import { IAttributeFormData } from '~/types/Category';
+import showMessage from '~/utils/ShowMessage';
 
 const CreateAttribute = () => {
     const navigate = useNavigate();
-    const { mutate: createAttribute, isPending } = useMutationCreateAttribute();
+    const { mutate: createAttribute, isPending, isSuccess, isError } = useMutationCreateAttribute();
     const { handleMessage, contextHolder } = useMessage();
 
     const [inputFields, setInputFields] = useState([{ id: Date.now(), value: '' }]);
@@ -38,10 +39,18 @@ const CreateAttribute = () => {
         const payload = { ...values, values: inputValues };
 
         createAttribute(payload);
-        navigate('/admin/categories/create', { replace: true, state: { newAttribute: payload } });
 
         if (isPending) {
             handleMessage({ type: 'loading', content: '...Creating!' });
+        }
+
+        if (isSuccess) {
+            showMessage('Attribute created successfully!', 'success');
+            navigate('/admin/categories/create', { replace: true, state: { newAttribute: payload } });
+        }
+
+        if (isError) {
+            showMessage('Attribute creation failed!', 'error');
         }
     };
 
