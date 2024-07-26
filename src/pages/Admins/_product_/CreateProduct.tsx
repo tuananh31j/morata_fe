@@ -438,7 +438,10 @@ const CreateProduct = () => {
                                                             rules={[
                                                                 {
                                                                     validator: async (_, thumbnail: IProductFiles) => {
-                                                                        if (thumbnail?.fileList.length < 1) {
+                                                                        if (
+                                                                            thumbnail?.fileList?.length < 1 ||
+                                                                            !thumbnail
+                                                                        ) {
                                                                             return errorMessage(
                                                                                 'Please input your thumbnail!'
                                                                             );
