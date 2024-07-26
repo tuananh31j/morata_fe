@@ -5,9 +5,11 @@ import showMessage from '~/utils/ShowMessage';
 
 export default function useFinishAnOrder() {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationKey: ['FINISH_ORDER'],
         mutationFn: (id: string) => orderService.finishOrder(id),
+
         onSuccess: (_, id) => {
             showMessage('Order is done.', 'success');
             setTimeout(() => {

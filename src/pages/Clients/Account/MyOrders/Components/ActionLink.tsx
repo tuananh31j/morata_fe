@@ -1,9 +1,11 @@
 import { MinusCircleOutlined } from '@ant-design/icons';
-import { Button, ConfigProvider, Dropdown, MenuProps, Tag } from 'antd';
-import { OrderStatus } from '~/constants/enum';
 import { TinyColor } from '@ctrl/tinycolor';
+import { Button, ConfigProvider, Dropdown, MenuProps, Tag } from 'antd';
 import { Link } from 'react-router-dom';
+import { OrderStatus } from '~/constants/enum';
+import useFinishOrderClient from '~/hooks/orders/Mutations/useFinishOrderClient';
 import PopupFormCancelOrder from './PopupFormCancelOrder';
+import showMessage from '~/utils/ShowMessage';
 
 const colorsArr = ['#fc6076', '#ff9a44', '#ef9d43', '#e75516'];
 const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
@@ -34,7 +36,17 @@ const items: MenuProps['items'] = [
         ),
     },
 ];
+
 const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string }) => {
+    const { mutateAsync: finishOrder } = useFinishOrderClient();
+    const handleFinishOrder = async () => {
+        const res = await finishOrder(orderId);
+
+        if (res) {
+            showMessage('Thank you for confirming!', 'success');
+        }
+    };
+
     switch (status) {
         case OrderStatus.pending:
             return <PopupFormCancelOrder id={orderId} />;
@@ -42,6 +54,13 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
         case OrderStatus.confirmed:
         case OrderStatus.shipping:
             return <></>;
+
+        case OrderStatus.delivered:
+            return (
+                <Button onClick={() => handleFinishOrder()} type='primary'>
+                    I haveReceived
+                </Button>
+            );
 
         case OrderStatus.cancelled:
             return (
