@@ -8,7 +8,7 @@ import OrderStatusTag from '~/components/OrderStatusTag';
 export interface DataType {
     _id: string;
     paymentMethod: PaymentMethod;
-    orderStatus: string;
+    currentOrderStatus: string;
     totalPrice: number;
     createdAt: string;
 }
@@ -28,7 +28,7 @@ const filterStatusItems = [
     },
     {
         text: 'Canceled',
-        value: OrderStatus.canceled,
+        value: OrderStatus.cancelled,
     },
     {
         text: 'Done',
@@ -69,13 +69,13 @@ export const columns: TableColumnsType<DataType> = [
     },
     {
         title: 'Status',
-        dataIndex: 'orderStatus',
+        dataIndex: 'currentOrderStatus',
         render: (value) => <OrderStatusTag status={value} />,
         filters: filterStatusItems,
     },
     {
         title: 'Actions',
-        dataIndex: 'orderStatus',
+        dataIndex: 'currentOrderStatus',
         render: (value, record) => <ActionLink status={value} orderId={record._id} />,
         // sorter: (a, b) => a.name.length - b.name.length,
         // sortDirections: ['descend'],
