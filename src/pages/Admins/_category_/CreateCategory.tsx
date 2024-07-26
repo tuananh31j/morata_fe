@@ -1,5 +1,5 @@
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, FormProps, Input, Popover } from 'antd';
+import { Button, Checkbox, CheckboxProps, Form, FormProps, GetProp, Input, Popover, Radio } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
@@ -13,7 +13,6 @@ const CreateCategory = () => {
 
     const { data } = useGetAllAtributesNew();
     const attributes = data?.data;
-    console.log(attributes);
 
     const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
 
@@ -38,6 +37,10 @@ const CreateCategory = () => {
             return <div key={i}>{value}</div>;
         });
     };
+
+    // const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
+    //     console.log('checked = ', checkedValues);
+    // };
 
     const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
         console.log('Success:', values);
@@ -78,8 +81,9 @@ const CreateCategory = () => {
                                 className='font-medium text-[#08090F]'
                                 rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
                             >
-                                {/* <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' /> */}
-                                <div className='grid grid-cols-3 gap-2'>
+                                <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' />
+
+                                {/* <div className='grid grid-cols-3 gap-2'>
                                     {attributeOptions.map((option) => (
                                         <Checkbox key={option.value} value={option.value}>
                                             <Popover content={attributeValues(option)} title={option.label}>
@@ -87,7 +91,7 @@ const CreateCategory = () => {
                                             </Popover>
                                         </Checkbox>
                                     ))}
-                                </div>
+                                </div> */}
                             </Form.Item>
 
                             <Form.Item className='flex justify-end'>
