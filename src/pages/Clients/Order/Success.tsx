@@ -9,21 +9,13 @@ import { RootState } from '~/store/store';
 
 export default function Success() {
     const navigate = useNavigate();
+    const params = new URLSearchParams(window.location.search);
+    console.log(params);
     const user = useSelector((state: RootState) => state.authReducer.user);
-    const test = UseVNpayReturn();
-    console.log(test.data);
+    const test = UseVNpayReturn(params);
     const { mutate } = useMutationRemoveAll();
     useEffect(() => {
-        // Vô hiệu hóa nút quay lại trên trình duyệt
-        const handleDisableBackButton = () => {
-            window.history.pushState(null, '', window.location.pathname);
-        };
-
-        handleDisableBackButton();
-
-        window.addEventListener('popstate', handleDisableBackButton);
-
-        return () => window.removeEventListener('popstate', handleDisableBackButton);
+        mutate({ userId: user ? user._id : '' });
     }, []);
     return (
         <Watermark content={['Morata', 'Thank you!']}>

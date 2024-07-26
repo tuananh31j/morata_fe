@@ -30,6 +30,7 @@ export type ICheckoutCash = {
 
 export type ICheckoutForm = {
     name: string | undefined;
+    paymentMethods: number;
     email: string | undefined;
     phone: string | undefined;
     city: string;

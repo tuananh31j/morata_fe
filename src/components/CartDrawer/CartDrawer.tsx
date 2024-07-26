@@ -13,6 +13,7 @@ import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
 import { useUpdateQuantity } from '~/hooks/cart/Mutations/useUpdateQuantity';
 import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
 import { RootState } from '~/store/store';
+import { IAddCartPayload } from '~/types/cart/CartPayload';
 import { ICartDataResponse } from '~/types/cart/CartResponse';
 import { Currency } from '~/utils';
 
@@ -62,7 +63,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
         setPendingUpdates({ productVariation: id, quantity: newQuantity });
     };
     const debouncedUpdate = useCallback(
-        debounce(async (payload: any) => {
+        debounce(async (payload: IAddCartPayload) => {
             await updateQuantity(payload);
         }, 500),
         []
@@ -95,7 +96,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
     useEffect(() => {
         if (pendingUpdates) {
             debouncedUpdate({
-                userId: user,
+                userId: user ? user : '',
                 ...pendingUpdates,
             });
         }

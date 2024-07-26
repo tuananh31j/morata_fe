@@ -37,6 +37,7 @@ export const AUTH_ENDPOINT = {
 
 export const CHECKOUT_ENDPOINT = {
     ORDERS: '/orders',
+    VNPAY: '/create-checkout-with-vnpay',
     SESSION: '/create-checkout-session',
 };
 
