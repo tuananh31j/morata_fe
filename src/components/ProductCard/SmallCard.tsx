@@ -37,15 +37,17 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                         to={generateLink({ productId: product._id, categoryId: product.categoryId })}
                         className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                     >
+                        {/* HOVER IMAGE */}
                         {isActiveProductActions && (
                             <img
                                 loading='lazy'
                                 src={product.images[0]}
                                 alt=''
-                                className='absolute w-full scale-100 transition-transform duration-700 ease-linear md:w-56'
+                                className='absolute h-full w-full transition-transform duration-700 ease-linear md:w-56'
                             />
                         )}
 
+                        {/* THUMBNAIL */}
                         <img
                             loading='lazy'
                             src={product.thumbnail}
@@ -92,17 +94,17 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                                 height={45}
                                 preview={false}
                                 src={variant.image}
-                                className='rounded-lg border border-solid p-1 hover:border-[#0068C9]'
+                                className='rounded-lg border border-solid object-cover p-1'
                             />
                         ))}
                     </div>
 
                     {/* Add to cart btn */}
-                    <PopupAttributes product={product}>
-                        <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
-                            Add to cart
-                        </button>
-                    </PopupAttributes>
+                    {/* <PopupAttributes product={product}> */}
+                    <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
+                        Add to cart
+                    </button>
+                    {/* </PopupAttributes> */}
                 </div>
 
                 {/* Discount */}

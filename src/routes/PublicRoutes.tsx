@@ -1,3 +1,4 @@
+import path from 'path';
 import { Navigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import AccountLayout from '~/layouts/AccountLayout';
@@ -9,6 +10,7 @@ import VerifyPage from '~/pages/Clients/Order/Verify';
 import {
     AboutPage,
     AuthLayoutPage,
+    CheckoutDetailsPage,
     CheckoutPage,
     ContactPage,
     ErrorPage,
@@ -77,6 +79,16 @@ const PublicRoutes = [
                     <Suspense>
                         <ProtectedRouteAuth>
                             <CheckoutPage />
+                        </ProtectedRouteAuth>
+                    </Suspense>
+                ),
+            },
+            {
+                path: MAIN_ROUTES.CHECKOUT_DETAILS,
+                element: (
+                    <Suspense>
+                        <ProtectedRouteAuth>
+                            <CheckoutDetailsPage />
                         </ProtectedRouteAuth>
                     </Suspense>
                 ),

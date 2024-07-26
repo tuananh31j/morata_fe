@@ -17,7 +17,6 @@ import {
     CreateAttribute,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
-import path from 'path';
 
 const PrivateRoutes = [
     {
