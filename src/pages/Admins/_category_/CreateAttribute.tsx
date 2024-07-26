@@ -36,10 +36,9 @@ const CreateAttribute = () => {
         // Filter out empty values
         const inputValues = inputFields.map((field) => field.value).filter((value) => value.trim() !== '');
         const payload = { ...values, values: inputValues };
-        console.log('Success:', payload);
 
         createAttribute(payload);
-        navigate('/admin/categories/create', { replace: true });
+        navigate('/admin/categories/create', { replace: true, state: { newAttribute: payload } });
 
         if (isPending) {
             handleMessage({ type: 'loading', content: '...Creating!' });

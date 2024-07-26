@@ -10,8 +10,11 @@ export const useMutationCreateCategory = () => {
         mutationKey: [QUERY_KEY.CATEGORIES.CREATE],
         mutationFn: (payload: ICategoryFormData) => categoryService.createCategory(payload),
 
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CATEGORIES.LIST] });
+        onSuccess: async () => {
+            queryClient.prefetchQuery({
+                queryKey: [QUERY_KEY.CATEGORIES.LIST],
+                queryFn: () => categoryService.getAll(),
+            });
         },
     });
 };

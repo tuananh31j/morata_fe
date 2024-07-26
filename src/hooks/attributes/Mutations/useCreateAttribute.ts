@@ -9,8 +9,12 @@ export const useMutationCreateAttribute = () => {
     return useMutation({
         mutationKey: [QUERY_KEY.ATTRIBUTES],
         mutationFn: (payload: IAttributeFormData) => attributesServices.createAttribute(payload),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CATEGORIES.LIST] });
+
+        onSuccess: async () => {
+            queryClient.prefetchQuery({
+                queryKey: [QUERY_KEY.ATTRIBUTES],
+                queryFn: () => attributesServices.getAllAttributes(),
+            });
         },
     });
 };
