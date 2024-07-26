@@ -1,19 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
 import { QUERY_KEY } from '~/constants/queryKey';
 import productService from '~/services/product.service';
-import { RootState } from '~/store/store';
+import { useTypedSelector } from '~/store/store';
 import showMessage from '~/utils/ShowMessage';
 
 const useCreateProduct = () => {
     const queryClient = useQueryClient();
-    const params = useSelector((state: RootState) => state.AdminTableFilterProduct.params);
+    const { queryParams, pagination } = useTypedSelector((state) => state.filterProduct);
     return useMutation({
         mutationFn: (data: FormData) => productService.createProduct(data),
         onSuccess: async () => {
             setTimeout(() => {
                 queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.PRODUCTS, ...Object.values(params)],
+                    queryKey: [QUERY_KEY.PRODUCTS, ...Object.values(queryParams), ...Object.values(pagination)],
                     queryFn: () => productService.getAll(),
                 });
             }, 300);

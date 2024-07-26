@@ -51,14 +51,14 @@ export const menuGroups: IMenuItem[] = [
             { label: 'Create new user', route: ADMIN_ROUTES.USERS_CREATE },
         ],
     },
-    {
-        icon: <ShopOutlined />,
-        label: 'Shop',
-        children: [
-            { label: 'Shop information', route: ADMIN_ROUTES.SHOP },
-            { label: 'Shop settings', route: ADMIN_ROUTES.SHOP_SETTINGS },
-        ],
-    },
+    // {
+    //     icon: <ShopOutlined />,
+    //     label: 'Shop',
+    //     children: [
+    //         { label: 'Shop information', route: ADMIN_ROUTES.SHOP },
+    //         { label: 'Shop settings', route: ADMIN_ROUTES.SHOP_SETTINGS },
+    //     ],
+    // },
     {
         icon: <ProductOutlined />,
         label: 'Category',

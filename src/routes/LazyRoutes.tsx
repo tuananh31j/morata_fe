@@ -22,7 +22,8 @@ export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
 export const DashboardPage = lazy(() => import('~/pages/Admins/_dashboard_'));
 export const NotFoundPage = lazy(() => import('~/pages/404'));
 export const ErrorPage = lazy(() => import('~/pages/Error'));
-export const ProductsList = lazy(() => import('~/pages/Admins/_product_/index'));
+export const ManageProducts = lazy(() => import('~/pages/Admins/_product_/index'));
+export const ProductsListAll = lazy(() => import('~/pages/Admins/_product_/_component/ProductList/ListAll'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/_product_/CreateProduct'));
 export const UpdateProduct = lazy(() => import('~/pages/Admins/_product_/UpdateProduct'));
 export const AdminProductDetail = lazy(() => import('~/pages/Admins/_product_/ProductDetail'));
@@ -35,6 +36,9 @@ export const CategoryList = lazy(() => import('~/pages/Admins/_category_'));
 export const CreateCategory = lazy(() => import('~/pages/Admins/_category_/CreateCategory'));
 export const UpdateCategory = lazy(() => import('~/pages/Admins/_category_/UpdateCategory'));
 export const CreateAttribute = lazy(() => import('~/pages/Admins/_category_/CreateAttribute'));
+export const RedirectToProductList = lazy(
+    () => import('~/components/_common/RedirectToProductList/RedirectToProductList')
+);
 
 // @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {

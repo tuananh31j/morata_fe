@@ -19,6 +19,7 @@ export const MAIN_ROUTES = {
 export const ADMIN_ROUTES = {
     DASHBOARD: '/admin',
     PRODUCTS: '/admin/products',
+    PRODUCTS_LIST: '/admin/products/list',
     PRODUCTS_CREATE: '/admin/products/create',
     PRODUCTS_EDIT: '/admin/products/edit', // @id
 
