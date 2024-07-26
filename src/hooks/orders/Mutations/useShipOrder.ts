@@ -3,17 +3,18 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import orderService from '~/services/order.service';
 import showMessage from '~/utils/ShowMessage';
 
-const useCancelOrder = () => {
+export default function useShipOrder() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationKey: [QUERY_KEY.ORDERS],
+        mutationKey: ['CONFIRM_ORDER'],
         mutationFn: ({ orderId, reason }: { orderId: string; reason: string }) =>
-            orderService.cancelOrder({ orderId, reason }),
+            orderService.shippingOrder({ orderId, reason }),
         onSuccess() {
-            showMessage('Cancel order successfully!', 'info');
+            showMessage('Order is shiping!', 'info');
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
         },
+        onError: () => {
+            showMessage('Order confirmation failed.', 'error');
+        },
     });
-};
-
-export default useCancelOrder;
+}

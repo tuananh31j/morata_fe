@@ -20,20 +20,31 @@ export type IOrderItem = {
     price: number;
     image: string;
 };
-export interface IOrderDetails {
+export type IOrderDetails = {
+    receiverInfo: {
+        name: string;
+        email: string;
+        phone: string;
+    };
+    note?: string;
+    shippingAddress: IShippingAddress;
+    _id: string;
+    userId: string;
     items: IOrderItem[];
     totalPrice: number;
     tax: number;
     shippingFee: number;
-    customerInfo: ICustomerInfo;
-    receiverInfo: ICustomerInfo;
-    shippingAddress: IShippingAddress;
     paymentMethod: PaymentMethod;
     isPaid: boolean;
-    orderStatus: OrderStatus;
+    currentOrderStatus: OrderStatus;
+    orderStatusLogs: Array<{
+        orderStatus: OrderStatus;
+        reason: string;
+        _id: string;
+        createdAt: string;
+    }>;
     createdAt: string;
-    description: string;
-}
+};
 
 export interface IOrderResponse {
     orders: Array<{

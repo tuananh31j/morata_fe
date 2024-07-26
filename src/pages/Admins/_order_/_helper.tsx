@@ -2,8 +2,6 @@ import { TableProps } from 'antd';
 import { ORDER_STATUS_ARR, OrderStatus, PaymentMethod } from '~/constants/enum';
 import OrderRow from '~/pages/Admins/_order_/OrdersList/OrderRow';
 
-import { IOrderParams } from '~/types/Order';
-
 export interface DataType {
     _id: string;
     paymentMethod: PaymentMethod;
@@ -12,7 +10,7 @@ export interface DataType {
     createdAt: string;
 }
 
-export const ordersListColums = (filtered: IOrderParams): TableProps['columns'] => {
+export const ordersListColums = (): TableProps['columns'] => {
     return [
         {
             title: (
@@ -20,10 +18,10 @@ export const ordersListColums = (filtered: IOrderParams): TableProps['columns'] 
                     <div className='grid grid-cols-10 items-center gap-8 p-4 text-[#01070E]'>
                         <div className='col-span-3 font-bold '>Product</div>
                         <div className='font-bold '>Total</div>
-                        <div className='font-bold '>Payment Method</div>
+                        <div className='font-bold '>Payment</div>
                         <div className='font-bold '>Status</div>
                         <div className='font-bold '>Paid</div>
-                        <div className='font-bold '>Created Date</div>
+                        <div className='font-bold '>Created</div>
                         <div className='col-span-2 text-right font-bold '>Action</div>
                     </div>
                 </div>

@@ -8,15 +8,9 @@ export default function useFinishAnOrder() {
     return useMutation({
         mutationKey: ['FINISH_ORDER'],
         mutationFn: (id: string) => orderService.finishOrder(id),
-        onSuccess: (_, id) => {
-            showMessage('Order is done.', 'success');
-            setTimeout(() => {
-                queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS, id] });
-                queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.ORDERS],
-                    queryFn: () => orderService.getAllOrders(),
-                });
-            }, 500);
+        onSuccess() {
+            showMessage('Order is done!', 'info');
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
         },
         onError: () => {
             showMessage('Order change to done failed.', 'error');

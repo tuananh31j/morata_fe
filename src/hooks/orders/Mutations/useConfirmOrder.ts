@@ -7,16 +7,11 @@ export default function useConfirmOrder() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationKey: ['CONFIRM_ORDER'],
-        mutationFn: (id: string) => orderService.confirmOrder(id),
-        onSuccess: (_, id) => {
-            showMessage('Order confirmed successfully.', 'success');
-            setTimeout(() => {
-                queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS, id] });
-                queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.ORDERS],
-                    queryFn: () => orderService.getAllOrders(),
-                });
-            }, 500);
+        mutationFn: ({ orderId, reason }: { orderId: string; reason: string }) =>
+            orderService.confirmOrder({ orderId, reason }),
+        onSuccess() {
+            showMessage('Confirmed order is successfully!', 'info');
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
         },
         onError: () => {
             showMessage('Order confirmation failed.', 'error');

@@ -13,12 +13,25 @@ const orderService = {
             params,
         });
     },
-    cancelOrder(body: { orderId: string; description?: string }) {
-        return instance.patch<void, { orderId: string; description?: string }>(`${ORDER_ENDPOINT.CANCELED}`, body);
+    cancelOrder(body: { orderId: string; reason: string }) {
+        return instance.patch<void, { orderId: string; reason?: string }>(`${ORDER_ENDPOINT.CANCELED}`, body);
     },
-    confirmOrder(id: string) {
-        return instance.patch<void, string>(`${ORDER_ENDPOINT.ROOT}/confirm`, {
-            orderId: id,
+    confirmOrder({ orderId, reason }: { orderId: string; reason: string }) {
+        return instance.patch<void, { orderId: string; reason: string }>(`${ORDER_ENDPOINT.ROOT}/confirm`, {
+            orderId,
+            reason,
+        });
+    },
+    shippingOrder({ orderId, reason }: { orderId: string; reason: string }) {
+        return instance.patch<void, { orderId: string; reason: string }>(`${ORDER_ENDPOINT.ROOT}/ship`, {
+            orderId,
+            reason,
+        });
+    },
+    deliveredOrder({ orderId, reason }: { orderId: string; reason: string }) {
+        return instance.patch<void, { orderId: string; reason: string }>(`${ORDER_ENDPOINT.ROOT}/delivered`, {
+            orderId,
+            reason,
         });
     },
     finishOrder(id: string) {

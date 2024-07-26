@@ -1,4 +1,4 @@
-import { FileDoneOutlined, HomeTwoTone, IdcardTwoTone, RightCircleFilled, ShoppingTwoTone } from '@ant-design/icons';
+import { FileDoneOutlined, RightCircleFilled } from '@ant-design/icons';
 import { Badge, Button, Card, Descriptions, DescriptionsProps, Flex, Image, Space, Spin } from 'antd';
 import { useSelector } from 'react-redux';
 import { useMutationCreateOrder } from '~/hooks/checkout/useCreateOrder';
@@ -7,22 +7,16 @@ import { RootState } from '~/store/store';
 import { Currency } from '~/utils';
 
 const CheckoutDetails = () => {
-    const information = useSelector((state: RootState) => state.orderReducer.Detail);
+    const information = useSelector((state: RootState) => state?.orderReducer.Detail);
     // FAKE DATA
 
-    const totalAmount = (information?.items as { price: number; quantity: number }[]).reduce((acc, curr) => {
+    const totalAmount = (information?.items as { price: number; quantity: number }[])?.reduce((acc, curr) => {
         return acc + curr.price * curr.quantity;
     }, 0);
     const items: DescriptionsProps['items'] = [
         {
             key: '0',
-            label: (
-                <span className='flex items-center text-lg font-bold text-[#16bcdc]'>
-                    <Space>
-                        <IdcardTwoTone /> Your Info
-                    </Space>
-                </span>
-            ),
+            label: <span className='text-lg font-bold text-[#16bcdc]'>Your Info</span>,
             children: '',
             span: 2,
         },
@@ -44,13 +38,7 @@ const CheckoutDetails = () => {
         },
         {
             key: '4',
-            label: (
-                <span className='flex items-center text-lg font-bold text-[#16bcdc]'>
-                    <Space>
-                        <HomeTwoTone /> Shipping Address
-                    </Space>
-                </span>
-            ),
+            label: <span className='text-lg font-bold text-[#16bcdc]'>Delivery Address</span>,
             children: '',
             span: 2,
         },
@@ -86,13 +74,7 @@ const CheckoutDetails = () => {
         },
         {
             key: '11',
-            label: (
-                <span className='flex items-center text-lg font-bold text-[#16bcdc]'>
-                    <Space>
-                        <ShoppingTwoTone /> Your Cart
-                    </Space>
-                </span>
-            ),
+            label: <span className='text-lg font-bold text-[#16bcdc]'>Your Cart</span>,
             children: '',
             span: 2,
         },

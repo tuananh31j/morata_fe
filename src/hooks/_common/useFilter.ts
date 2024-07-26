@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { setQuery } from '~/store/slice/filterSlice';
 import { useTypedSelector } from '~/store/store';
-import { IParams } from '~/types/Api';
+import { IParams, Params } from '~/types/Api';
 
 const useFilter = () => {
     const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const useFilter = () => {
     const [searchParams] = useSearchParams();
     const navigator = useNavigate();
     useEffect(() => {
-        const params: any = {};
+        const params: Params = {};
         searchParams?.forEach((value, key) => {
             params[key] = value;
         });
