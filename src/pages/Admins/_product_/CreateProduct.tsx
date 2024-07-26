@@ -22,7 +22,7 @@ import { useGetAllAtributes } from '~/hooks/attributes/Queries/useGetAttributesB
 import useCreateProduct from '~/hooks/products/Mutations/useCreateProduct';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { IProductFiles, IProductForm, IThumbnailAntd } from '~/types/Product';
+import { IProductFiles, IProductForm, IProductVariation, IThumbnailAntd } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';
 import { errorMessage } from '~/validation/Product';
 import AttributesItem from './_component/AttributesItem';
@@ -81,7 +81,6 @@ const CreateProduct = () => {
 
     const handleChangeImages: UploadProps['onChange'] = ({ fileList: newFileList }) => setImagesFileList(newFileList);
     const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-        console.log(newFileList);
         setThumbnailFile(newFileList);
     };
     const handleChangeAttributeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => {
@@ -222,7 +221,7 @@ const CreateProduct = () => {
                                     rules={[
                                         {
                                             validator: async (_, images: IProductFiles) => {
-                                                if (images.fileList?.length < 1) {
+                                                if (images?.fileList?.length < 1 || !images) {
                                                     return errorMessage('Please input your images!');
                                                 }
                                                 /* eslint-disable */
@@ -273,7 +272,7 @@ const CreateProduct = () => {
                                     rules={[
                                         {
                                             validator: async (_, thumbnail: IProductFiles) => {
-                                                if (thumbnail.fileList?.length < 1) {
+                                                if (thumbnail?.fileList?.length < 1 || !thumbnail) {
                                                     return errorMessage('Please input your thumbnail!');
                                                 }
                                                 if (thumbnail?.file.size >= MAX_SIZE) {
@@ -411,8 +410,24 @@ const CreateProduct = () => {
                                 {!isChooseCategory && (
                                     <span className='mb-4 inline-block'>Can be selected when selecting a category</span>
                                 )}
-                                <Form.List name='variations'>
-                                    {(fields, { add, remove }) => (
+                                <Form.List
+                                    name='variations'
+                                    rules={[
+                                        {
+                                            validator: async (_, variations: IProductVariation[]) => {
+                                                if (!variations || variations.length < 1) {
+                                                    return errorMessage('Please input your variations!');
+                                                }
+                                                const variationEmpty = variations.some((variation) => !variation);
+                                                if (!variationEmpty) {
+                                                    return errorMessage('Please input your variations!');
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
+                                >
+                                    {(fields, { add, remove }, { errors }) => (
                                         <>
                                             {fields.map(({ key, name, ...restField }, index) => {
                                                 return (
@@ -469,7 +484,7 @@ const CreateProduct = () => {
                                                             {...restField}
                                                             name={[name, 'color']}
                                                             label='Color'
-                                                            // rules={[{ required: true, message: 'Please input color' }]}
+                                                            rules={[{ required: true, message: 'Please input color' }]}
                                                         >
                                                             <Input placeholder='Color' className='w-full' />
                                                         </Form.Item>
@@ -477,7 +492,7 @@ const CreateProduct = () => {
                                                             {...restField}
                                                             name={[name, 'price']}
                                                             label='Price'
-                                                            // rules={[{ required: true, message: 'Please input price' }]}
+                                                            rules={[{ required: true, message: 'Please input price' }]}
                                                         >
                                                             <InputNumber placeholder='Price' className='w-full' />
                                                         </Form.Item>
@@ -485,7 +500,7 @@ const CreateProduct = () => {
                                                             {...restField}
                                                             name={[name, 'stock']}
                                                             label='stock'
-                                                            // rules={[{ required: true, message: 'Please input color' }]}
+                                                            rules={[{ required: true, message: 'Please input color' }]}
                                                         >
                                                             <InputNumber placeholder='Stock' className='w-full' />
                                                         </Form.Item>
@@ -510,6 +525,7 @@ const CreateProduct = () => {
                                                     Add variation
                                                 </Button>
                                             </Form.Item>
+                                            <Form.ErrorList errors={errors} className='text-red' />
                                         </>
                                     )}
                                 </Form.List>
