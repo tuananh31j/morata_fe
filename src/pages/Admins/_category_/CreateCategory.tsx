@@ -1,5 +1,5 @@
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, FormProps, Input } from 'antd';
+import { Button, Checkbox, Form, FormProps, Input, Popover } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
@@ -13,14 +13,16 @@ const CreateCategory = () => {
 
     const { data } = useGetAllAtributesNew();
     const attributes = data?.data;
+    console.log(attributes);
 
-    const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string }[]>([]);
+    const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
 
     useEffect(() => {
         if (attributes) {
-            const options = attributes.map((attr: { _id: string; name: string }) => ({
+            const options = attributes.map((attr: { _id: string; name: string; values: string[] }) => ({
                 label: attr.name,
                 value: attr._id,
+                values: attr.values,
             }));
             setAttributeOptions(options);
         }
@@ -28,40 +30,14 @@ const CreateCategory = () => {
 
     const { handleMessage, contextHolder } = useMessage();
 
-    // const categorySchema = z.object({
-    //     name: z.string({ message: 'Name is required!' }),
-    //     type: z.string({ message: 'Type is required!' }),
-    //     attributeIds: z.array(z.string()).min(1, { message: 'At least one attribute must be selected!' }),
-    // });
-
-    // const {
-    //     handleSubmit,
-    //     control,
-    //     formState: { errors },
-    //     // watch,
-    // } = useForm<ICategoryFormData>({
-    //     // resolver: zodResolver(categorySchema),
-    // });
-
-    // const onSubmit: SubmitHandler<ICategoryFormData> = async (body) => {
-    //     const formData = { ...body, attributeIds: selectedAttributeIds }; // Include selected attribute IDs
-    //     console.log('onsubmit:', formData);
-    //     console.log('from submit:', attributeIds);
-    //     createCategory(body);
-    //     navigate('/admin/category', { replace: true });
-
-    //     if (isPending) {
-    //         handleMessage({ type: 'loading', content: '...Creating!' });
-    //     }
-    // };
-
-    // const checkboxChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
-    //     console.log('from onchange:', checkedValues);
-    // };
-
-    // const selectChange = (value: string) => {
-    //     console.log(`selected ${value}`);
-    // };
+    const attributeValues = (attr: { label: string; value: string; values: string[] }) => {
+        if (attr.values.length === 0) {
+            return <div>No values</div>;
+        }
+        return attr.values.map((value, i) => {
+            return <div key={i}>{value}</div>;
+        });
+    };
 
     const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
         console.log('Success:', values);
@@ -96,30 +72,22 @@ const CreateCategory = () => {
                                 <Input />
                             </Form.Item>
 
-                            {/* <Form.Item<ICategoryFormData>
-                                label='Type'
-                                name='type'
-                                className='font-medium text-[#08090F]'
-                                rules={[{ required: true, message: 'Please choose a type!' }]}
-                            >
-                                <Select
-                                    className='w-1/2'
-                                    placeholder='Select a type'
-                                    onChange={selectChange}
-                                    options={[
-                                        { value: 'Manual', label: <span>Manual</span> },
-                                        { value: 'Options', label: <span>Options</span> },
-                                    ]}
-                                />
-                            </Form.Item> */}
-
                             <Form.Item<ICategoryFormData>
-                                label='Values'
+                                label='Attributes'
                                 name='attributeIds'
                                 className='font-medium text-[#08090F]'
                                 rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
                             >
-                                <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' />
+                                {/* <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' /> */}
+                                <div className='grid grid-cols-3 gap-2'>
+                                    {attributeOptions.map((option) => (
+                                        <Checkbox key={option.value} value={option.value}>
+                                            <Popover content={attributeValues(option)} title={option.label}>
+                                                {option.label}
+                                            </Popover>
+                                        </Checkbox>
+                                    ))}
+                                </div>
                             </Form.Item>
 
                             <Form.Item className='flex justify-end'>

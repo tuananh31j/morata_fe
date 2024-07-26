@@ -26,6 +26,12 @@ const CreateAttribute = () => {
         setInputFields(inputFields.filter((field) => field.id !== id));
     };
 
+    const [typeSelected, setTypeSelected] = useState<string>('');
+
+    const handleChange = (value: string) => {
+        setTypeSelected(value);
+    };
+
     const onFinish: FormProps<IAttributeFormData>['onFinish'] = (values) => {
         // Filter out empty values
         const inputValues = inputFields.map((field) => field.value).filter((value) => value.trim() !== '');
@@ -69,6 +75,7 @@ const CreateAttribute = () => {
                                         <Select
                                             className='h-[39.6px]'
                                             placeholder='Select a type'
+                                            onChange={handleChange}
                                             options={[
                                                 { value: 'manual', label: <span>Manual</span> },
                                                 { value: 'options', label: <span>Options</span> },
@@ -77,7 +84,47 @@ const CreateAttribute = () => {
                                     </Form.Item>
                                 </div>
 
-                                {inputFields.map((field, index) => (
+                                {typeSelected === 'options' && (
+                                    <>
+                                        {inputFields.map((field, index) => (
+                                            <Form.Item
+                                                key={field.id}
+                                                name='values'
+                                                label='Add New Value'
+                                                className='mb-3 font-medium text-[#08090F]'
+                                                rules={[
+                                                    { required: true, message: 'Please enter at least one value!' },
+                                                ]}
+                                            >
+                                                <div className='flex w-full justify-between'>
+                                                    <Input
+                                                        className='w-[93%]'
+                                                        placeholder='Enter value'
+                                                        value={field.value}
+                                                        onChange={(e) => {
+                                                            const newFields = [...inputFields];
+                                                            newFields[index].value = e.target.value;
+                                                            setInputFields(newFields);
+                                                        }}
+                                                    />
+                                                    <Button
+                                                        danger
+                                                        className='flex items-center'
+                                                        onClick={() => handleRemoveField(field.id)}
+                                                    >
+                                                        <DeleteOutlined />
+                                                    </Button>
+                                                </div>
+                                            </Form.Item>
+                                        ))}
+
+                                        <Button type='primary' icon={<PlusCircleOutlined />} onClick={handleAddField}>
+                                            Add value
+                                        </Button>
+                                    </>
+                                )}
+
+                                {/* {inputFields.map((field, index) => (
                                     <Form.Item
                                         key={field.id}
                                         name='values'
@@ -109,7 +156,7 @@ const CreateAttribute = () => {
 
                                 <Button type='primary' icon={<PlusCircleOutlined />} onClick={handleAddField}>
                                     Add value
-                                </Button>
+                                </Button> */}
 
                                 <Form.Item className='flex justify-end'>
                                     <Button

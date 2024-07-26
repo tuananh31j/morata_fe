@@ -87,11 +87,13 @@ const CheckOut = () => {
     };
     return (
         <>
+            {/* BACK TO HOME BTN */}
             <div className='mx-auto mt-[5px] max-w-[1280px]'>
                 <Link to={'/'} className='font-bold duration-300 hover:text-cyan-500'>
                     &lt; Back To Home
                 </Link>
             </div>
+
             <div className='mx-auto mt-[25px] flex max-w-[1280px] flex-col-reverse gap-10 md:flex-row'>
                 {totalPrice < 1000 ? (
                     <>
@@ -105,6 +107,7 @@ const CheckOut = () => {
                         </h3>
                     </>
                 )}
+
                 <Form
                     name='checkout'
                     className={cn({
@@ -116,6 +119,7 @@ const CheckOut = () => {
                     style={{ maxWidth: 600 }}
                 >
                     <h3 className='text-[21px] font-semibold'>Contact</h3>
+
                     <div className='mt-[15px]'>
                         <Form.Item
                             label='Your Name'
@@ -126,6 +130,7 @@ const CheckOut = () => {
                             <Input disabled={totalPrice > 1000} placeholder='Your Name' className='mt-[5px] h-[48px]' />
                         </Form.Item>
                     </div>
+
                     <div className='mt-[15px]'>
                         <Form.Item
                             label='Your email'
@@ -245,9 +250,12 @@ const CheckOut = () => {
                         <SubmitButton form={form}>Checkout with Vnpay</SubmitButton>
                     </div>
                 </Form>
+
                 <p className='text-center italic text-graydark'>Or</p>
+
                 <div className='w-full rounded-lg border-[1px] border-[#7777] p-5'>
                     <h3 className='text-center text-[#777777]'>Express checkout</h3>
+
                     <div className='my-2'>
                         <button
                             onClick={handlePayStripe}
@@ -260,28 +268,34 @@ const CheckOut = () => {
                                 className='rounded-full'
                                 alt=''
                             />
+
                             <span className='font-medium'>Stripe Pay</span>
                         </button>
                     </div>
                 </div>
+
                 <div className=' w-full'>
                     <div className='-order-1 flex flex-col gap-[15px] px-5 '>
                         {orderItem?.data.items.map((item, index) => (
                             <MiniProduct quantity={item.quantity} productId={item.productId} key={index} />
                         ))}
+
                         {!orderItem?.data.items.length && (
                             <div>
                                 <h3 className='text-center font-medium'>Not found product in your cart</h3>
                             </div>
                         )}
+
                         <div className='mt-[44px]'>
                             <div className='flex items-center justify-between'>
                                 <h3 className='text-[14px]'>Total quantity</h3>
+
                                 <span>{totalQuantity} Product</span>
                             </div>
 
                             <div className='mt-[12px] flex justify-between '>
-                                <h3 className='text-[19px] font-medium'>Total </h3>
+                                <h3 className='text-[19px] font-medium'>Total</h3>
+
                                 <span className='text-[19px] font-medium'>
                                     <span className='text-[12px] text-[#777777]'>CAD</span>{' '}
                                     {Currency.format(totalPrice)}
