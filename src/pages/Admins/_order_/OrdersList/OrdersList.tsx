@@ -1,11 +1,11 @@
-import { VerticalAlignBottomOutlined } from '@ant-design/icons';
-import { Button, Table, TableProps } from 'antd';
-import Search from 'antd/es/input/Search';
-import { DataType, ordersListColums } from '../_helper';
+import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Card, Input, Select, Space, Table, TableProps } from 'antd';
+import { useState } from 'react';
 import useGetAllOrders from '~/hooks/orders/Queries/useGetAllOrders';
-// import useFilterOrder from '~/hooks/_common/useFilterOrder';
 import { IOrderParams } from '~/types/Order';
+import { DataType, ordersListColums } from '../_helper';
 
+const { Option } = Select;
 const OrdersList = () => {
     // const { updateQueryParam, queryParams, pagination: paginationValue } = useFilterOrder();
     // const columns = ordersListColums(queryParams);
@@ -13,22 +13,47 @@ const OrdersList = () => {
     // // @Query
     // const { data } = useGetAllOrders(queryParams, paginationValue);
 
-    // // @event
-    // const onChange: TableProps<DataType>['onChange'] = (pagination, filters) => {
-    //     updateQueryParam(filters as IOrderParams, pagination.current || 1);
-    // };
+    // @state
+    const [filterType, setFilterType] = useState('orderCode');
+    const [filterValue, setFilterValue] = useState('');
+
+    // @event
+    const onChange: TableProps<DataType>['onChange'] = (pagination, filters) => {
+        // updateQueryParam(filters as IOrderParams, pagination.current || 1);
+    };
+
+    // console.log(data);
 
     return (
         <div className='mx-6'>
-            <div className='my-6 ml-2 flex items-center justify-between py-2 '>
-                <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Orders</h1>
-            </div>
-            <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
-                <div className='my-2 flex justify-between'>
-                    <Search placeholder='Search ID...' size='large' className='w-[18.75rem]' />
-                    <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
-                        Export
-                    </Button>
+            <Card className='overflow-hidden rounded-lg shadow-lg'>
+                <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
+                    <Space size='middle' className='flex-grow sm:flex-grow-0'>
+                        <Select
+                            defaultValue='orderCode'
+                            style={{ width: 180 }}
+                            className='text-sm'
+                            suffixIcon={<FilterOutlined className='text-gray-400' />}
+                            onChange={(value) => setFilterType(value)}
+                        >
+                            <Option value='orderCode'>Order ID</Option>
+                            <Option value='customerName'>Customer name</Option>
+                        </Select>
+                        <Input
+                            placeholder={filterType === 'orderCode' ? 'Enter order ID...' : 'Enter customer name..'}
+                            style={{ width: 250 }}
+                            className='text-sm'
+                            prefix={<SearchOutlined className='text-gray-400' />}
+                            value={filterValue}
+                            onChange={(e) => setFilterValue(e.target.value)}
+                        />
+                    </Space>
+                    <Space>
+                        <Button type='primary' className='bg-blue-500 hover:bg-blue-600'>
+                            Áp dụng
+                        </Button>
+                        <Button className='border-gray-300 text-gray-600 hover:bg-gray-100'>Đặt lại</Button>
+                    </Space>
                 </div>
 
                 {/* <Table
@@ -43,7 +68,7 @@ const OrdersList = () => {
                         total: data?.data?.data.totalDocs,
                     }}
                 /> */}
-            </div>
+            </Card>
         </div>
     );
 };

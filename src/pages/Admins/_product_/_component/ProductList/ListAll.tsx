@@ -88,10 +88,7 @@ const ListAll = () => {
                     <Form className='my-3' form={form} onFinish={onSubmit}>
                         <div className='grid grid-cols-2 gap-4 xl:grid-cols-[3fr,3fr,3fr,2fr]'>
                             <Form.Item name='search'>
-                                <Input
-                                    placeholder='Search Product name, Product SKU'
-                                    defaultValue={query.search || ''}
-                                />
+                                <Input placeholder='Search Product name' defaultValue={query.search || ''} />
                             </Form.Item>
                             <Form.Item name='categoryId'>
                                 <Select

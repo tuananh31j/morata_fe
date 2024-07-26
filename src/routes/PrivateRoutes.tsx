@@ -16,9 +16,11 @@ import {
     ManageOrders,
     UpdateCategory,
     CreateAttribute,
+    OrdersList,
     RedirectToProductList,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
+import RedirectToOrderList from '~/components/_common/RedirectToOrderList/RedirectToOrderList';
 import { Outlet } from 'react-router-dom';
 
 const PrivateRoutes = [
@@ -181,21 +183,82 @@ const PrivateRoutes = [
                 ],
             },
             {
-                path: ADMIN_ROUTES.ORDERS,
+                path: `${ADMIN_ROUTES.ORDERS}`,
+                element: <RedirectToOrderList />,
+            },
+            {
+                path: `${ADMIN_ROUTES.ORDERS}/:id/detail`,
+                element: (
+                    <Suspense>
+                        <OrdersDetails />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ADMIN_ROUTES.ORDERS_LIST,
+                element: <ManageOrders />,
                 children: [
                     {
                         index: true,
                         element: (
                             <Suspense>
-                                <ManageOrders />
+                                <OrdersList />
                             </Suspense>
                         ),
                     },
                     {
-                        path: `${ADMIN_ROUTES.ORDERS}/:id/detail`,
+                        index: true,
                         element: (
                             <Suspense>
-                                <OrdersDetails />
+                                <OrdersList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'all',
+                        element: (
+                            <Suspense>
+                                <OrdersList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'pending',
+                        element: (
+                            <Suspense>
+                                <OrdersList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'confirmed',
+                        element: (
+                            <Suspense>
+                                <OrdersList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'shipping',
+                        element: (
+                            <Suspense>
+                                <OrdersList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'delivered',
+                        element: (
+                            <Suspense>
+                                <OrdersList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'done',
+                        element: (
+                            <Suspense>
+                                <OrdersList />
                             </Suspense>
                         ),
                     },
