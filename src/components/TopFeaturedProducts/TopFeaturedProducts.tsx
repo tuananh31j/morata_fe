@@ -1,9 +1,9 @@
-import { IProduct } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 import FeatureCard from '../ProductCard/FeatureCard';
 import MediumCard from '../ProductCard/MediumCard';
 import Slideshow from '../_common/Slideshow';
 
-const TopFeaturedProducts = ({ product }: { product: IProduct[] }) => {
+const TopFeaturedProducts = ({ product }: { product: IProductItemNew[] }) => {
     return (
         <div className='mx-2 items-center gap-3 lg:grid lg:grid-cols-12'>
             <div className='lg:col-span-5'>
