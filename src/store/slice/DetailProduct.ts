@@ -26,4 +26,5 @@ const detailProduct = createSlice({
 });
 
 export const { setImages, updateVariant } = detailProduct.actions;
-export default detailProduct.reducer;
+const detailProductReducer = detailProduct.reducer;
+export default detailProductReducer;

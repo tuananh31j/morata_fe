@@ -17,7 +17,7 @@ interface IPickerData {
 
 export default function ActionDetail({ product }: { product: IProductItemNew }) {
     const [valueQuantity, setQuantityValue] = useState(1);
-    const variant = useSelector((state: RootState) => state.DetailProduct.variant);
+    const variant = useSelector((state: RootState) => state?.detailProductReducer?.variant);
     const { mutate } = useMutationCart();
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.authReducer.user);
@@ -79,7 +79,7 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                                             onClick={() => handleOnclickVariant(item)}
                                             value={item._id}
                                         >
-                                            {item.color.toUpperCase()}
+                                            {item?.color?.toUpperCase()}
                                         </Radio>
                                     </div>
                                 ))}

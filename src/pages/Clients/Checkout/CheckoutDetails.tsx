@@ -173,7 +173,9 @@ const CheckoutDetails = () => {
                 >
                     {!VnPayPending && !CashPending && (
                         <>
-                            Proceed to Checkout <RightCircleFilled className='pt-[3px]' />
+                            <span>{information?.PaymentMethods === 1 ? 'Confirm' : 'Proceed to Checkout'}</span>
+
+                            <RightCircleFilled className='ml-1' />
                         </>
                     )}
                     {VnPayPending && <Spin />}

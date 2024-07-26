@@ -16,7 +16,7 @@ const OrdersList = ({ status }: { status?: OrderStatus }) => {
     const { query, updateQueryParam } = useFilter();
 
     // // @Query
-    const { data } = useGetAllOrders({ ...query, currentOrderStatus: status });
+    const { data } = useGetAllOrders({ ...query, currentOrderStatus: status || undefined });
 
     // @state
     const [filterType, setFilterType] = useState('orderCode');

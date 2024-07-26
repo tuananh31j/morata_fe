@@ -2,13 +2,13 @@ import _ from 'lodash';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { setQuery } from '~/store/slice/filterSlice';
+import { setQuery, updateGrid } from '~/store/slice/filterSlice';
 import { useTypedSelector } from '~/store/store';
 import { IParams, Params } from '~/types/Api';
 
 const useFilter = () => {
     const dispatch = useDispatch();
-    const query = useTypedSelector((state) => state.filter.query);
+    const { query, grid } = useTypedSelector((state) => state.filter);
     const { pathname } = useLocation();
     const [searchParams] = useSearchParams();
     const navigator = useNavigate();
@@ -23,6 +23,9 @@ const useFilter = () => {
 
     const reset = () => {
         dispatch(setQuery({}));
+    };
+    const updateGridUI = (gridClass: string) => {
+        dispatch(updateGrid(gridClass));
     };
 
     const updateQueryParam = (params: IParams) => {
@@ -39,7 +42,7 @@ const useFilter = () => {
         navigator(`${pathname}?${newParams.toString()}`);
     };
 
-    return { query, updateQueryParam, reset };
+    return { query, grid, updateQueryParam, reset, updateGridUI };
 };
 
 export default useFilter;

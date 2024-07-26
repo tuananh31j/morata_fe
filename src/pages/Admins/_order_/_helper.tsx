@@ -5,7 +5,7 @@ import OrderRow from '~/pages/Admins/_order_/OrdersList/OrderRow';
 export interface DataType {
     _id: string;
     paymentMethod: PaymentMethod;
-    orderStatus: OrderStatus;
+    currentOrderStatus: OrderStatus;
     totalPrice: number;
     createdAt: string;
 }

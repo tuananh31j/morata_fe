@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import WrapperList from '~/components/_common/WrapperList';
@@ -6,10 +7,15 @@ import { useGetRelatedProduct } from '~/hooks/products/Queries/useGetRelatedProd
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IProductItemNew } from '~/types/Product';
 
+const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+};
 const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IProductItemNew> }) => {
+    const query = useQuery();
+    const cateId = query.get('categoryId');
     const product = relatedProduct.data;
     const body = {
-        cateId: product.categoryId._id,
+        cateId: product.categoryId?._id || cateId || '',
         id: product._id,
     };
     const { data: ListRelated, isLoading: relatedLoading } = useGetRelatedProduct(body);

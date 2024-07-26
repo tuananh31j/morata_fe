@@ -4,33 +4,33 @@ import useFilter from '~/hooks/_common/useFilter';
 import { cn } from '~/utils';
 
 const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
-    // const { query, updateQueryParam } = useFilter();
-    // const handleGrid2 = () => {
-    //     updateGridClass('2');
-    // };
-    // const handleGrid1 = () => {
-    //     updateGridClass('1');
-    // };
-    // const handleGrid3 = () => {
-    //     updateGridClass('3');
-    // };
-    // const handleGrid4 = () => {
-    //     updateGridClass('4');
-    // };
-    // const handleGrid5 = () => {
-    //     updateGridClass('5');
-    // };
+    const { query, grid, updateQueryParam, updateGridUI } = useFilter();
+    const handleGrid2 = () => {
+        updateGridUI('2');
+    };
+    const handleGrid1 = () => {
+        updateGridUI('1');
+    };
+    const handleGrid3 = () => {
+        updateGridUI('3');
+    };
+    const handleGrid4 = () => {
+        updateGridUI('4');
+    };
+    const handleGrid5 = () => {
+        updateGridUI('5');
+    };
 
-    // const handleSelectChange = (value: string) => {
-    //     updateQueryParam('sort', value);
-    // };
+    const handleSelectChange = (value: string) => {
+        updateQueryParam({ ...query, sort: value });
+    };
 
     return (
         <div className='flex items-center justify-between rounded-md border border-transparent bg-white p-4'>
             <div>
                 <p className='text-gray-500 capitalize'>{totalProducts} Products</p>
             </div>
-            {/* <div className='hidden items-center xl:flex xl:gap-4'>
+            <div className='hidden items-center xl:flex xl:gap-4'>
                 <button
                     onClick={handleGrid2}
                     className={cn({ ['rounded-md bg-blue-300']: grid === '2' }, 'border border-transparent p-1')}
@@ -61,35 +61,35 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
                 >
                     <GridIcon color={grid && Number(grid) === 1 ? 'white' : 'gray'} col={1} />
                 </button>
-            </div> */}
-            {/* <Select
+            </div>
+            <Select
                 style={{ width: 200 }}
                 placeholder='Sort'
                 optionFilterProp='children'
                 onChange={handleSelectChange}
                 options={[
                     {
-                        value: JSON.stringify({ name: 1 }),
+                        value: 'name',
                         label: 'A-Z',
                         title: 'name',
                     },
                     {
-                        value: JSON.stringify({ name: -1 }),
+                        value: '-name',
                         title: 'name',
                         label: 'Z-A',
                     },
                     {
-                        value: JSON.stringify({ price: -1 }),
+                        value: '-price',
                         title: 'price',
                         label: 'Price desc',
                     },
                     {
-                        value: JSON.stringify({ price: 1 }),
+                        value: 'price',
                         title: 'price',
                         label: 'Price asc',
                     },
                 ]}
-            /> */}
+            />
         </div>
     );
 };

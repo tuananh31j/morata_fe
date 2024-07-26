@@ -8,33 +8,42 @@ const orderService = {
     myOrder() {
         return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
+
     getAllOrders(params?: any) {
         return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.ROOT}`, {
             params,
         });
     },
-    cancelOrder(body: { orderId: string; reason?: string }) {
+
+    cancelOrder(body: { orderId?: string; reason?: string }) {
         return instance.patch<void, { orderId: string; reason?: string }>(`${ORDER_ENDPOINT.CANCELED}`, body);
     },
-    confirmOrder({ orderId, reason }: { orderId: string; reason: string }) {
-        return instance.patch<void, { orderId: string; reason: string }>(`${ORDER_ENDPOINT.ROOT}/confirm`, {
+    confirmOrder({ orderId, reason }: { orderId?: string; reason?: string }) {
+        return instance.patch<void, { orderId?: string; reason?: string }>(`${ORDER_ENDPOINT.ROOT}/confirm`, {
             orderId,
             reason,
         });
     },
-    shippingOrder({ orderId, reason }: { orderId: string; reason: string }) {
+    shippingOrder({ orderId, reason }: { orderId?: string; reason?: string }) {
         return instance.patch<void, { orderId: string; reason: string }>(`${ORDER_ENDPOINT.ROOT}/ship`, {
             orderId,
             reason,
         });
     },
-    deliveredOrder({ orderId, reason }: { orderId: string; reason: string }) {
+    deliveredOrder({ orderId, reason }: { orderId?: string; reason?: string }) {
         return instance.patch<void, { orderId: string; reason: string }>(`${ORDER_ENDPOINT.ROOT}/delivered`, {
             orderId,
             reason,
         });
     },
+
     finishOrder(id: string) {
+        return instance.patch<void, { orderId: string }>(`${ORDER_ENDPOINT.DONE}`, {
+            orderId: id,
+        });
+    },
+
+    finishOrderClient(id: string) {
         return instance.patch<void, string>(`${ORDER_ENDPOINT.DONE}`, {
             orderId: id,
         });
@@ -43,9 +52,11 @@ const orderService = {
     orderDetails(id: string) {
         return instance.get<IAxiosResponse<IOrderDetails>>(`${ORDER_ENDPOINT.ROOT}/${id}`);
     },
+
     orderStatus() {
         return instance.get<IAxiosResponse<OrderStatus[]>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
+
     vnpayReturnStatusOrder(params: URLSearchParams) {
         return instance.get<{ code: string; message: string; data?: any }>(`${ORDER_ENDPOINT.VNPAY_RETURN}?${params}`);
     },
