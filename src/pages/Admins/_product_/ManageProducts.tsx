@@ -41,14 +41,14 @@ const ManageProducts = () => {
                         },
                     }}
                 >
-                    <Tabs
+                    {/* <Tabs
                         defaultActiveKey={defaultItem}
                         items={items}
                         onChange={onChange}
                         type='line'
                         size='large'
                         className='px-3'
-                    />
+                    /> */}
                 </ConfigProvider>
             </div>
             <Outlet />

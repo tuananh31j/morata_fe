@@ -1,14 +1,18 @@
 import { Tag } from 'antd';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
+import ActionDetail from '~/pages/Clients/ProductDetails/_components/Action/ActionDetail';
 import ThumnailProduct from '~/pages/Clients/ProductDetails/_components/Thumbnail/ThumnailProduct';
+import { useTypedSelector } from '~/store/store';
 import { Currency } from '~/utils';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const { data, isLoading } = useGetDetailProduct(id!);
     const detailProduct = data?.data;
+    const productVariation = useTypedSelector((state) => state.detailProductReducer);
     return (
         <>
             {!isLoading && (
@@ -30,32 +34,32 @@ const ProductDetail = () => {
                                         <span className=' '>Review: </span>
                                         <RatingDisplay
                                             rating={detailProduct?.rating || 0}
-                                            reviews={detailProduct?.reviewIds.length}
+                                            reviews={detailProduct?.reviewCount || 0}
                                         />
                                     </div>
                                 </div>
 
                                 <div className='price mt-4 flex items-end gap-2'>
                                     <span className='text-3xl font-bold '>
-                                        {Currency.format(
-                                            detailProduct?.price ||
-                                                9999 * (1 - (detailProduct?.discountPercentage || 0) / 100)
-                                        )}
+                                        {Currency.format(productVariation.variant?.price || 9999)}
                                     </span>
-                                    <del className='text-base font-bold text-[#777777]'>
-                                        {Currency.format(detailProduct?.price || 9999)}
-                                    </del>
+                                    {/* <del className='text-base font-bold text-[#777777]'>
+                                        {Currency.format(productVariation.variant?.price || 9999)}
+                                    </del> */}
                                 </div>
                                 <div className='mt-4 flex items-center gap-5'>
                                     <div className=''>
                                         <span className='text-base font-normal leading-6 '>
                                             Discount: (-
-                                            {detailProduct?.discountPercentage}%)
+                                            {detailProduct?.discount}%)
                                         </span>
                                     </div>
                                     <div className='Progress-stock'>
                                         <p className='text-base font-normal '>
-                                            Stock: <span className='text-cyan-500'>{detailProduct?.stock}</span>
+                                            Stock:{' '}
+                                            <span className='text-cyan-500'>
+                                                {detailProduct?.variationIds[0].stock}
+                                            </span>
                                         </p>
                                     </div>
                                 </div>
@@ -65,7 +69,7 @@ const ProductDetail = () => {
                                     <p className='text-base font-normal '>
                                         Category:{' '}
                                         <Tag color='red' className='ml-2'>
-                                            {detailProduct?.categoryId}
+                                            {detailProduct && detailProduct.categoryId.name}
                                         </Tag>
                                     </p>
                                 </div>
@@ -73,26 +77,22 @@ const ProductDetail = () => {
                                     <span className='text-base '>
                                         Brand:{' '}
                                         <Tag color='gold' className='ml-2'>
-                                            {detailProduct?.brandId}
+                                            {detailProduct && detailProduct.brandId.name}
                                         </Tag>
                                     </span>
                                 </div>
                                 {/* Brand */}
                                 <div className=' mt-3'>
                                     <div>
-                                        <p className='text-base font-normal  '>
+                                        {/* <p className='text-base font-normal  '>
                                             Sku: <span className='text-cyan-500'>{detailProduct?.sku}</span>
-                                        </p>
+                                        </p> */}
                                     </div>
                                 </div>
                             </div>
                             {/* information product */}
                             <div className='information-product mt-[25px]'>
-                                <ul className='list-inside list-disc text-sm leading-6 text-[#777777]  '>
-                                    <li>Bass and Stereo Sound</li>
-                                    <li>Display with 3088 x 1440 pixels resolution.</li>
-                                    <li>Memory, Storage & SIM: 12GB RAM, 256GB.</li>
-                                </ul>
+                                {detailProduct && <ActionDetail product={detailProduct} />}
                             </div>
                         </div>
                     </div>

@@ -21,7 +21,7 @@ interface Order {
     isPaid: boolean;
     items: OrderItem[];
     orderCode: string;
-    orderStatus: OrderStatus;
+    currentOrderStatus: OrderStatus;
     paymentMethod: PaymentMethod;
     totalPrice: number;
 }
@@ -89,7 +89,7 @@ const OrderRow: React.FC<{ order: Order }> = ({ order }) => {
                         <PaymentMethodTag method={order.paymentMethod} />
                     </div>
                     <div>
-                        <OrderStatusTag status={order.orderStatus} />
+                        <OrderStatusTag status={order.currentOrderStatus} />
                     </div>
                     <div>
                         <IsPaidTag isPaid={order.isPaid} />

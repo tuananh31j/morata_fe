@@ -51,7 +51,7 @@ const Products = () => {
                         {products?.data && !Array.isArray(products.data) && (
                             <Pagination
                                 current={Number(query.page)}
-                                defaultPageSize={Number(query.limit)}
+                                pageSize={10}
                                 total={products.data.totalDocs}
                                 onChange={onPageChange}
                             />

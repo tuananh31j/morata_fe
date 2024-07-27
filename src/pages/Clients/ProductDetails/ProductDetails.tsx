@@ -29,7 +29,7 @@ const ProductDetails = () => {
     const product = productDetail?.data;
     // const oldPrice = product ? product?.price * (1 + product?.discountPercentage / 100) : 0;
     useDocumentTitle(`${product?.name}`);
-    // const variant = useSelector((state: RootState) => state.DetailProduct.variant);
+    const variant = useSelector((state: RootState) => state.detailProductReducer.variant);
     // const dispatch = useDispatch();
     // useEffect(() => {
     //     if (product) {
@@ -60,9 +60,9 @@ const ProductDetails = () => {
                                         </div> */}
                                     </div>
                                     <div className='price mt-[25px] flex items-end gap-2'>
-                                        {/* {variant && (
+                                        {variant && (
                                             <span className='text-3xl font-bold'>{Currency.format(variant.price)}</span>
-                                        )} */}
+                                        )}
                                         {product.discount > 0 && (
                                             <del className='text-base font-bold text-[#777777]'>
                                                 {/* {Currency.format(oldPrice)} */}

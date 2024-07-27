@@ -99,7 +99,7 @@ const Home = () => {
                 )}
             </WrapperList>
 
-            {/* @Popular Categories */}
+            {/* @Popular Categories
             <WrapperList classic title='Popular Categories'>
                 {categoriesLoading && (
                     <div className='flex justify-center gap-5'>
@@ -118,7 +118,7 @@ const Home = () => {
                         })}
                     </div>
                 )}
-            </WrapperList>
+            </WrapperList> */}
 
             {/* @Top Featured Products */}
             <WrapperList
