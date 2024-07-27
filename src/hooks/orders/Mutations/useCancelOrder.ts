@@ -5,10 +5,12 @@ import showMessage from '~/utils/ShowMessage';
 
 const useCancelOrder = () => {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationKey: [QUERY_KEY.ORDERS],
-        mutationFn: ({ orderId, description }: { orderId: string; description?: string }) =>
-            orderService.cancelOrder({ orderId, description }),
+        mutationFn: ({ orderId, reason }: { orderId: string; reason?: string }) =>
+            orderService.cancelOrder({ orderId, reason }),
+
         onSuccess() {
             showMessage('Cancel order successfully!', 'info');
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });

@@ -1,39 +1,48 @@
-import {
-    DockerOutlined,
-    FileProtectOutlined,
-    FireFilled,
-    HeartOutlined,
-    MenuOutlined,
-    RedoOutlined,
-} from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
+import { DockerOutlined, RedoOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
-import ProgressBar from '~/components/_common/ProgressBar';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
-import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
 import ActionDetail from '~/pages/Clients/ProductDetails/_components/Action/ActionDetail';
 import ProductRelated from '~/pages/Clients/ProductDetails/_components/ProductRelated/ProductRelated';
+import { RootState } from '~/store/store';
 import { Currency } from '~/utils';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
 import ThumnailProduct from './_components/Thumbnail/ThumnailProduct';
-import { Button, ConfigProvider } from 'antd';
 
+export type IVariantItem = {
+    _id: string;
+    price: number;
+    discountPercentage?: number;
+    stock: number;
+    sku: string;
+    color: string;
+    image?: string;
+    productId: string;
+};
 const ProductDetails = () => {
     const { id } = useParams();
     const { data: productDetail, isLoading } = useGetDetailProduct(id as string);
     const product = productDetail?.data;
-    const oldPrice = product ? product?.price * (1 + product?.discountPercentage / 100) : 0;
+    // const oldPrice = product ? product?.price * (1 + product?.discountPercentage / 100) : 0;
     useDocumentTitle(`${product?.name}`);
-
+    // const variant = useSelector((state: RootState) => state.DetailProduct.variant);
+    // const dispatch = useDispatch();
+    // useEffect(() => {
+    //     if (product) {
+    //         dispatch(setImages(product.images));
+    //     }
+    // }, [product]);
     return (
         <>
             {/* BeadCrumb */}
             {!isLoading && product && (
                 <>
                     <BreadcrumbDisplay titleProduct={`${product.name}`} />
-                    <div className='mt-[41px]'>
+                    <div className='mt-[5px]'>
                         {/* Product Media and detail container */}
                         <div className='flex flex-col gap-[10px] lg:flex-row xl:px-[30px] xl:py-[40px]'>
                             {/* Product Media */}
@@ -44,27 +53,29 @@ const ProductDetails = () => {
                                 <div className='product-title'>
                                     <h1 className='text-2xl font-semibold text-[#0068c9]'>{product.name}</h1>
                                     <div className='product-rating  flex h-[49px] gap-5  text-sm'>
-                                        <RatingDisplay rating={product.rating} reviews={product.reviewIds.length} />
-                                        <div className='mt-[10px] flex items-center gap-2'>
+                                        <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
+                                        {/* <div className='mt-[10px] flex items-center gap-2'>
                                             <FireFilled style={{ color: 'red' }} />
                                             <span>21 sold in last 24 hours</span>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className='price mt-[25px] flex items-end gap-2'>
-                                        <span className='text-3xl font-bold'>{Currency.format(product.price)}</span>
-                                        {product.discountPercentage > 0 && (
+                                        {/* {variant && (
+                                            <span className='text-3xl font-bold'>{Currency.format(variant.price)}</span>
+                                        )} */}
+                                        {product.discount > 0 && (
                                             <del className='text-base font-bold text-[#777777]'>
-                                                {Currency.format(oldPrice)}
+                                                {/* {Currency.format(oldPrice)} */}
                                             </del>
                                         )}
                                     </div>
-                                    {product.discountPercentage > 0 && (
+                                    {product.discount > 0 && (
                                         <>
                                             <div className='mt-[15px]'>
-                                                <span className='text-red-500 text-sm leading-6 text-[#777777]'>
+                                                {/* <span className='text-red-500 text-sm leading-6 text-[#777777]'>
                                                     Discount: {Currency.format(oldPrice - product.price)} (-
                                                     {product.discountPercentage}%)
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </>
                                     )}
@@ -85,7 +96,7 @@ const ProductDetails = () => {
                                     <span className=' text-sm'>17 people are viewing this right now</span>
                                 </div> */}
                                 {/* Progress  stock product*/}
-                                {product.stock < 100 && (
+                                {/* {product.stock < 100 && (
                                     <>
                                         <div className='Progress-stock mt-[25px]'>
                                             <p className='text-base font-normal'>
@@ -95,10 +106,10 @@ const ProductDetails = () => {
                                             <ProgressBar stock={product.stock} />
                                         </div>
                                     </>
-                                )}
+                                )} */}
                                 {/* Produt action  */}
                                 <ActionDetail product={product} />
-                                <div className='mt-[15px] flex gap-5 text-sm'>
+                                {/* <div className='mt-[15px] flex gap-5 text-sm'>
                                     <ConfigProvider
                                         theme={{
                                             components: {
@@ -116,10 +127,10 @@ const ProductDetails = () => {
                                             <MenuOutlined /> Add compare
                                         </Button>
                                     </ConfigProvider>
-                                </div>
+                                </div> */}
                                 {/* Roles for COD */}
                                 <div className='mt-[35px]'>
-                                    <ConfigProvider
+                                    {/* <ConfigProvider
                                         theme={{
                                             components: {
                                                 Button: {
@@ -132,7 +143,7 @@ const ProductDetails = () => {
                                         <Button className='flex items-center text-base '>
                                             <FileProtectOutlined /> Shipping and Returns
                                         </Button>
-                                    </ConfigProvider>
+                                    </ConfigProvider> */}
                                     <div className='ml-[15px] mt-[25px]'>
                                         <p>
                                             <DockerOutlined />{' '}
@@ -153,25 +164,36 @@ const ProductDetails = () => {
                                 <div className='ml-[15px] mt-[35px] flex flex-col gap-2'>
                                     <div className='flex '>
                                         <p className='w-[115px] text-[#777777]'>Availability: </p>
-                                        {product.stock > 0 && <b className='text-green-500'>In Stock</b>}
-                                        {product.stock < 1 && <b className='text-red-500'>Out in Stock</b>}
+                                        {product.isAvailable && <b className='text-green-500'>In Stock</b>}
+                                        {!product.isAvailable && <b className='text-red-500'>Out in Stock</b>}
                                     </div>
-                                    <div className='flex'>
-                                        <p className='w-[115px]  text-[#777777]'>SKU: </p>
-                                        <span className='font-semibold text-black'>{product.sku}</span>
-                                    </div>
+
                                     <div className='flex'>
                                         <p className='w-[115px]  text-[#777777]'>Vendor: </p>
-                                        {/* <span className='font-semibold text-black'>{product.brandId.name}</span> */}
+                                        {product.brandId.name && (
+                                            <Link
+                                                to={`/products?brandId=${product.brandId._id}`}
+                                                className='font-semibold text-black'
+                                            >
+                                                {product.brandId.name}
+                                            </Link>
+                                        )}
                                     </div>
                                     <div className='flex'>
                                         <p className='w-[115px]  text-[#777777]'>Categories: </p>
-                                        {/* <span className='font-semibold text-black'>{product.categoryId.name}</span> */}
+                                        {product.brandId.name && (
+                                            <Link
+                                                to={`/products?categoryId=${product.categoryId._id}`}
+                                                className='font-semibold text-black'
+                                            >
+                                                {product.categoryId.name}
+                                            </Link>
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <DescriptionProduct />
+                        <DescriptionProduct review={product.rating} product={product} />
                         {!isLoading && productDetail && <ProductRelated relatedProduct={productDetail} />}
                         {isLoading && (
                             <div className='flex gap-2'>

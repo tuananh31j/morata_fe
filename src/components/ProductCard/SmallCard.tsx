@@ -7,7 +7,10 @@ import RatingDisplay from '../_common/RatingDisplay';
 import PopupAttributes from '~/components/_common/PopupAttributes';
 import { IProductItemNew } from '~/types/Product';
 import { generateLink } from './_helper';
-import { Image } from 'antd';
+import { Image, Spin } from 'antd';
+import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 type PropTypeProduct = {
     product: IProductItemNew;
@@ -15,7 +18,15 @@ type PropTypeProduct = {
 
 const SmallCard = ({ product }: PropTypeProduct) => {
     const discountPercentage = 10;
-
+    const { mutate, isPending } = useMutationCart();
+    const user = useSelector((state: RootState) => state.authReducer.user);
+    const handleAddCart = () => {
+        mutate({
+            productVariation: product.variationIds[0]._id,
+            quantity: 1,
+            userId: user ? user._id : '',
+        });
+    };
     const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
 
@@ -101,8 +112,12 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                     {/* Add to cart btn */}
                     {/* <PopupAttributes product={product}> */}
-                    <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
-                        Add to cart
+                    <button
+                        onClick={handleAddCart}
+                        className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
+                    >
+                        {isPending && <Spin />}
+                        {!isPending && 'Add to cart'}
                     </button>
                     {/* </PopupAttributes> */}
                 </div>

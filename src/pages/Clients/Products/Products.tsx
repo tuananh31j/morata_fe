@@ -8,10 +8,11 @@ import SortAndViewOptions from '~/pages/Clients/Products/SortAndViewOptions';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import useFilter from '~/hooks/_common/useFilter';
 import useGetAllProducts from '~/hooks/products/Queries/useGetAllProducts';
+import { cn } from '~/utils';
 
 const Products = () => {
     useDocumentTitle('Products');
-    const { query, updateQueryParam } = useFilter();
+    const { query, grid, updateQueryParam } = useFilter();
     // @Query
     const [{ data: brands }, { data: categoies }] = useGetCategoriesAndBrands();
     const { data: products, isLoading: isProductsLoading } = useGetAllProducts(query);
@@ -28,17 +29,17 @@ const Products = () => {
                 <div className='w-full'>
                     <SortAndViewOptions totalProducts={products ? products.data.totalDocs : 0} />
                     <div
-                    // className={cn(
-                    //     {
-                    //         ['grid-cols-1']: grid === '1',
-                    //         ['grid-cols-2']: grid === '2',
-                    //         ['grid-cols-3']: grid === '3',
-                    //         ['grid-cols-4']: grid === '4',
-                    //         ['grid-cols-5']: grid === '5',
-                    //         ['grid-cols-2 lg:grid-cols-4']: !grid,
-                    //     },
-                    //     'my-5 grid gap-5'
-                    // )}
+                        className={cn(
+                            {
+                                ['grid-cols-1']: grid === '1',
+                                ['grid-cols-2']: grid === '2',
+                                ['grid-cols-3']: grid === '3',
+                                ['grid-cols-4']: grid === '4',
+                                ['grid-cols-5']: grid === '5',
+                                ['grid-cols-2 lg:grid-cols-4']: !grid,
+                            },
+                            'my-5 grid gap-5'
+                        )}
                     >
                         {isProductsLoading && <SmallSkeleton />}
                         {products &&

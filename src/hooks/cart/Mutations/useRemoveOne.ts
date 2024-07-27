@@ -20,7 +20,7 @@ export const useMutationRemoveItem = () => {
     const handleRemoveCart = (id: string) => {
         if (user) {
             const data = {
-                productId: id,
+                productVariation: id,
                 userId: user._id,
             };
             removeItem(data);

@@ -13,16 +13,12 @@ export const cartService = {
         const res = await instance.post<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.ADDCART}`, body);
         return res.data;
     },
-    async increase(body: IActionCartPayload) {
-        const res = await instance.patch<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.INCREASE}`, body);
+    async updateQuantity(body: IAddCartPayload) {
+        const res = await instance.patch(`${CART_ENDPOINT.UPDATEQUANTITY}`, body);
         return res.data;
     },
     async removeCart(body: IActionCartPayload) {
         const res = await instance.patch<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.REMOVEITEM}`, body);
-        return res.data;
-    },
-    async decrease(body: IActionCartPayload) {
-        const res = await instance.patch<IAxiosResponse<ICartDataResponse>>(`${CART_ENDPOINT.DECREASE}`, body);
         return res.data;
     },
     async removeAllCart(body: { userId: string }) {

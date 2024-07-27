@@ -339,14 +339,14 @@ const Header = () => {
                                             />
                                         </div>
                                         <div className='max-h-[33vh] overflow-scroll overflow-x-hidden'>
-                                            {searchResult?.data.products.map((item, index) => (
+                                            {/* {searchResult?.data.products.map((item, index) => (
                                                 <SearchCard key={index} product={item} />
                                             ))}
                                             {isLoading && (
                                                 <>
                                                     <SearchSkeleton />
                                                 </>
-                                            )}
+                                            )} */}
                                             {!searchResult?.data.products.length && !isLoading && (
                                                 <div className='flex h-[20vh] w-full items-center justify-center'>
                                                     <h3 className='font-medium'>
@@ -419,9 +419,9 @@ const Header = () => {
                                     />
                                 </div>
                                 <div className='max-h-[33vh] overflow-scroll overflow-x-hidden'>
-                                    {searchResult?.data.products.map((item, index) => (
+                                    {/* {searchResult?.data.products.map((item, index) => (
                                         <SearchCard key={index} product={item} />
-                                    ))}
+                                    ))} */}
                                     {isLoading && (
                                         <>
                                             <SearchSkeleton />

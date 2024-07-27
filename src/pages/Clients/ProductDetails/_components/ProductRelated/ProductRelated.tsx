@@ -1,15 +1,21 @@
+import { useLocation } from 'react-router-dom';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import WrapperList from '~/components/_common/WrapperList';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import { useGetRelatedProduct } from '~/hooks/products/Queries/useGetRelatedProduct';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { IProduct } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 
-const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IProduct> }) => {
+const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+};
+const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IProductItemNew> }) => {
+    const query = useQuery();
+    const cateId = query.get('categoryId');
     const product = relatedProduct.data;
     const body = {
-        cateId: product.categoryId,
+        cateId: product.categoryId?._id || cateId || '',
         id: product._id,
     };
     const { data: ListRelated, isLoading: relatedLoading } = useGetRelatedProduct(body);
@@ -20,7 +26,7 @@ const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IPr
                 <WrapperList classic title='Related Products'>
                     {ListRelated && (
                         <CarouselDisplay>
-                            {ListRelated?.data.map((item: IProduct, i: number) => (
+                            {ListRelated?.data.map((item, i) => (
                                 <CarouselItem key={i}>
                                     <SmallCard product={item} />
                                 </CarouselItem>

@@ -1,92 +1,95 @@
-import { CheckOutlined } from '@ant-design/icons';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { ConfigProvider, Modal, Spin } from 'antd';
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { IOrderDetails } from '~/types/Order';
+import { Button, Flex, Form, Modal, Radio } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
+import { ReactNode, useState } from 'react';
+import WrapperList from '~/components/_common/WrapperList';
+import { OrderStatus } from '~/constants/enum';
+import useCancelOrder from '~/hooks/orders/Mutations/useCancelOrder';
+import useConfirmOrder from '~/hooks/orders/Mutations/useConfirmOrder';
+import useDeliverdOrder from '~/hooks/orders/Mutations/useDeliveredOrder';
+import useFinishAnOrder from '~/hooks/orders/Mutations/useFinishAnOrder';
+import useShipOrder from '~/hooks/orders/Mutations/useShipOrder';
 
-export default function PopupStatusOrder({
+const PopupFormCancelOrder = ({
+    id,
     children,
-    order,
-    mutate,
-    isPending,
-    content,
+    status,
+    isCacelled,
 }: {
-    children: React.ReactNode;
-    order: IOrderDetails;
-    mutate: UseMutateFunction<string, Error, string, unknown>;
-    isPending?: boolean;
-    content: {
-        title: string;
-        description?: string;
-        btnYes?: string;
-        btnCancel?: string;
+    id: string;
+    children: ReactNode;
+    status: OrderStatus;
+    isCacelled?: boolean;
+}) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { mutateAsync: cancelOrder } = useCancelOrder();
+    const { mutateAsync: confirmOrder } = useConfirmOrder();
+    const { mutateAsync: shipOrder } = useShipOrder();
+    const { mutateAsync: deliveredOrder } = useDeliverdOrder();
+    const { mutateAsync: finishOrder } = useFinishAnOrder();
+    const onFinish = async (values: { reason: string }) => {
+        switch (status) {
+            case OrderStatus.pending:
+                if (isCacelled) {
+                    await cancelOrder({ orderId: id, reason: values.reason });
+                } else {
+                    await confirmOrder({ orderId: id, reason: values.reason });
+                }
+                setIsModalOpen(false);
+                break;
+            case OrderStatus.confirmed:
+                await shipOrder({ orderId: id, reason: values.reason });
+                setIsModalOpen(false);
+                break;
+
+            case OrderStatus.shipping:
+                await deliveredOrder({ orderId: id, reason: values.reason });
+                setIsModalOpen(false);
+                break;
+
+            case OrderStatus.delivered:
+                await finishOrder(id);
+                setIsModalOpen(false);
+                break;
+            case OrderStatus.cancelled:
+                console.log('is cacelled status');
+
+                break;
+
+            default:
+                console.log('Invalid status');
+        }
     };
-}) {
-    const [isModalOpen, setModalOpen] = useState(false);
-    const { id } = useParams();
-    console.log(isPending);
+
     const showModal = () => {
-        setModalOpen(true);
+        setIsModalOpen(true);
     };
     const handleCancel = () => {
-        setModalOpen(false);
-    };
-    const handleFinish = () => {
-        if (id) {
-            mutate(id);
-            setModalOpen(false);
-        }
+        setIsModalOpen(false);
     };
     return (
         <>
-            <span
-                className='cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-sm font-medium text-white shadow-md'
-                onClick={showModal}
-            >
+            <Button onClick={showModal} type='primary' danger={isCacelled}>
                 {children}
-            </span>
-            <Modal
-                footer={[
-                    <>
-                        <button
-                            onClick={handleCancel}
-                            className='h-[42px] w-[82px] rounded-lg  bg-[#7777] bg-white duration-300 hover:bg-red hover:text-white'
-                        >
-                            {content.btnCancel ? content.btnCancel : 'Cancel'}
-                        </button>
-                        <button
-                            onClick={handleFinish}
-                            className='ml-4 h-[42px] w-[82px] rounded-lg bg-blue-500 text-white duration-300 hover:bg-blue-700'
-                        >
-                            {isPending ? (
-                                <ConfigProvider
-                                    theme={{
-                                        token: {
-                                            colorPrimary: 'red',
-                                        },
-                                    }}
-                                >
-                                    <Spin />
-                                </ConfigProvider>
-                            ) : (
-                                `${content.btnYes ? content.btnYes : 'Yes'}`
-                            )}
-                        </button>
-                    </>,
-                ]}
-                centered
-                open={isModalOpen}
-                onCancel={handleCancel}
-            >
-                <div className='mb-6 flex flex-col items-center'>
-                    <div className='flex flex-col items-center gap-2'>
-                        <CheckOutlined className=' rounded-full border-2 p-5 text-4xl' />
-                        <h3 className='text-xl font-medium text-blue-700'>{content.title}</h3>
-                        {content.description && <p>{content.description}</p>}
-                    </div>
-                </div>
+            </Button>
+            <Modal open={isModalOpen} footer='' onCancel={handleCancel}>
+                <WrapperList classic className='m-0' title='Enter a reason for updating this order status.'>
+                    <Form onFinish={onFinish} className='w-full' name='layout-multiple-horizontal' layout='vertical'>
+                        <Form.Item rules={[{ required: true, message: 'Please input your reason!' }]} label='Reason'>
+                            <TextArea rows={10} />
+                        </Form.Item>
+                        <Flex align='end' justify='end' gap='small'>
+                            <Button onClick={handleCancel} type='text'>
+                                Cancel
+                            </Button>
+                            <Button htmlType='submit' type='primary'>
+                                Send
+                            </Button>
+                        </Flex>
+                    </Form>
+                </WrapperList>
             </Modal>
         </>
     );
-}
+};
+
+export default PopupFormCancelOrder;

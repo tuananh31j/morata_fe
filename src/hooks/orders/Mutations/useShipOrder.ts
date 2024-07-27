@@ -3,18 +3,18 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import orderService from '~/services/order.service';
 import showMessage from '~/utils/ShowMessage';
 
-export default function useFinishAnOrder() {
+export default function useShipOrder() {
     const queryClient = useQueryClient();
-
     return useMutation({
-        mutationKey: ['FINISH_ORDER'],
-        mutationFn: (id: string) => orderService.finishOrder(id),
+        mutationKey: ['CONFIRM_ORDER'],
+        mutationFn: ({ orderId, reason }: { orderId: string; reason: string }) =>
+            orderService.shippingOrder({ orderId, reason }),
         onSuccess() {
-            showMessage('Order is done!', 'info');
+            showMessage('Order is shiping!', 'info');
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
         },
         onError: () => {
-            showMessage('Order change to done failed.', 'error');
+            showMessage('Order confirmation failed.', 'error');
         },
     });
 }

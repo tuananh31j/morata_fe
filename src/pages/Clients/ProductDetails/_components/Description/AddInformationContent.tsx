@@ -1,18 +1,23 @@
-const AddInformationContent = () => {
+import { IAttributesProduct } from '~/types/Product';
+
+const AddInformationContent = ({ attributes }: { attributes: IAttributesProduct }) => {
     return (
         <>
-            <div className='product-desc-content'>
-                <table className='w-full'>
-                    <tbody>
-                        <tr className=' odd:bg-gray-100 even:bg-white'>
-                            <td className='label  pl-5 font-bold'>
-                                <h3 className='py-2'>Color</h3>
-                            </td>
-                            <td className='value'>
-                                <p className='text-[#777777]'>Space Black, Silver, Red</p>
-                            </td>
-                        </tr>
-                        <tr className='odd:bg-gray-100 even:bg-white'>
+            <div className='product-desc-content min-h-[250px]'>
+                {attributes && (
+                    <table className=' w-[80%] '>
+                        <tbody>
+                            {attributes.map((item, index) => (
+                                <tr key={index} className='odd:bg-gray-100   even:bg-white'>
+                                    <td className='label  pl-5 font-bold'>
+                                        <h3 className='py-2'>{item.key.toUpperCase()}</h3>
+                                    </td>
+                                    <td className='value'>
+                                        <p className='text-[#777777]'>{item.value}</p>
+                                    </td>
+                                </tr>
+                            ))}
+                            {/* <tr className='odd:bg-gray-100 even:bg-white'>
                             <td className='label  pl-5 font-bold'>
                                 <h3 className='py-2'>Product Type</h3>
                             </td>
@@ -131,9 +136,15 @@ const AddInformationContent = () => {
                             <td className='value'>
                                 <p className='text-[#777777]'>5G</p>
                             </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </tr> */}
+                        </tbody>
+                    </table>
+                )}
+                {!attributes.length && (
+                    <div className='flex min-h-[250px] items-center justify-center'>
+                        <h3>This product doesn&apos;t have any details!</h3>
+                    </div>
+                )}
             </div>
         </>
     );

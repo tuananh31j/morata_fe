@@ -16,12 +16,13 @@ import {
     ManageOrders,
     UpdateCategory,
     CreateAttribute,
-    OrdersList,
     RedirectToProductList,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
 import RedirectToOrderList from '~/components/_common/RedirectToOrderList/RedirectToOrderList';
 import { Outlet } from 'react-router-dom';
+import OrdersList from '~/pages/Admins/_order_/OrdersList/OrdersList';
+import { OrderStatus } from '~/constants/enum';
 
 const PrivateRoutes = [
     {
@@ -202,15 +203,7 @@ const PrivateRoutes = [
                         index: true,
                         element: (
                             <Suspense>
-                                <OrdersList />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        index: true,
-                        element: (
-                            <Suspense>
-                                <OrdersList />
+                                <OrdersList status={OrderStatus.pending} />
                             </Suspense>
                         ),
                     },
@@ -226,7 +219,7 @@ const PrivateRoutes = [
                         path: 'pending',
                         element: (
                             <Suspense>
-                                <OrdersList />
+                                <OrdersList status={OrderStatus.pending} />
                             </Suspense>
                         ),
                     },
@@ -234,7 +227,7 @@ const PrivateRoutes = [
                         path: 'confirmed',
                         element: (
                             <Suspense>
-                                <OrdersList />
+                                <OrdersList status={OrderStatus.confirmed} />
                             </Suspense>
                         ),
                     },
@@ -242,7 +235,7 @@ const PrivateRoutes = [
                         path: 'shipping',
                         element: (
                             <Suspense>
-                                <OrdersList />
+                                <OrdersList status={OrderStatus.shipping} />
                             </Suspense>
                         ),
                     },
@@ -250,7 +243,7 @@ const PrivateRoutes = [
                         path: 'delivered',
                         element: (
                             <Suspense>
-                                <OrdersList />
+                                <OrdersList status={OrderStatus.delivered} />
                             </Suspense>
                         ),
                     },
@@ -258,15 +251,7 @@ const PrivateRoutes = [
                         path: 'done',
                         element: (
                             <Suspense>
-                                <OrdersList />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: `test`,
-                        element: (
-                            <Suspense>
-                                <ManageOrders />
+                                <OrdersList status={OrderStatus.done} />
                             </Suspense>
                         ),
                     },

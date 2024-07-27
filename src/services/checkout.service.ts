@@ -11,4 +11,8 @@ export const checkoutService = {
         const res = await instance.post(`${CHECKOUT_ENDPOINT.SESSION}`, body);
         return res.data;
     },
+    async checkOutVnPay(body: ICheckoutCash) {
+        const res = await instance.post(`${CHECKOUT_ENDPOINT.VNPAY}`, body);
+        return res.data;
+    },
 };

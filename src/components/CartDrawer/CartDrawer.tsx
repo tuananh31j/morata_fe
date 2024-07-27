@@ -3,14 +3,17 @@ import { Button, Drawer, Empty, Image, InputNumber, List, Slider, Spin } from 'a
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LoadingBar from '~/components/_common/Loading/LoadingBar';
 import { MAIN_ROUTES } from '~/constants/router';
-import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
-import { useMutationDecreaseCart } from '~/hooks/cart/Mutations/useDecreaseQuantity';
-import { useMutationIncreaseCart } from '~/hooks/cart/Mutations/useIncreaseQuantity';
-import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
 import { useCart } from '~/hooks/_common/useCart';
+import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
+import { useUpdateQuantity } from '~/hooks/cart/Mutations/useUpdateQuantity';
+import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
+import { RootState } from '~/store/store';
+import { IAddCartPayload } from '~/types/cart/CartPayload';
 import { ICartDataResponse } from '~/types/cart/CartResponse';
 import { Currency } from '~/utils';
 
@@ -19,15 +22,15 @@ type PropsType = {
     item?: ICartDataResponse;
 };
 const CartDrawer = ({ children, item }: PropsType) => {
-    const { handleIncreaseQuantity } = useMutationIncreaseCart();
     const { handleRemoveCart, isPending } = useMutationRemoveItem();
-    const { handleDecreaseQuantity } = useMutationDecreaseCart();
     const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
+    const { mutate: updateQuantity } = useUpdateQuantity();
     const { handleOpenCart, onClose, cart } = useCart();
+    const user = useSelector((state: RootState) => state.authReducer.user?._id);
     const products = item ? item.items : null;
     const freeShippingThreshold = 1000;
     const totalOrderAmount = products
-        ? products?.reduce((total: number, product) => total + product.productId.price * product.quantity, 0)
+        ? products?.reduce((total: number, product) => total + product.productVariation.price * product.quantity, 0)
         : 0;
     const marks = {
         0: `$0`,
@@ -35,19 +38,69 @@ const CartDrawer = ({ children, item }: PropsType) => {
         [freeShippingThreshold]: `$${freeShippingThreshold}`,
     };
     const responsePayloadCheckout = products?.map((product) => ({
-        name: product.productId.name,
-        price: product.productId.price,
+        name: product.productVariation.productId.name,
+        price: product.productVariation.price,
         quantity: product.quantity,
-        image: product.productId.thumbnail,
+        image: product.productVariation.image,
     }));
     const handlePayStripe = () => {
         stripeCheckout({
             items: responsePayloadCheckout,
         });
     };
-    const debouncedIncrease = debounce((id: string) => handleIncreaseQuantity(id), 300);
-    const debouncedDecrease = debounce((id: string) => handleDecreaseQuantity(id), 300);
-    const debouncedRemove = debounce((id: string) => handleRemoveCart(id), 0);
+    const [quantityProduct, setQuantityProduct] = useState<{ quantity: number; id: string }[]>([]);
+    const [pendingUpdates, setPendingUpdates] = useState<{ productVariation: string; quantity: number } | null>(null);
+    useEffect(() => {
+        if (products) {
+            const newArr = products.map(({ quantity, productVariation }) => ({ quantity, id: productVariation._id }));
+            setQuantityProduct(newArr);
+        }
+    }, [products]);
+    const handleChangeQuantity = (id: string, newQuantity: number) => {
+        setQuantityProduct((prev) =>
+            prev.map((itemCart) => (itemCart.id === id ? { ...itemCart, quantity: newQuantity } : itemCart))
+        );
+        setPendingUpdates({ productVariation: id, quantity: newQuantity });
+    };
+    const debouncedUpdate = useCallback(
+        debounce(async (payload: IAddCartPayload) => {
+            await updateQuantity(payload);
+        }, 500),
+        []
+    );
+    const handleIncreaseQuantity = (id: string) => {
+        setQuantityProduct((prev) => {
+            if (!prev) return [];
+            return prev.map((itemCart) =>
+                itemCart.id === id ? { ...itemCart, quantity: itemCart.quantity + 1 } : itemCart
+            );
+        });
+        const newQuantity = (quantityProduct.find((itemCart) => itemCart.id === id)?.quantity || 0) + 1;
+        handleChangeQuantity(id, newQuantity);
+    };
+    const handleDecreaseQuantity = (id: string) => {
+        setQuantityProduct((prev) => {
+            if (!prev) return [];
+            const itemFill = prev.find((itemCart) => itemCart.id === id);
+            if (itemFill && itemFill.quantity > 1) {
+                return prev.map((itemCart) =>
+                    itemCart.id === id ? { ...itemCart, quantity: itemCart.quantity - 1 } : itemCart
+                );
+            }
+            return prev;
+        });
+        const newQuantity = (quantityProduct.find((itemCart) => itemCart.id === id)?.quantity || 0) - 1;
+        handleChangeQuantity(id, newQuantity);
+    };
+    const debouncedRemove = debounce((id: string) => handleRemoveCart(id), 500);
+    useEffect(() => {
+        if (pendingUpdates) {
+            debouncedUpdate({
+                userId: user ? user : '',
+                ...pendingUpdates,
+            });
+        }
+    }, [pendingUpdates, debouncedUpdate]);
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <span className={'cursor-pointer'} onClick={handleOpenCart}>
@@ -96,42 +149,77 @@ const CartDrawer = ({ children, item }: PropsType) => {
                             itemLayout='vertical'
                             className='h-[40vh] w-full overflow-x-hidden overflow-y-scroll'
                             dataSource={products}
-                            renderItem={(product) => (
-                                <List.Item>
-                                    <div className='flex w-full items-center justify-between'>
-                                        <List.Item.Meta
-                                            avatar={
-                                                <Image
-                                                    className='h-[80px] w-[80px]'
-                                                    src={product.productId.thumbnail}
-                                                />
-                                            }
-                                            title={
-                                                <Link
-                                                    style={{ color: '#0068c9' }}
-                                                    className='text-[14px] font-bold text-[#0068c9]'
-                                                    to={`${MAIN_ROUTES.PRODUCTS}/${product.productId._id}`}
-                                                >
-                                                    {product.productId.name}
-                                                </Link>
-                                            }
-                                            description={
-                                                <div className='flex justify-between'>
-                                                    <div className='flex items-center gap-2'>
-                                                        <span
-                                                            className={clsx(
-                                                                'text-base font-semibold leading-5 text-[#222]',
-                                                                {
-                                                                    'text-red-600':
-                                                                        product.productId.discountPercentage > 0,
-                                                                }
-                                                            )}
-                                                        >
-                                                            {Currency.format(
-                                                                product.productId.price * product.quantity
-                                                            )}
-                                                        </span>
-                                                        {product.productId.discountPercentage > 0 && (
+                            renderItem={(product) => {
+                                const quantity =
+                                    quantityProduct?.find((p) => p.id === product.productVariation._id)?.quantity || 0;
+                                return (
+                                    <List.Item>
+                                        <div className='flex w-full items-center justify-between'>
+                                            <List.Item.Meta
+                                                avatar={
+                                                    <Image
+                                                        className='h-[80px] w-[80px]'
+                                                        src={product.productVariation.image}
+                                                    />
+                                                }
+                                                title={
+                                                    <Link
+                                                        style={{ color: '#0068c9' }}
+                                                        className='text-[14px] font-bold text-[#0068c9]'
+                                                        to={`${MAIN_ROUTES.PRODUCTS}/${product.productVariation.productId._id}`}
+                                                    >
+                                                        {product.productVariation.productId.name}
+                                                    </Link>
+                                                }
+                                                description={
+                                                    <div className='flex justify-between'>
+                                                        <div className='flex items-center gap-2'>
+                                                            <div className='flex flex-col'>
+                                                                <span>
+                                                                    {product.productVariation.color.toUpperCase()}
+                                                                </span>
+                                                                <span
+                                                                    className={clsx(
+                                                                        'text-base font-semibold leading-5 text-[#222]'
+                                                                        // {
+                                                                        //     'text-red-600':
+                                                                        //         product.productId.discountPercentage > 0,
+                                                                        // }
+                                                                    )}
+                                                                >
+                                                                    {Currency.format(product.productVariation.price)}
+                                                                </span>
+                                                            </div>
+                                                            <div className='ml-5 flex items-center justify-center'>
+                                                                <Button
+                                                                    type='default'
+                                                                    disabled={quantity < 2}
+                                                                    icon={
+                                                                        <MinusOutlined className='transform transition duration-500 hover:rotate-180' />
+                                                                    }
+                                                                    onClick={() =>
+                                                                        handleDecreaseQuantity(
+                                                                            product.productVariation._id
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <InputNumber min={1} value={quantity} className='' />
+                                                                <Button
+                                                                    type='default'
+                                                                    disabled={
+                                                                        quantity === product.productVariation.stock
+                                                                    }
+                                                                    icon={
+                                                                        <PlusOutlined className='transform transition duration-500 hover:rotate-180' />
+                                                                    }
+                                                                    onClick={() =>
+                                                                        handleIncreaseQuantity(
+                                                                            product.productVariation._id
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </div>
+                                                            {/* {product.productId.discountPercentage > 0 && (
                                                             <del className=' text-gray-400 text-base font-semibold leading-5'>
                                                                 {Currency.format(
                                                                     product.productId.price *
@@ -139,40 +227,22 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                                         (1 + product.productId.discountPercentage / 100)
                                                                 )}
                                                             </del>
-                                                        )}
+                                                        )} */}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            }
-                                        />
-                                        <Button
-                                            onClickCapture={() => debouncedRemove(product.productId._id)}
-                                            type='text'
-                                            className='mb-20 text-indigo-600 hover:text-indigo-500'
-                                        >
-                                            <DeleteOutlined />
-                                        </Button>
-                                    </div>
-                                    <div className='ml-5 flex items-center justify-center'>
-                                        <Button
-                                            type='default'
-                                            disabled={product.quantity < 2}
-                                            onClick={() => debouncedDecrease(product.productId._id)}
-                                            icon={
-                                                <MinusOutlined className='transform transition duration-500 hover:rotate-180' />
-                                            }
-                                            // onClick={() => handleQuantityChange(product.productId._id, product.quantity - 1)}
-                                        />
-                                        <InputNumber min={1} value={product.quantity} className='pl-7' />
-                                        <Button
-                                            type='default'
-                                            icon={
-                                                <PlusOutlined className='transform transition duration-500 hover:rotate-180' />
-                                            }
-                                            onClick={() => debouncedIncrease(product.productId._id)}
-                                        />
-                                    </div>
-                                </List.Item>
-                            )}
+                                                }
+                                            />
+                                            <Button
+                                                onClickCapture={() => debouncedRemove(product.productVariation._id)}
+                                                type='text'
+                                                className='mb-20 text-indigo-600 hover:text-indigo-500'
+                                            >
+                                                <DeleteOutlined />
+                                            </Button>
+                                        </div>
+                                    </List.Item>
+                                );
+                            }}
                         />
                         {totalOrderAmount < freeShippingThreshold && (
                             <div className='free-shipping__text mb-14'>

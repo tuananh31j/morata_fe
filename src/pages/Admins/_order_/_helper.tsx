@@ -2,17 +2,15 @@ import { TableProps } from 'antd';
 import { ORDER_STATUS_ARR, OrderStatus, PaymentMethod } from '~/constants/enum';
 import OrderRow from '~/pages/Admins/_order_/OrdersList/OrderRow';
 
-import { IOrderParams } from '~/types/Order';
-
 export interface DataType {
     _id: string;
     paymentMethod: PaymentMethod;
-    orderStatus: OrderStatus;
+    currentOrderStatus: OrderStatus;
     totalPrice: number;
     createdAt: string;
 }
 
-export const ordersListColums = (filtered: IOrderParams): TableProps['columns'] => {
+export const ordersListColums = (): TableProps['columns'] => {
     return [
         {
             title: (
@@ -20,10 +18,10 @@ export const ordersListColums = (filtered: IOrderParams): TableProps['columns'] 
                     <div className='grid grid-cols-10 items-center gap-8 p-4 text-[#01070E]'>
                         <div className='col-span-3 font-bold '>Product</div>
                         <div className='font-bold '>Total</div>
-                        <div className='font-bold '>Payment Method</div>
+                        <div className='font-bold '>Payment</div>
                         <div className='font-bold '>Status</div>
                         <div className='font-bold '>Paid</div>
-                        <div className='font-bold '>Created Date</div>
+                        <div className='font-bold '>Created</div>
                         <div className='col-span-2 text-right font-bold '>Action</div>
                     </div>
                 </div>
@@ -60,10 +58,10 @@ export const orderItemsColums: TableProps['columns'] = [
 
 export const renderSteps = ({ currentStep }: { currentStep: OrderStatus }) => {
     let newArr = ORDER_STATUS_ARR;
-    if (currentStep === OrderStatus.canceled) {
+    if (currentStep === OrderStatus.cancelled) {
         newArr = ORDER_STATUS_ARR.filter((item) => item !== OrderStatus.confirmed);
     } else {
-        newArr = ORDER_STATUS_ARR.filter((item) => item !== OrderStatus.canceled);
+        newArr = ORDER_STATUS_ARR.filter((item) => item !== OrderStatus.cancelled);
     }
     const items = newArr.map((step) => ({
         title: step,

@@ -5,6 +5,9 @@ import { Currency } from '~/utils';
 import clsx from 'clsx';
 import { IProductItemNew } from '~/types/Product';
 import { generateLink } from './_helper';
+import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 type PropTypeProduct = { product: IProductItemNew };
 const FeatureCard = ({ product }: PropTypeProduct) => {

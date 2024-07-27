@@ -17,7 +17,7 @@ interface OrderItem {
 interface Order {
     _id: string;
     createdAt: string;
-    customerName: string;
+    name: string;
     isPaid: boolean;
     items: OrderItem[];
     orderCode: string;
@@ -39,7 +39,9 @@ const OrderRow: React.FC<{ order: Order }> = ({ order }) => {
                     />
                     <div>
                         <div className='text-sm font-semibold'>{order.items[0].name}</div>
-                        <div className='text-gray-500 text-sm'>and {order.items.length - 1} products other</div>
+                        {order.items.length > 1 && (
+                            <div className='text-gray-500 text-sm'>and {order.items.length - 1} products other</div>
+                        )}
                     </div>
                 </div>
             ),
@@ -69,8 +71,8 @@ const OrderRow: React.FC<{ order: Order }> = ({ order }) => {
         >
             <div className='border-b border-[#B9D5F3]  p-4'>
                 <div className='flex items-center justify-between'>
-                    <span className='text-sm font-medium text-[#666666]'>Order ID: #{order.orderCode}</span>
-                    <span className='text-gray-600 text-sm '>Customer: {order.customerName}</span>
+                    <span className='text-sm font-medium text-[#666666]'>Order ID: #{order._id}</span>
+                    <span className='text-gray-600 text-sm '>Customer: {order.name}</span>
                 </div>
             </div>
             <div className=''>
