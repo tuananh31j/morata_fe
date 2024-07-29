@@ -20,11 +20,11 @@ const ListAll = () => {
     const [brands, categories] = useGetCategoriesAndBrands();
     const { data } = useGetProducts(query);
 
-    const brandsSelectData = brands.data?.data?.map((brand) => ({
+    const brandsSelectData = brands?.data?.data?.map((brand) => ({
         label: brand.name,
         value: brand._id,
     }));
-    const categoriesSelectData = categories.data?.data?.map((category) => ({
+    const categoriesSelectData = categories?.data?.data?.map((category) => ({
         label: category.name,
         value: category._id,
     }));
