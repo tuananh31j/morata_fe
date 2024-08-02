@@ -1,6 +1,11 @@
 import { Space, Steps } from 'antd';
 import { useEffect, useState } from 'react';
 import { ORDER_STATUS } from '~/constants/order';
+import { MdOutlinePendingActions } from 'react-icons/md';
+import { GiConfirmed } from 'react-icons/gi';
+import { LiaShippingFastSolid } from 'react-icons/lia';
+import { RiUserReceivedLine } from 'react-icons/ri';
+import { FaStar } from 'react-icons/fa';
 
 interface Props {
     orderStatus: string;
@@ -34,28 +39,33 @@ const OrderStatusBar = ({ orderStatus }: Props) => {
         <Space className='mt-5 flex w-full items-center justify-center rounded-md bg-[#fff] p-4'>
             <Steps
                 size='small'
-                current={currentStep}
-                className='mx-auto '
+                current={1}
+                className='w-[66vw]'
                 items={[
                     {
                         title: 'Pending',
-                        className: 'text-primary w-[20rem]',
+                        className: 'text-primary',
+                        icon: <MdOutlinePendingActions />,
                     },
                     {
                         title: 'Confirmed',
-                        className: 'text-primary w-[20rem]',
+                        className: 'text-primary',
+                        icon: <GiConfirmed />,
                     },
                     {
                         title: 'Shipping',
-                        className: 'text-primary w-[20rem]',
+                        className: 'text-primary',
+                        icon: <LiaShippingFastSolid />,
                     },
                     {
                         title: 'Delivered',
-                        className: 'text-primary w-[20rem]',
+                        className: 'text-primary',
+                        icon: <RiUserReceivedLine />,
                     },
                     {
                         title: 'Done',
-                        className: 'text-primary w-[20rem]',
+                        className: 'text-primary',
+                        icon: <FaStar />,
                     },
                 ]}
             />
