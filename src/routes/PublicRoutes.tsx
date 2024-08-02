@@ -1,12 +1,14 @@
-import path from 'path';
 import { Navigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
 import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
 import ProtectedRoute from '~/layouts/Protected/ProtectedRoute';
+import { CheckEmail } from '~/pages/Clients/AuthPage/Email/CheckEmail';
+import { VerifyPage } from '~/pages/Clients/AuthPage/Email/Verify';
+import ForgotPassword from '~/pages/Clients/AuthPage/ForgotPassword/ForgotPassword';
+import ResetPassword from '~/pages/Clients/AuthPage/ForgotPassword/ResetPassword';
 import Success from '~/pages/Clients/Order/Success';
-import VerifyPage from '~/pages/Clients/Order/Verify';
 import {
     AboutPage,
     AuthLayoutPage,
@@ -117,7 +119,42 @@ const PublicRoutes = [
                     { path: MAIN_ROUTES.MY_ADDRESS, element: <MyAddressPage /> },
                 ],
             },
-
+            {
+                path: MAIN_ROUTES.VERIFY,
+                element: (
+                    <Suspense>
+                        <VerifyPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: MAIN_ROUTES.CHECKEMAIL,
+                element: (
+                    <Suspense>
+                        <CheckEmail />
+                    </Suspense>
+                ),
+            },
+            {
+                path: MAIN_ROUTES.FORGOT_PASSWORD,
+                element: (
+                    <Suspense>
+                        <ProtectedRoute>
+                            <ForgotPassword />
+                        </ProtectedRoute>
+                    </Suspense>
+                ),
+            },
+            {
+                path: MAIN_ROUTES.RESET_PASSWORD,
+                element: (
+                    <Suspense>
+                        <ProtectedRoute>
+                            <ResetPassword />
+                        </ProtectedRoute>
+                    </Suspense>
+                ),
+            },
             // @Auth
             {
                 element: (
@@ -135,7 +172,6 @@ const PublicRoutes = [
         ],
     },
     { path: '*', element: <Navigate to={MAIN_ROUTES.NOT_FOUND} /> },
-    { path: MAIN_ROUTES.VERIFY_ORDER, element: <VerifyPage /> },
     { path: MAIN_ROUTES.SUCCESS_ORDER, element: <Success /> },
     { path: MAIN_ROUTES.NOT_FOUND, element: <NotFoundPage /> },
 ];

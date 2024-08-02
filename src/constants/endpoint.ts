@@ -32,6 +32,10 @@ export const BRAND_ENDPOINT = {
 export const AUTH_ENDPOINT = {
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',
+    SENDMAIL: '/auth/sendVerify',
+    SENDRESETPASS: '/auth/sendresetPassword',
+    VERIFY: '/auth/verifyEmail',
+    RESETPASSWORD: '/auth/resetpassword',
     REFRESH: '/auth/refresh',
     LOGOUT: '/auth/logout',
 };

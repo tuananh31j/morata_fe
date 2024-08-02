@@ -6,6 +6,7 @@ export type IUser = {
     username: string;
     email: string;
     role: string;
+    phone: string;
     createdAt: string;
     updatedAt: string;
 };

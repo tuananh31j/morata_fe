@@ -1,21 +1,23 @@
 import { Button, ConfigProvider, Form, Input, Radio, Select, Spin } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import MiniProduct from '~/components/ProductCard/MiniProduct';
 import { PaymentMethod } from '~/constants/enum';
 import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
+import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 import { setOrder } from '~/store/slice/orderSlice';
-import { RootState } from '~/store/store';
 import { ICheckoutForm } from '~/types/checkout/Checkout';
 import { Currency } from '~/utils';
 
 const CheckOut = () => {
-    const user = useSelector((state: RootState) => state.authReducer.user);
     const [form] = useForm();
     const { mutate: stripeCheckout, isPending } = useMutationCheckOutSession();
-    const { data: orderItem, responsePayloadCheckout } = useGetMyCart(user?._id);
+    const { data } = useGetProfile();
+    console.log(data);
+    const { data: orderItem, responsePayloadCheckout } = useGetMyCart(data?.data?._id);
     const totalPrice = orderItem
         ? orderItem?.data?.items?.reduce(
               (total: number, product) => total + product.productVariation.price * product.quantity,
@@ -29,11 +31,11 @@ const CheckOut = () => {
     const navigate = useNavigate();
     const handleOnsubmit = (value: ICheckoutForm) => {
         const bodyData = {
-            userId: user?._id,
+            userId: data?.data?._id,
             customerInfo: {
-                name: user?.username,
-                email: user?.email,
-                phone: '',
+                name: data?.data?.username,
+                email: data?.data?.email,
+                phone: data?.data?.phone,
             },
             receiverInfo: {
                 name: value.name,
@@ -55,14 +57,20 @@ const CheckOut = () => {
         };
 
         dispatch(setOrder({ Detail: bodyData }));
-        navigate('/checkout-details');
+        if (responsePayloadCheckout?.length) {
+            navigate('/checkout-details');
+        }
     };
     const handlePayStripe = () => {
         stripeCheckout({
             items: responsePayloadCheckout,
         });
     };
-
+    useEffect(() => {
+        if (!orderItem?.data.items.length) {
+            navigate('/');
+        }
+    }, [orderItem]);
     return (
         <>
             {/* BACK TO HOME BTN */}
@@ -107,142 +115,149 @@ const CheckOut = () => {
                             </h3>
                         </>
                     )}
-                    <Form
-                        name='checkout'
-                        form={form}
-                        onFinish={handleOnsubmit}
-                        layout='vertical'
-                        style={{ maxWidth: 600 }}
-                    >
-                        <h3 className='text-[21px] font-semibold'>Contact</h3>
-                        <div className='mt-[15px]'>
-                            <Form.Item
-                                label='Your Name'
-                                name='name'
-                                initialValue={user?.username}
-                                rules={[{ required: true, message: 'Enter your name' }]}
-                            >
-                                <Input placeholder='Your Name' className='mt-[5px] h-[48px]' />
-                            </Form.Item>
-                        </div>
-                        <div className='mt-[15px]'>
-                            <Form.Item
-                                label='Your email'
-                                name='email'
-                                initialValue={user?.email}
-                                rules={[{ required: true, message: 'Enter your email' }]}
-                            >
-                                <Input placeholder='Your Email' className='mt-[5px] h-[48px]' />
-                            </Form.Item>
-                        </div>
-                        <div className='mt-[15px]'>
-                            <Form.Item
-                                label='Phone Number'
-                                name='phone'
-                                rules={[{ required: true, message: 'Enter your phone number' }]}
-                            >
-                                <Input placeholder='phone number' className='mt-[5px] h-[48px]' />
-                            </Form.Item>
-                        </div>
-                        <hr />
-                        <h3 className='mt-4 text-[21px] font-semibold'>Delivery</h3>
-                        <div className=''>
-                            <Form.Item
-                                name='country'
-                                label='Country'
-                                rules={[{ required: true, message: 'Please select gender!' }]}
-                            >
-                                <Select placeholder='select your country' className='h-[48px]'>
-                                    <Select.Option value='Việt Nam'>Viet Nam</Select.Option>
-                                </Select>
-                            </Form.Item>
-                        </div>
-                        <div className=''>
-                            <Form.Item
-                                label='City'
-                                name='city'
-                                rules={[{ required: true, message: 'Enter an email or phone number' }]}
-                            >
-                                <Select placeholder='select your city' className='h-[48px]'>
-                                    <Select.Option value='Hà Nội'>Ha Noi</Select.Option>
-                                    <Select.Option value='Hồ Chí Minh'>Ho Chi Minh</Select.Option>
-                                </Select>
-                            </Form.Item>
-                        </div>
-                        <div className=''>
-                            <Form.Item
-                                label='District'
-                                name='state'
-                                rules={[{ required: true, message: 'Enter District' }]}
-                            >
-                                <Input placeholder='District' className='mt-[5px] h-[48px]' />
-                            </Form.Item>
-                        </div>
-                        <div className=''>
-                            <Form.Item
-                                label='Street Address'
-                                name='line1'
-                                rules={[{ required: true, message: 'Enter Street Address' }]}
-                            >
-                                <Input placeholder='Street Address' className='mt-[5px] h-[48px]' />
-                            </Form.Item>
-                        </div>
-                        <div className=''>
-                            <Form.Item
-                                label='Apartment / suite/ etc'
-                                name='line2'
-                                rules={[{ required: true, message: 'Enter Apartment, suite, etc.r' }]}
-                            >
-                                <Input placeholder='Apartment, suite, etc' className='mt-[5px] h-[48px]' />
-                            </Form.Item>
-                        </div>
-                        <div className=''>
-                            <Form.Item
-                                label='Zip Code'
-                                name='postal_code'
-                                rules={[{ required: true, message: 'Enter Zip Code' }]}
-                            >
-                                <Input placeholder='0000000' className='mt-[5px] h-[48px]' />
-                            </Form.Item>
-                        </div>
-                        <div className=''>
-                            <Form.Item
-                                name={'paymentMethods'}
-                                rules={[{ required: true, message: 'Please select a payment method.' }]}
-                            >
-                                <Radio.Group optionType='default' buttonStyle='solid'>
-                                    <div className='space-y-4'>
-                                        <Radio disabled={totalPrice > 1000} value={1} className=' flex items-center'>
-                                            Cash on Delivery (COD)
-                                        </Radio>
-                                        <Radio value={2} className=' flex items-center'>
-                                            VNPAY
-                                        </Radio>
-                                    </div>
-                                </Radio.Group>
-                            </Form.Item>
-                        </div>
-                        <div className='mt-[35px]'>
-                            <ConfigProvider
-                                theme={{
-                                    components: {
-                                        Button: {
-                                            defaultBg: '#3c535e',
-                                            defaultHoverBg: '#2a3b44',
-                                            defaultHoverBorderColor: 'none',
-                                        },
-                                    },
-                                }}
-                            >
-                                <Button
-                                    htmlType='submit'
-                                    className='h-[58px] w-full text-[16px] font-semibold text-white disabled:bg-[#3c535e] disabled:bg-opacity-70'
+                    {data && (
+                        <Form
+                            name='checkout'
+                            form={form}
+                            onFinish={handleOnsubmit}
+                            layout='vertical'
+                            style={{ maxWidth: 600 }}
+                        >
+                            <h3 className='text-[21px] font-semibold'>Contact</h3>
+                            <div className='mt-[15px]'>
+                                <Form.Item
+                                    label='Your Name'
+                                    name='name'
+                                    initialValue={data.data.username}
+                                    rules={[{ required: true, message: 'Enter your name' }]}
                                 >
-                                    Order Now
-                                </Button>
-                            </ConfigProvider>
-                        </div>
-                    </Form>
+                                    <Input placeholder='Your Name' className='mt-[5px] h-[48px]' />
+                                </Form.Item>
+                            </div>
+                            <div className='mt-[15px]'>
+                                <Form.Item
+                                    label='Your email'
+                                    name='email'
+                                    initialValue={data.data.email}
+                                    rules={[{ required: true, message: 'Enter your email' }]}
+                                >
+                                    <Input placeholder='Your Email' className='mt-[5px] h-[48px]' />
+                                </Form.Item>
+                            </div>
+                            <div className='mt-[15px]'>
+                                <Form.Item
+                                    label='Phone Number'
+                                    name='phone'
+                                    initialValue={data.data.phone}
+                                    rules={[{ required: true, message: 'Enter your phone number' }]}
+                                >
+                                    <Input placeholder='phone number' className='mt-[5px] h-[48px]' />
+                                </Form.Item>
+                            </div>
+                            <hr />
+                            <h3 className='mt-4 text-[21px] font-semibold'>Delivery</h3>
+                            <div className=''>
+                                <Form.Item
+                                    name='country'
+                                    label='Country'
+                                    rules={[{ required: true, message: 'Please select gender!' }]}
+                                >
+                                    <Select placeholder='select your country' className='h-[48px]'>
+                                        <Select.Option value='Việt Nam'>Viet Nam</Select.Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className=''>
+                                <Form.Item
+                                    label='City'
+                                    name='city'
+                                    rules={[{ required: true, message: 'Enter an email or phone number' }]}
+                                >
+                                    <Select placeholder='select your city' className='h-[48px]'>
+                                        <Select.Option value='Hà Nội'>Ha Noi</Select.Option>
+                                        <Select.Option value='Hồ Chí Minh'>Ho Chi Minh</Select.Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className=''>
+                                <Form.Item
+                                    label='District'
+                                    name='state'
+                                    rules={[{ required: true, message: 'Enter District' }]}
+                                >
+                                    <Input placeholder='District' className='mt-[5px] h-[48px]' />
+                                </Form.Item>
+                            </div>
+                            <div className=''>
+                                <Form.Item
+                                    label='Street Address'
+                                    name='line1'
+                                    rules={[{ required: true, message: 'Enter Street Address' }]}
+                                >
+                                    <Input placeholder='Street Address' className='mt-[5px] h-[48px]' />
+                                </Form.Item>
+                            </div>
+                            <div className=''>
+                                <Form.Item
+                                    label='Apartment / suite/ etc'
+                                    name='line2'
+                                    rules={[{ required: true, message: 'Enter Apartment, suite, etc.r' }]}
+                                >
+                                    <Input placeholder='Apartment, suite, etc' className='mt-[5px] h-[48px]' />
+                                </Form.Item>
+                            </div>
+                            <div className=''>
+                                <Form.Item
+                                    label='Zip Code'
+                                    name='postal_code'
+                                    rules={[{ required: true, message: 'Enter Zip Code' }]}
+                                >
+                                    <Input placeholder='0000000' className='mt-[5px] h-[48px]' />
+                                </Form.Item>
+                            </div>
+                            <div className=''>
+                                <Form.Item
+                                    name={'paymentMethods'}
+                                    rules={[{ required: true, message: 'Please select a payment method.' }]}
+                                >
+                                    <Radio.Group optionType='default' buttonStyle='solid'>
+                                        <div className='space-y-4'>
+                                            <Radio
+                                                disabled={totalPrice >= 1000}
+                                                value={1}
+                                                className=' flex items-center'
+                                            >
+                                                Cash on Delivery (COD)
+                                            </Radio>
+                                            <Radio value={2} className=' flex items-center'>
+                                                VNPAY
+                                            </Radio>
+                                        </div>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </div>
+                            <div className='mt-[35px]'>
+                                <ConfigProvider
+                                    theme={{
+                                        components: {
+                                            Button: {
+                                                defaultBg: '#3c535e',
+                                                defaultHoverBg: '#2a3b44',
+                                                defaultHoverBorderColor: 'none',
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <Button
+                                        htmlType='submit'
+                                        className='h-[58px] w-full text-[16px] font-semibold text-white disabled:bg-[#3c535e] disabled:bg-opacity-70'
+                                    >
+                                        Order Now
+                                    </Button>
+                                </ConfigProvider>
+                            </div>
+                        </Form>
+                    )}
                 </div>
 
                 <div className=' w-full'>

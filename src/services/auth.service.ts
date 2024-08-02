@@ -10,6 +10,18 @@ const AuthService = {
     register(body: { username: string; email: string; password: string }) {
         return instance.post<IAxiosResponse<IRegisterResponse>>(`${AUTH_ENDPOINT.REGISTER}`, body);
     },
+    sendVerify(body: { email: string }) {
+        return instance.post<IAxiosResponse<null>>(`${AUTH_ENDPOINT.SENDMAIL}`, body);
+    },
+    sendResetPassword(body: { email: string }) {
+        return instance.post<IAxiosResponse<null>>(`${AUTH_ENDPOINT.SENDRESETPASS}`, body);
+    },
+    verify(body: { token: string }) {
+        return instance.post<IAxiosResponse<null>>(`${AUTH_ENDPOINT.VERIFY}`, body);
+    },
+    resetPassword(body: { token: string; password: string }) {
+        return instance.post<IAxiosResponse<null>>(`${AUTH_ENDPOINT.RESETPASSWORD}`, body);
+    },
     getNewToken() {
         return instance.post<IAxiosResponse<{ accessToken: string }>>(`${AUTH_ENDPOINT.REFRESH}`);
     },

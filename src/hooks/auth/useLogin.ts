@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { QUERY_KEY } from '~/constants/queryKey';
+import { useSendVerify } from '~/hooks/auth/useSendVerify';
 import AuthService from '~/services/auth.service';
 import { login } from '~/store/slice/authSlice';
 import { LoginFormData } from '~/types/Schemas/Auth';
@@ -11,8 +12,9 @@ import showMessage from '~/utils/ShowMessage';
 const useLogin = () => {
     const dispatch = useDispatch();
     const navigator = useNavigate();
-
+    const { mutate } = useSendVerify();
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
     return useMutation({
         mutationKey: ['login'],
         mutationFn: (body: LoginFormData) => AuthService.login(body),
@@ -28,8 +30,14 @@ const useLogin = () => {
                 });
             }, 300);
         },
-        onError: () => {
-            showMessage('Login is not valid!', 'error');
+        onError: (error: any) => {
+            if (error.response.data.data) {
+                showMessage(error.response.data.message, 'info');
+                mutate({ email: error.response.data.data });
+                navigate('/checkEmail');
+            } else {
+                showMessage(error.response.data.message, 'error');
+            }
         },
     });
 };

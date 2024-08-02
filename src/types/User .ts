@@ -8,7 +8,9 @@ export type IUserLogin = {
 };
 
 export type IUserProfileResponse = {
+    _id: string;
     username: string;
+    isActive: boolean;
     email: string;
     avatar: string;
     phone: string;

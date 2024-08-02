@@ -23,6 +23,7 @@ const Register = () => {
             username: `${data.firstName} ${data.lastName}`,
             email: data.email,
             password: data.password,
+            phone: data.phone,
         };
         mutate(dataCustom);
         if (isPending) {
@@ -93,6 +94,19 @@ const Register = () => {
                                         className='h-[48px] rounded-[2px] font-semibold'
                                         placeholder='Email Address'
                                         {...field}
+                                    />
+                                )}
+                            />
+                        </Form.Item>
+                        <Form.Item validateStatus={errors.phone ? 'error' : ''} help={errors.password?.message}>
+                            <Controller
+                                name='phone'
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='mb-1 h-[48px] rounded-[2px] font-semibold'
+                                        placeholder='Phone number'
                                     />
                                 )}
                             />

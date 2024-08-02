@@ -4,7 +4,7 @@ const AuthPage = () => {
     return (
         <>
             <div className='mx-auto mb-[85px] mt-[25px] flex  max-w-[1668px] '>
-                <div className='flex h-[616px] w-full items-center justify-center rounded-[15px] bg-white shadow-lg'>
+                <div className='flex min-h-[616px] w-full items-center justify-center rounded-[15px] bg-white shadow-lg'>
                     <div className='hidden w-full select-none flex-col items-center  md:flex'>
                         <div className='relative'>
                             <img src='https://pngimg.com/d/laptop_PNG101814.png' loading='lazy' width={550} alt='' />

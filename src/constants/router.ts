@@ -9,8 +9,11 @@ export const MAIN_ROUTES = {
     MY_ORDERS: '/my-orders',
     MY_ADDRESS: '/my-address',
     LOGIN: '/login',
+    VERIFY: '/verifyAccount/:token',
     REGISTER: '/register',
-
+    CHECKEMAIL: '/checkEmail',
+    FORGOT_PASSWORD: '/forgotPassword',
+    RESET_PASSWORD: '/resetPassword/:token',
     NOT_FOUND: '/404',
     SUCCESS_ORDER: '/success',
     VERIFY_ORDER: '/verify-order',
