@@ -1,16 +1,13 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Card, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { AxiosError } from 'axios';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetAllAtributes } from '~/hooks/attributes/Queries/useGetAttributesByCate';
-import useCreateProduct from '~/hooks/products/Mutations/useCreateProduct';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import { IAttributesValue } from '~/types/Attributes';
-import { IAxiosResponse } from '~/types/AxiosResponse';
-import { IProductDetailsAdmin, IProductForm } from '~/types/Product';
+import { IProductForm } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';
 import {
     brandValidator,
@@ -22,7 +19,6 @@ import {
 } from '~/validation/Products/validators';
 import AttributesItem from './_component/AttributesItem';
 import VariationItem from './_component/CreateProduct/VariationItem';
-import { handleCreateProduct } from './_component/CreateProduct/handleUploadProduct';
 import { FileType, getBase64 } from './_component/Helper/_helper_';
 import { uploadButton } from './_component/UploadButton';
 import useGetDetailProductAdmin from '~/hooks/products/Queries/useGetDetailProductAdmin';
@@ -32,7 +28,7 @@ import useUpdateProductVariant from '~/hooks/products/Mutations/useUpdateProduct
 import useCreateProductVariant from '~/hooks/products/Mutations/useCreateProductVariant';
 
 const convertApiResponseToFileList = ({ url, urlRef, isArr }: { url: string; urlRef: string; isArr?: boolean }) => {
-    if (!url) return []; // Trả về mảng rỗng nếu url không tồn tại
+    if (!url) return [];
 
     if (isArr) return [{ name: 'image.png', uid: urlRef, status: 'done', url }];
     return {
@@ -47,18 +43,18 @@ const customItemRender: UploadProps['itemRender'] = (originNode, file, fileList,
         <div className='ant-upload-list-item ant-upload-list-item-undefined'>
             <img className='' src={file.thumbUrl || file.url} alt={file.name} />
             <span className='ant-upload-list-item-actions'>
-                <button
+                <span
                     onClick={actions.preview}
                     className='ant-btn css-dev-only-do-not-override-mzwlov ant-btn-text ant-btn-sm ant-btn-icon-only ant-upload-list-item-action text-white'
                 >
                     <EyeOutlined />
-                </button>
-                <button
+                </span>
+                <span
                     onClick={actions.remove}
                     className='ant-btn css-dev-only-do-not-override-mzwlov ant-btn-text ant-btn-sm ant-btn-icon-only ant-upload-list-item-action text-white'
                 >
                     <DeleteOutlined />
-                </button>
+                </span>
             </span>
         </div>
     );
@@ -66,19 +62,18 @@ const customItemRender: UploadProps['itemRender'] = (originNode, file, fileList,
 
 const UpdateProduct = () => {
     const { id } = useParams();
-    const [variantRemoveIds, setVariantRemoveIds] = useState<string[]>([]);
     const { data } = useGetDetailProductAdmin(id as string);
     const productDetails = data?.data;
-    const { mutate: updateProduct, isPending } = useUpdateProduct();
-    const { mutate: updateProductVariant } = useUpdateProductVariant();
-    const { mutate: createProductVariant } = useCreateProductVariant();
+    const { mutate: updateProduct, isSuccess: isSuccessProduct, isPending } = useUpdateProduct();
+    const { mutate: updateProductVariant, isSuccess: isSuccessVariantUpdate } = useUpdateProductVariant();
+    const { mutate: createProductVariant, isSuccess: isSuccessVariantCreate } = useCreateProductVariant();
 
     // @preview images
     const [previewImagesOpen, setPreviewImagesOpen] = useState<boolean>(false);
     const [previewImages, setPreviewImages] = useState<string>('');
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
     const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
-
+    const navigate = useNavigate();
     // @images
     const [imagesfileList, setImagesFileList] = useState<UploadFile[]>([]);
     // @thumbnail
@@ -119,9 +114,6 @@ const UpdateProduct = () => {
     const handleChangeCat = (value: string) => {
         setCategoryIdNew(value);
     };
-    const handleSetVariantId = (idVariant: string) => {
-        setVariantRemoveIds([...variantRemoveIds, idVariant]);
-    };
 
     const handleChangeImages: UploadProps['onChange'] = ({ fileList: newFileList }) => {
         setImagesFileList(newFileList);
@@ -146,10 +138,9 @@ const UpdateProduct = () => {
         console.log(values);
         if (productDetails) {
             handleEditProduct({
-                oldCategoryId: productDetails.categoryId._id,
                 productId: id as string,
                 data: values,
-                variantRemoveIds,
+                imagesInit: imagesfileList,
                 updateProduct,
                 updateProductVariant,
                 createProductVariant,
@@ -234,6 +225,13 @@ const UpdateProduct = () => {
             form.setFieldsValue(initialValues as any);
         }
     }, [productDetails, categoryIdNew]);
+
+    useEffect(() => {
+        if (isSuccessProduct || isSuccessVariantUpdate || isSuccessVariantCreate) {
+            showMessage('Update product is successfully', 'success');
+            navigate('/admin/products');
+        }
+    }, [isSuccessProduct, isSuccessVariantUpdate, isSuccessVariantCreate, navigate]);
     return (
         <>
             <div className='mx-6 rounded-lg bg-white px-4 py-6'>
@@ -255,6 +253,45 @@ const UpdateProduct = () => {
                             </Form.Item>
 
                             <div className='grid grid-cols-1 gap-4'>
+                                <Card title='Tags'>
+                                    <div>
+                                        <Form.Item<IProductForm>
+                                            label='Product Category'
+                                            name='categoryId'
+                                            required
+                                            className='font-medium text-[#08090F]'
+                                            rules={[categoryValidator()]}
+                                            validateTrigger={['onChange', 'onBlur']}
+                                        >
+                                            <Select
+                                                onChange={handleChangeCat}
+                                                size='large'
+                                                placeholder='Choose category'
+                                                className='w-full'
+                                                options={categories?.map((category) => ({
+                                                    label: category.name,
+                                                    value: category._id,
+                                                }))}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item<IProductForm>
+                                            label='Product Brand'
+                                            name='brandId'
+                                            className='font-medium text-[#08090F]'
+                                            rules={[brandValidator()]}
+                                        >
+                                            <Select
+                                                size='large'
+                                                className='w-full'
+                                                placeholder='Choose brand'
+                                                options={brands?.map((brand) => ({
+                                                    label: brand.name,
+                                                    value: brand._id,
+                                                }))}
+                                            />
+                                        </Form.Item>
+                                    </div>
+                                </Card>
                                 <Card title='Product Media'>
                                     <div>
                                         <h3 className='my-2 text-lg font-medium text-[#08090F]'>Product Media</h3>
@@ -356,48 +393,8 @@ const UpdateProduct = () => {
                                     </div>
                                 </Card>
 
-                                <Card title='Tags'>
-                                    <div>
-                                        <Form.Item<IProductForm>
-                                            label='Product Category'
-                                            name='categoryId'
-                                            required
-                                            className='font-medium text-[#08090F]'
-                                            rules={[categoryValidator()]}
-                                            validateTrigger={['onChange', 'onBlur']}
-                                        >
-                                            <Select
-                                                onChange={handleChangeCat}
-                                                size='large'
-                                                placeholder='Choose category'
-                                                className='w-full'
-                                                options={categories?.map((category) => ({
-                                                    label: category.name,
-                                                    value: category._id,
-                                                }))}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item<IProductForm>
-                                            label='Product Brand'
-                                            name='brandId'
-                                            className='font-medium text-[#08090F]'
-                                            rules={[brandValidator()]}
-                                        >
-                                            <Select
-                                                size='large'
-                                                className='w-full'
-                                                placeholder='Choose brand'
-                                                options={brands?.map((brand) => ({
-                                                    label: brand.name,
-                                                    value: brand._id,
-                                                }))}
-                                            />
-                                        </Form.Item>
-                                    </div>
-                                </Card>
                                 {attributesForProduct && (
                                     <>
-                                        {' '}
                                         <Card title='Attributes'>
                                             <div>
                                                 <span className='mb-4 inline-block'>

@@ -7,7 +7,10 @@ const useDeleteProduct = () => {
     return useMutation({
         mutationFn: (id: string) => productService.deleteProduct(id),
         onSuccess() {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+            queryClient.invalidateQueries({
+                predicate: (query) =>
+                    query.queryKey.some((key) => typeof key === 'string' && key.includes(QUERY_KEY.PRODUCTS)),
+            });
         },
         onError(error) {
             console.log('error', error);

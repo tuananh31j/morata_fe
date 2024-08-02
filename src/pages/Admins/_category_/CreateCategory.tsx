@@ -1,4 +1,4 @@
-import { PlusSquareOutlined } from '@ant-design/icons';
+import { PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
 import {
     Button,
     Checkbox,
@@ -13,13 +13,44 @@ import {
     SelectProps,
     TreeSelect,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
 import { useGetAllAtributesNew } from '~/hooks/attributes/Queries/useGetAllAttributes';
 import { useMutationCreateCategory } from '~/hooks/categories/Mutations/useCreateCategory';
 import { ICategoryFormData } from '~/types/Category';
+import { cn } from '~/utils';
 import showMessage from '~/utils/ShowMessage';
+
+const ItemComp = ({ title, isRequired, isVariant }: { title: string; isRequired: boolean; isVariant: boolean }) => {
+    return (
+        <>
+            <p className={cn({ ['text-red']: isRequired, ['text-purple-900']: isVariant }, 'inline')}>{title}</p>
+            <span>
+                {isVariant && (
+                    <Popover
+                        placement='right'
+                        zIndex={99999999}
+                        content='This is a mandatory attribute when creating a variant within a product.'
+                        title='Details about the Hint'
+                    >
+                        <Button icon={<QuestionOutlined />} size='small' type='text' />
+                    </Popover>
+                )}
+                {isRequired && !isVariant && (
+                    <Popover
+                        placement='right'
+                        zIndex={99999999}
+                        content='This is a mandatory attribute when creating a product.'
+                        title='Details about the Hint'
+                    >
+                        <Button icon={<QuestionOutlined />} size='small' type='text' />
+                    </Popover>
+                )}
+            </span>
+        </>
+    );
+};
 
 const CreateCategory = () => {
     const navigate = useNavigate();
@@ -31,7 +62,15 @@ const CreateCategory = () => {
     // const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
 
     const [attributeOptions, setAttributeOptions] = useState<
-        { title: string; value: string; children: { title: string }[] }[]
+        {
+            title: ReactNode;
+            value: string;
+            children: {
+                title: string | number;
+                value: string | number;
+                selectable: boolean;
+            }[];
+        }[]
     >([]);
 
     useEffect(() => {
@@ -42,10 +81,10 @@ const CreateCategory = () => {
             //     values: attr.values,
             // }));
 
-            const options = attributes?.map((attr: { _id: string; name: string; values: string[] }) => ({
-                title: attr.name,
+            const options = attributes?.map((attr) => ({
+                title: <ItemComp title={attr.name} isRequired={attr.isRequired} isVariant={attr.isVariant} />,
                 value: attr._id,
-                children: attr.values?.map((value: string) => ({
+                children: attr.values?.map((value) => ({
                     title: value,
                     value,
                     selectable: false,

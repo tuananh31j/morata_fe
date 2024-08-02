@@ -1,5 +1,5 @@
-import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Form, FormProps, Input, Select } from 'antd';
+import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
@@ -35,6 +35,7 @@ const CreateAttribute = () => {
 
     const onFinish: FormProps<IAttributeFormData>['onFinish'] = (values) => {
         // Filter out empty values
+        console.log(values, 'values');
         const inputValues = inputFields.map((field) => field.value).filter((value) => value.trim() !== '');
         const payload = { ...values, values: inputValues };
 
@@ -91,7 +92,36 @@ const CreateAttribute = () => {
                                         />
                                     </Form.Item>
                                 </div>
-
+                                <Form.Item<IAttributeFormData>
+                                    name='isVariant'
+                                    valuePropName='checked'
+                                    className='w-1/2 font-medium text-[#08090F]'
+                                >
+                                    <Checkbox>
+                                        Is this an attribute for the variant
+                                        <Popover
+                                            content='This question asks if the given attribute is specific to a product variant.'
+                                            title='Explanation of the Question'
+                                        >
+                                            <Button icon={<QuestionOutlined />} size='small' type='text' />
+                                        </Popover>
+                                    </Checkbox>
+                                </Form.Item>
+                                <Form.Item<IAttributeFormData>
+                                    name='isRequired'
+                                    valuePropName='checked'
+                                    className='w-1/2 font-medium text-[#08090F]'
+                                >
+                                    <Checkbox>
+                                        Require
+                                        <Popover
+                                            content='This question is asking whether the attribute in question is mandatory'
+                                            title='Explanation of the Question'
+                                        >
+                                            <Button icon={<QuestionOutlined />} size='small' type='text' />
+                                        </Popover>
+                                    </Checkbox>
+                                </Form.Item>
                                 {typeSelected === 'options' && (
                                     <>
                                         {inputFields.map((field, index) => (

@@ -1,10 +1,7 @@
 import { DeleteOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
-import { FormInstance } from 'antd/lib';
 import { IAttributesValue } from '~/types/Attributes';
-import { IProductForm } from '~/types/Product';
 import {
-    variationsColorValidator,
     variationsPriceValidator,
     variationsStockValidator,
     variationsThumbnailValidator,
@@ -87,10 +84,10 @@ const VariationItem = ({
                             key={attribute._id}
                             name={[fieldName, 'variantAttributes', attribute.attributeKey]}
                             label={attribute.name}
-                            required={attribute.isRequired}
+                            required={attribute.isRequired || attribute.isVariant}
                             rules={[
                                 {
-                                    required: attribute.isRequired,
+                                    required: attribute.isRequired || attribute.isVariant,
                                     message: 'Please input your attribute!',
                                 },
                             ]}

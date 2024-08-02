@@ -4,7 +4,7 @@ import productService from '~/services/product.service';
 
 const useGetAllProducts = (params?: any) => {
     return useQuery({
-        queryKey: [QUERY_KEY.PRODUCTS, ...Object.values(params), Object.keys(params).join],
+        queryKey: [QUERY_KEY.PRODUCTS, ...Object.values(params), ...Object.keys(params)],
         queryFn: () => productService.getAllProducts(params),
     });
 };

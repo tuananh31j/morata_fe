@@ -1,21 +1,20 @@
+import { UploadFile } from 'antd';
 import { IProductForm, IThumbnailAntd } from '~/types/Product';
 
 type IHandleEditProductProp = {
-    oldCategoryId: string;
+    imagesInit: UploadFile<any>[];
 
     productId: string;
     data: IProductForm;
-    variantRemoveIds: string[];
     updateProduct: ({ data, productId }: { data: FormData; productId: string }) => void;
     updateProductVariant: ({ data, variantId }: { data: FormData; variantId: string }) => void;
     createProductVariant: (data: FormData) => void;
 };
 
 export const handleEditProduct = async ({
-    oldCategoryId,
+    imagesInit,
     productId,
     data,
-    variantRemoveIds,
     updateProduct,
     updateProductVariant,
     createProductVariant,
@@ -101,24 +100,30 @@ export const handleEditProduct = async ({
         const oldImagesRefs = [];
 
         /* eslint-disable */
-        console.log(images, thumbnail?.file, '?????????????????????????????????????????????????????????????????');
+        console.log(images?.fileList, 'xxxxxxxxxxxxxxxxxxxxxxxx');
         if (images?.fileList) {
             for (const file of images?.fileList) {
                 if ((file as any).originFileObj) {
                     dataTransfer.items.add((file as any).originFileObj as File);
                     const firstImage = dataTransfer.files[firstElement];
-                    console.log(firstImage, '00000000000000000');
                     formDataUpdateProduct.append('images', firstImage);
                     dataTransfer.items.clear();
                 } else {
                     if ((file as any).status === 'done') {
-                        console.log('ddddddddddddddddddddđxxxxxxxxxxxxxxxxxxxxxxxx');
                         oldImages.push((file as any).url as string);
                         oldImagesRefs.push((file as any).uid as string);
                     }
                 }
             }
+        } else {
+            imagesInit.map((file) => {
+                if ((file as any).status === 'done') {
+                    oldImages.push((file as any).url as string);
+                    oldImagesRefs.push((file as any).uid as string);
+                }
+            });
         }
+
         if (thumbnail?.file) {
             if ((thumbnail?.fileList[firstElement] as IThumbnailAntd).originFileObj) {
                 formDataUpdateProduct.append(

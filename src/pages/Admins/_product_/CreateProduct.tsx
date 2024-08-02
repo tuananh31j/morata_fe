@@ -141,6 +141,45 @@ const CreateProduct = () => {
                         </Form.Item>
 
                         <div className='grid grid-cols-1 gap-4'>
+                            <Card title='Tags'>
+                                <div>
+                                    <Form.Item<IProductForm>
+                                        label='Product Category'
+                                        name='categoryId'
+                                        required
+                                        className='font-medium text-[#08090F]'
+                                        rules={[categoryValidator()]}
+                                        validateTrigger={['onChange', 'onBlur']}
+                                    >
+                                        <Select
+                                            size='large'
+                                            onChange={handleChangeCat}
+                                            placeholder='Choose category'
+                                            className='w-full'
+                                            options={categories?.map((category) => ({
+                                                label: category.name,
+                                                value: category._id,
+                                            }))}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item<IProductForm>
+                                        label='Product Brand'
+                                        name='brandId'
+                                        className='font-medium text-[#08090F]'
+                                        rules={[brandValidator()]}
+                                    >
+                                        <Select
+                                            size='large'
+                                            className='w-full'
+                                            placeholder='Choose brand'
+                                            options={brands?.map((brand) => ({
+                                                label: brand.name,
+                                                value: brand._id,
+                                            }))}
+                                        />
+                                    </Form.Item>
+                                </div>
+                            </Card>
                             <Card title='Product Media'>
                                 <div>
                                     <h3 className='my-2 text-lg font-medium text-[#08090F]'>Product Media</h3>
@@ -237,45 +276,6 @@ const CreateProduct = () => {
                                 </div>
                             </Card>
 
-                            <Card title='Tags'>
-                                <div>
-                                    <Form.Item<IProductForm>
-                                        label='Product Category'
-                                        name='categoryId'
-                                        required
-                                        className='font-medium text-[#08090F]'
-                                        rules={[categoryValidator()]}
-                                        validateTrigger={['onChange', 'onBlur']}
-                                    >
-                                        <Select
-                                            size='large'
-                                            onChange={handleChangeCat}
-                                            placeholder='Choose category'
-                                            className='w-full'
-                                            options={categories?.map((category) => ({
-                                                label: category.name,
-                                                value: category._id,
-                                            }))}
-                                        />
-                                    </Form.Item>
-                                    <Form.Item<IProductForm>
-                                        label='Product Brand'
-                                        name='brandId'
-                                        className='font-medium text-[#08090F]'
-                                        rules={[brandValidator()]}
-                                    >
-                                        <Select
-                                            size='large'
-                                            className='w-full'
-                                            placeholder='Choose brand'
-                                            options={brands?.map((brand) => ({
-                                                label: brand.name,
-                                                value: brand._id,
-                                            }))}
-                                        />
-                                    </Form.Item>
-                                </div>
-                            </Card>
                             <Card loading={isAttributeLoading} title='Attributes'>
                                 <div className={clsx(!isChooseCategory && 'pointer-events-none opacity-60')}>
                                     {!isChooseCategory && (

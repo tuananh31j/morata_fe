@@ -19,10 +19,3 @@ export type IAttributeReponse = {
         attributeIds: IAttributesValue[];
     };
 };
-
-export type IAttributeResponseNew = {
-    _id: string;
-    name: string;
-    type: string;
-    values: string[];
-};

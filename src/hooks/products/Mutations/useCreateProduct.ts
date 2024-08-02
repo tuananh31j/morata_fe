@@ -8,12 +8,17 @@ const useCreateProduct = () => {
     return useMutation({
         mutationFn: (data: FormData) => productService.createProduct(data),
         onSuccess: async () => {
-            setTimeout(() => {
-                queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.PRODUCTS],
-                    queryFn: () => productService.getAllProductForAdmin(),
-                });
-            }, 300);
+            queryClient.invalidateQueries({
+                predicate: (query) =>
+                    query.queryKey.some((key) => {
+                        console.log(
+                            key,
+                            typeof key === 'string' && key.includes(QUERY_KEY.PRODUCTS),
+                            '111111111111111111111111111'
+                        );
+                        return typeof key === 'string' && key.includes(QUERY_KEY.PRODUCTS);
+                    }),
+            });
         },
         onError(error) {
             showMessage(error.message, 'error');

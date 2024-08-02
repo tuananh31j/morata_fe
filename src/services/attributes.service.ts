@@ -1,5 +1,5 @@
 import { ATTRIBUTES_ENDPOINT } from '~/constants/endpoint';
-import { IAttributeReponse, IAttributeResponseNew } from '~/types/Attributes';
+import { IAttributeReponse, IAttributesValue } from '~/types/Attributes';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IAttributeFormData } from '~/types/Category';
 import instance from '~/utils/api/axiosIntance';
@@ -11,12 +11,12 @@ export const attributesServices = {
     },
 
     async getAllAttributes() {
-        const res = await instance.get<IAxiosResponse<IAttributeResponseNew[]>>(ATTRIBUTES_ENDPOINT.All);
+        const res = await instance.get<IAxiosResponse<IAttributesValue[]>>(ATTRIBUTES_ENDPOINT.All);
         return res.data;
     },
 
     async createAttribute(payload: IAttributeFormData) {
-        const res = await instance.post<IAxiosResponse<IAttributeResponseNew>>(ATTRIBUTES_ENDPOINT.CREATE, payload);
+        const res = await instance.post<IAxiosResponse<IAttributesValue>>(ATTRIBUTES_ENDPOINT.CREATE, payload);
         return res.data;
     },
 };
