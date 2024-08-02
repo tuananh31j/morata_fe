@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import productService from '~/services/product.service';
 
-const useUpdateProduct = (id: string) => {
+const useCreateVariantions = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (data: FormData) => productService.updateProduct(data, id),
+        mutationFn: (data: FormData) => productService.updateVariations(data, id),
         onSuccess(res) {
             // setTimeout(() => {
             //     queryClient.prefetchQuery({
@@ -15,9 +15,9 @@ const useUpdateProduct = (id: string) => {
             // }, 300);
         },
         onError(error) {
-            console.log('Update product error', error);
+            throw new Error(error.message);
         },
     });
 };
 
-export default useUpdateProduct;
+export default useCreateVariantions;

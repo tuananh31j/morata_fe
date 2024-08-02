@@ -8,6 +8,7 @@ const useDeleteProduct = () => {
         mutationFn: (id: string) => productService.deleteProduct(id),
         onSuccess() {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CART] });
         },
         onError(error) {
             console.log('error', error);

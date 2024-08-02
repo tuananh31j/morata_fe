@@ -7,8 +7,10 @@ export type IAttributesValue = {
 };
 
 export type IAttributeReponse = {
-    _id: string;
-    attributeIds: IAttributesValue[];
+    categoryId: string;
+    productAttributes: {
+        attributeIds: IAttributesValue[];
+    };
 };
 
 export type IAttributeResponseNew = {

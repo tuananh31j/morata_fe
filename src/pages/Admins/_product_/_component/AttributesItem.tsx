@@ -1,13 +1,26 @@
 import { Form, Input, Select } from 'antd';
 import { IAttributesValue } from '~/types/Attributes';
 
-const AttributesItem = ({ attribute }: { attribute: IAttributesValue }) => {
+type IDefaultValue = {
+    _id: string;
+    key: string;
+    value: string;
+};
+
+const AttributesItem = ({
+    attribute,
+    defaultValue,
+}: {
+    attribute: IAttributesValue;
+    defaultValue?: IDefaultValue[];
+}) => {
+    const initialValue = defaultValue?.find((item) => item.key === attribute.attributeKey)?.value;
     return (
         <Form.Item
             name={['attributes', attribute.attributeKey]}
             label={attribute.name}
             required={attribute.isRequired}
-            className='text-lg font-medium text-[#08090F]'
+            initialValue={initialValue} // Set default value
             rules={[
                 {
                     required: attribute.isRequired,

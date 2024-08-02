@@ -9,12 +9,16 @@ import useFilter from '~/hooks/_common/useFilter';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import { Params } from '~/types/Api';
 import _ from 'lodash';
+import ModalDelete from '~/components/_common/Modal/ModalDelete';
+import { useEffect, useRef, useState } from 'react';
+import useDeleteProduct from '~/hooks/products/Mutations/useDeleteProduct';
+import showMessage from '~/utils/ShowMessage';
 
 const ListAll = () => {
-    // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    // const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
-    // const { mutate, isSuccess, isError } = useDeleteProduct();
-    // const productId = useRef<string>('');
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
+    const { mutate, isSuccess, isError } = useDeleteProduct();
+    const productId = useRef<string>('');
     const [form] = Form.useForm<IProductParams>();
     const { query, updateQueryParam } = useFilter();
     const [brands, categories] = useGetCategoriesAndBrands();
@@ -32,7 +36,24 @@ const ListAll = () => {
     const productData = data?.data.products;
     const totalDocs = data?.data.totalDocs;
 
-    const columns = ProductsListColumns();
+    const handleOpenModal = (id: string) => {
+        setIsModalOpen(true);
+        productId.current = id;
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+        productId.current = '';
+        setConfirmLoading(false);
+    };
+    const handleDeleteProduct = () => {
+        setConfirmLoading(true);
+        mutate(productId.current);
+    };
+    const columns = ProductsListColumns(handleOpenModal);
 
     const onChange: TableProps<IProductItem>['onChange'] = (paginations) => {
         updateQueryParam({ ...query, page: paginations.current || 1 });
@@ -44,32 +65,18 @@ const ListAll = () => {
         updateQueryParam({ ...newQuery, page: '1' } as Params);
     };
 
-    // const handleOk = () => {
-    //     setIsModalOpen(false);
-    // };
-
-    // const handleCancel = () => {
-    //     setIsModalOpen(false);
-    //     productId.current = '';
-    //     setConfirmLoading(false);
-    // };
-    // const handleDeleteProduct = () => {
-    //     setConfirmLoading(true);
-    //     mutate(productId.current);
-    // };
-
-    // useEffect(() => {
-    //     if (isSuccess) {
-    //         setConfirmLoading(false);
-    //         /* eslint-disable */
-    //         setIsModalOpen(false);
-    //         /* eslint-enable */
-    //         showMessage('Product has been deleted successfully', 'success');
-    //     }
-    //     if (isError) {
-    //         showMessage('Product has been deleted failure', 'error');
-    //     }
-    // }, [isSuccess, isError]);
+    useEffect(() => {
+        if (isSuccess) {
+            setConfirmLoading(false);
+            /* eslint-disable */
+            setIsModalOpen(false);
+            /* eslint-enable */
+            showMessage('Product has been deleted successfully', 'success');
+        }
+        if (isError) {
+            showMessage('Product has been deleted failure', 'error');
+        }
+    }, [isSuccess, isError]);
 
     // useEffect(() => {
     //     refetch();
@@ -87,22 +94,14 @@ const ListAll = () => {
                 {brands && categories && data && (
                     <Form className='my-3' form={form} onFinish={onSubmit}>
                         <div className='grid grid-cols-2 gap-4 xl:grid-cols-[3fr,3fr,3fr,2fr]'>
-                            <Form.Item name='search'>
-                                <Input placeholder='Search Product name' defaultValue={query.search || ''} />
+                            <Form.Item name='search' initialValue={query.search || ''}>
+                                <Input placeholder='Search Product name' />
                             </Form.Item>
-                            <Form.Item name='categoryId'>
-                                <Select
-                                    placeholder='Search by Category'
-                                    options={categoriesSelectData}
-                                    defaultValue={query.categoryId}
-                                ></Select>
+                            <Form.Item name='categoryId' initialValue={query.categoryId}>
+                                <Select placeholder='Search by Category' options={categoriesSelectData}></Select>
                             </Form.Item>
-                            <Form.Item name='brandId'>
-                                <Select
-                                    placeholder='Search by Brand'
-                                    options={brandsSelectData}
-                                    defaultValue={query.brandId}
-                                ></Select>
+                            <Form.Item name='brandId' initialValue={query.brandId}>
+                                <Select placeholder='Search by Brand' options={brandsSelectData}></Select>
                             </Form.Item>
                             <div className='grid grid-cols-2 gap-4'>
                                 <Button htmlType='submit' type='primary'>
@@ -128,17 +127,17 @@ const ListAll = () => {
                     pagination={{
                         pageSize: 10,
                         total: totalDocs,
-                        current: +query.page,
+                        current: +query.page || 1,
                     }}
                 />
             </div>
-            {/* <ModalDelete
+            <ModalDelete
                 isModalOpen={isModalOpen}
                 handleOk={handleOk}
                 handleCancel={handleCancel}
                 confirmLoading={confirmLoading}
                 handleDeleteProduct={handleDeleteProduct}
-            /> */}
+            />
         </>
     );
 };

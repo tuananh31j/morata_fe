@@ -62,12 +62,15 @@ const CartDrawer = ({ children, item }: PropsType) => {
         );
         setPendingUpdates({ productVariation: id, quantity: newQuantity });
     };
+    /* eslint-disable */
     const debouncedUpdate = useCallback(
         debounce(async (payload: IAddCartPayload) => {
             await updateQuantity(payload);
         }, 500),
         []
     );
+    /* eslint-disable */
+
     const handleIncreaseQuantity = (id: string) => {
         setQuantityProduct((prev) => {
             if (!prev) return [];
@@ -93,6 +96,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
         handleChangeQuantity(id, newQuantity);
     };
     const debouncedRemove = debounce((id: string) => handleRemoveCart(id), 500);
+    /* eslint-disable */
     useEffect(() => {
         if (pendingUpdates) {
             debouncedUpdate({
@@ -101,6 +105,8 @@ const CartDrawer = ({ children, item }: PropsType) => {
             });
         }
     }, [pendingUpdates, debouncedUpdate]);
+    /* eslint-enable */
+
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <span className={'cursor-pointer'} onClick={handleOpenCart}>
@@ -175,9 +181,17 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                     <div className='flex justify-between'>
                                                         <div className='flex items-center gap-2'>
                                                             <div className='flex flex-col'>
-                                                                <span>
-                                                                    {product.productVariation.color.toUpperCase()}
-                                                                </span>
+                                                                {product.productVariation?.variantAttributes?.map(
+                                                                    (itemP) => (
+                                                                        <div key={itemP._id}>
+                                                                            <span className='capitalize text-black'>
+                                                                                {itemP.name}
+                                                                            </span>
+                                                                            :<span>{itemP.value}</span>
+                                                                            {/* {product.productVariation.color.toUpperCase()} */}
+                                                                        </div>
+                                                                    )
+                                                                )}
                                                                 <span
                                                                     className={clsx(
                                                                         'text-base font-semibold leading-5 text-[#222]'

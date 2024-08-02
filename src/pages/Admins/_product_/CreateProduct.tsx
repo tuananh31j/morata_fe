@@ -1,5 +1,5 @@
-import { PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Card, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
+import { MinusCircleOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { Button, Card, Form, FormProps, Image, Input, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { AxiosError } from 'axios';
 import clsx from 'clsx';
@@ -37,7 +37,7 @@ const CreateProduct = () => {
     const [isChooseCategory, setIsChooseCategory] = useState<boolean>(false);
     const [categoryId, setCategoryId] = useState<string>('');
     const { data: attributesRes, isLoading: isAttributeLoading } = useGetAllAtributes(categoryId);
-    const attributesResData = attributesRes?.data.attributeIds;
+    const attributesResData = attributesRes?.data.productAttributes.attributeIds;
     const categoriesAndBrandData = useGetCategoriesAndBrands();
     const { mutate: createProduct, data: createProductData, isError, isSuccess, error, isPending } = useCreateProduct();
     const [form] = Form.useForm<IProductForm>();
@@ -81,6 +81,7 @@ const CreateProduct = () => {
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
         handleCreateProduct(values, createProduct);
+        console.log(values);
     };
 
     const handleChangeCat = (value: string) => {
@@ -301,7 +302,6 @@ const CreateProduct = () => {
                                         {(fields, { add, remove }, { errors }) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }, index) => {
-                                                    console.log(errors);
                                                     return (
                                                         <VariationItem
                                                             key={key}

@@ -5,13 +5,13 @@ import instance from '~/utils/api/axiosIntance';
 import { PRODUCT_ENDPOINT } from '~/constants/endpoint';
 
 const productService = {
+    /* eslint-disable */
     async getAllProductForAdmin(params?: any) {
         const res = await instance.get<IAxiosResponse<IAllProductsResponse>>(`${PRODUCT_ENDPOINT.ALL_ADMIN}`, {
             params,
         });
         return res.data;
     },
-
     // new model
     async getAllProducts(params?: any) {
         const res = await instance.get<IAxiosResponse<IAllProductResponseNew>>(`${PRODUCT_ENDPOINT.ALL}`, {
@@ -19,7 +19,7 @@ const productService = {
         });
         return res.data;
     },
-
+    /* eslint-enable */
     async getProductsByCategory(id: string, params: IParams) {
         const res = await instance.get<IAxiosResponse<IProduct[]>>(`${PRODUCT_ENDPOINT.BYCATE}/${id}`, {
             params,
@@ -54,6 +54,14 @@ const productService = {
     },
     async updateProduct(data: FormData, id: string) {
         const res = await instance.patch<IAxiosResponse<IProduct>>(`${PRODUCT_ENDPOINT.UPDATE}/${id}`, data);
+        return res.data;
+    },
+    async updateVariations(data: FormData, id: string) {
+        const res = await instance.patch<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.UPDATE_VARIATIONS}/${id}`, data);
+        return res.data;
+    },
+    async createVariationsToProduct(data: FormData) {
+        const res = await instance.post<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.CREATE_VARIATIONS}`, data);
         return res.data;
     },
     async deleteProduct(id: string) {

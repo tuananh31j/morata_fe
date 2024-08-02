@@ -1,9 +1,6 @@
-import { DollarOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { useQueryClient } from '@tanstack/react-query';
+import { MinusCircleOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import {
     Button,
-    Checkbox,
-    CheckboxProps,
     Form,
     FormProps,
     GetProp,
@@ -11,34 +8,38 @@ import {
     Input,
     InputNumber,
     Select,
+    Space,
     Upload,
     UploadFile,
     UploadProps,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { AxiosError } from 'axios';
-import { useEffect, useId, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { QUERY_KEY } from '~/constants/queryKey';
-import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
-import productService from '~/services/product.service';
-import { IAxiosResponse } from '~/types/AxiosResponse';
-import { IProductForm, ITagsType } from '~/types/Product';
-import showMessage from '~/utils/ShowMessage';
-import { errorMessage } from '~/validation/Product';
+import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useGetAllAtributes } from '~/hooks/attributes/Queries/useGetAttributesByCate';
 import useUpdateProduct from '~/hooks/products/Mutations/useUpdateProduct';
 import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
+import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
+import { IAttributesValue } from '~/types/Attributes';
+import { IAxiosResponse } from '~/types/AxiosResponse';
+import {
+    IProductFiles,
+    IProductForm,
+    IProductVariation,
+    IThumbnailAntd,
+    IVariationDetailResponse,
+} from '~/types/Product';
+import showMessage from '~/utils/ShowMessage';
+import AttributesItem from './_component/AttributesItem';
+import { uploadButton } from './_component/UploadButton';
+import useUpdateVariantions from '~/hooks/products/Mutations/useUpdateVariantions';
+import useCreateVariantions from '~/hooks/products/Mutations/useCreateVariantions';
+import { errorMessage } from '~/validation/Products/Product';
 
 const ACCEPT_FILE_TYPE = ['image/png', 'image/jpeg', 'image/jpg'];
 const MAX_SIZE = 5000000;
-
-// const onFinishFailed: FormProps<IProductForm>['onFinishFailed'] = (errorInfo) => {
-//     console.log('Failed:', errorInfo);
-// };
-
-// const handleChangeBrand = (value: string) => {
-//     console.log(`selected ${value}`);
-// };
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const getBase64 = (file: FileType): Promise<string> =>
@@ -50,21 +51,19 @@ const getBase64 = (file: FileType): Promise<string> =>
     });
 
 const UpdateProduct = () => {
-    const queryClient = useQueryClient();
     const { id } = useParams();
     const [previewImagesOpen, setPreviewImagesOpen] = useState<boolean>(false);
     const [previewImages, setPreviewImages] = useState<string>('');
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
-    const [previewOldThumbnailOpen, setPreviewOldThumbnailOpen] = useState<boolean>(false);
-    const [previewOldImagesOpen, setPreviewOldImagesOpen] = useState<boolean>(false);
-    const [isKeepOldImages, setIsKeepOldImages] = useState<boolean>(true);
     const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
     const [imagesfileList, setImagesFileList] = useState<UploadFile[]>([]);
     const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
+    const [attributesFile, setAttributesFile] = useState<UploadFile[][]>([]);
+    const [categoryId, setCategoryId] = useState<string>('');
+    const currentIndex = useRef<number>(0);
+    const { data: attributesRes } = useGetAllAtributes(categoryId);
+    const attributesResData = attributesRes?.data.productAttributes.attributeIds;
     const categoriesAndBrandData = useGetCategoriesAndBrands();
-    const { data: productData, isLoading: productDetailLoading } = useGetDetailProduct(id ?? '');
-    const firstIndexElement = 0;
-    const productDetail = productData?.data;
     const {
         mutate: updateProduct,
         data: updateProductData,
@@ -72,34 +71,21 @@ const UpdateProduct = () => {
         isSuccess,
         error,
         isPending,
-    } = useUpdateProduct(id ?? '');
+    } = useUpdateProduct(id as string);
+    const { data: productResponse, isLoading: isDetailLoading } = useGetDetailProduct(id as string);
+    const productData = productResponse?.data;
+    // const { mutate: updateVariantions } = useUpdateVariantions(id as string);
+    // const { mutate: createVariations } = useCreateVariantions();
     const [form] = Form.useForm<IProductForm>();
     const navigate = useNavigate();
+    const [variationsImageUrl, setVariantionsImageUrl] = useState<string[]>([]);
     const dataIndex = {
         brands: 0,
         categories: 1,
     };
-
+    // const firstElement = 0;
     const categories = categoriesAndBrandData?.[dataIndex.categories].data?.data;
     const brands = categoriesAndBrandData?.[dataIndex.brands].data?.data;
-
-    const productDetailCategory = categories?.filter((category) => category._id === productDetail?.categoryId)[
-        firstIndexElement
-    ];
-    // initial category
-    const initialCategory = {
-        label: productDetailCategory?.name,
-        value: productDetailCategory?._id,
-    };
-
-    const productDetauilBrand = brands?.filter((category) => category._id === productDetail?.brandId)[
-        firstIndexElement
-    ];
-    // initial brand
-    const initialBrand = {
-        label: productDetauilBrand?.name,
-        value: productDetauilBrand?._id,
-    };
 
     const handlePreview = async (file: UploadFile, multiple: boolean) => {
         if (!file.url && !file.preview) {
@@ -113,56 +99,89 @@ const UpdateProduct = () => {
             setPreviewThumbnailOpen(true);
         }
     };
-    const randomUpperOrLowerCase = (char: string) => {
-        char = char.replace(' ', '');
-        return Math.floor(Math.random() * 2) === 0 ? char.toUpperCase() : char.toLowerCase();
-    };
 
     const handleChangeImages: UploadProps['onChange'] = ({ fileList: newFileList }) => setImagesFileList(newFileList);
-    const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => setThumbnailFile(newFileList);
-
+    const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+        setThumbnailFile(newFileList);
+    };
+    const handleChangeAttributeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+        const newAttributesFile = [...attributesFile];
+        newAttributesFile[currentIndex.current] = newFileList;
+        setAttributesFile(newAttributesFile);
+    };
+    const handleRemoveAttributeThumbnail = () => {
+        const newAttributesFile = [...attributesFile];
+        newAttributesFile[currentIndex.current] = [];
+        setAttributesFile(newAttributesFile);
+    };
     const handleCreateProduct = (data: IProductForm) => {
-        const formData = new FormData();
         const dataTransfer = new DataTransfer();
-        const { name, price, stock, images, thumbnail, description, brandId, categoryId } = data;
-        const categoryIdValue = typeof categoryId === 'object' ? categoryId.value : categoryId;
-        const brandIdValue = typeof brandId === 'object' ? brandId.value : brandId;
-
+        const formData = new FormData();
+        const {
+            name,
+            images,
+            thumbnail,
+            description,
+            variations,
+            attributes,
+            brandId: brandIdData,
+            categoryId: categoryIdData,
+        } = data;
+        console.log(variations);
+        const attributesData = [];
+        const newVariations = [];
+        const firstElement = 0;
         /* eslint-disable */
-        if (images?.fileList && thumbnail?.file && !isKeepOldImages) {
-            for (const file of images?.fileList) {
-                dataTransfer.items.add((file as any).originFileObj as FileType);
-                const firstImage = dataTransfer.files[0];
-                formData.append('images', firstImage);
-                dataTransfer.items.clear();
+        for (const [key, value] of Object.entries(attributes)) {
+            attributesData.push({
+                key,
+                value,
+            });
+        }
+        if (variations) {
+            for (const [, varation] of Object.entries(variations)) {
+                // varation.thumbnail?.fileList.forEach((file) => {
+                //     Object.assign(file, { name: `${file.name}` });
+                // });
+                formData.append('variationImages', varation.thumbnail?.fileList?.[firstElement].originFileObj as File);
+                Object.assign(varation, {
+                    imageUrlRef: varation.thumbnail?.fileList[firstElement].name,
+                });
+
+                // Delete thumbnail
+                const { thumbnail, ...rest } = varation;
+                newVariations.push(rest);
             }
-            formData.append('thumbnail', thumbnail?.file);
         }
         /* eslint-enable */
         formData.append('name', name);
-        formData.append('price', price.toString());
-        formData.append('stock', stock.toString());
-        formData.append('categoryId', categoryIdValue);
-        formData.append('brandId', brandIdValue);
-        formData.append('description', description);
-        // formData.append('sku', sku);
+        formData.append('attributes', JSON.stringify(attributesData));
+        // formData.append('variationsString', JSON.stringify(newVariations));
+
+        /* eslint-disable */
+        if (images?.fileList && thumbnail?.file) {
+            for (const file of images?.fileList) {
+                dataTransfer.items.add((file as any).originFileObj as File);
+                const firstImage = dataTransfer.files[firstElement];
+                formData.append('images', firstImage);
+                dataTransfer.items.clear();
+            }
+            formData.append('thumbnail', (thumbnail?.fileList[firstElement] as IThumbnailAntd)?.originFileObj as File);
+        }
+        /* eslint-enable */
+        formData.append('categoryId', categoryIdData);
+        formData.append('brandId', brandIdData);
+
+        formData.append('description', description || '');
+
         // Mutation to create product
-        updateProduct(formData);
     };
-    const uploadButton = (
-        <button style={{ border: 0, background: 'none' }} type='button'>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </button>
-    );
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
         handleCreateProduct(values);
+        // console.log(values);
     };
-    const handleChangeCat = (value: ITagsType) => {
-        console.log(`selected`, value);
-    };
-    const onChange: CheckboxProps['onChange'] = (e) => {
-        setIsKeepOldImages(e.target.checked);
+    const handleChangeCat = (value: string) => {
+        setCategoryId(value);
     };
     /* eslint-disable */
     useEffect(() => {
@@ -183,29 +202,25 @@ const UpdateProduct = () => {
             form.resetFields();
             setImagesFileList([]);
             setThumbnailFile([]);
-            showMessage('Update product successfully', 'success');
-            setTimeout(() => {
-                queryClient.prefetchQuery({
-                    queryKey: [QUERY_KEY.PRODUCTS],
-                    queryFn: () => productService.getAll(),
-                });
-            }, 1000);
+            showMessage('Create product successfully', 'success');
             navigate('/admin/products');
         }
-    }, [updateProductData, isError, error, form, isSuccess]);
+        if (!isDetailLoading) {
+            setCategoryId(productData?.categoryId._id as string);
+        }
+        if (!isDetailLoading) {
+            const values = form.getFieldsValue(['variations']);
+            setVariantionsImageUrl(values.variations.map((variation: IVariationDetailResponse) => variation.image));
+        }
+    }, [updateProductData, isError, error, form, isSuccess, isDetailLoading]);
     /* eslint-enable */
+
     return (
         <>
-            <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-                <div className='m-auto w-[60vw] sm:w-[50vw]'>
-                    {!productDetailLoading && (
-                        <Form
-                            layout='vertical'
-                            form={form}
-                            onFinish={onFinish}
-                            // onFinishFailed={onFinishFailed}
-                            autoComplete='off'
-                        >
+            {!isDetailLoading && (
+                <div className='mx-6 rounded-lg bg-white px-4 py-6'>
+                    <div className='m-auto'>
+                        <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off'>
                             <Form.Item className='flex justify-end'>
                                 <Button
                                     type='primary'
@@ -216,100 +231,26 @@ const UpdateProduct = () => {
                                     disabled={isPending}
                                     size='large'
                                 >
-                                    Add product
+                                    Update product
                                 </Button>
+                                <Link to='/admin/products' className='mr-3 px-5'>
+                                    Back to list
+                                </Link>
                             </Form.Item>
+
                             <div className='grid grid-cols-1 gap-4'>
                                 <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
-                                    <h3 className='my-2 text-lg font-medium text-[#08090F]'>General information</h3>
-                                    <Form.Item<IProductForm>
-                                        label='Product Name'
-                                        name='name'
-                                        initialValue={productDetail?.name}
-                                        className='font-medium text-[#08090F]'
-                                        rules={[
-                                            {
-                                                validator: async (_, name) => {
-                                                    if (!name) {
-                                                        return errorMessage('Please input your name!');
-                                                    }
-                                                    if (name.length < 3) {
-                                                        return errorMessage('Name must be at least 3 characters long');
-                                                    }
-                                                    return Promise.resolve();
-                                                },
-                                            },
-                                        ]}
-                                    >
-                                        <Input size='large' />
-                                    </Form.Item>
-                                    <Form.Item<IProductForm>
-                                        label='Product Description'
-                                        name='description'
-                                        initialValue={productDetail?.description}
-                                        className='font-medium text-[#08090F]'
-                                    >
-                                        <TextArea rows={4} className='w-full' />
-                                    </Form.Item>
-                                </div>
-                                <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
-                                    <h3 className='my-2 text-lg font-medium text-[#08090F]'>Pricing</h3>
-                                    <Form.Item<IProductForm>
-                                        className='font-medium text-[#08090F]'
-                                        label='Product Price'
-                                        initialValue={productDetail?.price}
-                                        name='price'
-                                        rules={[
-                                            {
-                                                validator: async (_, price) => {
-                                                    const oneHundredThousand = 100000;
-                                                    if (!price) {
-                                                        return errorMessage('Please input your price!');
-                                                    }
-                                                    if (price < 0) {
-                                                        return errorMessage('Price must be larger than zero!');
-                                                    }
-                                                    if (price >= oneHundredThousand) {
-                                                        return errorMessage(
-                                                            'Price must be smaller than one hundred thousand!'
-                                                        );
-                                                    }
-                                                    return Promise.resolve();
-                                                },
-                                            },
-                                        ]}
-                                    >
-                                        <InputNumber prefix={<DollarOutlined />} size='large' className='w-full' />
-                                    </Form.Item>
-
-                                    <Form.Item<IProductForm>
-                                        className='font-medium text-[#08090F]'
-                                        label='Product Discount'
-                                        initialValue={productDetail?.discountPercentage}
-                                        name='discountPercentage'
-                                        rules={[{ required: true, message: 'Please input your discount!' }]}
-                                    >
-                                        <InputNumber size='large' max={100} min={0} className='w-full' />
-                                    </Form.Item>
-                                </div>
-                                <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
                                     <h3 className='my-2 text-lg font-medium text-[#08090F]'>Product Media</h3>
-                                    <Checkbox
-                                        onChange={onChange}
-                                        defaultChecked={true}
-                                        className='my-2 select-none font-medium text-[#08090F]'
-                                    >
-                                        Keep old images
-                                    </Checkbox>
                                     <Form.Item<IProductForm>
                                         label='Product Images'
                                         name='images'
                                         className='font-medium text-[#08090F]'
+                                        dependencies={['images']}
                                         rules={[
                                             {
-                                                validator: async (_, images) => {
-                                                    if (!images) {
-                                                        return Promise.resolve();
+                                                validator: async (_, images: IProductFiles) => {
+                                                    if (images?.fileList?.length < 1 || !images) {
+                                                        return errorMessage('Please input your images!');
                                                     }
                                                     /* eslint-disable */
                                                     for (const file of images?.fileList) {
@@ -351,43 +292,19 @@ const UpdateProduct = () => {
                                             src={previewImages}
                                         />
                                     )}
-                                    {isKeepOldImages && (
-                                        <div>
-                                            <h4 className='mb-1 font-medium text-[#08090F]'>Old Images:</h4>
-                                            <div className='flex flex-wrap gap-3'>
-                                                {productDetail?.images.map((url, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className='inline-block rounded-lg border border-black border-opacity-10 p-1'
-                                                    >
-                                                        <Image
-                                                            width={100}
-                                                            height={100}
-                                                            className='object-contain'
-                                                            preview={{
-                                                                visible: previewOldImagesOpen,
-                                                                onVisibleChange: (visible) =>
-                                                                    setPreviewOldImagesOpen(visible),
-                                                                // afterOpenChange: (visible) =>
-                                                                //     !visible && setPreviewThumbnail(''),
-                                                            }}
-                                                            src={url}
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
+                                    <div className='my-4 grid grid-cols-8'>
+                                        {productData?.images.map((url, index) => <Image key={index} src={url} />)}
+                                    </div>
                                     <Form.Item<IProductForm>
                                         label='Product Thumbnail'
                                         name='thumbnail'
                                         className='font-medium text-[#08090F]'
+                                        dependencies={['thumbnail']}
                                         rules={[
                                             {
-                                                validator: async (_, thumbnail) => {
-                                                    if (!thumbnail) {
-                                                        return Promise.resolve();
+                                                validator: async (_, thumbnail: IProductFiles) => {
+                                                    if (thumbnail?.fileList?.length < 1 || !thumbnail) {
+                                                        return errorMessage('Please input your thumbnail!');
                                                     }
                                                     if (thumbnail?.file.size >= MAX_SIZE) {
                                                         return errorMessage('Image size must be smaller than 5MB!');
@@ -425,40 +342,69 @@ const UpdateProduct = () => {
                                             src={previewThumbnail}
                                         />
                                     )}
-                                    {isKeepOldImages && (
-                                        <div>
-                                            <h4 className='mb-1 font-medium text-[#08090F]'>Old Thumbnail:</h4>
-                                            <div className='inline-block rounded-lg border border-black border-opacity-10 p-1'>
-                                                <Image
-                                                    width={100}
-                                                    height={100}
-                                                    className='object-contain'
-                                                    preview={{
-                                                        visible: previewOldThumbnailOpen,
-                                                        onVisibleChange: (visible) =>
-                                                            setPreviewOldThumbnailOpen(visible),
-                                                        // afterOpenChange: (visible) => !visible && setPreviewThumbnail(''),
-                                                    }}
-                                                    src={productDetail?.thumbnail}
-                                                />
-                                            </div>
+                                    {productData?.thumbnail && (
+                                        <div className='my-2'>
+                                            <Image
+                                                // preview={{
+                                                //     visible: previewThumbnailOpen,
+                                                //     onVisibleChange: (visible) => setPreviewThumbnailOpen(visible),
+                                                //     afterOpenChange: (visible) => !visible && setPreviewThumbnail(''),
+                                                // }}
+                                                src={productData?.thumbnail}
+                                                className='w-[80px]'
+                                            />
                                         </div>
                                     )}
                                 </div>
+                                <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
+                                    <h3 className='my-2 text-lg font-medium text-[#08090F]'>General information</h3>
+                                    <Form.Item<IProductForm>
+                                        label='Product Name'
+                                        name='name'
+                                        className='font-medium text-[#08090F]'
+                                        initialValue={productData?.name}
+                                        rules={[
+                                            {
+                                                validator: async (_, name) => {
+                                                    if (!name) {
+                                                        return errorMessage('Please input your name!');
+                                                    }
+                                                    if (name.length < 3) {
+                                                        return errorMessage('Name must be at least 3 characters long');
+                                                    }
+                                                    return Promise.resolve();
+                                                },
+                                            },
+                                        ]}
+                                    >
+                                        <Input size='large' />
+                                    </Form.Item>
+                                    <Form.Item<IProductForm>
+                                        label='Product Description'
+                                        name='description'
+                                        initialValue={productData?.description}
+                                        className='font-medium text-[#08090F]'
+                                    >
+                                        <TextArea rows={4} className='w-full' />
+                                    </Form.Item>
+                                </div>
+
                                 <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
                                     <h3 className='my-2 text-lg font-medium text-[#08090F]'>Tags</h3>
 
                                     <Form.Item<IProductForm>
                                         label='Product Category'
                                         name='categoryId'
-                                        initialValue={initialCategory}
+                                        required
                                         className='font-medium text-[#08090F]'
+                                        initialValue={productData?.categoryId._id}
                                         rules={[{ required: true, message: 'Please input your category!' }]}
+                                        validateTrigger={['onChange', 'onBlur']}
                                     >
                                         <Select
                                             size='large'
                                             onChange={handleChangeCat}
-                                            labelInValue
+                                            placeholder='Choose category'
                                             className='w-full'
                                             options={categories?.map((category) => ({
                                                 label: category.name,
@@ -466,18 +412,18 @@ const UpdateProduct = () => {
                                             }))}
                                         />
                                     </Form.Item>
-
                                     <Form.Item<IProductForm>
                                         label='Product Brand'
                                         name='brandId'
-                                        initialValue={initialBrand}
                                         className='font-medium text-[#08090F]'
+                                        initialValue={productData?.brandId}
                                         rules={[{ required: true, message: 'Please input your brand!' }]}
+                                        validateTrigger={['onChange', 'onBlur']}
                                     >
                                         <Select
                                             size='large'
-                                            // onChange={handleChangeBrand}
                                             className='w-full'
+                                            placeholder='Choose brand'
                                             options={brands?.map((brand) => ({
                                                 label: brand.name,
                                                 value: brand._id,
@@ -485,43 +431,188 @@ const UpdateProduct = () => {
                                         />
                                     </Form.Item>
                                 </div>
-                                <div className='rounded-lg border border-black border-opacity-20 p-2 px-4'>
-                                    <h3 className='my-2 text-lg font-medium text-[#08090F]'>Inventory </h3>
-                                    <div className='grid grid-cols-1 gap-2'>
-                                        <Form.Item<IProductForm>
-                                            className='font-medium text-[#08090F]'
-                                            label='Product Stock'
-                                            initialValue={productDetail?.stock}
-                                            name='stock'
-                                            rules={[
-                                                {
-                                                    validator: async (_, stock) => {
-                                                        const tenThounsand = 10000;
-                                                        if (!stock) {
-                                                            return errorMessage('Please input your stock!');
-                                                        }
-                                                        if (stock < 0) {
-                                                            return errorMessage('Stock must be larger than zero');
-                                                        }
-                                                        if (stock >= tenThounsand) {
-                                                            return errorMessage(
-                                                                'Stock must be smaller than ten thousand!'
-                                                            );
-                                                        }
-                                                        return Promise.resolve();
-                                                    },
-                                                },
-                                            ]}
-                                        >
-                                            <InputNumber size='large' className='w-full' />
-                                        </Form.Item>
+                                <div className={clsx('rounded-lg border border-black border-opacity-20 p-2 px-4')}>
+                                    <h3 className='my-2 text-lg font-medium text-[#08090F]'>Attributes</h3>
+
+                                    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                                        {attributesResData?.map((attribute: IAttributesValue, index: number) => (
+                                            <AttributesItem
+                                                attribute={attribute}
+                                                key={index}
+                                                defaultValue={productData?.attributes}
+                                            />
+                                        ))}
                                     </div>
                                 </div>
+                                <div className={clsx('rounded-lg border border-black border-opacity-20 p-2 px-4')}>
+                                    <h3 className='my-2 text-lg font-medium text-[#08090F]'>Variations</h3>
+
+                                    <Form.List
+                                        name='variations'
+                                        initialValue={productData?.variationIds}
+                                        rules={[
+                                            {
+                                                validator: async (_, variations: IProductVariation[]) => {
+                                                    if (!variations || variations.length < 1) {
+                                                        return errorMessage('Please input your variations!');
+                                                    }
+                                                    const variationEmpty = variations.some(
+                                                        (variation) => variation === undefined
+                                                    );
+                                                    if (variationEmpty) {
+                                                        return errorMessage('Please input your variations!');
+                                                    }
+                                                    return Promise.resolve();
+                                                },
+                                            },
+                                        ]}
+                                    >
+                                        {(fields, { add, remove }, { errors }) => (
+                                            <>
+                                                {fields.map(({ key, name, ...restField }, index) => {
+                                                    const oldImageUrl = variationsImageUrl[index];
+                                                    return (
+                                                        <Space key={key} align='center'>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                name={[name, 'thumbnail']}
+                                                                rules={[
+                                                                    {
+                                                                        validator: async (
+                                                                            _,
+                                                                            thumbnail: IProductFiles
+                                                                        ) => {
+                                                                            if (
+                                                                                thumbnail?.fileList?.length < 1 ||
+                                                                                !thumbnail
+                                                                            ) {
+                                                                                return Promise.resolve();
+                                                                            }
+                                                                            if (thumbnail?.file.size >= MAX_SIZE) {
+                                                                                return errorMessage(
+                                                                                    'Image size must be smaller than 5MB!'
+                                                                                );
+                                                                            }
+                                                                            if (
+                                                                                thumbnail?.file.type &&
+                                                                                !ACCEPT_FILE_TYPE.includes(
+                                                                                    thumbnail?.file.type
+                                                                                )
+                                                                            ) {
+                                                                                return errorMessage(
+                                                                                    'Only accept png, jpg and jpeg type!'
+                                                                                );
+                                                                            }
+
+                                                                            return Promise.resolve();
+                                                                        },
+                                                                    },
+                                                                ]}
+                                                            >
+                                                                <Upload
+                                                                    beforeUpload={() => false}
+                                                                    listType='picture'
+                                                                    fileList={attributesFile[index]}
+                                                                    onChange={(fileList) => {
+                                                                        currentIndex.current = index;
+                                                                        handleChangeAttributeThumbnail(fileList);
+                                                                    }}
+                                                                    maxCount={1}
+                                                                >
+                                                                    {attributesFile[index]?.length >= 1 ? null : (
+                                                                        <Button className='border-none bg-stone-50 outline-none'>
+                                                                            Upload
+                                                                        </Button>
+                                                                    )}
+                                                                </Upload>
+                                                            </Form.Item>
+                                                            <Image
+                                                                className='w-[80px]'
+                                                                alt='variation thumbnail'
+                                                                src={oldImageUrl}
+                                                            />
+                                                            <Form.Item
+                                                                {...restField}
+                                                                name={[name, 'color']}
+                                                                label='Color'
+                                                                rules={[
+                                                                    { required: true, message: 'Please input color' },
+                                                                ]}
+                                                            >
+                                                                <Input placeholder='Color' className='w-full' />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                name={[name, 'price']}
+                                                                label='Price'
+                                                                rules={[
+                                                                    { required: true, message: 'Please input price' },
+                                                                ]}
+                                                            >
+                                                                <InputNumber placeholder='Price' className='w-full' />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                name={[name, 'stock']}
+                                                                label='stock'
+                                                                rules={[
+                                                                    { required: true, message: 'Please input color' },
+                                                                ]}
+                                                            >
+                                                                <InputNumber placeholder='Stock' className='w-full' />
+                                                            </Form.Item>
+                                                            <MinusCircleOutlined
+                                                                onClick={() => {
+                                                                    currentIndex.current = index;
+                                                                    handleRemoveAttributeThumbnail();
+                                                                    setVariantionsImageUrl(
+                                                                        variationsImageUrl.filter(
+                                                                            (url, urlIndex) => urlIndex !== index
+                                                                        )
+                                                                    );
+                                                                    remove(name);
+                                                                }}
+                                                                className='text-lg'
+                                                            />
+                                                        </Space>
+                                                    );
+                                                })}
+                                                <Form.Item>
+                                                    <Button
+                                                        type='dashed'
+                                                        onClick={() => add()}
+                                                        block
+                                                        icon={<PlusOutlined />}
+                                                    >
+                                                        Add variation
+                                                    </Button>
+                                                </Form.Item>
+                                                <Form.ErrorList errors={errors} className='text-red' />
+                                            </>
+                                        )}
+                                    </Form.List>
+                                </div>
+                            </div>
+                            <div className='my-2 flex justify-end'>
+                                <Button
+                                    type='primary'
+                                    htmlType='submit'
+                                    icon={<PlusSquareOutlined />}
+                                    className='mr-3 px-5'
+                                    loading={isPending}
+                                    disabled={isPending}
+                                    size='large'
+                                >
+                                    Update product
+                                </Button>
+                                <Button type='dashed' htmlType='reset' className='mr-3 px-5' size='large'>
+                                    Reset
+                                </Button>
                             </div>
                         </Form>
-                    )}
+                    </div>
                 </div>
-            </div>
+            )}
         </>
     );
 };

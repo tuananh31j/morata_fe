@@ -2,11 +2,11 @@ import { IProductFiles, IProductVariation } from '~/types/Product';
 import { errorMessage } from './Product';
 import { ACCEPT_FILE_TYPE, MAX_SIZE } from '~/pages/Admins/_product_/_component/Helper/_helper_';
 
+/* eslint-disable */
 export const imagesValidator = async (_: any, images: IProductFiles) => {
     if (images?.fileList?.length < 1 || !images) {
         return errorMessage('Please input your images!');
     }
-    /* eslint-disable */
     for (const file of images?.fileList) {
         if (file?.size >= MAX_SIZE) {
             return errorMessage('Image size must be smaller than 5MB!');
@@ -14,7 +14,6 @@ export const imagesValidator = async (_: any, images: IProductFiles) => {
             return errorMessage('Only accept png, jpg and jpeg type!');
         }
     }
-    /* eslint-enable */
     return Promise.resolve();
 };
 
@@ -72,9 +71,13 @@ export const variationsThumbnailValidator = async (_: any, thumbnail: IProductFi
 export const variationsColorValidator = () => {
     return { required: true, message: 'Please input your color!' };
 };
+export const variationsStorageValidator = () => {
+    return { required: true, message: 'Please input your storage!' };
+};
 export const variationsPriceValidator = () => {
     return { required: true, message: 'Please input your price!' };
 };
 export const variationsStockValidator = () => {
     return { required: true, message: 'Please input your stock!' };
 };
+/* eslint-enable */
