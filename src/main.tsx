@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <QueryProvider>
                     <AutoScrollToTop>
                         <App />
-                        <ToastContainer />
+                        <ToastContainer position='bottom-right' />
                     </AutoScrollToTop>
                 </QueryProvider>
             </ReduxProvider>

@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
-import orderService from '~/services/order.service';
-import showMessage from '~/utils/ShowMessage';
+import instance from '~/utils/api/axiosIntance';
 
-const useCancelOrder = () => {
+const useCancelOrder = (orderId: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationKey: [QUERY_KEY.ORDERS],
-        mutationFn: ({ orderId, reason }: { orderId: string; reason?: string }) =>
-            orderService.cancelOrder({ orderId, reason }),
-
+        mutationFn: (reason: string) =>
+            instance({
+                url: '/orders/cancel',
+                method: 'PATCH',
+                data: { orderId, description: reason },
+            }),
         onSuccess() {
-            showMessage('Cancel order successfully!', 'info');
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
         },
     });
