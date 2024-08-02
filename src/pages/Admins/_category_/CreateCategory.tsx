@@ -1,5 +1,18 @@
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Checkbox, CheckboxProps, Form, FormProps, GetProp, Input, Popover, Radio } from 'antd';
+import {
+    Button,
+    Checkbox,
+    CheckboxProps,
+    Form,
+    FormProps,
+    GetProp,
+    Input,
+    Popover,
+    Radio,
+    Select,
+    SelectProps,
+    TreeSelect,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
@@ -15,14 +28,28 @@ const CreateCategory = () => {
     const { data } = useGetAllAtributesNew();
     const attributes = data?.data;
 
-    const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
+    // const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
+
+    const [attributeOptions, setAttributeOptions] = useState<
+        { title: string; value: string; children: { title: string }[] }[]
+    >([]);
 
     useEffect(() => {
         if (attributes) {
-            const options = attributes.map((attr: { _id: string; name: string; values: string[] }) => ({
-                label: attr.name,
+            // const options = attributes.map((attr: { _id: string; name: string; values: string[] }) => ({
+            //     label: attr.name,
+            //     value: attr._id,
+            //     values: attr.values,
+            // }));
+
+            const options = attributes?.map((attr: { _id: string; name: string; values: string[] }) => ({
+                title: attr.name,
                 value: attr._id,
-                values: attr.values,
+                children: attr.values?.map((value: string) => ({
+                    title: value,
+                    value,
+                    selectable: false,
+                })),
             }));
             setAttributeOptions(options);
         }
@@ -30,18 +57,14 @@ const CreateCategory = () => {
 
     const { handleMessage, contextHolder } = useMessage();
 
-    const attributeValues = (attr: { label: string; value: string; values: string[] }) => {
-        if (attr.values.length === 0) {
-            return <div>No values</div>;
-        }
-        return attr.values.map((value, i) => {
-            return <div key={i}>{value}</div>;
-        });
-    };
-
-    // const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
-    //     console.log('checked = ', checkedValues);
+    // const handleChange = (value: string[]) => {
+    //     console.log(`selected ${value}`);
     // };
+
+    // const optionsWithTooltips = attributeOptions.map((option) => ({
+    //     ...option,
+    //     title: option.values ? option.values.join(', ') : 'No values available',
+    // }));
 
     const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
         console.log('Success:', values);
@@ -64,6 +87,10 @@ const CreateCategory = () => {
 
     const onFinishFailed: FormProps<ICategoryFormData>['onFinishFailed'] = (errorInfo) => {
         console.log('Failed:', errorInfo);
+    };
+
+    const onChange = (newValue: string[]) => {
+        console.log('onChange ', newValue);
     };
 
     return (
@@ -90,7 +117,31 @@ const CreateCategory = () => {
                                 className='font-medium text-[#08090F]'
                                 rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
                             >
-                                <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' />
+                                {/* <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' /> */}
+
+                                {/* <Select
+                                    showSearch
+                                    allowClear
+                                    mode='multiple'
+                                    optionFilterProp='label'
+                                    style={{ width: '100%' }}
+                                    placeholder='Please select attributes'
+                                    onChange={handleChange}
+                                    onSearch={onSearch}
+                                    options={optionsWithTooltips}
+                                    optionLabelProp='label'
+                                /> */}
+
+                                <TreeSelect
+                                    showSearch
+                                    multiple
+                                    treeNodeFilterProp='title'
+                                    style={{ width: '100%' }}
+                                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                    treeData={attributeOptions}
+                                    placeholder='Please select attributes'
+                                    onChange={onChange}
+                                />
 
                                 {/* <div className='grid grid-cols-3 gap-2'>
                                     {attributeOptions.map((option) => (

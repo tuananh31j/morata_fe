@@ -62,6 +62,7 @@ export const STATS_ENDPOINT = {
     DAILY_STATS: '/stats/daily',
     MONTHLY_STATS: '/stats/monthly',
     YEARLY_STATS: '/stats/yearly',
+    DATE_RANGE: 'stats/dateRange',
 };
 
 export const USER_ENDPOINT = {

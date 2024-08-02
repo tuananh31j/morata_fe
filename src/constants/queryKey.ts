@@ -23,4 +23,5 @@ export const QUERY_KEY = {
     DAILY_STATS: 'dailyStats',
     MONTHLY_STATS: 'monthlyStats',
     YEARLY_STATS: 'yearlyStats',
+    DATE_RANGE: 'dateRange',
 };
