@@ -21,8 +21,6 @@ import {
 import { ADMIN_ROUTES } from '~/constants/router';
 import RedirectToOrderList from '~/components/_common/RedirectToOrderList/RedirectToOrderList';
 import { Outlet } from 'react-router-dom';
-import OrdersList from '~/pages/Admins/_order_/OrdersList/OrdersList';
-import { OrderStatus } from '~/constants/enum';
 
 const PrivateRoutes = [
     {
@@ -198,64 +196,6 @@ const PrivateRoutes = [
             {
                 path: ADMIN_ROUTES.ORDERS_LIST,
                 element: <ManageOrders />,
-                children: [
-                    {
-                        index: true,
-                        element: (
-                            <Suspense>
-                                <OrdersList status={OrderStatus.pending} />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'all',
-                        element: (
-                            <Suspense>
-                                <OrdersList />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'pending',
-                        element: (
-                            <Suspense>
-                                <OrdersList status={OrderStatus.pending} />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'confirmed',
-                        element: (
-                            <Suspense>
-                                <OrdersList status={OrderStatus.confirmed} />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'shipping',
-                        element: (
-                            <Suspense>
-                                <OrdersList status={OrderStatus.shipping} />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'delivered',
-                        element: (
-                            <Suspense>
-                                <OrdersList status={OrderStatus.delivered} />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'done',
-                        element: (
-                            <Suspense>
-                                <OrdersList status={OrderStatus.done} />
-                            </Suspense>
-                        ),
-                    },
-                ],
             },
             {
                 path: ADMIN_ROUTES.CATEGORIES,

@@ -1,11 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
-import orderService from '~/services/order.service';
+import instance from '~/utils/api/axiosIntance';
 
 const useGetAllOrders = (params?: any) => {
     return useQuery({
-        queryKey: [QUERY_KEY.ORDERS, ...Object.values(params)],
-        queryFn: () => orderService.getAllOrders(params),
+        queryKey: [QUERY_KEY.ORDERS],
+        queryFn: async () => {
+            const result = await instance<Promise<any>>({
+                method: 'GET',
+                url: '/orders',
+                params,
+            });
+            return result && result.data ? result.data : null;
+        },
     });
 };
 
