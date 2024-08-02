@@ -4,6 +4,7 @@ import ActionLink from './ActionLink';
 import dayjs from 'dayjs';
 import PopupOrderDetails from './PopupOrderDetails';
 import OrderStatusTag from '~/components/OrderStatusTag';
+import { Currency } from '~/utils';
 
 export interface DataType {
     _id: string;
@@ -66,16 +67,17 @@ export const columns: TableColumnsType<DataType> = [
         title: 'Total price',
         dataIndex: 'totalPrice',
         showSorterTooltip: { target: 'full-header' },
+        render: (value) => <span>{Currency.format(value)}</span>,
     },
     {
         title: 'Status',
-        dataIndex: 'currentOrderStatus',
+        dataIndex: 'orderStatus',
         render: (value) => <OrderStatusTag status={value} />,
         filters: filterStatusItems,
     },
     {
         title: 'Actions',
-        dataIndex: 'currentOrderStatus',
+        dataIndex: 'orderStatus',
         render: (value, record) => <ActionLink status={value} orderId={record._id} />,
         // sorter: (a, b) => a.name.length - b.name.length,
         // sortDirections: ['descend'],
