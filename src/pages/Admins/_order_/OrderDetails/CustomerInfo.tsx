@@ -26,7 +26,7 @@ const CustomerInfo = ({ customerInfo, receiverInfo, shippingAddress }: Props) =>
             return {
                 key,
                 label: <span className='font-semibold capitalize'>{key}</span>,
-                children: <p>{value}</p>,
+                children: <p className='capitalize'>{value}</p>,
             };
         });
     const receiverItems: DescriptionsProps['items'] =
@@ -34,7 +34,7 @@ const CustomerInfo = ({ customerInfo, receiverInfo, shippingAddress }: Props) =>
         Object.entries(receiverInfo).map(([key, value]) => ({
             key,
             label: <span className='font-semibold capitalize'>{key}</span>,
-            children: <p>{value}</p>,
+            children: <p className='capitalize'>{value}</p>,
         }));
 
     const shippingAddressItems: DescriptionsProps['items'] =
@@ -42,7 +42,7 @@ const CustomerInfo = ({ customerInfo, receiverInfo, shippingAddress }: Props) =>
         Object.entries(shippingAddress).map(([key, value]) => ({
             key,
             label: <span className='font-semibold capitalize'>{key}</span>,
-            children: <p>{value}</p>,
+            children: <p className='capitalize'>{value}</p>,
         }));
 
     return (

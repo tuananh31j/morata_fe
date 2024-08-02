@@ -1,4 +1,4 @@
-import { Space } from 'antd';
+import { Button, Space } from 'antd';
 import { useParams } from 'react-router-dom';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
 import OrderStatusBar from './OrderStatusBar';
@@ -28,7 +28,10 @@ const OrderDetail = () => {
 
     return (
         <>
-            <Space className='font-se w-full rounded-lg bg-[#fff] p-4 font-semibold'>Order Detail </Space>
+            <Space className='font-se w-full rounded-lg bg-[#fff] p-4 font-semibold'>
+                <span>Order Detail </span>
+                <Button></Button>
+            </Space>
             <OrderStatusBar orderStatus={orderStatus} />
             <CustomerInfo customerInfo={customerInfo} receiverInfo={receiverInfo} shippingAddress={shippingAddress} />
             <ServiceInfo serviceInfo={serviceInfo} />
