@@ -6,6 +6,10 @@ import { useTotalStats } from '~/hooks/stats/useTotal';
 import LineChart from './_components/Charts/LineChart/LineChart';
 import DailyStats from './_components/Charts/BarChart/DailyStats';
 import YearlyStats from './_components/Charts/BarChart/YearlyStats';
+import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
+import { Dayjs } from 'dayjs';
+import BarChartRangePicker from '~/pages/Admins/_dashboard_/_components/Charts/BarChart/RangePicker';
+import { TopProducts } from '~/pages/Admins/_dashboard_/_components/TopProducts/TopProducts';
 
 const DashboardNew: React.FC = () => {
     const { data: totalStats } = useTotalStats();
@@ -13,7 +17,6 @@ const DashboardNew: React.FC = () => {
     const totalOrders = totalStats?.data.totalOrders;
     const totalProducts = totalStats?.data.totalProducts;
     const totalUsers = totalStats?.data.totalUsers;
-
     return (
         <>
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
@@ -31,18 +34,21 @@ const DashboardNew: React.FC = () => {
             <div className='item-center mt-[5rem] grid grid-cols-1'>
                 <div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
                     <div>
-                        <DailyStats />
+                        <BarChartRangePicker />
                     </div>
                     <div>
                         <YearlyStats />
                     </div>
                 </div>
-                <div>
-                    <LineChart />
-                </div>
+                <div>{/* <LineChart /> */}</div>
             </div>
 
-            <div className='col-span-12 xl:col-span-6'>{/* <TopUsers title='Top users' /> */}</div>
+            {/* <div className='col-span-12 xl:col-span-6'><TopUsers title='Top users' /></div> */}
+
+            {/* TOP PRODUCTS STATS */}
+            <div>
+                <TopProducts />
+            </div>
         </>
     );
 };

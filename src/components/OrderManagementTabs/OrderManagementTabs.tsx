@@ -6,7 +6,7 @@ import {
     ShoppingCartOutlined,
     TruckOutlined,
 } from '@ant-design/icons';
-import { ConfigProvider, Tabs } from 'antd';
+import { ConfigProvider, Space, Tabs } from 'antd';
 import React from 'react';
 
 interface OrderManagementTabsProps {
@@ -24,8 +24,10 @@ const OrderManagementTabs: React.FC<OrderManagementTabsProps> = ({ activeKey, on
         key,
         label: (
             <span className='flex items-center'>
-                {icon}
-                <span className='ml-2'>{label}</span>
+                <Space>
+                    {icon}
+                    <span>{label}</span>
+                </Space>
             </span>
         ),
     });
