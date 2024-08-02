@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import productService from '~/services/product.service';
 
-const useUpdateProduct = () => {
+const useCreateProductVariant = () => {
     return useMutation({
-        mutationFn: ({ data, productId }: { data: FormData; productId: string }) =>
-            productService.updateProduct(data, productId),
+        mutationFn: (data: FormData) => productService.createProductVariant(data),
         onSuccess: (res) => {
             console.log('Update product success', res);
         },
@@ -14,4 +13,4 @@ const useUpdateProduct = () => {
     });
 };
 
-export default useUpdateProduct;
+export default useCreateProductVariant;

@@ -1,4 +1,10 @@
-import { IAllProductsResponse, IProduct, IAllProductResponseNew, IProductItemNew } from '~/types/Product';
+import {
+    IAllProductsResponse,
+    IProduct,
+    IAllProductResponseNew,
+    IProductItemNew,
+    IProductDetailsAdmin,
+} from '~/types/Product';
 import { IParams } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import instance from '~/utils/api/axiosIntance';
@@ -12,6 +18,12 @@ const productService = {
         return res.data;
     },
 
+    async getDetailsProductForAdmin(proId: string) {
+        const res = await instance.get<IAxiosResponse<IProductDetailsAdmin>>(
+            `${PRODUCT_ENDPOINT.PRODUCT}/portal/${proId}`
+        );
+        return res.data;
+    },
     // new model
     async getAllProducts(params?: any) {
         const res = await instance.get<IAxiosResponse<IAllProductResponseNew>>(`${PRODUCT_ENDPOINT.ALL}`, {
@@ -53,7 +65,18 @@ const productService = {
         return res.data;
     },
     async updateProduct(data: FormData, id: string) {
-        const res = await instance.patch<IAxiosResponse<IProduct>>(`${PRODUCT_ENDPOINT.UPDATE}/${id}`, data);
+        const res = await instance.patch<IAxiosResponse<any>>(`${PRODUCT_ENDPOINT.UPDATE}/${id}`, data);
+        return res.data;
+    },
+    async updateProductVariant(data: FormData, variantId: string) {
+        const res = await instance.patch<IAxiosResponse<any>>(
+            `${PRODUCT_ENDPOINT.UPDATE}/variation/${variantId}`,
+            data
+        );
+        return res.data;
+    },
+    async createProductVariant(data: FormData) {
+        const res = await instance.post<IAxiosResponse<any>>(`${PRODUCT_ENDPOINT.UPDATE}/variation`, data);
         return res.data;
     },
     async deleteProduct(id: string) {

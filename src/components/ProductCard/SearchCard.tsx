@@ -8,7 +8,7 @@ const SearchCard = ({ product }: { product: IProductItem }) => {
         <Animation>
             <div className='mb-4'>
                 <Link
-                    to={generateLink({ productId: product._id, categoryId: product.categoryId })}
+                    to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}
                     className='flex items-center  gap-5  px-5'
                 >
                     <div className='group relative border-2'>

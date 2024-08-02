@@ -37,9 +37,17 @@ const CreateProduct = () => {
     const [isChooseCategory, setIsChooseCategory] = useState<boolean>(false);
     const [categoryId, setCategoryId] = useState<string>('');
     const { data: attributesRes, isLoading: isAttributeLoading } = useGetAllAtributes(categoryId);
-    const attributesResData = attributesRes?.data.attributeIds;
+    const attributesForProduct = attributesRes?.data.productAttributes.attributeIds;
+    const attributesForVariant = attributesRes?.data.variantAttribute.attributeIds;
     const categoriesAndBrandData = useGetCategoriesAndBrands();
-    const { mutate: createProduct, data: createProductData, isError, isSuccess, error, isPending } = useCreateProduct();
+    const {
+        mutateAsync: createProduct,
+        data: createProductData,
+        isError,
+        isSuccess,
+        error,
+        isPending,
+    } = useCreateProduct();
     const [form] = Form.useForm<IProductForm>();
     const navigate = useNavigate();
     const dataIndex = {
@@ -80,6 +88,7 @@ const CreateProduct = () => {
     };
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
+        console.log(values);
         handleCreateProduct(values, createProduct);
     };
 
@@ -276,7 +285,7 @@ const CreateProduct = () => {
                                     )}
                                     {isChooseCategory && (
                                         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                                            {attributesResData?.map((attribute: IAttributesValue, index: number) => (
+                                            {attributesForProduct?.map((attribute: IAttributesValue, index: number) => (
                                                 <AttributesItem attribute={attribute} key={index} />
                                             ))}
                                         </div>
@@ -306,6 +315,7 @@ const CreateProduct = () => {
                                                         <VariationItem
                                                             key={key}
                                                             index={index}
+                                                            attributesForVariant={attributesForVariant}
                                                             fieldName={name}
                                                             restField={restField}
                                                             attributesFile={attributesFile}

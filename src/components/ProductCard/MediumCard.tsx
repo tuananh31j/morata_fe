@@ -59,7 +59,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                     <ProductActions />
                 </div>
                 <div className='mt-3 flex h-full flex-col'>
-                    <Link to={generateLink({ productId: product._id, categoryId: product.categoryId })}>
+                    <Link to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}>
                         <h1 className='line-clamp-2 h-16 flex-shrink-0 text-ellipsis text-title-md font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h1>
@@ -72,7 +72,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                                     'text-red-600': discountPercentage > 0,
                                 })}
                             >
-                                {Currency.format(product.variationIds?.[0].price)}
+                                {Currency.format(product.variationIds[0].price)}
                             </span>
                             {discountPercentage > 0 && (
                                 <del className=' text-gray-400 text-base font-semibold leading-5'>

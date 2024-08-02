@@ -27,7 +27,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
             userId: user ? user._id : '',
         });
     };
-    const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
+    const newPrice = product.variationIds[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
 
     const handleSetDateActive = () => {
@@ -45,7 +45,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                     onMouseLeave={handleSetDateActive}
                 >
                     <Link
-                        to={generateLink({ productId: product._id, categoryId: product.categoryId })}
+                        to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}
                         className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                     >
                         {/* HOVER IMAGE */}
@@ -71,7 +71,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                 {/* Name */}
                 <div className='mt-[15px] cursor-pointer'>
-                    <Link to={generateLink({ productId: product._id, categoryId: product.categoryId })}>
+                    <Link to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}>
                         <h4 className=' cursor-pointer truncate text-title-sm2 font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
@@ -86,7 +86,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                                     'text-red-600': discountPercentage > 0,
                                 })}
                             >
-                                {Currency.format(product.variationIds?.[0].price)}
+                                {Currency.format(product.variationIds[0].price)}
                             </span>
                             {discountPercentage > 0 && (
                                 <del className=' text-gray-400 text-base font-semibold leading-5'>

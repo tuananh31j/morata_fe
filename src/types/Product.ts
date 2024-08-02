@@ -27,7 +27,7 @@ export type IProductItem = {
     discount: number;
     images: string[];
     imageUrlRefs: string[];
-    thumbnail: string[];
+    thumbnail: string;
     thumbnailUrlRef: string[];
     status: string;
     isAvailable: boolean;
@@ -95,6 +95,51 @@ export type IAllProductResponseNew = {
     totalDocs: number;
     totalPages: number;
 };
+export type IProductDetailsAdmin = {
+    _id: string;
+    name: string;
+    description: string;
+    discount: number;
+    images: string[];
+    thumbnail: string;
+    status: string;
+    imageUrlRefs: string[];
+    thumbnailUrlRef: string;
+    isAvailable: boolean;
+    isDeleted: boolean;
+    isHide: boolean;
+    attributes: {
+        key: string;
+        name: string;
+        value: string;
+        _id: string;
+    }[];
+    rating: number;
+    reviewCount: number;
+    variationIds: {
+        _id: string;
+        price: number;
+        image?: string;
+        stock: number;
+        imageUrlRef: string;
+        variantAttributes: {
+            name: string;
+            key: string;
+            value: string;
+        }[];
+        productId: string;
+    }[];
+    brandId: {
+        _id: string;
+        name: string;
+    };
+    categoryId: {
+        _id: string;
+        name: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+};
 
 export type IAllProductsResponse = {
     products: IProductItem[];
@@ -124,11 +169,13 @@ export type IAttribute = {
     values?: string[];
 };
 export type IProductVariation = {
+    _id?: string;
     thumbnail?: {
         file: File;
         fileList: IThumbnailAntd[];
     };
-    color: string;
+    [key: string]: any;
+    imageUrlRef: string;
     price: number;
     stock: number;
 };

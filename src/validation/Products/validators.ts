@@ -7,11 +7,13 @@ export const imagesValidator = async (_: any, images: IProductFiles) => {
         return errorMessage('Please input your images!');
     }
     /* eslint-disable */
-    for (const file of images?.fileList) {
-        if (file?.size >= MAX_SIZE) {
-            return errorMessage('Image size must be smaller than 5MB!');
-        } else if (file?.type && !ACCEPT_FILE_TYPE.includes(images?.file.type)) {
-            return errorMessage('Only accept png, jpg and jpeg type!');
+    if (images && images.fileList && images.fileList.length > 0 && (images.fileList[0] as any).originFileObj) {
+        for (const file of images?.fileList) {
+            if (file?.size >= MAX_SIZE) {
+                return errorMessage('Image size must be smaller than 5MB!');
+            } else if (file?.type && !ACCEPT_FILE_TYPE.includes(images?.file.type)) {
+                return errorMessage('Only accept png, jpg and jpeg type!');
+            }
         }
     }
     /* eslint-enable */
@@ -19,14 +21,21 @@ export const imagesValidator = async (_: any, images: IProductFiles) => {
 };
 
 export const thumbnailValidator = async (_: any, thumbnail: IProductFiles) => {
-    if (thumbnail?.fileList?.length < 1 || !thumbnail) {
-        return errorMessage('Please input your thumbnail!');
-    }
-    if (thumbnail?.file.size >= MAX_SIZE) {
-        return errorMessage('Image size must be smaller than 5MB!');
-    }
-    if (thumbnail?.file.type && !ACCEPT_FILE_TYPE.includes(thumbnail?.file.type)) {
-        return errorMessage('Only accept png, jpg and jpeg type!');
+    if (
+        thumbnail &&
+        thumbnail.fileList &&
+        thumbnail.fileList.length > 0 &&
+        (thumbnail.fileList[0] as any).originFileObj
+    ) {
+        if (thumbnail?.fileList?.length < 1 || !thumbnail) {
+            return errorMessage('Please input your thumbnail!');
+        }
+        if (thumbnail && thumbnail.file.size && thumbnail?.file.size >= MAX_SIZE) {
+            return errorMessage('Image size must be smaller than 5MB!');
+        }
+        if (thumbnail?.file.type && !ACCEPT_FILE_TYPE.includes(thumbnail?.file.type)) {
+            return errorMessage('Only accept png, jpg and jpeg type!');
+        }
     }
     return Promise.resolve();
 };
@@ -57,15 +66,23 @@ export const variationsValidator = async (_: any, variations: IProductVariation[
     }
     return Promise.resolve();
 };
-export const variationsThumbnailValidator = async (_: any, thumbnail: IProductFiles) => {
-    if (thumbnail?.fileList?.length < 1 || !thumbnail) {
-        return errorMessage('Please input your thumbnail!');
-    }
-    if (thumbnail?.file.size >= MAX_SIZE) {
-        return errorMessage('Image size must be smaller than 5MB!');
-    }
-    if (thumbnail?.file.type && !ACCEPT_FILE_TYPE.includes(thumbnail?.file.type)) {
-        return errorMessage('Only accept png, jpg and jpeg type!');
+export const variationsThumbnailValidator = async (_: any, thumbnail: any) => {
+    console.log(thumbnail, 'vvvvvvvvvvvvvvvvvvv');
+    if (
+        thumbnail &&
+        thumbnail.fileList &&
+        thumbnail.fileList.length > 0 &&
+        (thumbnail.fileList[0] as any).originFileObj
+    ) {
+        if (thumbnail?.fileList?.length < 1 || !thumbnail) {
+            return errorMessage('Please input your thumbnail!');
+        }
+        if (thumbnail && thumbnail.file.size && thumbnail.file.size >= MAX_SIZE) {
+            return errorMessage('Image size must be smaller than 5MB!');
+        }
+        if (thumbnail?.file.type && !ACCEPT_FILE_TYPE.includes(thumbnail?.file.type)) {
+            return errorMessage('Only accept png, jpg and jpeg type!');
+        }
     }
     return Promise.resolve();
 };
