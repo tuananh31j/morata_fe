@@ -42,6 +42,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
         price: product.productVariation.price,
         quantity: product.quantity,
         image: product.productVariation.image,
+        productId: product.productVariation.productId._id,
     }));
     const handlePayStripe = () => {
         stripeCheckout({

@@ -62,7 +62,7 @@ const productService = {
         return res.data;
     },
     async createProduct(data: FormData) {
-        const res = await instance.post<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.CREATE}`, data);
+        const res = await instance.post<IAxiosResponse<any>>(`${PRODUCT_ENDPOINT.CREATE}`, data);
         return res.data;
     },
     async updateProduct(data: FormData, id: string) {

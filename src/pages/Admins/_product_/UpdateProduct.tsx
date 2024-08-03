@@ -227,10 +227,10 @@ const UpdateProduct = () => {
     }, [productDetails, categoryIdNew]);
 
     useEffect(() => {
-        if (isSuccessProduct || isSuccessVariantUpdate || isSuccessVariantCreate) {
-            showMessage('Update product is successfully', 'success');
-            navigate('/admin/products');
-        }
+        // if (isSuccessProduct || isSuccessVariantUpdate || isSuccessVariantCreate) {
+        //     showMessage('Update product is successfully', 'success');
+        //     navigate('/admin/products');
+        // }
     }, [isSuccessProduct, isSuccessVariantUpdate, isSuccessVariantCreate, navigate]);
     return (
         <div className='mx-6 rounded-lg bg-white px-4 py-6'>

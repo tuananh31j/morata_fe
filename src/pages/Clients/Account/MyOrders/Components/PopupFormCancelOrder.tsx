@@ -1,8 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Flex, Form, Modal, Radio } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { concat } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import WrapperList from '~/components/_common/WrapperList';
@@ -18,7 +17,7 @@ type IFormCancelOrder = z.infer<typeof schemaFormCancelOrder>;
 
 const PopupFormCancelOrder = ({ id }: { id: string }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { mutateAsync, isSuccess } = useCancelOrder();
+    const { mutateAsync, isSuccess } = useCancelOrder(id);
     const {
         control,
         handleSubmit,
@@ -32,18 +31,18 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
         try {
             const reasonCombined = data.reason.concat(data.description ? `, ${data.description}` : '');
 
-            const payload = {
-                orderId: id,
-                reason: reasonCombined,
-            };
+            // const payload = {
+            //     orderId: id,
+            //     reason: reasonCombined,
+            // };
 
-            await mutateAsync(payload);
+            await mutateAsync(reasonCombined);
 
-            if (isSuccess) {
-                showMessage('Cancel order successfully!', 'success');
-                setIsModalOpen(false);
-                reset();
-            }
+            // if (isSuccess) {
+            //     showMessage('Cancel order successfully!', 'success');
+            //     setIsModalOpen(false);
+            //     reset();
+            // }
         } catch (error) {
             showMessage('Something wrong!', 'error');
         }
@@ -57,6 +56,15 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
         setIsModalOpen(false);
         reset();
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            showMessage('Cancel order successfully!', 'success');
+            setIsModalOpen(false);
+            reset();
+        }
+    }, [isSuccess, reset]);
+
     return (
         <>
             <Button onClick={showModal} type='primary' danger>

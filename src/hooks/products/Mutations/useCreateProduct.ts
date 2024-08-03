@@ -7,7 +7,7 @@ const useCreateProduct = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (data: FormData) => productService.createProduct(data),
-        onSuccess: async () => {
+        onSuccess: (res) => {
             // setTimeout(() => {
             // queryClient.prefetchQuery({
             //     queryKey: [QUERY_KEY.PRODUCTS],
@@ -17,6 +17,10 @@ const useCreateProduct = () => {
             setTimeout(() => {
                 queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
             }, 300);
+            queryClient.prefetchQuery({
+                queryKey: [QUERY_KEY.PRODUCTS, res.data.productId],
+                queryFn: () => productService.getDetailsProductForAdmin(res.data.productId),
+            });
         },
         onError(error) {
             showMessage(error.message, 'error');

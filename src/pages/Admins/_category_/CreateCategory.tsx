@@ -109,7 +109,16 @@ const CreateCategory = () => {
         console.log('Success:', values);
 
         createCategory(values);
+    };
 
+    const onFinishFailed: FormProps<ICategoryFormData>['onFinishFailed'] = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
+    const onChange = (newValue: string[]) => {
+        console.log('onChange ', newValue);
+    };
+    useEffect(() => {
         if (isSuccess) {
             showMessage('Category created successfully!', 'success');
             navigate('/admin/categories', { replace: true });
@@ -122,15 +131,7 @@ const CreateCategory = () => {
         if (isError) {
             showMessage('Category creation failed!', 'error');
         }
-    };
-
-    const onFinishFailed: FormProps<ICategoryFormData>['onFinishFailed'] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
-    const onChange = (newValue: string[]) => {
-        console.log('onChange ', newValue);
-    };
+    }, [isPending, isSuccess, isError]);
 
     return (
         <>

@@ -114,7 +114,7 @@ const CheckOut = () => {
                             </h3>
                         </>
                     )}
-                    {data && (
+                    {data && !(totalPrice >= 1000) && (
                         <Form
                             name='checkout'
                             form={form}
@@ -217,7 +217,9 @@ const CheckOut = () => {
                             <div className=''>
                                 <Form.Item
                                     name={'paymentMethods'}
-                                    rules={[{ required: true, message: 'Please select a payment method.' }]}
+                                    rules={[
+                                        { required: !(totalPrice >= 1000), message: 'Please select a payment method.' },
+                                    ]}
                                 >
                                     <Radio.Group optionType='default' buttonStyle='solid'>
                                         <div className='space-y-4'>

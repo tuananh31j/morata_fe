@@ -71,13 +71,13 @@ export const columns: TableColumnsType<DataType> = [
     },
     {
         title: 'Status',
-        dataIndex: 'currentOrderStatus',
+        dataIndex: 'orderStatus',
         render: (value) => <OrderStatusTag status={value} />,
         filters: filterStatusItems,
     },
     {
         title: 'Actions',
-        dataIndex: 'currentOrderStatus',
+        dataIndex: 'orderStatus',
         render: (value, record) => <ActionLink status={value} orderId={record._id} />,
         // sorter: (a, b) => a.name.length - b.name.length,
         // sortDirections: ['descend'],

@@ -1,6 +1,6 @@
 import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
 import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
@@ -40,20 +40,21 @@ const CreateAttribute = () => {
         const payload = { ...values, values: inputValues };
 
         createAttribute(payload);
-
+    };
+    useEffect(() => {
         if (isPending) {
             handleMessage({ type: 'loading', content: '...Creating!' });
         }
 
         if (isSuccess) {
             showMessage('Attribute created successfully!', 'success');
-            navigate('/admin/categories/create', { replace: true, state: { newAttribute: payload } });
+            navigate('/admin/categories/create', { replace: true });
         }
 
         if (isError) {
             showMessage('Attribute creation failed!', 'error');
         }
-    };
+    }, [isPending, isSuccess, isError]);
 
     return (
         <>

@@ -181,7 +181,7 @@ const ProductDetails = () => {
                                     </div>
                                     <div className='flex'>
                                         <p className='w-[115px]  text-[#777777]'>Categories: </p>
-                                        {product.brandId.name && (
+                                        {product.categoryId.name && (
                                             <Link
                                                 to={`/products?categoryId=${product.categoryId._id}`}
                                                 className='font-semibold text-black'
