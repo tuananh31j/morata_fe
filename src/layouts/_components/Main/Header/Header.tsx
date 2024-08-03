@@ -16,7 +16,10 @@ import UserToolbar from './UserToolbar';
 import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
 import { MAIN_ROUTES } from '~/constants/router';
 // navbar-mobi
-
+interface SearchProductParams {
+    search: string;
+    categoryId?: string;
+}
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(label: React.ReactNode, key?: React.Key | null, children?: MenuItem[], type?: 'group'): MenuItem {
     return {
@@ -88,11 +91,7 @@ const Header = () => {
 
     const { data } = useGetCategories();
     const categoryList = data?.data;
-    const additionalCategories = [
-        { label: 'All Category', key: '' },
-
-        // Thêm các category khác nếu cần
-    ];
+    const additionalCategories = [{ label: 'All Category', key: '' }];
     const items: MenuProps['items'] = categoryList
         ? [
               ...additionalCategories,
@@ -102,11 +101,12 @@ const Header = () => {
               })),
           ]
         : [];
-    const {
-        data: searchResult,
-        isLoading,
-        refetch,
-    } = useSearchProductQuery({ search: searchValue.length ? searchValue : '', categoryId: categoryId.id! });
+    const queryParameters: SearchProductParams = {
+        search: searchValue.length ? searchValue : '',
+        categoryId: categoryId.id || undefined,
+    };
+    const { data: searchResult, isLoading, refetch } = useSearchProductQuery(queryParameters as SearchProductParams);
+
     const onClick: MenuProps['onClick'] = (key) => {
         const category = categoryList?.find((item) => item._id === key.key);
         const categoryName = category ? category.name : '';
@@ -295,7 +295,6 @@ const Header = () => {
                                                 disPatch(setFocusSearch(true));
                                             }
                                         }}
-                                        onBlur={handleLeaveInput}
                                         onChange={(e) => debounceSearch(e.target.value)}
                                         type='text'
                                         className='searchBox peer h-14 w-full  bg-white  outline outline-0 transition-all '
@@ -339,14 +338,14 @@ const Header = () => {
                                             />
                                         </div>
                                         <div className='max-h-[33vh] overflow-scroll overflow-x-hidden'>
-                                            {/* {searchResult?.data.products.map((item, index) => (
+                                            {searchResult?.data.products.map((item, index) => (
                                                 <SearchCard key={index} product={item} />
                                             ))}
                                             {isLoading && (
                                                 <>
                                                     <SearchSkeleton />
                                                 </>
-                                            )} */}
+                                            )}
                                             {!searchResult?.data.products.length && !isLoading && (
                                                 <div className='flex h-[20vh] w-full items-center justify-center'>
                                                     <h3 className='font-medium'>
