@@ -1,28 +1,36 @@
 import { ApexOptions } from 'apexcharts';
 
-export const optionsLineChart = (timeline: string[]): ApexOptions => {
+export const optionsLineChart = (timeline: string[], showRevenue: boolean, showOrders: boolean): ApexOptions => {
     return {
         legend: {
-            show: false,
+            show: true,
             position: 'top',
             horizontalAlign: 'left',
+            offsetX: 0,
+            offsetY: 0,
+            markers: {
+                width: 8,
+                height: 8,
+                strokeWidth: 0,
+                radius: 12,
+                offsetX: 0,
+                offsetY: 0,
+            },
+            itemMargin: {
+                horizontal: 10,
+                vertical: 0,
+            },
         },
-        colors: ['#3C50E0'],
+        colors: ['#3C50E0', '#10B981'],
         chart: {
             fontFamily: 'Satoshi, sans-serif',
-            height: 335,
+            height: 350,
             type: 'area',
-            dropShadow: {
-                enabled: true,
-                color: '#623CEA14',
-                top: 10,
-                blur: 4,
-                left: 0,
-                opacity: 0.1,
-            },
-
             toolbar: {
                 show: false,
+            },
+            zoom: {
+                enabled: false,
             },
         },
         responsive: [
@@ -45,22 +53,26 @@ export const optionsLineChart = (timeline: string[]): ApexOptions => {
         ],
         stroke: {
             width: [2, 2],
-            curve: 'straight',
+            curve: 'smooth',
         },
-        // labels: {
-        //   show: false,
-        //   position: "top",
-        // },
-        grid: {
-            xaxis: {
-                lines: {
-                    show: true,
-                },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.7,
+                opacityTo: 0.3,
+                stops: [0, 90, 100],
             },
-            yaxis: {
-                lines: {
-                    show: true,
-                },
+        },
+        grid: {
+            show: true,
+            borderColor: '#E2E8F0',
+            strokeDashArray: 4,
+            padding: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 10,
             },
         },
         dataLabels: {
@@ -68,16 +80,11 @@ export const optionsLineChart = (timeline: string[]): ApexOptions => {
         },
         markers: {
             size: 4,
-            colors: '#fff',
-            strokeColors: ['#3056D3'],
+            colors: ['#fff'],
+            strokeColors: ['#3C50E0', '#10B981'],
             strokeWidth: 3,
-            strokeOpacity: 0.9,
-            strokeDashArray: 0,
-            fillOpacity: 1,
-            discrete: [],
             hover: {
-                size: undefined,
-                sizeOffset: 5,
+                size: 6,
             },
         },
         xaxis: {
@@ -89,14 +96,80 @@ export const optionsLineChart = (timeline: string[]): ApexOptions => {
             axisTicks: {
                 show: false,
             },
-        },
-        yaxis: {
-            title: {
+            labels: {
                 style: {
-                    fontSize: '0px',
+                    colors: '#64748B',
+                    fontSize: '12px',
+                    fontWeight: 400,
                 },
             },
-            min: 0,
+        },
+        yaxis: [
+            {
+                show: showRevenue,
+                title: {
+                    text: 'Total Revenue',
+                    style: {
+                        color: '#3C50E0',
+                        fontSize: '14px',
+                        fontWeight: 500,
+                    },
+                },
+                labels: {
+                    style: {
+                        colors: '#64748B',
+                        fontSize: '12px',
+                        fontWeight: 400,
+                    },
+                    formatter: (value: number) => (value !== undefined ? `${value.toLocaleString()} $` : ''),
+                },
+            },
+            {
+                show: showOrders,
+                opposite: true,
+                title: {
+                    text: 'Total Orders',
+                    style: {
+                        color: '#10B981',
+                        fontSize: '14px',
+                        fontWeight: 500,
+                    },
+                    offsetX: -2,
+                },
+                labels: {
+                    style: {
+                        colors: '#64748B',
+                        fontSize: '12px',
+                        fontWeight: 400,
+                    },
+                    formatter: (value: number) => (value !== undefined ? Math.round(value).toString() : ''),
+                    offsetX: -10,
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#E2E8F0',
+                    offsetX: 8,
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#E2E8F0',
+                    offsetX: 15,
+                },
+            },
+        ],
+        tooltip: {
+            shared: true,
+            intersect: false,
+            y: [
+                {
+                    formatter: (value: number | undefined) =>
+                        value !== undefined ? `${value.toLocaleString()} $` : 'N/A',
+                },
+                {
+                    formatter: (value: number | undefined) =>
+                        value !== undefined ? Math.round(value).toString() : 'N/A',
+                },
+            ],
         },
     };
 };
