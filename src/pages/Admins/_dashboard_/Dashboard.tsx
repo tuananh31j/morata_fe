@@ -1,15 +1,12 @@
 import CartIcon from '~/components/_common/Icons/CartIcon';
 import ProductIcon from '~/components/_common/Icons/ProductIcon';
 import UsersIcon from '~/components/_common/Icons/UsersIcon';
-import CardDataStats from './_components/CardDataStats';
 import { useTotalStats } from '~/hooks/stats/useTotal';
-import LineChart from './_components/Charts/LineChart/LineChart';
-import DailyStats from './_components/Charts/BarChart/DailyStats';
-import YearlyStats from './_components/Charts/BarChart/YearlyStats';
-import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
-import { Dayjs } from 'dayjs';
 import BarChartRangePicker from '~/pages/Admins/_dashboard_/_components/Charts/BarChart/RangePicker';
 import { TopProducts } from '~/pages/Admins/_dashboard_/_components/TopProducts/TopProducts';
+import CardDataStats from './_components/CardDataStats';
+import YearlyStats from './_components/Charts/BarChart/YearlyStats';
+import LineChart from './_components/Charts/LineChart/LineChart';
 
 const DashboardNew: React.FC = () => {
     const { data: totalStats } = useTotalStats();
@@ -40,7 +37,9 @@ const DashboardNew: React.FC = () => {
                         <YearlyStats />
                     </div>
                 </div>
-                <div>{/* <LineChart /> */}</div>
+                <div>
+                    <LineChart />
+                </div>
             </div>
 
             {/* <div className='col-span-12 xl:col-span-6'><TopUsers title='Top users' /></div> */}
