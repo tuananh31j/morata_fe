@@ -6,7 +6,10 @@ import { useSendVerify } from '~/hooks/auth/useSendVerify';
 
 const AccountSidebarLeft = () => {
     const { data } = useGetProfile();
+
     const profile = data?.data;
+    console.log(profile?.role);
+
     const { mutate } = useSendVerify();
     const getInitialCountdown = () => {
         const savedCountdown = localStorage.getItem('countdown');
@@ -91,7 +94,7 @@ const AccountSidebarLeft = () => {
                         </div>
                     )}
                 </div>
-                <MenuAccount />
+                <MenuAccount isAdmin={profile?.role === 'admin' ? true : false} />
             </div>
         </>
     );
