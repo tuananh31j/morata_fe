@@ -40,7 +40,9 @@ const DashboardNew: React.FC = () => {
                         <YearlyStats />
                     </div>
                 </div>
-                <div>{/* <LineChart /> */}</div>
+                <div>
+                    <LineChart />
+                </div>
             </div>
 
             {/* <div className='col-span-12 xl:col-span-6'><TopUsers title='Top users' /></div> */}
