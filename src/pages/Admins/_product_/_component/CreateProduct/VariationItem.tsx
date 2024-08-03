@@ -4,6 +4,7 @@ import { IAttributesValue } from '~/types/Attributes';
 import {
     variationsPriceValidator,
     variationsStockValidator,
+    variationsStorageValidator,
     variationsThumbnailValidator,
 } from '~/validation/Products/validators';
 

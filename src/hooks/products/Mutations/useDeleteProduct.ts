@@ -11,6 +11,8 @@ const useDeleteProduct = () => {
                 predicate: (query) =>
                     query.queryKey.some((key) => typeof key === 'string' && key.includes(QUERY_KEY.PRODUCTS)),
             });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CART] });
         },
         onError(error) {
             console.log('error', error);

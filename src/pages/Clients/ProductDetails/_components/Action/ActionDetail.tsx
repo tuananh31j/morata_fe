@@ -7,6 +7,7 @@ import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
 import { IVariantItem } from '~/pages/Clients/ProductDetails/ProductDetails';
 import { updateVariant } from '~/store/slice/DetailProduct';
 import { RootState, useAppDispatch } from '~/store/store';
+import { variationAttribute } from '~/types/cart/CartResponse';
 import { IProductItemNew } from '~/types/Product';
 import showMessage from '~/utils/ShowMessage';
 
@@ -21,6 +22,10 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
     const { mutate } = useMutationCart();
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.authReducer.user);
+    const initialVariant = product?.variationIds?.[0];
+    const [active, setActive] = useState<number>(0);
+
+    // @ function
     const handleIncrement = () => {
         if (valueQuantity < (variant ? variant.stock : 0)) setQuantityValue(valueQuantity + 1);
     };
@@ -44,8 +49,8 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
             navigate(MAIN_ROUTES.LOGIN);
             showMessage('You need to login first!', 'warning');
         }
-        console.log(data);
     };
+    /* eslint-disable */
     const dispatch = useAppDispatch();
     useEffect(() => {
         setQuantityValue(1);
@@ -53,37 +58,51 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
             dispatch(updateVariant(product?.variationIds[0]));
         }
     }, [product._id]);
+    /* eslint-enable */
     const handleOnclickVariant = (item: IVariantItem) => {
+        console.log(item);
         dispatch(updateVariant(item));
         if (valueQuantity > item.stock) {
             setQuantityValue(item.stock);
         }
     };
+    const handleChangeVariant = (item: IVariantItem, index: number) => {
+        handleOnclickVariant(item);
+        setActive(index);
+    };
+
+    /* eslint-disable */
+    useEffect(() => {
+        // default variant value
+        dispatch(updateVariant(initialVariant));
+    }, []);
+    /* eslint-enable */
+
     return (
         <>
             <div className='product-action'>
                 {/* Button add to cart and quantity */}
                 <Form onFinish={handleOnSubmit} layout='vertical'>
                     <div className='my-4'>
-                        <Form.Item>
-                            <Radio.Group
-                                defaultValue={product.variationIds[0]._id}
-                                optionType='button'
-                                buttonStyle='solid'
-                                className='flex flex-wrap gap-x-4 gap-y-6 border-none'
-                            >
-                                {product.variationIds.map((item, index) => (
-                                    <div key={index}>
-                                        <Radio
-                                            className=' flex items-center'
-                                            onClick={() => handleOnclickVariant(item)}
-                                            value={item._id}
-                                        >
-                                            {item?.color?.toUpperCase()}
-                                        </Radio>
+                        <Form.Item name={'variant'}>
+                            <div className='flex items-center gap-3'>
+                                {product?.variationIds.map((item, index) => (
+                                    <div
+                                        key={item._id}
+                                        onClick={() => handleChangeVariant(item, index)}
+                                        className={` flex cursor-pointer items-center justify-between gap-3 rounded-sm border-2 ${active === index ? 'border-blue-600' : 'border-blue-200'} bg-white px-2 py-1 transition duration-300 hover:border-blue-600`}
+                                    >
+                                        <div className='select-none'>
+                                            <img src={item.image} alt='variant product' className='h-10 w-10' />
+                                        </div>
+                                        {item?.variantAttributes?.map((attr: variationAttribute) => (
+                                            <span key={attr._id} className='select-none text-sm text-black'>
+                                                {attr.value}{' '}
+                                            </span>
+                                        ))}
                                     </div>
                                 ))}
-                            </Radio.Group>
+                            </div>
                         </Form.Item>
                     </div>
                     <div className=' items-center gap-5 md:flex'>

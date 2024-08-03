@@ -10,6 +10,8 @@ export const PRODUCT_ENDPOINT = {
     CREATE: '/products',
     DELETE: '/products',
     UPDATE: '/products',
+    UPDATE_VARIATIONS: '/products/variation/',
+    CREATE_VARIATIONS: '/products/variation/',
 };
 export const CATEGORY_ENDPOINT = {
     ALL: '/categories/all',

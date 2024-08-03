@@ -18,7 +18,7 @@ const AttributesItem = ({
             name={['attributes', attribute.attributeKey]}
             label={attribute.name}
             required={attribute.isRequired}
-            className='text-lg font-medium text-[#08090F]'
+            // initialValue={initialValue} // Set default value
             rules={[
                 {
                     required: attribute.isRequired,

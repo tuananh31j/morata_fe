@@ -1,3 +1,9 @@
+export type variationAttribute = {
+    _id: string;
+    name: string;
+    key: string;
+    value: string;
+};
 export interface ICartItem {
     _id: string;
     color: string;
@@ -8,6 +14,7 @@ export interface ICartItem {
         name: string;
     };
     stock: number;
+    variantAttributes: variationAttribute[];
 }
 
 export type ICartItemsResponse = {

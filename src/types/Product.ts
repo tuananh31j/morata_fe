@@ -1,3 +1,5 @@
+import { variationAttribute } from './cart/CartResponse';
+
 export interface IProduct {
     _id: string;
     name: string;
@@ -68,6 +70,7 @@ export type IProductItemNew = {
     isAvailable: boolean;
     rating: number;
     reviewCount: number;
+    description: string;
     categoryId: {
         name: string;
         _id: string;
@@ -83,8 +86,10 @@ export type IProductItemNew = {
         stock: number;
         sku: string;
         color: string;
+        storage?: string;
         image?: string;
         productId: string;
+        variantAttributes: variationAttribute[];
     }[];
     attributes: IAttributesProduct;
 };
@@ -179,13 +184,19 @@ export type IProductVariation = {
     price: number;
     stock: number;
 };
+export type IVariationDetailResponse = {
+    color: string;
+    image: string;
+    price: string;
+    productId: string;
+    _id: string;
+};
 export type IProductForm = {
     name: string;
     thumbnail: IProductFiles | null;
     images: IProductFiles | null;
     categoryId: string;
     brandId: string;
-    discountPercentage: number;
     description: string;
     attributes: IAttribute[];
     variations: IProductVariation[];
