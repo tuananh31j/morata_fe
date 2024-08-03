@@ -16,7 +16,6 @@ const CheckOut = () => {
     const [form] = useForm();
     const { mutate: stripeCheckout, isPending } = useMutationCheckOutSession();
     const { data } = useGetProfile();
-    console.log(data);
     const { data: orderItem, responsePayloadCheckout } = useGetMyCart(data?.data?._id);
     const totalPrice = orderItem
         ? orderItem?.data?.items?.reduce(
@@ -229,9 +228,9 @@ const CheckOut = () => {
                                             >
                                                 Cash on Delivery (COD)
                                             </Radio>
-                                            <Radio value={2} className=' flex items-center'>
+                                            {/* <Radio value={2} className=' flex items-center'>
                                                 VNPAY
-                                            </Radio>
+                                            </Radio> */}
                                         </div>
                                     </Radio.Group>
                                 </Form.Item>
