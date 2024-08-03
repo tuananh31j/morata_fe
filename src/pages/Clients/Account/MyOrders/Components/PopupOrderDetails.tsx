@@ -4,10 +4,21 @@ import WrapperList from '~/components/_common/WrapperList';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
 import { Currency } from '~/utils';
 
+type ProductItem = {
+    productId: string;
+    name: string;
+    quantity: number;
+    price: number;
+    image: string;
+};
+
 const PopupOrderDetails = ({ id }: { id: string }) => {
     const { data } = useOrderDetails(id);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const orderDetails = data?.data.data;
+    const orderDetails = data;
+    console.log(orderDetails);
+
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -50,7 +61,7 @@ const PopupOrderDetails = ({ id }: { id: string }) => {
                         <Card title='Products' size='small' className='col-span-3'>
                             <Space direction='vertical' size={7} className='w-full'>
                                 {orderDetails?.items &&
-                                    orderDetails.items.map((product, i) => {
+                                    orderDetails?.items.map((product: ProductItem, i: number) => {
                                         return (
                                             <Card key={i} className='w-full p-0'>
                                                 <div className='flex'>

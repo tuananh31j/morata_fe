@@ -7,6 +7,7 @@ const useGetMyCart = (id?: string) => {
         queryKey: [QUERY_KEY.CART],
         queryFn: () => cartService.getItemCart(id),
         retry: 0,
+        refetchOnWindowFocus: true,
         enabled: !!id,
     });
     const responsePayloadCheckout = data?.data.items.map((item) => ({
@@ -14,6 +15,7 @@ const useGetMyCart = (id?: string) => {
         price: item.productVariation.price,
         quantity: item.quantity,
         image: item.productVariation.image,
+        productId: item.productVariation.productId._id,
     }));
 
     return { data, ...rest, responsePayloadCheckout };

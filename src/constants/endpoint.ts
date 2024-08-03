@@ -32,6 +32,10 @@ export const BRAND_ENDPOINT = {
 export const AUTH_ENDPOINT = {
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',
+    SENDMAIL: '/auth/sendVerify',
+    SENDRESETPASS: '/auth/sendresetPassword',
+    VERIFY: '/auth/verifyEmail',
+    RESETPASSWORD: '/auth/resetpassword',
     REFRESH: '/auth/refresh',
     LOGOUT: '/auth/logout',
 };
@@ -43,12 +47,12 @@ export const CHECKOUT_ENDPOINT = {
 };
 
 export const ORDER_ENDPOINT = {
-    ROOT: '/orders',
+    GET_ALL_ORDERS: '/orders',
     MY_ORDERS: '/orders/user',
     VNPAY_RETURN: '/vnpay-return',
-    CANCELED: '/orders/cancel',
-    CONFIRM: '/orders/confirm',
-    DONE: '/orders/done',
+    CANCEL_ORDER: '/orders/cancel',
+    CONFIRM_ORDER: '/orders/confirm',
+    FINISH_ORDER: '/orders/done',
 };
 
 export const ATTRIBUTES_ENDPOINT = {
@@ -63,6 +67,8 @@ export const STATS_ENDPOINT = {
     MONTHLY_STATS: '/stats/monthly',
     YEARLY_STATS: '/stats/yearly',
     DATE_RANGE: 'stats/dateRange',
+
+    PRODUCTS: '/stats/productStats',
 };
 
 export const USER_ENDPOINT = {

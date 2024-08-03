@@ -7,7 +7,6 @@ const OrderTable: React.FC = () => {
     const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
         console.log('params', pagination, filters, sorter, extra);
     };
-    console.log('my orders:', data?.data.data.orders);
     return (
         <>
             {!isLoading && data && (

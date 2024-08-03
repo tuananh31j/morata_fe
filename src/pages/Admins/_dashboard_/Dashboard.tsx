@@ -1,14 +1,15 @@
 import CartIcon from '~/components/_common/Icons/CartIcon';
 import ProductIcon from '~/components/_common/Icons/ProductIcon';
 import UsersIcon from '~/components/_common/Icons/UsersIcon';
-import CardDataStats from './_components/CardDataStats';
 import { useTotalStats } from '~/hooks/stats/useTotal';
-import LineChart from './_components/Charts/LineChart/LineChart';
-import DailyStats from './_components/Charts/BarChart/DailyStats';
+import BarChartRangePicker from '~/pages/Admins/_dashboard_/_components/Charts/BarChart/RangePicker';
+import { TopProducts } from '~/pages/Admins/_dashboard_/_components/TopProducts/TopProducts';
+import CardDataStats from './_components/CardDataStats';
 import YearlyStats from './_components/Charts/BarChart/YearlyStats';
 import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
 import { Dayjs } from 'dayjs';
-import BarChartRangePicker from '~/pages/Admins/_dashboard_/_components/Charts/BarChart/RangePicker';
+
+import LineChart from './_components/Charts/LineChart/LineChart';
 
 const DashboardNew: React.FC = () => {
     const { data: totalStats } = useTotalStats();
@@ -16,15 +17,6 @@ const DashboardNew: React.FC = () => {
     const totalOrders = totalStats?.data.totalOrders;
     const totalProducts = totalStats?.data.totalProducts;
     const totalUsers = totalStats?.data.totalUsers;
-    const handleDateRangeChange = (dates: [Dayjs, Dayjs] | null) => {
-        if (dates) {
-            const [startDate, endDate] = dates;
-            console.log('Start Date:', startDate.format('DD-MM-YYYY'));
-            console.log('End Date:', endDate.format('DD-MM-YYYY'));
-            // Gửi dữ liệu lên server hoặc xử lý tiếp tại đây
-        }
-    };
-
     return (
         <>
             <BarChartRangePicker />
@@ -44,7 +36,7 @@ const DashboardNew: React.FC = () => {
             <div className='item-center mt-[5rem] grid grid-cols-1'>
                 <div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
                     <div>
-                        <DailyStats />
+                        <BarChartRangePicker />
                     </div>
                     <div>
                         <YearlyStats />
@@ -55,9 +47,12 @@ const DashboardNew: React.FC = () => {
                 </div>
             </div>
 
-            <div className='col-span-12 xl:col-span-6'>{/* <TopUsers title='Top users' /> */}</div>
-            <h1>Chọn khoảng thời gian</h1>
-            <DateRangePickerComponent onDateRangeChange={handleDateRangeChange} />
+            {/* <div className='col-span-12 xl:col-span-6'><TopUsers title='Top users' /></div> */}
+
+            {/* TOP PRODUCTS STATS */}
+            <div>
+                <TopProducts />
+            </div>
         </>
     );
 };

@@ -1,10 +1,46 @@
+import React, { useState, useEffect } from 'react';
 import StaticImages from '~/assets';
 import MenuAccount from './MenuAccount';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
+import { useSendVerify } from '~/hooks/auth/useSendVerify';
 
 const AccountSidebarLeft = () => {
     const { data } = useGetProfile();
     const profile = data?.data;
+    const { mutate } = useSendVerify();
+    const getInitialCountdown = () => {
+        const savedCountdown = localStorage.getItem('countdown');
+        return savedCountdown ? parseInt(savedCountdown, 10) : 0;
+    };
+
+    const [countdown, setCountdown] = useState(getInitialCountdown);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(countdown > 0);
+
+    useEffect(() => {
+        let timer: any;
+        if (countdown > 0) {
+            timer = setInterval(() => {
+                setCountdown((prev) => {
+                    const newCountdown = prev - 1;
+                    localStorage.setItem('countdown', newCountdown.toString());
+                    return newCountdown;
+                });
+            }, 1000);
+        } else {
+            setIsButtonDisabled(false);
+            localStorage.removeItem('countdown');
+        }
+        return () => clearInterval(timer);
+    }, [countdown]);
+
+    const handleVerifyNowClick = () => {
+        if (profile) {
+            mutate({ email: profile.email });
+            setCountdown(30);
+            setIsButtonDisabled(true);
+            localStorage.setItem('countdown', '30');
+        }
+    };
 
     return (
         <>
@@ -28,10 +64,32 @@ const AccountSidebarLeft = () => {
                         )}
                     </div>
 
-                    <div>
-                        <p className='text-[16px] capitalize'>{profile?.username}</p>
-                        <p className='text-[14px] font-thin'>{profile?.phone}</p>
-                    </div>
+                    {profile && (
+                        <div>
+                            <p className='text-[16px] capitalize'>{profile?.username}</p>
+                            <div className='flex gap-4'>
+                                <p className='text-[16px]'>
+                                    Status: {profile?.isActive && <span className='text-green-500'>Verified</span>}
+                                    {!profile?.isActive && <span className='text-red'>Unverified</span>}
+                                </p>
+                                {!profile?.isActive && (
+                                    <div className='flex items-center'>
+                                        {!isButtonDisabled && (
+                                            <button
+                                                onClick={handleVerifyNowClick}
+                                                className={`text-blue-400 ${isButtonDisabled ? 'cursor-not-allowed' : ''}`}
+                                                disabled={isButtonDisabled}
+                                            >
+                                                Verify Now
+                                            </button>
+                                        )}
+                                        {isButtonDisabled && <p className='w-[67px] text-sm text-red'>{countdown}s</p>}
+                                    </div>
+                                )}
+                            </div>
+                            <p className='text-[14px] font-thin'>{profile?.phone}</p>
+                        </div>
+                    )}
                 </div>
                 <MenuAccount />
             </div>

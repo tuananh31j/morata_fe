@@ -200,6 +200,8 @@ const CreateCategory = () => {
                                     icon={<PlusSquareOutlined />}
                                     className='mr-3 px-5'
                                     size='large'
+                                    loading={isPending}
+                                    disabled={isPending}
                                 >
                                     Add Category
                                 </Button>

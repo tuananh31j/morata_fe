@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import WrapperList from '~/components/_common/WrapperList';
-import { DatePicker, DatePickerProps } from 'antd';
-import { useDailyStats } from '~/hooks/stats/useDailyStats';
-import { optionsBarChart } from './_option';
-import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
-import { Dayjs } from 'dayjs';
 import { UseRangePicker } from '~/hooks/stats/useRangePicker';
+import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
+import { BarChartOptions, optionsBarChart } from './_option';
 
 const BarChartRangePicker: React.FC = () => {
-    const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([null, null]);
-    const { data: dailyStats } = UseRangePicker(...dateRange);
+    const today = dayjs();
+    const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>([today, today]);
+    const { data: dailyStats } = UseRangePicker(dateRange[0], dateRange[1]);
 
     const revenue = dailyStats?.data?.map((item: any) => item.totalRevenue) || [];
     const orders = dailyStats?.data?.map((item: any) => item.totalOrders) || [];
@@ -27,17 +26,22 @@ const BarChartRangePicker: React.FC = () => {
         },
     ];
     const handleDateRangeChange = (dates: [Dayjs, Dayjs] | null) => {
-        if (dates) {
+        if (dates && dates[0] && dates[1]) {
             setDateRange(dates);
         } else {
-            setDateRange([null, null]);
+            setDateRange([today, today]);
         }
     };
-
+    useEffect(() => {
+        // Khi component mount, đảm bảo rằng dateRange có giá trị
+        if (!dateRange[0] || !dateRange[1]) {
+            setDateRange([today, today]);
+        }
+    }, []);
     return (
         <WrapperList
-            title='RangePicker Statistics'
-            option={<DateRangePickerComponent onDateRangeChange={handleDateRangeChange} />}
+            title='Order Statistics'
+            option={<DateRangePickerComponent onDateRangeChange={handleDateRangeChange} value={dateRange} />}
             lineButtonBox
         >
             <div>

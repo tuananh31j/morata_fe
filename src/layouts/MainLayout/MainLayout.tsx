@@ -10,13 +10,18 @@ const MainLayout = () => {
     const { contextHolder } = useMessage();
     const location = useLocation();
     const { id } = useParams();
+    const { token } = useParams();
     const isHomePage = location.pathname === '/';
     const isProductDetailPage = location.pathname === `${MAIN_ROUTES.PRODUCTS}/${id}`;
+    const isVerifyAccountPage = location.pathname === `/verifyAccount/${token}`;
+    const isResetPasswordPage = location.pathname === `/resetPassword/${token}`;
     return (
         <div className='bg-[#f6f7f9]'>
             <Header />
             <main className='mx-3 min-h-[80vh] lg:mx-4'>
-                {!isHomePage && !isProductDetailPage && <BreadcrumbDisplay />}
+                {!isHomePage && !isProductDetailPage && !isVerifyAccountPage && !isResetPasswordPage && (
+                    <BreadcrumbDisplay />
+                )}
                 <Outlet />
             </main>
             <Footer />

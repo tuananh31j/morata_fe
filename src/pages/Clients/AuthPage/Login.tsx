@@ -77,7 +77,7 @@ const Login = () => {
                             />
                         </Form.Item>
                         <div className='mt-[35px]'>
-                            <Link to=''>Forgot your password?</Link>
+                            <Link to='/forgotpassword'>Forgot your password?</Link>
                         </div>
                         <Form.Item className='mt-[15px]'>
                             <button

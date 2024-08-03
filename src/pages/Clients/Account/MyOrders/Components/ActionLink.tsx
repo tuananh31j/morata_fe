@@ -84,9 +84,9 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
                     }}
                 >
                     {/* <Dropdown menu={{ items }}> */}
-                    <Button type='primary' size='large'>
+                    {/* <Button type='primary' size='large'>
                         Rate us!!
-                    </Button>
+                    </Button> */}
                     {/* </Dropdown> */}
                 </ConfigProvider>
             );

@@ -60,7 +60,7 @@ const CreateAttribute = () => {
             {contextHolder}
             <div className='mx-6 rounded-lg bg-white px-4 py-6'>
                 <div className='m-auto'>
-                    <Form layout='vertical' onFinish={onFinish}>
+                    <Form layout='vertical' onFinish={onFinish} initialValues={{ isRequired: false, isVariant: false }}>
                         <div>
                             <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
                                 <h3 className='my-2 text-xl font-medium text-primary'>Create a new attribute</h3>
@@ -203,6 +203,8 @@ const CreateAttribute = () => {
                                         icon={<PlusSquareOutlined />}
                                         className='mr-3 px-5'
                                         size='large'
+                                        loading={isPending}
+                                        disabled={isPending}
                                     >
                                         Add Attribute
                                     </Button>
