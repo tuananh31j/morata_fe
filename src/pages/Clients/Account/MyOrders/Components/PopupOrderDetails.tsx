@@ -17,7 +17,6 @@ const PopupOrderDetails = ({ id }: { id: string }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const orderDetails = data;
-    console.log(orderDetails);
 
     const showModal = () => {
         setIsModalOpen(true);
