@@ -27,7 +27,7 @@ const OrderStatusBar = ({ orderStatus }: Props) => {
                 return setCurrentStep(4);
 
             default:
-                return currentStep;
+                return 0;
         }
     };
 
@@ -39,7 +39,7 @@ const OrderStatusBar = ({ orderStatus }: Props) => {
         <Space className='mt-5 flex w-full items-center justify-center rounded-md bg-[#fff] p-4'>
             <Steps
                 size='small'
-                current={1}
+                current={currentStep}
                 className='w-[66vw]'
                 items={[
                     {

@@ -1,11 +1,12 @@
-import { useRef, useState } from 'react';
-import type { FilterDropdownProps } from 'antd/es/table/interface';
+import { SearchOutlined } from '@ant-design/icons';
 import type { InputRef, TableColumnsType, TableColumnType } from 'antd';
 import { Button, Input, Pagination, Space, Table } from 'antd';
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
+import type { FilterDropdownProps } from 'antd/es/table/interface';
 import moment from 'moment';
+import { useRef, useState } from 'react';
+import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
+import PopConFirmOrder from './PopConfirmOrder';
 
 interface Props {
     ordersList: {
@@ -143,7 +144,8 @@ const OrderTable = ({ ordersList, totalDocs, totalPages, setCurrentPage }: Props
             key: 'Code',
             dataIndex: 'code',
             title: 'Code',
-            ...getColumnSearchProps('code'), // Pass 'code' as argument
+            ...getColumnSearchProps('code'),
+            ellipsis: true,
         },
         {
             key: 'total',
@@ -158,8 +160,8 @@ const OrderTable = ({ ordersList, totalDocs, totalPages, setCurrentPage }: Props
             title: 'Payment Method',
             render: (text: string) => <span className='font-semibold'>{text.toUpperCase()}</span>,
             filters: [
-                { text: 'cash', value: 'cash' },
-                { text: 'card', value: 'card' },
+                { text: 'Cash', value: 'cash' },
+                { text: 'Card', value: 'card' },
             ],
             onFilter: (value: any, record: any) => record.paymentMethod.indexOf(value) === 0,
         },
@@ -178,8 +180,15 @@ const OrderTable = ({ ordersList, totalDocs, totalPages, setCurrentPage }: Props
             dataIndex: 'orderStatus',
             title: 'Order Status',
             render: (text: string) => <span className='font-semibold'>{text?.toUpperCase()}</span>,
-            sorter: (a: any, b: any) => a.length - b.length,
-            sortDirections: ['descend'],
+            filters: [
+                { text: 'Pending', value: 'pending' },
+                { text: 'Confirmed', value: 'confirmed' },
+                { text: 'Shipping', value: 'shipping' },
+                { text: 'Delivered', value: 'delivered' },
+                { text: 'Done', value: 'done' },
+                { text: 'Cancelled', value: 'cancelled' },
+            ],
+            onFilter: (value: any, record: any) => record.orderStatus?.indexOf(value) === 0,
         },
         {
             key: 'createdAt',
@@ -196,9 +205,12 @@ const OrderTable = ({ ordersList, totalDocs, totalPages, setCurrentPage }: Props
             title: 'Action',
             render: (text, record) => {
                 return (
-                    <Link to={`/admin/orders/${record.code}/detail`}>
-                        <Button type='primary'>View</Button>
-                    </Link>
+                    <Space>
+                        <Link to={`/admin/orders/${record.code}/detail`}>
+                            <Button type='primary'>View</Button>
+                        </Link>
+                        {record.orderStatus === 'pending' && <PopConFirmOrder orderId={record.code} />}
+                    </Space>
                 );
             },
         },
