@@ -6,13 +6,10 @@ const useCreateVariantions = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (data: FormData) => productService.updateVariations(data, id),
-        onSuccess(res) {
-            // setTimeout(() => {
-            //     queryClient.prefetchQuery({
-            //         queryKey: [QUERY_KEY.PRODUCTS],
-            //         queryFn: () => productService.getAllProductForAdmin(),
-            //     });
-            // }, 300);
+        onSuccess() {
+            queryClient.resetQueries({
+                predicate: (query) => (query.queryKey[0] as string) === QUERY_KEY.PRODUCTS,
+            });
         },
         onError(error) {
             throw new Error(error.message);

@@ -1,13 +1,18 @@
-import { Navigate } from 'react-router-dom';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store/store';
-import { MAIN_ROUTES } from '~/constants/router';
+import { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useTypedSelector } from '~/store/store';
 
-const ProtectedRouteAuth = ({ children }: { children: React.ReactNode }) => {
-    const user = useSelector((state: RootState) => state.authReducer.user);
-    if (!user) {
-        return <Navigate to={MAIN_ROUTES.LOGIN} replace />;
+const ProtectedRouteAuth = ({ children }: { children: ReactNode }) => {
+    const user = useTypedSelector((state) => state.authReducer.user);
+    const location = useLocation();
+    const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+
+    console.log(location.pathname);
+    if (!user && !isAuthPage) {
+        return <Navigate to={'/'} replace />;
+    }
+    if (user && isAuthPage) {
+        return <Navigate to={'/'} replace />;
     }
     return <>{children}</>;
 };

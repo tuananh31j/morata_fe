@@ -7,10 +7,9 @@ const useUpdateProductVariant = () => {
     return useMutation({
         mutationFn: ({ data, variantId }: { data: FormData; variantId: string }) =>
             productService.updateProductVariant(data, variantId),
-        onSuccess: (res) => {
-            queryClient.invalidateQueries({
-                predicate: (query) =>
-                    query.queryKey.some((key) => typeof key === 'string' && key.includes(QUERY_KEY.PRODUCTS)),
+        onSuccess: () => {
+            queryClient.resetQueries({
+                predicate: (query) => (query.queryKey[0] as string) === QUERY_KEY.PRODUCTS,
             });
         },
         onError(error) {

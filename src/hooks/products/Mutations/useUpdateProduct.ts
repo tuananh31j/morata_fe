@@ -9,13 +9,8 @@ const useUpdateProduct = () => {
         mutationFn: ({ data, productId }: { data: FormData; productId: string }) =>
             productService.updateProduct(data, productId),
         onSuccess: (res) => {
-            queryClient.invalidateQueries({
-                predicate: (query) =>
-                    query.queryKey.some((key) => typeof key === 'string' && key.includes(QUERY_KEY.PRODUCTS)),
-            });
-            queryClient.prefetchQuery({
-                queryKey: [QUERY_KEY.PRODUCTS, res.data._id],
-                queryFn: () => productService.getDetailsProductForAdmin(res.data._id),
+            queryClient.resetQueries({
+                predicate: (query) => (query.queryKey[0] as string) === QUERY_KEY.PRODUCTS,
             });
         },
         onError(error) {

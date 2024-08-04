@@ -19,6 +19,7 @@ const useLogout = () => {
         dispatch(logout());
         navigator('/');
         showMessage('Logged out!', 'info');
+        queryClient.resetQueries();
     };
     return handleLogout;
 };

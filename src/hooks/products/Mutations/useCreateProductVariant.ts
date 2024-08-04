@@ -7,9 +7,8 @@ const useCreateProductVariant = () => {
     return useMutation({
         mutationFn: (data: FormData) => productService.createProductVariant(data),
         onSuccess: (res) => {
-            queryClient.invalidateQueries({
-                predicate: (query) =>
-                    query.queryKey.some((key) => typeof key === 'string' && key.includes(QUERY_KEY.PRODUCTS)),
+            queryClient.resetQueries({
+                predicate: (query) => (query.queryKey[0] as string) === QUERY_KEY.PRODUCTS,
             });
         },
         onError(error) {
