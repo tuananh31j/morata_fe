@@ -5,6 +5,7 @@ const ProductActions = () => {
     const favoriteText = <span>Add wishlist</span>;
     const compareText = <span>Add compare</span>;
     const viewText = <span>Quick view</span>;
+
     return (
         <div className='absolute right-[12px] top-1  z-10 gap-3 opacity-0 transition-opacity duration-300 ease-linear group-data-[active=card]:opacity-100 md:left-[65%] md:right-[unset]  md:flex md:translate-x-3/4 md:flex-col'>
             <Tooltip placement='left' title={favoriteText} arrow={true}>

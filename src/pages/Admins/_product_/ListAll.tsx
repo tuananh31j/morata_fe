@@ -4,7 +4,6 @@ import { Button, Form, Input, Select, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import useGetProducts from '~/hooks/products/Queries/useGetProductsForAdmin';
 import { IProductItem, IProductParams } from '~/types/Product';
-import { ProductsListColumns } from './_helper';
 import useFilter from '~/hooks/_common/useFilter';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import { Params } from '~/types/Api';
@@ -13,6 +12,7 @@ import ModalDelete from '~/components/_common/Modal/ModalDelete';
 import { useEffect, useRef, useState } from 'react';
 import useDeleteProduct from '~/hooks/products/Mutations/useDeleteProduct';
 import showMessage from '~/utils/ShowMessage';
+import { ProductsListColumns } from './Helper/tableList';
 
 const ListAll = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

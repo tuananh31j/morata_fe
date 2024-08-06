@@ -166,7 +166,7 @@ export type ITagsType = {
     value: string;
 };
 export type IAttribute = {
-    _id: string;
+    _id?: string;
     type: string;
     name: string;
     attributeKey: string;

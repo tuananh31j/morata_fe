@@ -19,3 +19,7 @@ export enum AttributeType {
 }
 
 export const ORDER_STATUS_ARR = Object.values(OrderStatus);
+export enum DataTypeConvert {
+    raw = 'raw',
+    obj = 'obj',
+}
