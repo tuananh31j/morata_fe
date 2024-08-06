@@ -1,6 +1,6 @@
-import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Form, FormProps, Input, Select } from 'antd';
-import { useState } from 'react';
+import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
 import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
@@ -35,31 +35,33 @@ const CreateAttribute = () => {
 
     const onFinish: FormProps<IAttributeFormData>['onFinish'] = (values) => {
         // Filter out empty values
+        console.log(values, 'values');
         const inputValues = inputFields.map((field) => field.value).filter((value) => value.trim() !== '');
         const payload = { ...values, values: inputValues };
 
         createAttribute(payload);
-
+    };
+    useEffect(() => {
         if (isPending) {
             handleMessage({ type: 'loading', content: '...Creating!' });
         }
 
         if (isSuccess) {
             showMessage('Attribute created successfully!', 'success');
-            navigate('/admin/categories/create', { replace: true, state: { newAttribute: payload } });
+            navigate('/admin/categories/create', { replace: true });
         }
 
         if (isError) {
             showMessage('Attribute creation failed!', 'error');
         }
-    };
+    }, [isPending, isSuccess, isError]);
 
     return (
         <>
             {contextHolder}
             <div className='mx-6 rounded-lg bg-white px-4 py-6'>
                 <div className='m-auto'>
-                    <Form layout='vertical' onFinish={onFinish}>
+                    <Form layout='vertical' onFinish={onFinish} initialValues={{ isRequired: false, isVariant: false }}>
                         <div>
                             <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
                                 <h3 className='my-2 text-xl font-medium text-primary'>Create a new attribute</h3>
@@ -91,7 +93,36 @@ const CreateAttribute = () => {
                                         />
                                     </Form.Item>
                                 </div>
-
+                                <Form.Item<IAttributeFormData>
+                                    name='isVariant'
+                                    valuePropName='checked'
+                                    className='w-1/2 font-medium text-[#08090F]'
+                                >
+                                    <Checkbox>
+                                        Is this an attribute for the variant
+                                        <Popover
+                                            content='This question asks if the given attribute is specific to a product variant.'
+                                            title='Explanation of the Question'
+                                        >
+                                            <Button icon={<QuestionOutlined />} size='small' type='text' />
+                                        </Popover>
+                                    </Checkbox>
+                                </Form.Item>
+                                <Form.Item<IAttributeFormData>
+                                    name='isRequired'
+                                    valuePropName='checked'
+                                    className='w-1/2 font-medium text-[#08090F]'
+                                >
+                                    <Checkbox>
+                                        Require
+                                        <Popover
+                                            content='This question is asking whether the attribute in question is mandatory'
+                                            title='Explanation of the Question'
+                                        >
+                                            <Button icon={<QuestionOutlined />} size='small' type='text' />
+                                        </Popover>
+                                    </Checkbox>
+                                </Form.Item>
                                 {typeSelected === 'options' && (
                                     <>
                                         {inputFields.map((field, index) => (
@@ -173,6 +204,8 @@ const CreateAttribute = () => {
                                         icon={<PlusSquareOutlined />}
                                         className='mr-3 px-5'
                                         size='large'
+                                        loading={isPending}
+                                        disabled={isPending}
                                     >
                                         Add Attribute
                                     </Button>

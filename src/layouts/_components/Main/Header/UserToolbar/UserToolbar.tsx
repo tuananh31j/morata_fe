@@ -12,7 +12,6 @@ const UserToolbar = () => {
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { data, isLoading } = useGetMyCart(user?._id);
     const location = useLocation();
-    console.log(location);
     const totalOrderAmount = data
         ? data?.data?.items?.reduce(
               (total: number, product) => total + product.productVariation.price * product.quantity,

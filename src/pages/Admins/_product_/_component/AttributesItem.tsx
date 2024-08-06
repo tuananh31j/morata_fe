@@ -1,13 +1,24 @@
 import { Form, Input, Select } from 'antd';
 import { IAttributesValue } from '~/types/Attributes';
 
-const AttributesItem = ({ attribute }: { attribute: IAttributesValue }) => {
+const AttributesItem = ({
+    attribute,
+    defaultValue,
+}: {
+    attribute: IAttributesValue;
+    defaultValue?: {
+        key: string;
+        name: string;
+        value: string;
+        _id: string;
+    }[];
+}) => {
     return (
         <Form.Item
             name={['attributes', attribute.attributeKey]}
             label={attribute.name}
             required={attribute.isRequired}
-            className='text-lg font-medium text-[#08090F]'
+            // initialValue={initialValue} // Set default value
             rules={[
                 {
                     required: attribute.isRequired,
@@ -17,7 +28,7 @@ const AttributesItem = ({ attribute }: { attribute: IAttributesValue }) => {
         >
             {attribute.type === 'options' && (
                 <Select placeholder='Please select'>
-                    {attribute.values.map((value: string, index: number) => (
+                    {attribute.values.map((value, index) => (
                         <Select.Option value={value} key={index}>
                             {value}
                         </Select.Option>

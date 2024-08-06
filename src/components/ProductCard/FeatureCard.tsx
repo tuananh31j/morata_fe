@@ -27,7 +27,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
         <div className='rounded-xl bg-white p-8'>
             <div className='relative grid grid-cols-12 justify-between gap-5 rounded'>
                 <Link
-                    to={generateLink({ productId: product._id, categoryId: product.categoryId })}
+                    to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}
                     className='relative col-span-5 hidden w-full max-w-24 md:block'
                 >
                     <img
@@ -49,7 +49,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                 <div className='col-span-7'>
                     <Link
                         className='cursor-pointer'
-                        to={generateLink({ productId: product._id, categoryId: product.categoryId })}
+                        to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}
                     >
                         <h4 className='line-clamp-2 text-ellipsis text-title-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}

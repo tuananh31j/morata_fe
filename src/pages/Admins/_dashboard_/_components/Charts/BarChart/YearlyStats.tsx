@@ -4,6 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 import WrapperList from '~/components/_common/WrapperList';
 import { useYearlyStats } from '~/hooks/stats/useYearly';
 import { optionsBarChart } from './_option';
+import dayjs from 'dayjs';
 
 const YearlyStats: React.FC = () => {
     const { data: yearlyStats } = useYearlyStats();
@@ -26,12 +27,16 @@ const YearlyStats: React.FC = () => {
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
         console.log(date, dateString);
     };
+
+    const year = dayjs().year();
+    const currentYear = dayjs().year(year);
+
     return (
         <>
             {orders && revenue && (
                 <WrapperList
                     title='Yearly Statistics'
-                    option={<DatePicker onChange={onChange} picker='year' />}
+                    option={<DatePicker onChange={onChange} picker='year' defaultValue={currentYear} />}
                     lineButtonBox
                 >
                     <div>

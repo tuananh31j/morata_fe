@@ -21,14 +21,15 @@ import {
 import { ADMIN_ROUTES } from '~/constants/router';
 import RedirectToOrderList from '~/components/_common/RedirectToOrderList/RedirectToOrderList';
 import { Outlet } from 'react-router-dom';
+import ProtectedRoute from '~/layouts/Protected/ProtectedRoute';
 
 const PrivateRoutes = [
     {
         path: ADMIN_ROUTES.DASHBOARD,
         element: (
-            // <ProtectedRouteAuth>
-            <AdminLayout />
-            // </ProtectedRouteAuth>
+            <ProtectedRoute>
+                <AdminLayout />
+            </ProtectedRoute>
         ),
         children: [
             {

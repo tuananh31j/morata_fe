@@ -1,6 +1,6 @@
 import useLogout from '~/hooks/auth/useLogout';
 import MenuItem from './MenuItem';
-import { MAIN_ROUTES } from '~/constants/router';
+import { ADMIN_ROUTES, MAIN_ROUTES } from '~/constants/router';
 
 const menus = [
     { name: 'My Profile', path: MAIN_ROUTES.PROFILE },
@@ -8,7 +8,7 @@ const menus = [
     { name: 'My Address', path: MAIN_ROUTES.MY_ADDRESS },
 ];
 
-const MenuAccount = () => {
+const MenuAccount = ({ isAdmin }: { isAdmin: boolean }) => {
     const handleLogout = useLogout();
     return (
         <div className=' flex max-h-[100vh] flex-col justify-items-center'>
@@ -16,6 +16,8 @@ const MenuAccount = () => {
                 {menus.map((item, i) => (
                     <MenuItem name={item.name} key={i} path={item.path} />
                 ))}
+                {isAdmin && <MenuItem name='Admin Dashboard' path={ADMIN_ROUTES.DASHBOARD} />}
+
                 <button
                     onClick={handleLogout}
                     className='mt-5 border p-2 transition-transform duration-200 ease-in-out hover:border-[#16bcdc] active:-translate-y-3'

@@ -32,6 +32,7 @@ const CategoryList = () => {
     // Add attributeNames to categoryList
     const categoryListWithAttributes = categoryList?.map((category) => ({
         ...category,
+        key: category._id,
         attributeNames: category.attributeIds?.map((id) => attributes?.find((attr) => attr._id === id)?.name || id),
     }));
 

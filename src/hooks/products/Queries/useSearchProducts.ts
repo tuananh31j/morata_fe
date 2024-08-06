@@ -6,7 +6,7 @@ import { IParams } from '~/types/Api';
 export const useSearchProductQuery = (params: IParams) => {
     return useQuery({
         queryKey: [QUERY_KEY.PRODUCTS, ...Object.values(params)],
-        queryFn: () => productService.getAll(params),
+        queryFn: () => productService.getAllProducts(params),
         enabled: !!params.search,
     });
 };

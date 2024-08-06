@@ -41,16 +41,16 @@ export const menuGroups: IMenuItem[] = [
             { label: 'Create new product', route: ADMIN_ROUTES.PRODUCTS_CREATE },
         ],
     },
-    {
-        icon: <CommentOutlined />,
-        label: 'Customer service',
-        children: [
-            { label: 'All users', route: ADMIN_ROUTES.USERS },
-            { label: 'Chat management', route: 'orders/test' },
-            { label: 'Review management', route: ADMIN_ROUTES.PRODUCTS_CREATE },
-            { label: 'Create new user', route: ADMIN_ROUTES.USERS_CREATE },
-        ],
-    },
+    // {
+    //     icon: <CommentOutlined />,
+    //     label: 'Customer service',
+    //     children: [
+    //         { label: 'All users', route: ADMIN_ROUTES.USERS },
+    //         { label: 'Chat management', route: 'orders/test' },
+    //         { label: 'Review management', route: ADMIN_ROUTES.PRODUCTS_CREATE },
+    //         { label: 'Create new user', route: ADMIN_ROUTES.USERS_CREATE },
+    //     ],
+    // },
     // {
     //     icon: <ShopOutlined />,
     //     label: 'Shop',

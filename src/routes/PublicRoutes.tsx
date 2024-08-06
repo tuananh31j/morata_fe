@@ -108,9 +108,7 @@ const PublicRoutes = [
             {
                 element: (
                     <Suspense>
-                        <ProtectedRouteAuth>
-                            <AccountLayout />
-                        </ProtectedRouteAuth>
+                        <AccountLayout />
                     </Suspense>
                 ),
                 children: [
@@ -139,9 +137,9 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.FORGOT_PASSWORD,
                 element: (
                     <Suspense>
-                        <ProtectedRoute>
+                        <ProtectedRouteAuth>
                             <ForgotPassword />
-                        </ProtectedRoute>
+                        </ProtectedRouteAuth>
                     </Suspense>
                 ),
             },
@@ -149,9 +147,9 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.RESET_PASSWORD,
                 element: (
                     <Suspense>
-                        <ProtectedRoute>
+                        <ProtectedRouteAuth>
                             <ResetPassword />
-                        </ProtectedRoute>
+                        </ProtectedRouteAuth>
                     </Suspense>
                 ),
             },
@@ -159,9 +157,9 @@ const PublicRoutes = [
             {
                 element: (
                     <Suspense>
-                        <ProtectedRoute>
+                        <ProtectedRouteAuth>
                             <AuthLayoutPage />
-                        </ProtectedRoute>
+                        </ProtectedRouteAuth>
                     </Suspense>
                 ),
                 children: [

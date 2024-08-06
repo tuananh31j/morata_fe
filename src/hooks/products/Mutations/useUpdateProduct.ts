@@ -1,11 +1,17 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEY } from '~/constants/queryKey';
 import productService from '~/services/product.service';
 
-const useUpdateProduct = (id: string) => {
+const useUpdateProduct = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
-        mutationFn: (data: FormData) => productService.updateProduct(data, id),
+        mutationFn: ({ data, productId }: { data: FormData; productId: string }) =>
+            productService.updateProduct(data, productId),
         onSuccess: (res) => {
-            console.log('Update product success', res);
+            queryClient.resetQueries({
+                predicate: (query) => (query.queryKey[0] as string) === QUERY_KEY.PRODUCTS,
+            });
         },
         onError(error) {
             console.log('Update product error', error);

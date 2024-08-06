@@ -1,4 +1,4 @@
-import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Button, Space, TableProps, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ export interface DataType {
     action: string;
 }
 
-export const ProductsListColumns = (): TableProps['columns'] => {
+export const ProductsListColumns = (handleHiddenProduct: (id: string) => void): TableProps['columns'] => {
     return [
         {
             title: 'Name',
@@ -49,7 +49,9 @@ export const ProductsListColumns = (): TableProps['columns'] => {
             title: 'Stock',
             dataIndex: 'variationIds',
             key: 'Stock',
+            /* eslint-disable */
             render: (variation) => <h4>{variation.reduce((acc: number, curr: any) => acc + curr.stock, 0)}</h4>,
+            /* eslint-enable */
         },
         {
             title: 'Category',
@@ -67,10 +69,20 @@ export const ProductsListColumns = (): TableProps['columns'] => {
             render: (_, record) => (
                 <Space key={record._id}>
                     <Tooltip title='Update'>
-                        <Link to={`/admin/products/${record._id}/edit`} className='text-blue-500'>
+                        <Link
+                            to={`/admin/products/${record._id}/edit`}
+                            className='text-blue-500 transition-colors duration-500 hover:text-blue-400'
+                        >
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
                     </Tooltip>
+                    {/* <Tooltip title='Hidden'>
+                        <DeleteOutlined
+                            onClick={() => handleHiddenProduct(record._id)}
+                            className='cursor-pointer rounded-full bg-rose-200 p-2 text-red transition-colors duration-500 hover:bg-rose-100'
+                            style={{ fontSize: '1rem' }}
+                        />
+                    </Tooltip> */}
                 </Space>
             ),
         },

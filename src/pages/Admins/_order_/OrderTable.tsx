@@ -7,6 +7,7 @@ import { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
 import PopConFirmOrder from './PopConfirmOrder';
+import { TableProps } from 'antd/lib';
 
 interface Props {
     ordersList: {
@@ -219,10 +220,18 @@ const OrderTable = ({ ordersList, totalDocs, totalPages, setCurrentPage }: Props
     const onSelectPaginateChange = (page: number) => {
         setCurrentPage(page);
     };
-
+    const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+        console.log(pagination, 'pag', filters, 'fil', sorter, 'sort', extra);
+    };
     return (
         <>
-            <Table className='mt-5 w-full' columns={columns} dataSource={dataSource} pagination={false} />
+            <Table
+                onChange={onChange}
+                className='mt-5 w-full'
+                columns={columns}
+                dataSource={dataSource}
+                pagination={false}
+            />
             <Space className='mt-5 flex w-full justify-end'>
                 <Pagination onChange={onSelectPaginateChange} pageSize={10} total={totalDocs} />
             </Space>

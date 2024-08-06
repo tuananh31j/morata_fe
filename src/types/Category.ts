@@ -24,5 +24,7 @@ export type IAttributeFormData = {
     name: string;
     type: AttributeType;
     values: string[];
+    isVariant: boolean;
+    isRequired: boolean;
     // inputValues?: string[];
 };

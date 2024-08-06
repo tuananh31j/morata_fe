@@ -1,12 +1,56 @@
-import { PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Checkbox, CheckboxProps, Form, FormProps, GetProp, Input, Popover, Radio } from 'antd';
-import { useEffect, useState } from 'react';
+import { PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
+import {
+    Button,
+    Checkbox,
+    CheckboxProps,
+    Form,
+    FormProps,
+    GetProp,
+    Input,
+    Popover,
+    Radio,
+    Select,
+    SelectProps,
+    TreeSelect,
+} from 'antd';
+import { ReactNode, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
 import { useGetAllAtributesNew } from '~/hooks/attributes/Queries/useGetAllAttributes';
 import { useMutationCreateCategory } from '~/hooks/categories/Mutations/useCreateCategory';
 import { ICategoryFormData } from '~/types/Category';
+import { cn } from '~/utils';
 import showMessage from '~/utils/ShowMessage';
+
+const ItemComp = ({ title, isRequired, isVariant }: { title: string; isRequired: boolean; isVariant: boolean }) => {
+    return (
+        <>
+            <p className={cn({ ['text-red']: isRequired, ['text-purple-900']: isVariant }, 'inline')}>{title}</p>
+            <span>
+                {isVariant && (
+                    <Popover
+                        placement='right'
+                        zIndex={99999999}
+                        content='This is a mandatory attribute when creating a variant within a product.'
+                        title='Details about the Hint'
+                    >
+                        <Button icon={<QuestionOutlined />} size='small' type='text' />
+                    </Popover>
+                )}
+                {isRequired && !isVariant && (
+                    <Popover
+                        placement='right'
+                        zIndex={99999999}
+                        content='This is a mandatory attribute when creating a product.'
+                        title='Details about the Hint'
+                    >
+                        <Button icon={<QuestionOutlined />} size='small' type='text' />
+                    </Popover>
+                )}
+            </span>
+        </>
+    );
+};
 
 const CreateCategory = () => {
     const navigate = useNavigate();
@@ -15,14 +59,36 @@ const CreateCategory = () => {
     const { data } = useGetAllAtributesNew();
     const attributes = data?.data;
 
-    const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
+    // const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
+
+    const [attributeOptions, setAttributeOptions] = useState<
+        {
+            title: ReactNode;
+            value: string;
+            children: {
+                title: string | number;
+                value: string | number;
+                selectable: boolean;
+            }[];
+        }[]
+    >([]);
 
     useEffect(() => {
         if (attributes) {
-            const options = attributes.map((attr: { _id: string; name: string; values: string[] }) => ({
-                label: attr.name,
+            // const options = attributes.map((attr: { _id: string; name: string; values: string[] }) => ({
+            //     label: attr.name,
+            //     value: attr._id,
+            //     values: attr.values,
+            // }));
+
+            const options = attributes?.map((attr) => ({
+                title: <ItemComp title={attr.name} isRequired={attr.isRequired} isVariant={attr.isVariant} />,
                 value: attr._id,
-                values: attr.values,
+                children: attr.values?.map((value) => ({
+                    title: value,
+                    value,
+                    selectable: false,
+                })),
             }));
             setAttributeOptions(options);
         }
@@ -30,24 +96,29 @@ const CreateCategory = () => {
 
     const { handleMessage, contextHolder } = useMessage();
 
-    const attributeValues = (attr: { label: string; value: string; values: string[] }) => {
-        if (attr.values.length === 0) {
-            return <div>No values</div>;
-        }
-        return attr.values.map((value, i) => {
-            return <div key={i}>{value}</div>;
-        });
-    };
-
-    // const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
-    //     console.log('checked = ', checkedValues);
+    // const handleChange = (value: string[]) => {
+    //     console.log(`selected ${value}`);
     // };
+
+    // const optionsWithTooltips = attributeOptions.map((option) => ({
+    //     ...option,
+    //     title: option.values ? option.values.join(', ') : 'No values available',
+    // }));
 
     const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
         console.log('Success:', values);
 
         createCategory(values);
+    };
 
+    const onFinishFailed: FormProps<ICategoryFormData>['onFinishFailed'] = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
+    const onChange = (newValue: string[]) => {
+        console.log('onChange ', newValue);
+    };
+    useEffect(() => {
         if (isSuccess) {
             showMessage('Category created successfully!', 'success');
             navigate('/admin/categories', { replace: true });
@@ -60,11 +131,7 @@ const CreateCategory = () => {
         if (isError) {
             showMessage('Category creation failed!', 'error');
         }
-    };
-
-    const onFinishFailed: FormProps<ICategoryFormData>['onFinishFailed'] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+    }, [isPending, isSuccess, isError]);
 
     return (
         <>
@@ -90,7 +157,31 @@ const CreateCategory = () => {
                                 className='font-medium text-[#08090F]'
                                 rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
                             >
-                                <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' />
+                                {/* <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' /> */}
+
+                                {/* <Select
+                                    showSearch
+                                    allowClear
+                                    mode='multiple'
+                                    optionFilterProp='label'
+                                    style={{ width: '100%' }}
+                                    placeholder='Please select attributes'
+                                    onChange={handleChange}
+                                    onSearch={onSearch}
+                                    options={optionsWithTooltips}
+                                    optionLabelProp='label'
+                                /> */}
+
+                                <TreeSelect
+                                    showSearch
+                                    multiple
+                                    treeNodeFilterProp='title'
+                                    style={{ width: '100%' }}
+                                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                    treeData={attributeOptions}
+                                    placeholder='Please select attributes'
+                                    onChange={onChange}
+                                />
 
                                 {/* <div className='grid grid-cols-3 gap-2'>
                                     {attributeOptions.map((option) => (
@@ -110,6 +201,8 @@ const CreateCategory = () => {
                                     icon={<PlusSquareOutlined />}
                                     className='mr-3 px-5'
                                     size='large'
+                                    loading={isPending}
+                                    disabled={isPending}
                                 >
                                     Add Category
                                 </Button>

@@ -1,6 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, ConfigProvider, Tabs, TabsProps } from 'antd';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { ConfigProvider, TabsProps } from 'antd';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
 
 const ManageProducts = () => {
