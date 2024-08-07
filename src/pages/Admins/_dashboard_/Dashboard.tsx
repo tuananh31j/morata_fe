@@ -6,10 +6,8 @@ import BarChartRangePicker from '~/pages/Admins/_dashboard_/_components/Charts/B
 import { TopProducts } from '~/pages/Admins/_dashboard_/_components/TopProducts/TopProducts';
 import CardDataStats from './_components/CardDataStats';
 import YearlyStats from './_components/Charts/BarChart/YearlyStats';
-import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
-import { Dayjs } from 'dayjs';
-
 import LineChart from './_components/Charts/LineChart/LineChart';
+import TopUsers from '~/pages/Admins/_dashboard_/_components/TopUsers/TopUsers';
 
 const DashboardNew: React.FC = () => {
     const { data: totalStats } = useTotalStats();
@@ -19,15 +17,17 @@ const DashboardNew: React.FC = () => {
     const totalUsers = totalStats?.data.totalUsers;
     return (
         <>
-            {/* <BarChartRangePicker /> */}
+            <TopUsers />
 
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
                 <CardDataStats title='Total Orders' total={totalOrders} rate='4.35%' levelUp>
                     <CartIcon />
                 </CardDataStats>
+
                 <CardDataStats title='Total Products' total={totalProducts} rate='2.59%' levelUp>
                     <ProductIcon />
                 </CardDataStats>
+
                 <CardDataStats title='Total Users' total={totalUsers} rate='0.95%' levelDown>
                     <UsersIcon />
                 </CardDataStats>
@@ -38,10 +38,12 @@ const DashboardNew: React.FC = () => {
                     <div>
                         <BarChartRangePicker />
                     </div>
+
                     <div>
                         <YearlyStats />
                     </div>
                 </div>
+
                 <div>
                     <LineChart />
                 </div>
