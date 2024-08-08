@@ -66,7 +66,6 @@ export const variationsValidator = async (_: any, variations: IProductVariation[
     return Promise.resolve();
 };
 export const variationsThumbnailValidator = async (_: any, thumbnail: any) => {
-    console.log(thumbnail, 'vvvvvvvvvvvvvvvvvvv');
     if (
         thumbnail &&
         thumbnail.fileList &&

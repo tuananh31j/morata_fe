@@ -4,10 +4,7 @@ import RatingDisplay from '../_common/RatingDisplay';
 import { Currency } from '~/utils';
 import clsx from 'clsx';
 import { IProductItemNew } from '~/types/Product';
-import { generateLink } from './_helper';
-import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store/store';
+import { MAIN_ROUTES } from '~/constants/router';
 
 type PropTypeProduct = { product: IProductItemNew };
 const FeatureCard = ({ product }: PropTypeProduct) => {
@@ -27,7 +24,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
         <div className='rounded-xl bg-white p-8'>
             <div className='relative grid grid-cols-12 justify-between gap-5 rounded'>
                 <Link
-                    to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}
+                    to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}
                     className='relative col-span-5 hidden w-full max-w-24 md:block'
                 >
                     <img
@@ -47,10 +44,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                     />
                 </Link>
                 <div className='col-span-7'>
-                    <Link
-                        className='cursor-pointer'
-                        to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}
-                    >
+                    <Link className='cursor-pointer' to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>
                         <h4 className='line-clamp-2 text-ellipsis text-title-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
