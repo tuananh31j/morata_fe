@@ -4,19 +4,19 @@ import { Link } from 'react-router-dom';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
-import PopupAttributes from '~/components/_common/PopupAttributes';
 import { IProductItemNew } from '~/types/Product';
-import { generateLink } from './_helper';
 import { Image, Spin } from 'antd';
 import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import { MAIN_ROUTES } from '~/constants/router';
 
 type PropTypeProduct = {
     product: IProductItemNew;
 };
 
 const SmallCard = ({ product }: PropTypeProduct) => {
+    const VARIANT_LENGTH = 5;
     const discountPercentage = 10;
     const { mutate, isPending } = useMutationCart();
     const user = useSelector((state: RootState) => state.authReducer.user);
@@ -45,7 +45,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                     onMouseLeave={handleSetDateActive}
                 >
                     <Link
-                        to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}
+                        to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}
                         className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                     >
                         {/* HOVER IMAGE */}
@@ -71,7 +71,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                 {/* Name */}
                 <div className='mt-[15px] cursor-pointer'>
-                    <Link to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}>
+                    <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>
                         <h4 className=' cursor-pointer truncate text-title-sm2 font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
@@ -98,16 +98,21 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                     {/* Variants */}
                     <div className='my-2 flex gap-2'>
-                        {product.variationIds.map((variant, i) => (
-                            <Image
-                                key={i}
-                                width={45}
-                                height={45}
-                                preview={false}
-                                src={variant.image}
-                                className='rounded-lg border border-solid object-cover p-1'
-                            />
-                        ))}
+                        {product.variationIds.map((variant, i) => {
+                            if (i < VARIANT_LENGTH)
+                                return (
+                                    <Link key={i} to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>
+                                        <Image
+                                            width={45}
+                                            height={45}
+                                            preview={false}
+                                            src={variant.image}
+                                            className='rounded-lg border border-solid border-blue-400 border-opacity-35 object-cover p-1 hover:opacity-70'
+                                        />
+                                    </Link>
+                                );
+                            return null;
+                        })}
                     </div>
 
                     {/* Add to cart btn */}
