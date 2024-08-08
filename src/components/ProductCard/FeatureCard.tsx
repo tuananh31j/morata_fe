@@ -43,12 +43,15 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                         onMouseLeave={() => handleScale('close')}
                     />
                 </Link>
+
                 <div className='col-span-7'>
                     <Link className='cursor-pointer' to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>
                         <h4 className='line-clamp-2 text-ellipsis text-title-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
+
                         <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
+
                         <div className='mb-3 flex gap-x-2'>
                             <span
                                 className={clsx('text-base font-semibold leading-5', {
@@ -57,6 +60,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                             >
                                 {Currency?.format(product.variationIds?.[0].price)}
                             </span>
+
                             {discountPercentage > 0 && (
                                 <del className=' text-gray-500 hidden text-[12px] font-semibold leading-5 lg:block'>
                                     {Currency.format(newPrice)}

@@ -52,10 +52,10 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                             loading='lazy'
                             src={product.thumbnail}
                             alt=''
-                            className='relative z-10  w-full select-none object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                            className='relative z-10 w-full select-none object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
-                    <ProductActions />
+                    <ProductActions alignLeft={65} />
                 </div>
                 <div className='mt-3 flex h-full flex-col'>
                     <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>

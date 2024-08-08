@@ -63,10 +63,10 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             loading='lazy'
                             src={product.thumbnail}
                             alt=''
-                            className='relative z-10 w-full opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                            className='relative z-10 h-full w-full opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
-                    <ProductActions />
+                    <ProductActions alignLeft={87} />
                 </div>
 
                 {/* Name */}
