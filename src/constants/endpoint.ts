@@ -75,6 +75,7 @@ export const STATS_ENDPOINT = {
 
 export const USER_ENDPOINT = {
     PROFILE: '/users/private',
+    ALL: '/users/all',
     UPDATE: '/users/priavte',
 };
 export const REVIEW_ENDPOINT = {
