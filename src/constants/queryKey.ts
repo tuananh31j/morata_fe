@@ -25,4 +25,6 @@ export const QUERY_KEY = {
     YEARLY_STATS: 'yearlyStats',
     DATE_RANGE: 'dateRange',
     PRODUCT_STATS: 'productStats',
+
+    // Review
 };

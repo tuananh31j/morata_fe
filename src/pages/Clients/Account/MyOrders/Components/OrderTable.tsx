@@ -4,6 +4,7 @@ import useGetMyOrders from '~/hooks/orders/Queries/useGetMyOrders';
 
 const OrderTable: React.FC = () => {
     const { data, isLoading } = useGetMyOrders();
+    const ordersData = data?.data?.data.orders;
     const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
         console.log('params', pagination, filters, sorter, extra);
     };
@@ -13,7 +14,7 @@ const OrderTable: React.FC = () => {
                 <Table
                     rowKey={(record) => record._id}
                     columns={columns}
-                    dataSource={data.data.data.orders}
+                    dataSource={ordersData}
                     pagination={{
                         pageSize: 8,
                     }}

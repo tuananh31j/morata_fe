@@ -8,7 +8,6 @@ const AccountSidebarLeft = () => {
     const { data } = useGetProfile();
 
     const profile = data?.data;
-    console.log(profile?.role);
 
     const { mutate } = useSendVerify();
     const getInitialCountdown = () => {
@@ -20,7 +19,9 @@ const AccountSidebarLeft = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(countdown > 0);
 
     useEffect(() => {
+        /* eslint-disable */
         let timer: any;
+        /* eslint-enable */
         if (countdown > 0) {
             timer = setInterval(() => {
                 setCountdown((prev) => {

@@ -34,7 +34,7 @@ const CheckOut = () => {
             customerInfo: {
                 name: data?.data?.username,
                 email: data?.data?.email,
-                phone: data?.data?.phone,
+                phone: data?.data?.phone || value.phone,
             },
             receiverInfo: {
                 name: value.name,
@@ -65,11 +65,13 @@ const CheckOut = () => {
             items: responsePayloadCheckout,
         });
     };
+    /* eslint-disable */
     useEffect(() => {
         if (!orderItem?.data.items.length) {
             navigate('/');
         }
     }, [orderItem]);
+    /* eslint-enable */
     return (
         <>
             {/* BACK TO HOME BTN */}

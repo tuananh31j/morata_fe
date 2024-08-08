@@ -55,6 +55,7 @@ export const ORDER_ENDPOINT = {
     CANCEL_ORDER: '/orders/cancel',
     CONFIRM_ORDER: '/orders/confirm',
     FINISH_ORDER: '/orders/done',
+    UPDATE_ISREVIEWED: '/orders',
 };
 
 export const ATTRIBUTES_ENDPOINT = {
@@ -79,4 +80,8 @@ export const USER_ENDPOINT = {
 };
 export const REVIEW_ENDPOINT = {
     GETOFPRODUCT: '/reviews',
+    GET_DETAIL: '/reviews',
+    CREATE: '/reviews',
+    CHECK_PURCHASED: '/reviews/purchased',
+    UPDATE_ISREVIEWED: '/reviews/',
 };
