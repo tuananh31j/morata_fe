@@ -40,7 +40,6 @@ export const handleEditProduct = async ({
     console.log(attributes, 'attributes');
     if (variations) {
         variations.forEach((value) => {
-            console.log(value, 'eeeeeeeeeeeeeeeeeeeee');
             if (value._id) {
                 // Update product variant
                 const formDataUpdateProductVariant = new FormData();

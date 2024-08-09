@@ -1,35 +1,44 @@
-import { Button, List, Modal, Form, Input, Select, Switch } from 'antd';
+import { Button, List, Modal, Form, Input, Select } from 'antd';
 import WrapperList from '~/components/_common/WrapperList';
 import { PlusOutlined, EditOutlined, HomeOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import useGetAllLocationByUser from '~/hooks/location/Query/useGetAllLocationByUser';
+import { LOCATION_TYPES } from '~/constants/enum';
+import { FormProps } from 'antd/lib';
+import { FieldNamesType } from 'antd/es/cascader';
+import useAddLocation from '~/hooks/location/Mutation/useAddLocation';
+import useUpdateLocation from '~/hooks/location/Mutation/useUpdateLocation';
+import useDeleteLocation from '~/hooks/location/Mutation/useDeleteLocation';
+import { ILocation } from '~/types/Location';
 
 const MyAddress = () => {
-    const addresses = [
-        { id: 1, address: '4 Dinh Hoa Hamlet, Thu Dau Mot Town', phone: '0865222555' },
-        { id: 2, address: '456 Maple Ave, City, State, Country' },
-        { id: 3, address: '456 Maple Ave, City, State, Country' },
-        { id: 4, address: '456 Maple Ave, City, State, Country' },
-        { id: 5, address: '456 Maple Ave, City, State, Country' },
-        { id: 6, address: '456 Maple Ave, City, State, Country' },
-        // ...
-    ];
-
+    const { data } = useGetAllLocationByUser();
+    const [form] = Form.useForm<ILocation>();
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [_, setCurrentAddress] = useState(null);
-
+    const [isEdit, setIsEdit] = useState(false);
+    const { mutate: createLocation } = useAddLocation();
+    const { mutate: updateLocation } = useUpdateLocation();
+    const { mutate: removeLocation } = useDeleteLocation();
     const handleAddAddress = () => {
-        setCurrentAddress(null);
+        form.resetFields();
+        setIsEdit(false);
+
         setIsModalVisible(true);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleEditAddress = (address: any) => {
-        setCurrentAddress(address);
+        form.setFieldsValue(address);
+        setIsEdit(true);
         setIsModalVisible(true);
     };
 
-    const handleOk = () => {
-        // Handle form submission here
+    const onFinish: FormProps<ILocation>['onFinish'] = (values) => {
+        if (isEdit) {
+            updateLocation(values);
+        } else {
+            createLocation(values);
+        }
         setIsModalVisible(false);
     };
 
@@ -52,70 +61,101 @@ const MyAddress = () => {
                         <p>Thêm địa chỉ mới</p>
                     </Button>
                 </div>
-                <List
-                    className='rounded-lg bg-white p-4 shadow-md'
-                    itemLayout='horizontal'
-                    dataSource={addresses}
-                    renderItem={(item) => (
-                        <List.Item className='border-gray-200 border-b py-2 '>
-                            <List.Item.Meta
-                                className=''
-                                avatar={
-                                    <div className='rounded-full bg-blue-100 p-2'>
-                                        <HomeOutlined className='text-2xl text-secondary' />
-                                    </div>
-                                }
-                                title={
-                                    <div className='space-y-2'>
-                                        <div className='flex items-center justify-between'>
-                                            <label className='text-lg font-medium'>{item.address}</label>
-                                            <Button
-                                                type='primary'
-                                                icon={<EditOutlined />}
-                                                onClick={() => handleEditAddress(item.id)}
-                                                className='bg-red-500 text-white transition duration-200 hover:bg-blue-700'
-                                            >
-                                                Sửa
-                                            </Button>
+                {data && data.data && (
+                    <List
+                        className='rounded-lg bg-white p-4 shadow-md'
+                        itemLayout='horizontal'
+                        dataSource={data.data.data}
+                        renderItem={(item) => (
+                            <List.Item className='border-gray-200 border-b py-2 '>
+                                <List.Item.Meta
+                                    className=''
+                                    avatar={
+                                        <div className='rounded-full bg-blue-100 p-2'>
+                                            <HomeOutlined className='text-2xl text-secondary' />
                                         </div>
-                                        <label className='text-gray-500'>{item.phone}</label>{' '}
-                                        {/* Make phone number gray */}
-                                        <div>
-                                            <span className='text-gray-500 text-sm'>Mặc định</span>
-                                            {/* Make "Mặc định" smaller and gray */}
+                                    }
+                                    title={
+                                        <div className='space-y-2'>
+                                            <div className='flex items-center justify-between'>
+                                                <div className='mb-4'>
+                                                    <label className='inline-block text-lg font-medium'>
+                                                        {item.address.line1}
+                                                    </label>
+                                                    <br />
+                                                    <label className='inline-block text-lg font-medium'>
+                                                        {item.address.line2}
+                                                    </label>
+                                                </div>
+                                                <Button
+                                                    type='primary'
+                                                    icon={<EditOutlined />}
+                                                    onClick={() => handleEditAddress(item)}
+                                                    className='bg-red-500 text-white transition duration-200 hover:bg-blue-700'
+                                                >
+                                                    Sửa
+                                                </Button>
+                                            </div>
+                                            <label className='text-gray-500'>{item.phone}</label>{' '}
+                                            {/* Make phone number gray */}
+                                            {item.type === LOCATION_TYPES.DEFAULT && (
+                                                <div>
+                                                    <span className='text-gray-500 text-sm'>Mặc định</span>
+                                                    {/* Make "Mặc định" smaller and gray */}
+                                                </div>
+                                            )}
                                         </div>
-                                    </div>
-                                }
-                            />
-                        </List.Item>
-                    )}
-                />
-                <Modal title='Thêm địa chỉ mới ' open={isModalVisible} footer={null} onCancel={handleCancel}>
-                    <Form layout='vertical' onFinish={handleOk}>
+                                    }
+                                />
+                            </List.Item>
+                        )}
+                    />
+                )}
+                <Modal
+                    title={isEdit ? 'Edit Address' : 'Add New Address'}
+                    open={isModalVisible}
+                    footer={null}
+                    onCancel={handleCancel}
+                >
+                    <Form form={form} layout='vertical' onFinish={onFinish}>
+                        {isEdit && (
+                            <Form.Item className='hidden' name='_id'>
+                                <Input />
+                            </Form.Item>
+                        )}
                         <Form.Item name='name' label='Full Name'>
                             <Input placeholder='Enter full name' />
+                        </Form.Item>
+                        <Form.Item name='email' label='Email'>
+                            <Input placeholder='Enter your email' />
                         </Form.Item>
                         <Form.Item name='phone' label='Phone Number'>
                             <Input placeholder='Enter phone number' />
                         </Form.Item>
-                        <Form.Item name='province' label='Province'>
-                            <Select placeholder='Select a province'>{/* Add your options here */}</Select>
+                        <Form.Item name={['address', 'city']} label='city' className='capitalize'>
+                            <Input placeholder='Your city...' />
                         </Form.Item>
-                        <Form.Item name='district' label='District'>
-                            <Select placeholder='Select a district'>{/* Add your options here */}</Select>
+                        <Form.Item name={['address', 'country']} label='country' className='capitalize'>
+                            <Input placeholder='Your country...' />
                         </Form.Item>
-                        <Form.Item name='ward' label='Ward'>
-                            <Select placeholder='Select a ward'>{/* Add your options here */}</Select>
+                        <Form.Item name={['address', 'line1']} label='line1' className='capitalize'>
+                            <Input placeholder='Your line1...' />
                         </Form.Item>
-                        <Form.Item name='address' label='Specific Address'>
-                            <Input placeholder='Enter specific address' />
+                        <Form.Item name={['address', 'line2']} label='line2' className='capitalize'>
+                            <Input placeholder='Your line2...' />
                         </Form.Item>
-                        <div className='mb-4 flex items-center justify-between'>
-                            <span className='mr-2'>Đặt làm địa chỉ mặc định</span>
-                            <Form.Item name='default' valuePropName='checked' noStyle>
-                                <Switch checkedChildren='' unCheckedChildren='' />
-                            </Form.Item>
-                        </div>
+                        <Form.Item name={['address', 'postal_code']} label='postal code' className='capitalize'>
+                            <Input placeholder='Your postal code...' />
+                        </Form.Item>
+                        <Form.Item name={['address', 'state']} label='state' className='capitalize'>
+                            <Input placeholder='Your state...' />
+                        </Form.Item>
+                        <Form.Item name='type' label='Type'>
+                            <Select placeholder='Selct your type address'>
+                                <Select.Option value={LOCATION_TYPES.DEFAULT}>Default</Select.Option>
+                                <Select.Option value={LOCATION_TYPES.SHIPPING_ADDRESS}>Normal</Select.Option>
+                            </Select>
+                        </Form.Item>
                         <Form.Item>
                             <Button type='primary' htmlType='submit' className='w-full'>
                                 Submit

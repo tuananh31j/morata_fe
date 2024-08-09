@@ -12,6 +12,7 @@ export const PRODUCT_ENDPOINT = {
     UPDATE: '/products',
     UPDATE_VARIATIONS: '/products/variation/',
     CREATE_VARIATIONS: '/products/variation/',
+    FILTER: '/products/filter',
 };
 export const CATEGORY_ENDPOINT = {
     ALL: '/categories/all',
@@ -79,4 +80,8 @@ export const USER_ENDPOINT = {
 };
 export const REVIEW_ENDPOINT = {
     GETOFPRODUCT: '/reviews',
+};
+export const LOCATION_ENDPOINT = {
+    ROOT: '/locations',
+    USER: '/locations/user',
 };

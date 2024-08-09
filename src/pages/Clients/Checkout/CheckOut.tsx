@@ -74,6 +74,7 @@ const CheckOut = () => {
         if (!orderItem?.data.items.length) {
             navigate('/');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [orderItem]);
     return (
         <>

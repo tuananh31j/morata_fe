@@ -1,3 +1,4 @@
+import { AttributeType } from '~/constants/enum';
 import { variationAttribute } from './cart/CartResponse';
 
 export interface IProduct {
@@ -179,6 +180,7 @@ export type IProductVariation = {
         file: File;
         fileList: IThumbnailAntd[];
     };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
     imageUrlRef: string;
     price: number;
@@ -207,3 +209,13 @@ export type IProductParams = {
     categoryId: string | string[] | null;
 };
 export type PropTypeProduct = { product: IProduct };
+
+export interface IFilterResponse {
+    _id: string;
+    name: string;
+    type: AttributeType;
+    values: string[];
+    isRequired: boolean;
+    isVariant: boolean;
+    attributeKey: string;
+}

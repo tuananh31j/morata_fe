@@ -23,3 +23,8 @@ export enum DataTypeConvert {
     raw = 'raw',
     obj = 'obj',
 }
+
+export enum LOCATION_TYPES {
+    SHIPPING_ADDRESS = 'shipping_address',
+    DEFAULT = 'default',
+}
