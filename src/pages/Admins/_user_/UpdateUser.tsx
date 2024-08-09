@@ -39,7 +39,7 @@ const UpdateUser = () => {
     const userData = data?.data;
     const [form] = Form.useForm<FieldType>();
     const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
-    const { mutate: updateUser } = useUpdateUser(id as string);
+    const { mutate: updateUser, isPending } = useUpdateUser(id as string);
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
     const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
 
@@ -233,7 +233,13 @@ const UpdateUser = () => {
                             </Form.Item>
                         </div>
                         <div className='flex gap-2'>
-                            <Button type='primary' htmlType='submit' className='mb-4'>
+                            <Button
+                                type='primary'
+                                disabled={isPending}
+                                loading={isPending}
+                                htmlType='submit'
+                                className='mb-4'
+                            >
                                 Update User
                             </Button>
                             <Button type='dashed' htmlType='reset' className='mb-4'>
