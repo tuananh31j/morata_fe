@@ -12,6 +12,7 @@ import { Button, Image, Modal, Select, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ADMIN_ROUTES } from '~/constants/router';
 import useGetAllUsers from '~/hooks/users/Queries/useGetAllUsers';
 
 type DataType = {
@@ -33,6 +34,7 @@ const ManageUsers = () => {
 
     const { data } = useGetAllUsers();
     const users = data?.data?.users;
+    console.log(data);
     console.log(users);
 
     const showModal = () => {
@@ -69,11 +71,7 @@ const ManageUsers = () => {
             dataIndex: 'username',
             key: 'username',
             render: (text) => <h4>{text}</h4>,
-            filteredValue: [searchText],
-            onFilter: (value, record) => {
-                const searchValue = (typeof value === 'string' && value.toLowerCase()) || '';
-                return typeof value && record.username.toLowerCase().includes(searchValue);
-            },
+
             sorter: (a, b) => a.username.localeCompare(b.username),
         },
         {
@@ -130,7 +128,7 @@ const ManageUsers = () => {
             render: (_, record) => (
                 <Space size={'middle'}>
                     <Tooltip title='Update'>
-                        <Link to='/' className='text-blue-500'>
+                        <Link to={`${ADMIN_ROUTES.USERS_EDIT}/${record._id}`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
                     </Tooltip>
@@ -258,6 +256,7 @@ const ManageUsers = () => {
                 </div>
 
                 <Table
+                    rowKey={(record) => record._id}
                     rowSelection={{
                         type: 'checkbox',
                         ...rowSelection,

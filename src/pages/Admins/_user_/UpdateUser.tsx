@@ -1,34 +1,194 @@
-import { Button, Form, FormProps, Input, InputNumber, Select } from 'antd';
+import {
+    Button,
+    Card,
+    Form,
+    FormProps,
+    Image,
+    Input,
+    InputNumber,
+    Select,
+    Upload,
+    UploadFile,
+    UploadProps,
+} from 'antd';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import StaticImages from '~/assets';
+import useGetDetail from '~/hooks/users/Queries/useGetailUser';
+import { IProductFiles, IThumbnailAntd } from '~/types/Product';
+import { errorMessage } from '~/validation/Products/Product';
+import { ACCEPT_FILE_TYPE, FileType, getBase64, MAX_SIZE } from '../_product_/Helper/_helper_';
+import convertApiResponseToFileList from '../_product_/Helper/convertImageUrlToFileList';
+import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import useUpdateUser from '~/hooks/users/Mutations/useUpdateUser';
 
 type FieldType = {
     username: string;
     email: string;
-    phoneNumber: string;
+    phone: string;
     role: string;
-    address: string;
-};
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
+    avatar: IProductFiles;
 };
 
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
 const handleChange = (value: string) => {
     console.log(`selected ${value}`);
 };
 const UpdateUser = () => {
+    const { id } = useParams();
+    const { data, isLoading } = useGetDetail(id as string);
+    const userData = data?.data;
+    const [form] = Form.useForm<FieldType>();
+    const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
+    const { mutate: updateUser } = useUpdateUser(id as string);
+    const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
+    const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
+
+    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+        const formDataUpdateUser = new FormData();
+
+        console.log(values.role);
+        formDataUpdateUser.append('username', values.username);
+        formDataUpdateUser.append('email', values.email);
+        formDataUpdateUser.append('role', values.role);
+        formDataUpdateUser.append('phone', values.phone);
+        formDataUpdateUser.append('avatar', (values.avatar?.fileList?.[0] as IThumbnailAntd)?.originFileObj);
+        formDataUpdateUser.append('avatarRef', userData?.user.avatarRef as string);
+
+        updateUser(formDataUpdateUser);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const thumbnailValidator = async (_: any, thumbnail: IProductFiles) => {
+        if (
+            thumbnail &&
+            thumbnail.fileList &&
+            thumbnail.fileList.length > 0 &&
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (thumbnail.fileList[0] as any).originFileObj
+        ) {
+            if (thumbnail?.fileList?.length < 1 || !thumbnail) {
+                return errorMessage('Please input your thumbnail!');
+            }
+            if (thumbnail && thumbnail.file.size && thumbnail?.file.size >= MAX_SIZE) {
+                return errorMessage('Image size must be smaller than 5MB!');
+            }
+            if (thumbnail?.file.type && !ACCEPT_FILE_TYPE.includes(thumbnail?.file.type)) {
+                return errorMessage('Only accept png, jpg and jpeg type!');
+            }
+        }
+        return Promise.resolve();
+    };
+
+    const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => setThumbnailFile(newFileList);
+
+    const handlePreview = async (file: UploadFile) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj as FileType);
+        }
+
+        setPreviewThumbnail(file.url || (file.preview as string));
+        setPreviewThumbnailOpen(true);
+    };
+
+    const customItemRender: UploadProps['itemRender'] = (originNode, file, fileList, actions) => {
+        return (
+            <div className='ant-upload-list-item ant-upload-list-item-undefined'>
+                <img className='' src={file.thumbUrl || file.url} alt={file.name} />
+                <span className='ant-upload-list-item-actions'>
+                    <span
+                        onClick={actions.preview}
+                        className='ant-btn css-dev-only-do-not-override-mzwlov ant-btn-text ant-btn-sm ant-btn-icon-only ant-upload-list-item-action text-white'
+                    >
+                        <EyeOutlined />
+                    </span>
+                    <span
+                        onClick={actions.remove}
+                        className='ant-btn css-dev-only-do-not-override-mzwlov ant-btn-text ant-btn-sm ant-btn-icon-only ant-upload-list-item-action text-white'
+                    >
+                        <DeleteOutlined />
+                    </span>
+                </span>
+            </div>
+        );
+    };
+    const uploadButton = (
+        <button style={{ border: 0, background: 'none' }} type='button'>
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </button>
+    );
+
+    // useEffect(() => {
+    //     if (userData?.user) {
+    //         form.setFieldsValue({
+    //             username: userData?.user.username,
+    //             phone: userData?.user.phone,
+    //             email: userData?.user.email,
+    //         });
+    //     }
+    // }, [userData?.user, form]);
+
+    useEffect(() => {
+        if (userData?.user) {
+            const thumbnailConvert = convertApiResponseToFileList({
+                url: userData?.user?.avatar,
+                urlRef: userData?.user?.avatarRef,
+                isArr: true,
+            }) as UploadFile<any>[];
+
+            setThumbnailFile(thumbnailConvert);
+        }
+    }, [userData?.user]);
+
     return (
         <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-            <div className='m-auto'>
-                <Form layout='vertical' onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete='off'>
-                    <div className='rounded-lg border border-opacity-90 p-2 px-4'>
-                        <h3 className='my-2 text-lg font-medium text-[#08090F]'>General information</h3>
+            <Card loading={isLoading} title='General information'>
+                <div className='m-auto'>
+                    <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off'>
+                        <div className='my-3 flex items-center justify-center'>
+                            <Form.Item<FieldType>
+                                label='Avatar'
+                                name='avatar'
+                                className='font-medium text-[#08090F]'
+                                dependencies={['thumbnail']}
+                                rules={[
+                                    {
+                                        validator: thumbnailValidator,
+                                    },
+                                ]}
+                            >
+                                <Upload
+                                    beforeUpload={() => false}
+                                    listType='picture-card'
+                                    itemRender={customItemRender}
+                                    fileList={thumbnailFile}
+                                    onPreview={(file) => handlePreview(file)}
+                                    onChange={handleChangeThumbnail}
+                                    maxCount={1}
+                                >
+                                    {thumbnailFile.length >= 1 ? null : uploadButton}
+                                </Upload>
+                            </Form.Item>
+                            {previewThumbnail && (
+                                <Image
+                                    wrapperStyle={{ display: 'none' }}
+                                    width={30}
+                                    height={30}
+                                    preview={{
+                                        visible: previewThumbnailOpen,
+                                        onVisibleChange: (visible) => setPreviewThumbnailOpen(visible),
+                                        afterOpenChange: (visible) => !visible && setPreviewThumbnail(''),
+                                    }}
+                                    src={previewThumbnail}
+                                />
+                            )}
+                        </div>
                         <div className='grid grid-cols-2 gap-2'>
                             <Form.Item<FieldType>
                                 label='Username'
                                 name='username'
                                 className='font-medium text-[#08090F]'
+                                initialValue={userData?.user.username}
                                 rules={[{ required: true, message: 'Please input your name!' }]}
                             >
                                 <Input size='large' />
@@ -36,6 +196,7 @@ const UpdateUser = () => {
                             <Form.Item<FieldType>
                                 label='Email'
                                 name='email'
+                                initialValue={userData?.user.email}
                                 className='font-medium text-[#08090F]'
                                 rules={[{ required: true, message: 'Please input your email!' }]}
                             >
@@ -46,44 +207,42 @@ const UpdateUser = () => {
                             <Form.Item<FieldType>
                                 className='font-medium text-[#08090F]'
                                 label='Phone Number'
-                                name='phoneNumber'
+                                initialValue={userData?.user.phone}
+                                name='phone'
                                 rules={[{ required: true, message: 'Please input your phone number!' }]}
                             >
-                                <InputNumber size='large' className='w-full' />
+                                <Input type='text' size='large' className='w-full' />
                             </Form.Item>
                             <Form.Item<FieldType>
                                 className='font-medium text-[#08090F]'
                                 label='Role'
                                 name='role'
+                                initialValue={userData?.user.role}
                                 rules={[{ required: true, message: 'Please input your role!' }]}
                             >
                                 <Select
                                     size='large'
                                     onChange={handleChange}
                                     className='w-full'
-                                    defaultValue={'lucy'}
                                     options={[
-                                        { value: 'jack', label: 'Jack' },
-                                        { value: 'lucy', label: 'Lucy' },
-                                        { value: 'Yiminghe', label: 'yiminghe' },
+                                        { value: 'user', label: 'User' },
+                                        { value: 'admin', label: 'Admin' },
+                                        { value: 'super_admin', label: 'Super Admin' },
                                     ]}
                                 ></Select>
                             </Form.Item>
                         </div>
-                        <Form.Item<FieldType>
-                            className='font-medium text-[#08090F]'
-                            label='Address'
-                            name='address'
-                            rules={[{ required: true, message: 'Please input your address!' }]}
-                        >
-                            <InputNumber size='large' className='w-full' />
-                        </Form.Item>
-                        <Button type='primary' htmlType='button' className='mb-4 w-full'>
-                            Create User
-                        </Button>
-                    </div>
-                </Form>
-            </div>
+                        <div className='flex gap-2'>
+                            <Button type='primary' htmlType='submit' className='mb-4'>
+                                Update User
+                            </Button>
+                            <Button type='dashed' htmlType='reset' className='mb-4'>
+                                Reset
+                            </Button>
+                        </div>
+                    </Form>
+                </div>
+            </Card>
         </div>
     );
 };

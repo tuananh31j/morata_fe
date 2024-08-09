@@ -25,10 +25,25 @@ export type IAllUsersResponse = {
         email: string;
         wishlist: [];
         isActive: boolean;
+        avatarRef: string;
         avatar: string;
         phone: string;
         role: string;
         createdAt: string;
         updatedAt: string;
     }[];
+};
+export type IUsersResponse = {
+    user: {
+        _id: string;
+        username: string;
+        email: string;
+        isActive: boolean;
+        avatar: string;
+        avatarRef: string;
+        phone: string;
+        role: string;
+        createdAt: string;
+        updatedAt: string;
+    };
 };
