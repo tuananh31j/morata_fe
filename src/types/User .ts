@@ -17,3 +17,18 @@ export type IUserProfileResponse = {
     address: string;
     role: string;
 };
+
+export type IAllUsersResponse = {
+    users: {
+        _id: string;
+        username: string;
+        email: string;
+        wishlist: [];
+        isActive: boolean;
+        avatar: string;
+        phone: string;
+        role: string;
+        createdAt: string;
+        updatedAt: string;
+    }[];
+};
