@@ -235,7 +235,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                                 />
                                                             </div>
                                                             {/* {product.productId.discountPercentage > 0 && (
-                                                            <del className=' text-gray-400 text-base font-semibold leading-5'>
+                                                            <del className='text-base font-semibold leading-5 text-gray-400 '>
                                                                 {Currency.format(
                                                                     product.productId.price *
                                                                         product.quantity *

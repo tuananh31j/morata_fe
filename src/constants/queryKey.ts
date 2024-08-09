@@ -25,4 +25,10 @@ export const QUERY_KEY = {
     YEARLY_STATS: 'yearlyStats',
     DATE_RANGE: 'dateRange',
     PRODUCT_STATS: 'productStats',
+    // wishlist
+    WISHLIST: {
+        LIST: 'wishlist',
+        ADD: 'add',
+        REMOVE: 'remove',
+    },
 };

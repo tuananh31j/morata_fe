@@ -1,7 +1,7 @@
 export const MAIN_ROUTES = {
     ABOUT: '/about',
     PRODUCTS: '/products',
-    WISH_LIST: '/wishlist',
+    WISH_LIST: '/wish-list',
     CHECKOUT: '/checkout',
     CHECKOUT_DETAILS: '/checkout-details',
     CONTACT: '/contact',
@@ -17,6 +17,7 @@ export const MAIN_ROUTES = {
     NOT_FOUND: '/404',
     SUCCESS_ORDER: '/success',
     VERIFY_ORDER: '/verify-order',
+    WISHLIST: '/wish-list',
 };
 
 export const ADMIN_ROUTES = {

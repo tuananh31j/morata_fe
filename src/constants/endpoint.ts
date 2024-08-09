@@ -80,3 +80,8 @@ export const USER_ENDPOINT = {
 export const REVIEW_ENDPOINT = {
     GETOFPRODUCT: '/reviews',
 };
+export const WISHLIST_ENDPOINT = {
+    MY_WISHLIST: '/users/private/wish-list',
+    ADD_WISHLIST: '/users/private/wish-list/add',
+    REMOVE_WISHLIST: '/users/private/wish-list/remove',
+};

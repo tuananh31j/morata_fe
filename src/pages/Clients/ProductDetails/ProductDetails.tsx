@@ -1,6 +1,6 @@
-import { DockerOutlined, RedoOutlined } from '@ant-design/icons';
+import { DockerOutlined, HeartOutlined, RedoOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
@@ -12,6 +12,12 @@ import { RootState } from '~/store/store';
 import { Currency } from '~/utils';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
 import ThumnailProduct from './_components/Thumbnail/ThumnailProduct';
+import { Button, ConfigProvider } from 'antd';
+import useMutationAddWishList from '~/hooks/wishlist/Mutations/useAddWishList';
+import showMessage from '~/utils/ShowMessage';
+import { MAIN_ROUTES } from '~/constants/router';
+import useGetAllWishlist from '~/hooks/wishlist/Queries/useGetAllWishlist';
+import useFilter from '~/hooks/_common/useFilter';
 
 export type IVariantItem = {
     _id: string;
@@ -25,7 +31,27 @@ export type IVariantItem = {
 };
 const ProductDetails = () => {
     const { id } = useParams();
+    const { query } = useFilter();
+    const navigate = useNavigate();
     const { data: productDetail, isLoading } = useGetDetailProduct(id as string);
+    const { mutate: addWishlist } = useMutationAddWishList();
+    const user = useSelector((state: RootState) => state.authReducer.user);
+    const { data: allWishList } = useGetAllWishlist(query);
+    console.log('🚀 ~ ProductActions ~ allWishList:', allWishList);
+    const wishListIds = allWishList?.data.wishList.map((item) => item._id);
+    const handleAddWishlist = () => {
+        if (user) {
+            if (wishListIds?.includes(id as string)) {
+                showMessage('Product already added to wishlist!', 'warning');
+                return;
+            }
+            addWishlist({ productId: id as string });
+            navigate(MAIN_ROUTES.WISHLIST);
+        } else {
+            navigate(MAIN_ROUTES.LOGIN);
+            showMessage('You need to login first!', 'warning');
+        }
+    };
     const product = productDetail?.data;
     // const oldPrice = product ? product?.price * (1 + product?.discountPercentage / 100) : 0;
     useDocumentTitle(`${product?.name}`);
@@ -93,7 +119,7 @@ const ProductDetails = () => {
                                     <span className='flex items-center justify-center rounded-[50%] bg-black px-2 py-2'>
                                         <EyeOutlined style={{ color: 'white', fontSize: '12px' }} />
                                     </span>
-                                    <span className=' text-sm'>17 people are viewing this right now</span>
+                                    <span className='text-sm '>17 people are viewing this right now</span>
                                 </div> */}
                                 {/* Progress  stock product*/}
                                 {/* {product.stock < 100 && (
@@ -109,7 +135,7 @@ const ProductDetails = () => {
                                 )} */}
                                 {/* Produt action  */}
                                 <ActionDetail product={product} />
-                                {/* <div className='mt-[15px] flex gap-5 text-sm'>
+                                <div className='mt-[15px] flex gap-5 text-sm'>
                                     <ConfigProvider
                                         theme={{
                                             components: {
@@ -120,14 +146,14 @@ const ProductDetails = () => {
                                             },
                                         }}
                                     >
-                                        <Button className='flex items-center'>
-                                            <HeartOutlined /> Add wishlist
+                                        <Button className='flex items-center' onClick={handleAddWishlist}>
+                                            <HeartOutlined /> Add to wishlist
                                         </Button>
-                                        <Button className='flex items-center'>
+                                        {/* <Button className='flex items-center'>
                                             <MenuOutlined /> Add compare
-                                        </Button>
+                                        </Button> */}
                                     </ConfigProvider>
-                                </div> */}
+                                </div>
                                 {/* Roles for COD */}
                                 <div className='mt-[35px]'>
                                     {/* <ConfigProvider
