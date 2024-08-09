@@ -10,8 +10,6 @@ const OrderTable: React.FC = () => {
     const [filteredData, setFilteredData] = useState<DataType[] | null>(null);
 
     const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-        console.log('🚀 ~ extra:', extra);
-        console.log('params', pagination, filters, sorter, extra);
         updateQueryParam({ ...query, page: pagination.current || 1 });
     };
 
