@@ -79,6 +79,8 @@ export const USER_ENDPOINT = {
     PROFILE: '/users/private',
     ALL: '/users/all',
     UPDATE: '/users/private',
+    UPDATE_ADMIN: '/users',
+    DETAIL: '/users',
 };
 export const REVIEW_ENDPOINT = {
     GETOFPRODUCT: '/reviews',

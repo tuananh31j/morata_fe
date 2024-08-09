@@ -1,7 +1,7 @@
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import instance from '~/utils/api/axiosIntance';
 import { USER_ENDPOINT } from '~/constants/endpoint';
-import { IAllUsersResponse, IUserProfileResponse } from '~/types/User ';
+import { IAllUsersResponse, IUserProfileResponse, IUsersResponse } from '~/types/User ';
 
 const userService = {
     async getProfile() {
@@ -16,6 +16,14 @@ const userService = {
 
     async updateProfile(payload: FormData) {
         const res = await instance.patch(`${USER_ENDPOINT.UPDATE}`, payload);
+        return res.data;
+    },
+    async getDetail(id: string) {
+        const res = await instance.get<IAxiosResponse<IUsersResponse>>(`${USER_ENDPOINT.DETAIL}/${id}`);
+        return res.data;
+    },
+    async updateUser(data: FormData, id: string) {
+        const res = await instance.patch<IAxiosResponse<IUsersResponse>>(`${USER_ENDPOINT.UPDATE_ADMIN}/${id}`, data);
         return res.data;
     },
 };
