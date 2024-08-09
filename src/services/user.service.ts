@@ -13,6 +13,11 @@ const userService = {
         const res = await instance.get<IAxiosResponse<IAllUsersResponse>>(`${USER_ENDPOINT.ALL}`);
         return res.data;
     },
+
+    async updateProfile(payload: FormData) {
+        const res = await instance.patch(`${USER_ENDPOINT.UPDATE}`, payload);
+        return res.data;
+    },
 };
 
 export default userService;
