@@ -12,6 +12,7 @@ const useUpdateLocation = () => {
             queryClient.resetQueries({
                 predicate: (query) => query.queryKey.includes(QUERY_KEY.LOCATION),
             });
+            showMessage('Update successfuly!', 'success');
         },
         onError(error) {
             showMessage(error.message, 'error');

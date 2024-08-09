@@ -1,4 +1,5 @@
 import { RightOutlined } from '@ant-design/icons';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import CategoryPoPularSkeleton from '~/components/_common/skeleton/CategorySkeleton/CategoryPopular';

@@ -12,6 +12,7 @@ const useAddLocation = () => {
             queryClient.resetQueries({
                 predicate: (query) => query.queryKey.includes(QUERY_KEY.LOCATION),
             });
+            showMessage('Create successfuly!', 'success');
         },
         onError(error) {
             showMessage(error.message, 'error');
