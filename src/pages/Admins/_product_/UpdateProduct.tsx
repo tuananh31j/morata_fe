@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import clsx from 'clsx';
@@ -18,86 +18,62 @@ import {
     variationsValidator,
 } from '~/validation/Products/validators';
 import AttributesItem from './_component/AttributesItem';
-import VariationItem from './_component/CreateProduct/VariationItem';
-import { FileType, getBase64 } from './_component/Helper/_helper_';
-import { uploadButton } from './_component/UploadButton';
+import VariationItem from './_component/VariationItem';
+import { FileType, getBase64 } from './Helper/_helper_';
+import { UploadButton } from './_component/UploadButton';
 import useGetDetailProductAdmin from '~/hooks/products/Queries/useGetDetailProductAdmin';
-import { handleEditProduct } from './handleEditProduct';
+import { handleEditProduct } from './Helper/handleEditProduct';
 import useUpdateProduct from '~/hooks/products/Mutations/useUpdateProduct';
 import useUpdateProductVariant from '~/hooks/products/Mutations/useUpdateProductVariant';
 import useCreateProductVariant from '~/hooks/products/Mutations/useCreateProductVariant';
-
-const convertApiResponseToFileList = ({ url, urlRef, isArr }: { url: string; urlRef: string; isArr?: boolean }) => {
-    if (!url) return [];
-
-    if (isArr) return [{ name: 'image.png', uid: urlRef, status: 'done', url }];
-    return {
-        name: 'image.png',
-        uid: urlRef,
-        status: 'done',
-        url,
-    };
-};
-const customItemRender: UploadProps['itemRender'] = (originNode, file, fileList, actions) => {
-    return (
-        <div className='ant-upload-list-item ant-upload-list-item-undefined'>
-            <img className='' src={file.thumbUrl || file.url} alt={file.name} />
-            <span className='ant-upload-list-item-actions'>
-                <span
-                    onClick={actions.preview}
-                    className='ant-btn css-dev-only-do-not-override-mzwlov ant-btn-text ant-btn-sm ant-btn-icon-only ant-upload-list-item-action text-white'
-                >
-                    <EyeOutlined />
-                </span>
-                <span
-                    onClick={actions.remove}
-                    className='ant-btn css-dev-only-do-not-override-mzwlov ant-btn-text ant-btn-sm ant-btn-icon-only ant-upload-list-item-action text-white'
-                >
-                    <DeleteOutlined />
-                </span>
-            </span>
-        </div>
-    );
-};
+import CustomItemRender from './_component/CustomItemRender';
+import convertApiResponseToFileList from './Helper/convertImageUrlToFileList';
+import convertData from './Helper/convertData';
+import { DataTypeConvert } from '~/constants/enum';
 
 const UpdateProduct = () => {
     const { id } = useParams();
-    const { data } = useGetDetailProductAdmin(id as string);
-    const productDetails = data?.data;
-    const { mutate: updateProduct, isSuccess: isSuccessProduct, isPending } = useUpdateProduct();
-    const { mutate: updateProductVariant, isSuccess: isSuccessVariantUpdate } = useUpdateProductVariant();
-    const { mutate: createProductVariant, isSuccess: isSuccessVariantCreate } = useCreateProductVariant();
+    const navigate = useNavigate();
+    // @initial form values
+    const [initialValues, setInitialValues] = useState<any>();
 
     // @preview images
     const [previewImagesOpen, setPreviewImagesOpen] = useState<boolean>(false);
     const [previewImages, setPreviewImages] = useState<string>('');
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
     const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
-    const navigate = useNavigate();
+
     // @images
     const [imagesfileList, setImagesFileList] = useState<UploadFile[]>([]);
+
     // @thumbnail
     const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
-    // @attributes images
-    const [attributesFile, setAttributesFile] = useState<UploadFile[][]>([]);
+
+    // @variany images
+    const [variantFile, setVariantFile] = useState<UploadFile[][]>([]);
 
     // @choose category
     const [categoryIdNew, setCategoryIdNew] = useState<string>('');
 
-    // @get attributes
+    // Query
+    const { data } = useGetDetailProductAdmin(id as string);
+    const productDetails = data?.data;
     const { data: attributesRes } = useGetAllAtributes(categoryIdNew || productDetails?.categoryId._id || '');
     const attributesForProduct = attributesRes?.data.productAttributes.attributeIds;
     const attributesForVariant = attributesRes?.data.variantAttribute.attributeIds;
-    // @get category
     const [brandsRes, categoriesRes] = useGetCategoriesAndBrands();
-
-    // @create product
-    const [form] = Form.useForm<IProductForm>();
-
-    // const firstElement = 0;
     const categories = categoriesRes.data?.data;
     const brands = brandsRes.data?.data;
 
+    // Mutation
+    const { mutate: updateProduct, isSuccess: isSuccessProduct, isPending } = useUpdateProduct();
+    const { mutate: updateProductVariant, isSuccess: isSuccessVariantUpdate } = useUpdateProductVariant();
+    const { mutate: createProductVariant, isSuccess: isSuccessVariantCreate } = useCreateProductVariant();
+
+    // @Form
+    const [form] = Form.useForm<IProductForm>();
+
+    // @Handle
     const handlePreview = async (file: UploadFile, multiple: boolean) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj as FileType);
@@ -112,30 +88,41 @@ const UpdateProduct = () => {
     };
 
     const handleChangeCat = (value: string) => {
+        const dataSource = initialValues;
+        if (productDetails && value !== productDetails.categoryId._id) {
+            dataSource.variations = '';
+            dataSource.attributes = '';
+            dataSource.categoryId = categoryIdNew;
+            setVariantFile([]);
+        } else {
+            setVariantFile(initialValues.initialVariantFile);
+        }
+        form.setFieldsValue(dataSource);
+        setImagesFileList(initialValues.initialImages);
+        setThumbnailFile(initialValues.initialThumbnail);
         setCategoryIdNew(value);
     };
 
     const handleChangeImages: UploadProps['onChange'] = ({ fileList: newFileList }) => {
         setImagesFileList(newFileList);
-        console.log(newFileList, imagesfileList);
     };
     const handleChangeThumbnail: UploadProps['onChange'] = ({ fileList: newFileList }) => setThumbnailFile(newFileList);
 
     const handleChangeAttributeThumbnail = (index: number): UploadProps['onChange'] => {
         return ({ fileList: newFileList }) => {
-            const newAttributesFile = [...attributesFile];
-            newAttributesFile[index] = [...newAttributesFile[index], ...newFileList];
-            setAttributesFile(newAttributesFile);
+            console.log(newFileList, 'newFileList');
+            const newVariantFile = [...variantFile];
+            newVariantFile[index] = newFileList;
+            setVariantFile(newVariantFile);
         };
     };
     const handleRemoveAttributeThumbnail = (index: number) => {
-        const newAttributesFile = [...attributesFile];
-        newAttributesFile[index] = [];
-        setAttributesFile(newAttributesFile);
+        const newVariantFile = [...variantFile];
+        newVariantFile[index] = [];
+        setVariantFile(newVariantFile);
     };
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
-        console.log(values);
         if (productDetails) {
             handleEditProduct({
                 productId: id as string,
@@ -146,6 +133,12 @@ const UpdateProduct = () => {
                 createProductVariant,
             });
         }
+    };
+    const onReset = () => {
+        form.setFieldsValue(initialValues.initialValue);
+        setImagesFileList(initialValues.initialImages);
+        setThumbnailFile(initialValues.initialThumbnail);
+        setVariantFile(initialValues.initialVariantFile);
     };
     useEffect(() => {
         if (productDetails) {
@@ -174,39 +167,29 @@ const UpdateProduct = () => {
                 urlRef: thumbnailUrlRef,
                 isArr: true,
             }) as UploadFile<any>[];
-            setImagesFileList(imagesConvert);
-            setThumbnailFile(thumbnailConvert);
-            const attConvert = attributes.reduce((acc: { [key: string]: any }, { key, value }: any) => {
-                acc[key] = value;
-                return acc;
-            }, {});
+
+            const attConvert = convertData({ data: attributes, to: DataTypeConvert.obj });
+            let newVariantFile: UploadFile<any>[][] = [];
             const variaConverts = variationIds.map((varia, i) => {
                 let variantAttributes;
                 if (varia.variantAttributes) {
-                    console.log(varia, 'oooooooooooooo');
-                    variantAttributes = varia.variantAttributes.reduce(
-                        (acc: { [key: string]: any }, { key, value }: any) => {
-                            acc[key] = value;
-                            return acc;
-                        },
-                        {}
-                    );
+                    variantAttributes = convertData({ data: varia.variantAttributes, to: DataTypeConvert.obj });
                 }
                 const image = convertApiResponseToFileList({
                     url: varia.image!,
                     urlRef: varia.imageUrlRef,
                     isArr: true,
                 }) as UploadFile<any>[];
-                const newAttributesFile = [...attributesFile];
-                newAttributesFile[i] = image;
-                setAttributesFile(newAttributesFile);
+                newVariantFile = [...variantFile];
+                newVariantFile[i] = image;
+                setVariantFile((prev) => [...prev, image]);
 
                 const newVaria = { ...varia, variantAttributes, thumbnail: image };
                 delete newVaria.image;
                 return newVaria;
             });
 
-            const initialValues: any = {
+            const initial: any = {
                 images: imagesConvert,
                 thumbnail: thumbnailConvert,
                 attributes: attConvert,
@@ -215,44 +198,36 @@ const UpdateProduct = () => {
                 brandId: brandId._id,
                 ...rest,
             };
-            if (categoryIdNew !== productDetails.categoryId._id) {
-                initialValues.variations = '';
-                initialValues.attributes = '';
-                initialValues.categoryId = categoryIdNew;
-                setAttributesFile([]);
-            }
-            console.log(initialValues);
-            form.setFieldsValue(initialValues as any);
+            setImagesFileList(imagesConvert);
+            setThumbnailFile(thumbnailConvert);
+            setInitialValues({
+                initialValue: initial,
+                initialImages: imagesConvert,
+                initialThumbnail: thumbnailConvert,
+                initialVariantFile: newVariantFile,
+            });
+
+            form.setFieldsValue(initial as any);
         }
-    }, [productDetails, categoryIdNew]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productDetails]);
 
     useEffect(() => {
-        // if (isSuccessProduct || isSuccessVariantUpdate || isSuccessVariantCreate) {
-        //     showMessage('Update product is successfully', 'success');
-        //     navigate('/admin/products');
-        // }
+        if (isSuccessProduct || isSuccessVariantUpdate || isSuccessVariantCreate) {
+            showMessage('Update product is successfully', 'success');
+            navigate('/admin/products');
+        }
     }, [isSuccessProduct, isSuccessVariantUpdate, isSuccessVariantCreate, navigate]);
     return (
         <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-            <div className='m-auto'>
+            <div className='m-auto mb-10'>
                 {productDetails && (
-                    <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off'>
-                        <Form.Item className='flex justify-end'>
-                            <Button
-                                type='primary'
-                                htmlType='submit'
-                                icon={<EditOutlined />}
-                                className='mr-3 px-5'
-                                loading={isPending}
-                                disabled={isPending}
-                                size='large'
-                            >
-                                Edit product
-                            </Button>
-                            <Link to='/admin/products' className='mr-3 px-5'>
+                    <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off' className='capitalize'>
+                        <div className='flex justify-end'>
+                            <Link to='/admin/products' className='mr-3 p-4 underline'>
                                 Back to list
                             </Link>
-                        </Form.Item>
+                        </div>
 
                         <div className='grid grid-cols-1 gap-4'>
                             <Card title='Tags'>
@@ -315,13 +290,13 @@ const UpdateProduct = () => {
                                             listType='picture-card'
                                             onRemove={() => setImagesFileList([])}
                                             fileList={imagesfileList}
-                                            itemRender={customItemRender}
+                                            itemRender={CustomItemRender}
                                             onPreview={(files) => handlePreview(files, true)}
                                             onChange={handleChangeImages}
                                             maxCount={5}
                                             multiple
                                         >
-                                            {imagesfileList.length >= 5 ? null : uploadButton}
+                                            {imagesfileList.length >= 5 ? null : UploadButton}
                                         </Upload>
                                     </Form.Item>
                                     {previewImages && (
@@ -349,13 +324,13 @@ const UpdateProduct = () => {
                                         <Upload
                                             beforeUpload={() => false}
                                             listType='picture-card'
-                                            itemRender={customItemRender}
+                                            itemRender={CustomItemRender}
                                             fileList={thumbnailFile}
                                             onPreview={(file) => handlePreview(file, false)}
                                             onChange={handleChangeThumbnail}
                                             maxCount={1}
                                         >
-                                            {thumbnailFile.length >= 1 ? null : uploadButton}
+                                            {thumbnailFile.length >= 1 ? null : UploadButton}
                                         </Upload>
                                     </Form.Item>
                                     {previewThumbnail && (
@@ -441,7 +416,7 @@ const UpdateProduct = () => {
                                                                     attributesForVariant={attributesForVariant}
                                                                     fieldName={name}
                                                                     restField={restField}
-                                                                    attributesFile={attributesFile}
+                                                                    variantFile={variantFile}
                                                                     handleChangeThumbnail={
                                                                         handleChangeAttributeThumbnail
                                                                     }
@@ -455,6 +430,7 @@ const UpdateProduct = () => {
                                                         })}
                                                         <Form.Item>
                                                             <Button
+                                                                htmlType='button'
                                                                 type='dashed'
                                                                 onClick={() => add()}
                                                                 block
@@ -471,7 +447,7 @@ const UpdateProduct = () => {
                                 </>
                             )}
                         </div>
-                        <div className='my-2 flex justify-end'>
+                        <div className='sticky bottom-0 right-0 my-2 flex justify-end bg-white p-4'>
                             <Button
                                 type='primary'
                                 htmlType='submit'
@@ -483,23 +459,16 @@ const UpdateProduct = () => {
                             >
                                 Edit product
                             </Button>
-                        </div>
-                        {/* <div className='my-2 flex justify-end'>
                             <Button
-                                type='primary'
-                                htmlType='submit'
-                                icon={<PlusSquareOutlined />}
+                                type='dashed'
+                                htmlType='button'
+                                onClick={onReset}
                                 className='mr-3 px-5'
-                                loading={isPending}
-                                disabled={isPending}
                                 size='large'
                             >
-                                Update product
-                            </Button>
-                            <Button type='dashed' htmlType='reset' className='mr-3 px-5' size='large'>
                                 Reset
                             </Button>
-                        </div> */}
+                        </div>
                     </Form>
                 )}
             </div>

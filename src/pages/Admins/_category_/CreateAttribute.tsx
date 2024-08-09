@@ -54,6 +54,7 @@ const CreateAttribute = () => {
         if (isError) {
             showMessage('Attribute creation failed!', 'error');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPending, isSuccess, isError]);
 
     return (
@@ -88,7 +89,24 @@ const CreateAttribute = () => {
                                             onChange={handleChange}
                                             options={[
                                                 { value: 'manual', label: <span>Manual</span> },
-                                                { value: 'options', label: <span>Options</span> },
+                                                {
+                                                    value: 'options',
+                                                    label: (
+                                                        <span className='flex items-center justify-between'>
+                                                            <span>Options</span>
+                                                            <Popover
+                                                                content='Create options for attributes. Streamlines the addition of new items with precision and ease, while enhancing the customer experience by simplifying product selection.'
+                                                                title='Recommended'
+                                                            >
+                                                                <Button
+                                                                    icon={<QuestionOutlined />}
+                                                                    size='small'
+                                                                    type='text'
+                                                                />
+                                                            </Popover>
+                                                        </span>
+                                                    ),
+                                                },
                                             ]}
                                         />
                                     </Form.Item>

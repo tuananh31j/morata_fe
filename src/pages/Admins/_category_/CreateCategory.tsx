@@ -1,18 +1,5 @@
 import { PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
-import {
-    Button,
-    Checkbox,
-    CheckboxProps,
-    Form,
-    FormProps,
-    GetProp,
-    Input,
-    Popover,
-    Radio,
-    Select,
-    SelectProps,
-    TreeSelect,
-} from 'antd';
+import { Button, Form, FormProps, Input, Popover, TreeSelect } from 'antd';
 import { ReactNode, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
@@ -24,7 +11,7 @@ import showMessage from '~/utils/ShowMessage';
 
 const ItemComp = ({ title, isRequired, isVariant }: { title: string; isRequired: boolean; isVariant: boolean }) => {
     return (
-        <>
+        <span className='flex items-center justify-between'>
             <p className={cn({ ['text-red']: isRequired, ['text-purple-900']: isVariant }, 'inline')}>{title}</p>
             <span>
                 {isVariant && (
@@ -48,7 +35,7 @@ const ItemComp = ({ title, isRequired, isVariant }: { title: string; isRequired:
                     </Popover>
                 )}
             </span>
-        </>
+        </span>
     );
 };
 
@@ -58,8 +45,6 @@ const CreateCategory = () => {
 
     const { data } = useGetAllAtributesNew();
     const attributes = data?.data;
-
-    // const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
 
     const [attributeOptions, setAttributeOptions] = useState<
         {
@@ -75,12 +60,6 @@ const CreateCategory = () => {
 
     useEffect(() => {
         if (attributes) {
-            // const options = attributes.map((attr: { _id: string; name: string; values: string[] }) => ({
-            //     label: attr.name,
-            //     value: attr._id,
-            //     values: attr.values,
-            // }));
-
             const options = attributes?.map((attr) => ({
                 title: <ItemComp title={attr.name} isRequired={attr.isRequired} isVariant={attr.isVariant} />,
                 value: attr._id,
@@ -95,15 +74,6 @@ const CreateCategory = () => {
     }, [attributes]);
 
     const { handleMessage, contextHolder } = useMessage();
-
-    // const handleChange = (value: string[]) => {
-    //     console.log(`selected ${value}`);
-    // };
-
-    // const optionsWithTooltips = attributeOptions.map((option) => ({
-    //     ...option,
-    //     title: option.values ? option.values.join(', ') : 'No values available',
-    // }));
 
     const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
         console.log('Success:', values);
@@ -131,6 +101,7 @@ const CreateCategory = () => {
         if (isError) {
             showMessage('Category creation failed!', 'error');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPending, isSuccess, isError]);
 
     return (

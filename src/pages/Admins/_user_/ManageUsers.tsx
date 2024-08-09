@@ -2,30 +2,40 @@ import {
     DeleteOutlined,
     EditOutlined,
     FilterOutlined,
+    FrownTwoTone,
     PlusOutlined,
     VerticalAlignBottomOutlined,
     WarningOutlined,
 } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Modal, Select, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Image, Modal, Select, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ADMIN_ROUTES } from '~/constants/router';
+import useGetAllUsers from '~/hooks/users/Queries/useGetAllUsers';
 
 type DataType = {
-    id?: string;
-    key: string;
+    key?: string;
+    _id: string;
     username: string;
     email: string;
+    isActive: boolean;
+    avatar: string;
+    phone: string;
     role: string;
-    address: string;
-    phoneNumber: string;
+    createdAt: string;
 };
 
 const ManageUsers = () => {
     const [searchText, setSearch] = useState('');
     const [inputSearchValue, setInputSearchValue] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { data } = useGetAllUsers();
+    const users = data?.data?.users;
+    console.log(data);
+    console.log(users);
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -40,15 +50,28 @@ const ManageUsers = () => {
     };
     const columns: TableProps<DataType>['columns'] = [
         {
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: (avatar) => (
+                <div>
+                    {avatar ? (
+                        <Image src={avatar} width={100} height={100} />
+                    ) : (
+                        <Space className='flex items-center'>
+                            No avatar <FrownTwoTone />
+                        </Space>
+                    )}
+                </div>
+            ),
+            responsive: ['lg'],
+        },
+        {
             title: 'Username',
             dataIndex: 'username',
             key: 'username',
             render: (text) => <h4>{text}</h4>,
-            filteredValue: [searchText],
-            onFilter: (value, record) => {
-                const searchValue = (typeof value === 'string' && value.toLowerCase()) || '';
-                return typeof value && record.username.toLowerCase().includes(searchValue);
-            },
+
             sorter: (a, b) => a.username.localeCompare(b.username),
         },
         {
@@ -58,10 +81,10 @@ const ManageUsers = () => {
             render: (email) => <span>{email}</span>,
         },
         {
-            title: 'Phone Number',
-            dataIndex: 'phoneNumber',
-            key: 'phoneNumber',
-            sorter: (a, b) => a.phoneNumber.localeCompare(b.phoneNumber),
+            title: 'Contact',
+            dataIndex: 'phone',
+            key: 'phone',
+            sorter: (a, b) => a.phone.localeCompare(b.phone),
         },
         {
             title: 'Role',
@@ -98,13 +121,6 @@ const ManageUsers = () => {
                 );
             },
         },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-            render: (address) => <p>{address}</p>,
-            responsive: ['lg'],
-        },
 
         {
             title: 'Action',
@@ -112,7 +128,7 @@ const ManageUsers = () => {
             render: (_, record) => (
                 <Space size={'middle'}>
                     <Tooltip title='Update'>
-                        <Link to='/' className='text-blue-500'>
+                        <Link to={`${ADMIN_ROUTES.USERS_EDIT}/${record._id}`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
                     </Tooltip>
@@ -127,56 +143,58 @@ const ManageUsers = () => {
             ),
         },
     ];
-    const data: DataType[] = [
-        {
-            key: '1',
-            username: 'Walter White',
-            email: 'datntph24947@fpt.edu.vn',
-            role: 'admin',
-            phoneNumber: '0931239321',
-            address: '308 Belmont Avenue, Ontario, California 91764',
-        },
-        {
-            key: '2',
-            username: 'Jim Green',
-            email: 'datntph24947@fpt.edu.vn',
-            role: 'staff',
-            phoneNumber: '0931239321',
-            address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
-        },
-        {
-            key: '3',
-            username: 'John Brown',
-            email: 'datntph24947@fpt.edu.vn',
-            role: 'user',
-            phoneNumber: '0931239321',
-            address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
-        },
-        {
-            key: '4',
-            username: 'John Brown',
-            email: 'datntph24947@fpt.edu.vn',
-            role: 'staff',
-            phoneNumber: '0931239321',
-            address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
-        },
-        {
-            key: '5',
-            username: 'Walter White',
-            email: 'datntph24947@fpt.edu.vn',
-            role: 'staff',
-            phoneNumber: '0931239321',
-            address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
-        },
-        {
-            key: '6',
-            username: 'Walter White',
-            email: 'datntph24947@fpt.edu.vn',
-            role: 'staff',
-            phoneNumber: '0931239321',
-            address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
-        },
-    ];
+
+    // const data: DataType[] = [
+    //     {
+    //         key: '1',
+    //         username: 'Walter White',
+    //         email: 'datntph24947@fpt.edu.vn',
+    //         role: 'admin',
+    //         phoneNumber: '0931239321',
+    //         address: '308 Belmont Avenue, Ontario, California 91764',
+    //     },
+    //     {
+    //         key: '2',
+    //         username: 'Jim Green',
+    //         email: 'datntph24947@fpt.edu.vn',
+    //         role: 'staff',
+    //         phoneNumber: '0931239321',
+    //         address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
+    //     },
+    //     {
+    //         key: '3',
+    //         username: 'John Brown',
+    //         email: 'datntph24947@fpt.edu.vn',
+    //         role: 'user',
+    //         phoneNumber: '0931239321',
+    //         address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
+    //     },
+    //     {
+    //         key: '4',
+    //         username: 'John Brown',
+    //         email: 'datntph24947@fpt.edu.vn',
+    //         role: 'staff',
+    //         phoneNumber: '0931239321',
+    //         address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
+    //     },
+    //     {
+    //         key: '5',
+    //         username: 'Walter White',
+    //         email: 'datntph24947@fpt.edu.vn',
+    //         role: 'staff',
+    //         phoneNumber: '0931239321',
+    //         address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
+    //     },
+    //     {
+    //         key: '6',
+    //         username: 'Walter White',
+    //         email: 'datntph24947@fpt.edu.vn',
+    //         role: 'staff',
+    //         phoneNumber: '0931239321',
+    //         address: 'Trịnh Văn Bố, Nam Từ Liêm, Hà Nội',
+    //     },
+    // ];
+
     const rowSelection = {
         onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -238,12 +256,13 @@ const ManageUsers = () => {
                 </div>
 
                 <Table
+                    rowKey={(record) => record._id}
                     rowSelection={{
                         type: 'checkbox',
                         ...rowSelection,
                     }}
                     columns={columns}
-                    dataSource={data}
+                    dataSource={users}
                     pagination={{
                         pageSize: 4,
                     }}

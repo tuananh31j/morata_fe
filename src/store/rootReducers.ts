@@ -6,6 +6,7 @@ import filterSlice from './slice/filterSlice';
 import headerReducer from '~/store/slice/headerSlice';
 import orderReducer from '~/store/slice/orderSlice';
 import detailProductReducer from '~/store/slice/DetailProduct';
+import rateProductSlice from './slice/rateProductSlice';
 
 const rootReducer = combineReducers({
     theme,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     headerReducer,
     orderReducer,
     detailProductReducer,
+    rateProductSlice,
 });
 
 export default rootReducer;

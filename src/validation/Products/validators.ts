@@ -1,6 +1,6 @@
 import { IProductFiles, IProductVariation } from '~/types/Product';
 import { errorMessage } from './Product';
-import { ACCEPT_FILE_TYPE, MAX_SIZE } from '~/pages/Admins/_product_/_component/Helper/_helper_';
+import { ACCEPT_FILE_TYPE, MAX_SIZE } from '~/pages/Admins/_product_/Helper/_helper_';
 
 /* eslint-disable */
 export const imagesValidator = async (_: any, images: IProductFiles) => {
@@ -8,11 +8,14 @@ export const imagesValidator = async (_: any, images: IProductFiles) => {
         return errorMessage('Please input your images!');
     }
     /* eslint-disable */
-    if (images && images.fileList && images.fileList.length > 0 && (images.fileList[0] as any).originFileObj) {
+    if (images && images.fileList && images.fileList.length > 0) {
         for (const file of images?.fileList) {
+            console.log(file, 'file');
             if (file?.size >= MAX_SIZE) {
                 return errorMessage('Image size must be smaller than 5MB!');
-            } else if (file?.type && !ACCEPT_FILE_TYPE.includes(images?.file.type)) {
+            } else if (file?.type && !ACCEPT_FILE_TYPE.includes(file.type)) {
+                console.log(file, 'fiêrrle');
+
                 return errorMessage('Only accept png, jpg and jpeg type!');
             }
         }
@@ -21,12 +24,8 @@ export const imagesValidator = async (_: any, images: IProductFiles) => {
 };
 
 export const thumbnailValidator = async (_: any, thumbnail: IProductFiles) => {
-    if (
-        thumbnail &&
-        thumbnail.fileList &&
-        thumbnail.fileList.length > 0 &&
-        (thumbnail.fileList[0] as any).originFileObj
-    ) {
+    //  (thumbnail.fileList[0] as any).originFileObj
+    if (thumbnail && thumbnail.fileList && thumbnail.fileList.length > 0) {
         if (thumbnail?.fileList?.length < 1 || !thumbnail) {
             return errorMessage('Please input your thumbnail!');
         }
@@ -67,7 +66,6 @@ export const variationsValidator = async (_: any, variations: IProductVariation[
     return Promise.resolve();
 };
 export const variationsThumbnailValidator = async (_: any, thumbnail: any) => {
-    console.log(thumbnail, 'vvvvvvvvvvvvvvvvvvv');
     if (
         thumbnail &&
         thumbnail.fileList &&

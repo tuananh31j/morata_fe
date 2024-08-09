@@ -19,10 +19,12 @@ const useFilter = () => {
         });
         // @dispatch
         dispatch(setQuery(params));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const reset = () => {
         dispatch(setQuery({}));
+        navigator(`${pathname}`);
     };
     const updateGridUI = (gridClass: string) => {
         dispatch(updateGrid(gridClass));
@@ -30,14 +32,16 @@ const useFilter = () => {
 
     const updateQueryParam = (params: IParams) => {
         const newParams = new URLSearchParams(searchParams?.toString());
-        const checkedParams = _.omitBy(params, _.isUndefined);
+        const checkedParams = _.omitBy(params, (value) => value === undefined || value === '' || value === null);
 
         Object.entries(params).forEach(([key, value]) => {
+            console.log(value);
             if (value) newParams.set(key, String(value));
             else {
                 newParams.delete(key);
             }
         });
+        console.log(checkedParams);
         dispatch(setQuery(checkedParams));
         navigator(`${pathname}?${newParams.toString()}`);
     };

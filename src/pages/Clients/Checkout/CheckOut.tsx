@@ -1,8 +1,9 @@
-import { Button, ConfigProvider, Form, Input, Radio, Select, Spin } from 'antd';
+import { Button, Checkbox, ConfigProvider, Form, Input, Radio, Select, Spin } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import PolicyModal from '~/components/PolicyPopup/Policy';
 import MiniProduct from '~/components/ProductCard/MiniProduct';
 import { PaymentMethod } from '~/constants/enum';
 import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
@@ -15,8 +16,12 @@ import { Currency } from '~/utils';
 const CheckOut = () => {
     const [form] = useForm();
     const { mutate: stripeCheckout, isPending } = useMutationCheckOutSession();
+
     const { data } = useGetProfile();
     const { data: orderItem, responsePayloadCheckout } = useGetMyCart(data?.data?._id);
+
+    const [isAgreed, setIsAgreed] = useState<boolean>(false);
+
     const totalPrice = orderItem
         ? orderItem?.data?.items?.reduce(
               (total: number, product) => total + product.productVariation.price * product.quantity,
@@ -34,7 +39,7 @@ const CheckOut = () => {
             customerInfo: {
                 name: data?.data?.username,
                 email: data?.data?.email,
-                phone: data?.data?.phone,
+                phone: data?.data?.phone || value.phone,
             },
             receiverInfo: {
                 name: value.name,
@@ -65,11 +70,14 @@ const CheckOut = () => {
             items: responsePayloadCheckout,
         });
     };
+    /* eslint-disable */
     useEffect(() => {
         if (!orderItem?.data.items.length) {
             navigate('/');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [orderItem]);
+    /* eslint-enable */
     return (
         <>
             {/* BACK TO HOME BTN */}
@@ -220,6 +228,7 @@ const CheckOut = () => {
                                     rules={[
                                         { required: !(totalPrice >= 1000), message: 'Please select a payment method.' },
                                     ]}
+                                    className='mb-0'
                                 >
                                     <Radio.Group optionType='default' buttonStyle='solid'>
                                         <div className='space-y-4'>
@@ -237,6 +246,25 @@ const CheckOut = () => {
                                     </Radio.Group>
                                 </Form.Item>
                             </div>
+                            <Form.Item
+                                name='isAgreed'
+                                rules={[{ required: !isAgreed, message: 'You must agree to continue the order!' }]}
+                            >
+                                <Checkbox
+                                    checked={isAgreed}
+                                    onChange={(e) => {
+                                        const newIsAgreed = e.target.checked;
+                                        setIsAgreed(newIsAgreed);
+                                    }}
+                                >
+                                    I agree to Morata&apos;s{' '}
+                                    <PolicyModal
+                                        onClose={() => {
+                                            setIsAgreed(false);
+                                        }}
+                                    />
+                                </Checkbox>
+                            </Form.Item>
                             <div className='mt-[35px]'>
                                 <ConfigProvider
                                     theme={{

@@ -11,7 +11,6 @@ import { IProductItemNew } from '~/types/Product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
-import { generateLink } from './_helper';
 
 const MediumCard = ({ product }: { product: IProductItemNew }) => {
     const discountPercentage = 10;
@@ -53,13 +52,13 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                             loading='lazy'
                             src={product.thumbnail}
                             alt=''
-                            className='relative z-10  w-full select-none object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                            className='relative z-10 w-full select-none object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
-                    <ProductActions />
+                    <ProductActions alignLeft={65} />
                 </div>
                 <div className='mt-3 flex h-full flex-col'>
-                    <Link to={generateLink({ productId: product._id, categoryId: product.categoryId._id })}>
+                    <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>
                         <h1 className='line-clamp-2 h-16 flex-shrink-0 text-ellipsis text-title-md font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h1>

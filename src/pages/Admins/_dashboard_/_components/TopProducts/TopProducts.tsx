@@ -1,7 +1,7 @@
-import { FallOutlined, RiseOutlined } from '@ant-design/icons';
-import { ConfigProvider, Flex, Image, Progress, ProgressProps, Space, Table, TableProps, Tabs, TabsProps } from 'antd';
+import { FallOutlined, QuestionCircleOutlined, RiseOutlined } from '@ant-design/icons';
+import { ConfigProvider, Flex, Image, Progress, Space, Table, TableProps, Tabs, TabsProps, Tooltip } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import WrapperList from '~/components/_common/WrapperList';
 import { MAIN_ROUTES } from '~/constants/router';
@@ -37,8 +37,9 @@ export const TopProducts: React.FC = () => {
 
     const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>([today, today]);
     const { data } = useGetProductStatsByRange(dateRange[0], dateRange[1]);
-    const topSellingProducts = data?.data?.topSellingProducts;
-    const leastSellingProducts = data?.data?.leastSellingProducts;
+    const topSellingProducts = data?.data?.data?.topSellingProducts;
+    const leastSellingProducts = data?.data?.data?.leastSellingProducts;
+    console.log(data);
 
     const [tableData, setTableData] = useState<DataType[]>(topSellingProducts);
     const [currentTab, setCurrentTab] = useState('top products');
@@ -95,7 +96,11 @@ export const TopProducts: React.FC = () => {
                 ),
             },
             {
-                title: <span className='text-base'>Sold</span>,
+                title: (
+                    <Tooltip title='Number of products sold' color='blue' className='text-base'>
+                        Sold <QuestionCircleOutlined />
+                    </Tooltip>
+                ),
                 dataIndex: 'totalQuantity',
                 key: 'totalQuantity',
                 align: 'center',
@@ -103,7 +108,11 @@ export const TopProducts: React.FC = () => {
                 render: (text) => <div className='text-center font-normal'>{text}</div>,
             },
             {
-                title: <span className='text-base'>Revenue</span>,
+                title: (
+                    <Tooltip title='Amount of money made based on product sales' color='blue' className='text-base'>
+                        Revenue <QuestionCircleOutlined />
+                    </Tooltip>
+                ),
                 dataIndex: 'totalRevenue',
                 key: 'totalRevenue',
                 align: 'center',
@@ -111,7 +120,15 @@ export const TopProducts: React.FC = () => {
                 render: (text) => <div className='text-center font-normal'>{Currency.format(text)}</div>,
             },
             {
-                title: <span className='text-base'>Percentage</span>,
+                title: (
+                    <Tooltip
+                        title='Percentage of amount sold for the respective product divided by the amount of all products'
+                        color='blue'
+                        className='text-base'
+                    >
+                        Percentage <QuestionCircleOutlined />
+                    </Tooltip>
+                ),
                 dataIndex: 'percentageOfTotal',
                 key: 'percentageOfTotal',
                 align: 'center',
@@ -150,7 +167,7 @@ export const TopProducts: React.FC = () => {
             key: 'worst products',
             label: (
                 <Space>
-                    Worst Sales <FallOutlined />
+                    Least Sales <FallOutlined />
                 </Space>
             ),
             children: dataTable(),
@@ -179,7 +196,7 @@ export const TopProducts: React.FC = () => {
 
     return (
         <WrapperList
-            title='Top Products Statistics'
+            title='Products Statistics'
             option={<DateRangePickerComponent onDateRangeChange={handleDateRangeChange} value={dateRange} />}
             lineButtonBox
         >

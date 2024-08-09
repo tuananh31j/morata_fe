@@ -1,5 +1,5 @@
-import { MinusCircleOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Card, Form, FormProps, Image, Input, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
+import { PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { Button, Card, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { AxiosError } from 'axios';
 import clsx from 'clsx';
@@ -21,10 +21,10 @@ import {
     variationsValidator,
 } from '~/validation/Products/validators';
 import AttributesItem from './_component/AttributesItem';
-import VariationItem from './_component/CreateProduct/VariationItem';
-import { handleCreateProduct } from './_component/CreateProduct/handleUploadProduct';
-import { FileType, getBase64 } from './_component/Helper/_helper_';
-import { uploadButton } from './_component/UploadButton';
+import VariationItem from './_component/VariationItem';
+import { handleCreateProduct } from './Helper/handleCreateProduct';
+import { FileType, getBase64 } from './Helper/_helper_';
+import { UploadButton } from './_component/UploadButton';
 
 const CreateProduct = () => {
     const [previewImagesOpen, setPreviewImagesOpen] = useState<boolean>(false);
@@ -90,7 +90,6 @@ const CreateProduct = () => {
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
         console.log(values);
         handleCreateProduct(values, createProduct);
-        console.log(values);
     };
 
     const handleChangeCat = (value: string) => {
@@ -124,7 +123,7 @@ const CreateProduct = () => {
     /* eslint-enable */
     return (
         <>
-            <div className='mx-6 rounded-lg bg-white px-4 py-6'>
+            <div className='mx-6 rounded-lg bg-white px-4 py-6 capitalize'>
                 <div className='m-auto'>
                     <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off'>
                         <Form.Item className='flex justify-end'>
@@ -204,7 +203,7 @@ const CreateProduct = () => {
                                             maxCount={5}
                                             multiple
                                         >
-                                            {imagesfileList.length >= 5 ? null : uploadButton}
+                                            {imagesfileList.length >= 5 ? null : UploadButton}
                                         </Upload>
                                     </Form.Item>
                                     {previewImages && (
@@ -237,7 +236,7 @@ const CreateProduct = () => {
                                             onChange={handleChangeThumbnail}
                                             maxCount={1}
                                         >
-                                            {thumbnailFile.length >= 1 ? null : uploadButton}
+                                            {thumbnailFile.length >= 1 ? null : UploadButton}
                                         </Upload>
                                     </Form.Item>
                                     {previewThumbnail && (
@@ -318,7 +317,7 @@ const CreateProduct = () => {
                                                             attributesForVariant={attributesForVariant}
                                                             fieldName={name}
                                                             restField={restField}
-                                                            attributesFile={attributesFile}
+                                                            variantFile={attributesFile}
                                                             handleChangeThumbnail={handleChangeAttributeThumbnail}
                                                             handleRemoveThumbnail={handleRemoveAttributeThumbnail}
                                                             removeVariation={remove}

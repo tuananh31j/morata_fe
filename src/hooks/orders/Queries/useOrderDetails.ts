@@ -3,6 +3,7 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import instance from '~/utils/api/axiosIntance';
 
 const useOrderDetails = (id: string) => {
+    /* eslint-disable */
     return useQuery({
         queryKey: [QUERY_KEY.ORDERS, id],
         queryFn: async () => {
@@ -12,7 +13,9 @@ const useOrderDetails = (id: string) => {
             });
             return response && response.data && response.data.data;
         },
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
     });
 };
-
+/* eslint-enable */
 export default useOrderDetails;
