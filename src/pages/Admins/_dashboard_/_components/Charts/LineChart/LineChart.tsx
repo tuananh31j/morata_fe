@@ -1,37 +1,52 @@
+import { DatePicker } from 'antd';
+import { DatePickerProps } from 'antd/lib';
+import dayjs, { Dayjs } from 'dayjs';
 import { useMemo, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-
-import dayjs, { Dayjs } from 'dayjs';
 import WrapperList from '~/components/_common/WrapperList';
 import { useMonthlyStats } from '~/hooks/stats/useMonthlyStats';
-import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
 import { optionsLineChart } from './_options';
 
+const monthOrder = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 const LineChart = () => {
-    const today = dayjs();
-    const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>([today.subtract(1, 'year'), today]);
-    const { data: result, isLoading } = useMonthlyStats();
+    const [selectedYear, setSelectedYear] = useState<number>(dayjs().year());
+    const { data: result, isLoading } = useMonthlyStats(selectedYear);
 
-    const totalRevenue = result?.data?.map((item: any) => item.totalRevenue) || [];
-    const totalOrder = result?.data?.map((item: any) => item.totalOrders) || [];
-    const months = result?.data?.map((item: any) => item.month) || [];
+    const sortedData = useMemo(() => {
+        if (!result || !Array.isArray(result.data)) return [];
+        return [...result.data].sort((a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month));
+    }, [result]);
 
-    const showRevenue = totalRevenue.some((value: any) => value !== undefined && value !== null);
-    const showOrders = totalOrder.some((value: any) => value !== undefined && value !== null);
+    const months = sortedData.map((item) => item.month);
+    const totalRevenue = sortedData.map((item) => item.totalRevenue);
+    const totalOrders = sortedData.map((item) => item.totalOrders);
 
-    const series = useMemo(
-        () => [
-            ...(showRevenue ? [{ name: 'Revenue', data: totalRevenue }] : []),
-            ...(showOrders ? [{ name: 'Orders', data: totalOrder }] : []),
-        ],
-        [totalRevenue, totalOrder, showRevenue, showOrders]
-    );
-    const handleDateRangeChange = (dates: [Dayjs, Dayjs] | null) => {
-        if (dates && dates[0] && dates[1]) {
-            setDateRange(dates);
-        } else {
-            setDateRange([today, today]);
+    const showRevenue = totalRevenue.some((value) => value !== undefined && value !== null);
+    const showOrders = totalOrders.some((value) => value !== undefined && value !== null);
+
+    const series = [
+        {
+            name: 'Revenue',
+            data: totalRevenue,
+        },
+        {
+            name: 'Orders',
+            data: totalOrders,
+        },
+    ];
+
+    const onYearChange: DatePickerProps['onChange'] = (date: Dayjs | null) => {
+        if (date) {
+            const newYear = date.year();
+            if (newYear <= dayjs().year()) {
+                setSelectedYear(newYear);
+            }
         }
+    };
+
+    const disabledDate = (current: Dayjs) => {
+        return current.year() > dayjs().year();
     };
 
     if (isLoading) {
@@ -42,13 +57,20 @@ const LineChart = () => {
         <WrapperList
             title='Monthly Stats'
             className='xl:col-span-12'
-            option={<DateRangePickerComponent onDateRangeChange={handleDateRangeChange} value={dateRange} />}
+            option={
+                <DatePicker
+                    onChange={onYearChange}
+                    picker='year'
+                    defaultValue={dayjs().year(selectedYear)}
+                    disabledDate={disabledDate}
+                />
+            }
             lineButtonBox
         >
             <div className='col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark'>
                 <div>
                     <div id='LineChart' className='-ml-5'>
-                        {series.length > 0 && (
+                        {sortedData.length > 0 ? (
                             <ReactApexChart
                                 options={optionsLineChart(months, showRevenue, showOrders)}
                                 series={series}
@@ -56,6 +78,8 @@ const LineChart = () => {
                                 height={350}
                                 width={'100%'}
                             />
+                        ) : (
+                            <div className='text-center'>No data available</div>
                         )}
                     </div>
                 </div>

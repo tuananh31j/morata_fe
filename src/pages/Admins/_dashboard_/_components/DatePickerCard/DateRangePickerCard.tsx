@@ -1,17 +1,16 @@
-import React, { forwardRef, useEffect, useState } from 'react';
-import { DatePicker, DatePickerProps, Dropdown, MenuProps, Space, Tooltip } from 'antd';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import { DatePicker, Dropdown, MenuProps, Space, Tooltip } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
-import moment from 'moment';
 import { CalendarOutlined } from '@ant-design/icons';
 import DropDownItem from './_modules/DropDownItem';
+import { RangePickerProps } from 'antd/es/date-picker';
 
 type DateInput =
-    | { type: 'single'; date: string }
     | { type: 'range'; start: string; end: string }
     | { type: 'monthly'; year: number; month: number }
     | { type: 'yearly'; year: number };
 
-type DatePickerCardProps = {
+type DateRangePickerCardProps = {
     onDateChange: (date: DateInput) => void;
     initialDate: DateInput;
 };
@@ -23,54 +22,79 @@ enum Picker {
 }
 
 const DATE_FIELD = 'date-field';
-const MONTH_FIELD = 'month-field';
-const YEAR_FIELD = 'year-field';
 
-const DAY_FIELD = 'date-field';
-const WEEK_FIELD = 'month-field';
-const DAY30_FIELD = 'year-field';
+const today = dayjs().format('YYYY-MM-DD');
+const dateSevenDayAgo = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
+const dateThirtyDayAgo = dayjs().subtract(30, 'day').format('YYYY-MM-DD');
 
-const today = moment().format('YYYY-MM-DD');
-const yesterday = moment().subtract(1, 'day').format('YYYY-MM-DD');
-const dateSevenDayAgo = moment().subtract(7, 'day').format('YYYY-MM-DD');
-const dateThirtyDayAgo = moment().subtract(30, 'day').format('YYYY-MM-DD');
+const { RangePicker } = DatePicker;
 
-const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDate }) => {
+const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange, initialDate }) => {
     const [datePickerType, setDatePickerType] = useState<Picker>(Picker.Date);
     const [picked, setPicked] = useState<DateInput>(initialDate);
     const [openDropdown, setOpenDropdown] = useState<boolean>(false);
     const [openCalendar, setOpenCalendar] = useState<boolean>(false);
     const [hoveredDate, setHoveredDate] = useState<string | null>(null);
 
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const generateUniqueId = (prefix: string) => `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+
+    const dateRangeId = generateUniqueId('date-range');
+    const monthId = generateUniqueId('month');
+    const yearId = generateUniqueId('year');
+
     useEffect(() => {
         setPicked(initialDate);
     }, [initialDate]);
 
-    const handlePickerDate = (date: Dayjs | null) => {
-        if (date) {
-            setOpenCalendar(false);
-            setOpenDropdown(false);
-
-            let pickedValue: DateInput;
-
-            switch (datePickerType) {
-                case Picker.Year:
-                    pickedValue = { type: 'yearly', year: date.year() };
-                    break;
-                case Picker.Month:
-                    pickedValue = { type: 'monthly', year: date.year(), month: date.month() + 1 };
-                    break;
-                default:
-                    pickedValue = { type: 'single', date: date.format('YYYY-MM-DD') };
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setOpenDropdown(false);
+                setOpenCalendar(false);
             }
+        };
 
-            setPicked(pickedValue);
-            onDateChange(pickedValue);
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handlePickerDate = (dates: [Dayjs, Dayjs]) => {
+        setOpenCalendar(false);
+        setOpenDropdown(false);
+
+        let pickedValue: DateInput;
+
+        switch (datePickerType) {
+            case Picker.Year: {
+                pickedValue = { type: 'yearly', year: dates[0].year() };
+                break;
+            }
+            case Picker.Month: {
+                pickedValue = { type: 'monthly', year: dates[0].year(), month: dates[0].month() + 1 };
+                break;
+            }
+            default: {
+                pickedValue = {
+                    type: 'range',
+                    start: dates[0].format('YYYY-MM-DD'),
+                    end: dates[1].format('YYYY-MM-DD'),
+                };
+                break;
+            }
         }
+
+        setPicked(pickedValue);
+        onDateChange(pickedValue);
     };
 
-    const onChange: DatePickerProps['onChange'] = (date) => {
-        handlePickerDate(date);
+    const onChange: RangePickerProps['onChange'] = (dates, dateStrings) => {
+        if (dates) {
+            handlePickerDate(dates as [Dayjs, Dayjs]);
+        }
     };
 
     const handlePickerType = (type: Picker) => {
@@ -86,8 +110,6 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
 
     const renderDateRange = (date: DateInput): string => {
         switch (date.type) {
-            case 'single':
-                return date.date === today ? 'Today' : date.date;
             case 'range':
                 return `${date.start} - ${date.end}`;
             case 'monthly':
@@ -95,59 +117,40 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
             case 'yearly':
                 return date.year.toString();
             default:
-                return 'Invalid date'; // Add a default case to satisfy the linter
+                return 'Invalid date';
         }
     };
 
-    const getDatePickerValue = (): Dayjs | null => {
+    const getDatePickerValue = (): [Dayjs, Dayjs] | null => {
         switch (picked.type) {
-            case 'single':
-                return dayjs(picked.date);
             case 'range':
-                return dayjs(picked.start);
-            case 'monthly':
-                return dayjs(`${picked.year}-${picked.month}`, 'YYYY-M');
-            case 'yearly':
-                return dayjs(picked.year.toString(), 'YYYY');
+                return [dayjs(picked.start), dayjs(picked.end)];
+            case 'monthly': {
+                const start = dayjs(`${picked.year}-${picked.month}`, 'YYYY-M').startOf('month');
+                return [start, start.endOf('month')];
+            }
+            case 'yearly': {
+                const yearStart = dayjs(picked.year.toString(), 'YYYY').startOf('year');
+                return [yearStart, yearStart.endOf('year')];
+            }
             default:
                 console.error('Invalid date input type');
-                return null; // Return null for invalid types
+                return null;
         }
     };
+
     const items: MenuProps['items'] = [
         {
             label: (
                 <Space direction='vertical' className='border-r p-4'>
                     <div>
                         <DropDownItem
-                            lableId={DAY_FIELD}
-                            title='Today'
-                            handleClick={() => {
-                                const todayDate: DateInput = { type: 'single', date: today };
-                                setPicked(todayDate);
-                                onDateChange(todayDate);
-                            }}
-                            onMouseEnter={() => setHoveredDate(today)}
-                            onMouseLeave={() => setHoveredDate(null)}
-                        />
-                        <DropDownItem
-                            lableId={WEEK_FIELD}
-                            title='Yesterday'
-                            handleClick={() => {
-                                const yesterdayDate: DateInput = { type: 'single', date: yesterday };
-                                setPicked(yesterdayDate);
-                                onDateChange(yesterdayDate);
-                            }}
-                            onMouseEnter={() => setHoveredDate(yesterday)}
-                            onMouseLeave={() => setHoveredDate(null)}
-                        />
-                        <DropDownItem
-                            lableId={DAY30_FIELD}
                             title='Past 7 Days'
                             handleClick={() => {
                                 const sevenDaysRange: DateInput = { type: 'range', start: dateSevenDayAgo, end: today };
                                 setPicked(sevenDaysRange);
                                 onDateChange(sevenDaysRange);
+                                setOpenDropdown(false);
                             }}
                             onMouseEnter={() => setHoveredDate(`${dateSevenDayAgo} - ${today}`)}
                             onMouseLeave={() => setHoveredDate(null)}
@@ -162,6 +165,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                                 };
                                 setPicked(thirtyDaysRange);
                                 onDateChange(thirtyDaysRange);
+                                setOpenDropdown(false);
                             }}
                             onMouseEnter={() => setHoveredDate(`${dateThirtyDayAgo} - ${today}`)}
                             onMouseLeave={() => setHoveredDate(null)}
@@ -170,19 +174,28 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                     <hr />
                     <div>
                         <DropDownItem
-                            lableId={DATE_FIELD}
-                            title='By Day'
-                            handleClick={() => handlePickerType(Picker.Date)}
+                            lableId={dateRangeId}
+                            title='By Date Range'
+                            handleClick={() => {
+                                handlePickerType(Picker.Date);
+                                setOpenDropdown(false);
+                            }}
                         />
                         <DropDownItem
-                            lableId={MONTH_FIELD}
+                            lableId={monthId}
                             title='By Month'
-                            handleClick={() => handlePickerType(Picker.Month)}
+                            handleClick={() => {
+                                handlePickerType(Picker.Month);
+                                setOpenDropdown(false);
+                            }}
                         />
                         <DropDownItem
-                            lableId={YEAR_FIELD}
+                            lableId={yearId}
                             title='By Year'
-                            handleClick={() => handlePickerType(Picker.Year)}
+                            handleClick={() => {
+                                handlePickerType(Picker.Year);
+                                setOpenDropdown(false);
+                            }}
                         />
                     </div>
                 </Space>
@@ -211,7 +224,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                         </span>
                     </Tooltip>
                     <span>
-                        <DatePicker
+                        <RangePicker
                             open={openCalendar}
                             disabledDate={(current) => current && current > dayjs().endOf('day')}
                             picker={datePickerType}
@@ -223,7 +236,17 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                             }}
                             suffixIcon={<CalendarOutlined />}
                             placement='bottomLeft'
-                            onChange={onChange}
+                            onChange={(dates, dateStrings) => {
+                                if (dates) {
+                                    onChange(dates, dateStrings);
+                                    setOpenCalendar(false);
+                                }
+                            }}
+                            onOpenChange={(open) => {
+                                if (!open) {
+                                    setOpenCalendar(false);
+                                }
+                            }}
                             popupClassName='absolute pt-3'
                             value={getDatePickerValue()}
                         />
@@ -234,4 +257,4 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
     );
 };
 
-export default DatePickerCard;
+export default DateRangePickerCard;

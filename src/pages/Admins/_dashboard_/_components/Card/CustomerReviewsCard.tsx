@@ -1,6 +1,6 @@
 import { Button, CardProps, Flex, Progress, ProgressProps, Rate, Typography } from 'antd';
 import { green, lime, orange, red, yellow } from '@ant-design/colors';
-import Card from './Card';
+import Card from '.';
 
 const PROGRESS_PROPS: ProgressProps = {
     style: {

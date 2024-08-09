@@ -34,3 +34,38 @@ export type IProductStatsResponse = {
         };
     };
 };
+export interface IYearlyStatsData {
+    totalOrders: number;
+    totalRevenue: number;
+    month: number;
+}
+
+export interface IYearlyStatsResponse {
+    data: {
+        year: number;
+        months: IYearlyStatsData[];
+        totalOrders: number;
+        totalRevenue: number;
+    };
+}
+interface DateRange {
+    start: string;
+    end: string;
+}
+
+interface TotalStatsData {
+    totalOrders: number;
+    cancelledOrders: number;
+    successfulOrders: number;
+    totalRevenue: number;
+    orderSuccessRate: number;
+    orderCancelRate: number;
+    newUsers: number;
+    newProducts: number;
+    averageDailyRevenue: number;
+    dateRange: DateRange;
+}
+
+export interface ITotalStatsResponse {
+    data: TotalStatsData;
+}
