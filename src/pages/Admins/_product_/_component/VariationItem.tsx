@@ -1,12 +1,13 @@
-import { DeleteOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
 import { IAttributesValue } from '~/types/Attributes';
 import {
     variationsPriceValidator,
     variationsStockValidator,
-    variationsStorageValidator,
     variationsThumbnailValidator,
 } from '~/validation/Products/validators';
+import CustomItemRenderVariant from './CustomItemRenderVariant';
+import UploadButtonVariant from './UploadButtonVariant';
 
 type IVariationsItem = {
     fieldName: number;
@@ -15,48 +16,33 @@ type IVariationsItem = {
         fieldKey?: number;
     };
     attributesForVariant: IAttributesValue[] | undefined;
-    attributesFile: UploadFile[][];
+    variantFile: UploadFile[][];
     id?: string;
     handleChangeThumbnail: (index: number) => UploadProps['onChange'];
     handleRemoveThumbnail: (index: number) => void;
     removeVariation: (name: number) => void;
-};
-const customItemRender: UploadProps['itemRender'] = (originNode, file, fileList, actions) => {
-    return (
-        <div className='ant-upload-list-item ant-upload-list-item-undefined mt-8 h-8 w-8'>
-            <img className='' src={file.thumbUrl || file.url} alt={file.name} />
-            <span className='ant-upload-list-item-actions'>
-                <span
-                    onClick={actions.remove}
-                    className='ant-btn css-dev-only-do-not-override-mzwlov ant-btn-text ant-btn-sm ant-btn-icon-only ant-upload-list-item-action text-white'
-                >
-                    <DeleteOutlined />
-                </span>
-            </span>
-        </div>
-    );
 };
 
 const VariationItem = ({
     fieldName,
     index,
     restField,
-    attributesFile,
+    variantFile,
     attributesForVariant,
     id,
     handleChangeThumbnail,
     handleRemoveThumbnail,
     removeVariation,
 }: IVariationsItem) => {
-    console.log(attributesFile[index], '.........................');
     return (
         <>
             {attributesForVariant && (
                 <Space align='center' className='flex items-center'>
-                    <Form.Item {...restField} name={[fieldName, '_id']} dependencies={['_id']}>
+                    <Form.Item className='capitalize' {...restField} name={[fieldName, '_id']} dependencies={['_id']}>
                         <InputNumber className='hidden' />
                     </Form.Item>
                     <Form.Item
+                        className='capitalize'
                         {...restField}
                         name={[fieldName, 'thumbnail']}
                         rules={[
@@ -67,21 +53,19 @@ const VariationItem = ({
                         dependencies={['thumbnail']}
                     >
                         <Upload
-                            itemRender={customItemRender}
+                            itemRender={CustomItemRenderVariant}
                             beforeUpload={() => false}
                             listType='picture'
-                            fileList={attributesFile[index]}
+                            fileList={variantFile[index]}
                             onChange={handleChangeThumbnail(index)}
                             maxCount={1}
                         >
-                            {attributesFile[index]?.length >= 1 ? null : (
-                                <Button className='border-none bg-stone-50 outline-none'>Upload</Button>
-                            )}
-                            {/* {!fileList && <Button className='border-none bg-stone-50 outline-none'>Upload</Button>} */}
+                            {variantFile[index]?.length >= 1 ? null : <UploadButtonVariant />}
                         </Upload>
                     </Form.Item>
-                    {attributesForVariant.map((attribute, ii) => (
+                    {attributesForVariant.map((attribute) => (
                         <Form.Item
+                            className='capitalize'
                             key={attribute._id}
                             name={[fieldName, 'variantAttributes', attribute.attributeKey]}
                             label={attribute.name}
@@ -107,6 +91,7 @@ const VariationItem = ({
                     ))}
 
                     <Form.Item
+                        className='capitalize'
                         {...restField}
                         name={[fieldName, 'price']}
                         label='Price'
@@ -116,6 +101,7 @@ const VariationItem = ({
                         <InputNumber placeholder='Price' className='w-full' />
                     </Form.Item>
                     <Form.Item
+                        className='capitalize'
                         {...restField}
                         name={[fieldName, 'stock']}
                         label='stock'

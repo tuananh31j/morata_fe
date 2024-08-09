@@ -28,7 +28,9 @@ const PopupOrderDetails = ({ id }: { id: string }) => {
     return (
         <>
             <Tooltip placement='topLeft' title={id}>
-                <Button onClick={showModal}>{String(id).slice(0, 5)}...</Button>
+                <Button onClick={showModal} type='primary' className='mr-2'>
+                    View
+                </Button>
             </Tooltip>
 
             <Modal footer={''} open={isModalOpen} onCancel={handleCancel} width={1000}>

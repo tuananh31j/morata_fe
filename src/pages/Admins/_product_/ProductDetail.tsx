@@ -1,5 +1,4 @@
 import { Tag } from 'antd';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';

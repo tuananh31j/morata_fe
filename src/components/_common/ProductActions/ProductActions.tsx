@@ -1,4 +1,4 @@
-import { EyeOutlined, HeartOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { HeartOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
 const ProductActions = ({ alignLeft }: { alignLeft: number }) => {
