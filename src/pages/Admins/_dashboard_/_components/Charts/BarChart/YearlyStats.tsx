@@ -1,62 +1,71 @@
 import { DatePicker, DatePickerProps } from 'antd';
-import React from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import WrapperList from '~/components/_common/WrapperList';
 import { useYearlyStats } from '~/hooks/stats/useYearly';
 import { optionsBarChart } from './_option';
-import dayjs from 'dayjs';
 
 const YearlyStats: React.FC = () => {
-    const { data: yearlyStats } = useYearlyStats();
+    const [selectedYear, setSelectedYear] = useState<number>(dayjs().year());
+    const { data: yearlyStats, refetch } = useYearlyStats(selectedYear);
 
-    const years = yearlyStats?.data.map((item: any) => item.year) || [];
-    const revenue = yearlyStats?.data.map((item: any) => item.totalRevenue) || [];
-    const orders = yearlyStats?.data.map((item: any) => item.totalOrders) || [];
+    useEffect(() => {
+        refetch();
+    }, [selectedYear, refetch]);
+
+    const yearData = yearlyStats?.data || { year: selectedYear, totalOrders: 0, totalRevenue: 0 };
+    const { year, totalOrders, totalRevenue } = yearData;
 
     const series = [
         {
             name: 'Orders',
-            data: orders.length > 0 ? orders : [0],
+            data: [totalOrders],
         },
         {
             name: 'Revenue',
-            data: revenue.length > 0 ? revenue : [0],
+            data: [totalRevenue],
         },
     ];
 
-    const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(date, dateString);
+    const onYearChange: DatePickerProps['onChange'] = (date: Dayjs | null) => {
+        if (date) {
+            const newYear = date.year();
+            if (newYear <= dayjs().year()) {
+                setSelectedYear(newYear);
+            }
+        }
     };
 
-    const year = dayjs().year();
-    const currentYear = dayjs().year(year);
+    const disabledDate = (current: Dayjs) => {
+        return current.year() > dayjs().year();
+    };
 
     return (
-        <>
-            {orders && revenue && (
-                <WrapperList
-                    title='Yearly Statistics'
-                    option={<DatePicker onChange={onChange} picker='year' defaultValue={currentYear} />}
-                    lineButtonBox
-                >
-                    <div>
-                        <div id='barChart'>
-                            {years.length > 0 ? (
-                                <ReactApexChart
-                                    options={optionsBarChart(years)}
-                                    series={series}
-                                    type='bar'
-                                    height={350}
-                                    width={'100%'}
-                                />
-                            ) : (
-                                <div>No data available</div>
-                            )}
-                        </div>
-                    </div>
-                </WrapperList>
-            )}
-        </>
+        <WrapperList
+            title='Yearly Statistics'
+            option={
+                <DatePicker
+                    onChange={onYearChange}
+                    picker='year'
+                    defaultValue={dayjs().year(selectedYear)}
+                    disabledDate={disabledDate}
+                />
+            }
+            lineButtonBox
+        >
+            <div>
+                <div id='barChart'>
+                    <ReactApexChart
+                        options={optionsBarChart([String(year)])}
+                        series={series}
+                        type='bar'
+                        height={350}
+                        width={'100%'}
+                    />
+                </div>
+            </div>
+        </WrapperList>
     );
 };
 

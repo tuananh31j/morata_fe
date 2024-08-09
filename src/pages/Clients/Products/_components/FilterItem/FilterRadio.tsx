@@ -5,7 +5,7 @@ import { ICategory } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
 import useFilter from '~/hooks/_common/useFilter';
 
-const FilterString = ({
+const FilterRadio = ({
     filterName,
     filterParams,
     data,
@@ -33,4 +33,4 @@ const FilterString = ({
     );
 };
 
-export default FilterString;
+export default FilterRadio;

@@ -1,6 +1,7 @@
 import { DockerOutlined, HeartOutlined, RedoOutlined } from '@ant-design/icons';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, Navigate, useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
@@ -8,6 +9,7 @@ import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useGetDetailProduct from '~/hooks/products/Queries/useGetDetailProduct';
 import ActionDetail from '~/pages/Clients/ProductDetails/_components/Action/ActionDetail';
 import ProductRelated from '~/pages/Clients/ProductDetails/_components/ProductRelated/ProductRelated';
+import { setReviewData } from '~/store/slice/rateProductSlice';
 import { RootState } from '~/store/store';
 import { Currency } from '~/utils';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
@@ -29,15 +31,16 @@ export type IVariantItem = {
     image?: string;
     productId: string;
 };
+
 const ProductDetails = () => {
     const { id } = useParams();
     const { query } = useFilter();
     const navigate = useNavigate();
+
     const { data: productDetail, isLoading } = useGetDetailProduct(id as string);
     const { mutate: addWishlist } = useMutationAddWishList();
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { data: allWishList } = useGetAllWishlist(query);
-    console.log('🚀 ~ ProductActions ~ allWishList:', allWishList);
     const wishListIds = allWishList?.data.wishList.map((item) => item._id);
     const handleAddWishlist = () => {
         if (user) {
@@ -53,6 +56,10 @@ const ProductDetails = () => {
         }
     };
     const product = productDetail?.data;
+    /* eslint-disable */
+    const dispatch = useDispatch();
+    /* eslint-enable */
+    const isInitialMount = useRef(true);
     // const oldPrice = product ? product?.price * (1 + product?.discountPercentage / 100) : 0;
     useDocumentTitle(`${product?.name}`);
     const variant = useSelector((state: RootState) => state.detailProductReducer.variant);
@@ -62,6 +69,19 @@ const ProductDetails = () => {
     //         dispatch(setImages(product.images));
     //     }
     // }, [product]);
+    /* eslint-disable */
+    useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            return () => {
+                if (!isInitialMount.current) {
+                    dispatch(setReviewData({ orderId: '', isOpen: false }));
+                }
+            };
+        }
+    }, []);
+    /* eslint-enable */
     return (
         <>
             {/* BeadCrumb */}
@@ -236,3 +256,6 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+function dispatch(arg0: { payload: { orderId: string; isOpen: boolean }; type: 'rateProduct/setRateData' }) {
+    throw new Error('Function not implemented.');
+}

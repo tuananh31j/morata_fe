@@ -12,6 +12,7 @@ export const PRODUCT_ENDPOINT = {
     UPDATE: '/products',
     UPDATE_VARIATIONS: '/products/variation/',
     CREATE_VARIATIONS: '/products/variation/',
+    FILTER: '/products/filter',
 };
 export const CATEGORY_ENDPOINT = {
     ALL: '/categories/all',
@@ -55,6 +56,7 @@ export const ORDER_ENDPOINT = {
     CANCEL_ORDER: '/orders/cancel',
     CONFIRM_ORDER: '/orders/confirm',
     FINISH_ORDER: '/orders/done',
+    UPDATE_ISREVIEWED: '/orders',
 };
 
 export const ATTRIBUTES_ENDPOINT = {
@@ -69,16 +71,27 @@ export const STATS_ENDPOINT = {
     MONTHLY_STATS: '/stats/monthly',
     YEARLY_STATS: '/stats/yearly',
     DATE_RANGE: 'stats/dateRange',
-
     PRODUCTS: '/stats/productStats',
+    TOP_BUYERS: '/stats/topBuyers',
 };
 
 export const USER_ENDPOINT = {
     PROFILE: '/users/private',
-    UPDATE: '/users/priavte',
+    ALL: '/users/all',
+    UPDATE: '/users/private',
+    UPDATE_ADMIN: '/users',
+    DETAIL: '/users',
 };
 export const REVIEW_ENDPOINT = {
     GETOFPRODUCT: '/reviews',
+    GET_DETAIL: '/reviews',
+    CREATE: '/reviews',
+    CHECK_PURCHASED: '/reviews/purchased',
+    UPDATE_ISREVIEWED: '/reviews/',
+};
+export const LOCATION_ENDPOINT = {
+    ROOT: '/locations',
+    USER: '/locations/user',
 };
 export const WISHLIST_ENDPOINT = {
     MY_WISHLIST: '/users/private/wish-list',

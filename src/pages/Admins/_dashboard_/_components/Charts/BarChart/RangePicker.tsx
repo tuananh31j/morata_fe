@@ -4,7 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 import WrapperList from '~/components/_common/WrapperList';
 import { UseRangePicker } from '~/hooks/stats/useRangePicker';
 import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
-import { BarChartOptions, optionsBarChart } from './_option';
+import { optionsBarChart } from './_option';
 
 const BarChartRangePicker: React.FC = () => {
     const today = dayjs();

@@ -22,7 +22,11 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
     };
 
     const handleSelectChange = (value: string) => {
-        updateQueryParam({ ...query, sort: value });
+        if (value === '-price' || value === 'price') {
+            updateQueryParam({ ...query, rawsort: value, sort: '' });
+        } else {
+            updateQueryParam({ ...query, sort: value, rawsort: '' });
+        }
     };
 
     return (

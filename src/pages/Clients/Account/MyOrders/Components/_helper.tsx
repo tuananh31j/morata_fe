@@ -4,8 +4,7 @@ import ActionLink from './ActionLink';
 import PopupOrderDetails from './PopupOrderDetails';
 import OrderStatusTag from '~/components/OrderStatusTag';
 import { Currency } from '~/utils';
-import moment from 'moment';
-import { useState } from 'react';
+import dayjs from 'dayjs';
 
 export interface DataType {
     _id: string;
@@ -85,21 +84,24 @@ export const columns: TableColumnsType<DataType> = [
         title: 'Date',
         dataIndex: 'createdAt',
         showSorterTooltip: { target: 'full-header' },
-        render: (text: string) => {
-            return moment(text).format('DD/MM/YYYY hh:mm:ss');
-        },
-        sorter: (a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
+        render: (value) => <span>{dayjs(value).format('DD/MM/YYYY')}</span>,
+    },
+    {
+        title: 'Total price',
+        dataIndex: 'totalPrice',
+        showSorterTooltip: { target: 'full-header' },
+        render: (value) => <span>{Currency.format(value)}</span>,
+    },
+    {
+        title: 'Status',
+        dataIndex: 'orderStatus',
+        render: (value) => <OrderStatusTag status={value} />,
+        filters: filterStatusItems,
     },
     {
         title: 'Actions',
         dataIndex: 'orderStatus',
-        render: (value, record) => (
-            <>
-                <PopupOrderDetails id={record._id} />
-                <ActionLink status={value} orderId={record._id} />
-            </>
-        ),
-
+        render: (value, record) => <ActionLink status={value} orderId={record._id} />,
         // sorter: (a, b) => a.name.length - b.name.length,
         // sortDirections: ['descend'],
     },

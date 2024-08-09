@@ -1,9 +1,11 @@
 import FilterWrap from './FilterWrap';
-import { Radio, RadioChangeEvent } from 'antd';
+import { Checkbox } from 'antd';
 import { IParams } from '~/types/Api';
 import { ICategory } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
 import useFilter from '~/hooks/_common/useFilter';
+import { CheckboxProps } from 'antd/lib';
+import { cn } from '~/utils';
 
 const FilterBox = ({
     filterName,
@@ -15,23 +17,37 @@ const FilterBox = ({
     data: ICategory[] | IBrand[];
 }) => {
     const { query, updateQueryParam } = useFilter();
-    const onChange = (e: RadioChangeEvent) => {
-        updateQueryParam({ ...query, [filterParams]: e.target.value.toString() });
+    const opitons = query[filterParams] ? query[filterParams].split(',') : [];
+    const onChange: CheckboxProps['onChange'] = (e) => {
+        console.log(e.target.value, e.target.checked);
+        const old = query[filterParams] ? query[filterParams].split(',') : [];
+        let newBrand: string[] = [];
+        if (e.target.checked) {
+            const copyBRandQuery = old.filter((item: string) => item !== e.target.value);
+            newBrand = [...copyBRandQuery, e.target.value];
+        } else {
+            newBrand = old.filter((item: string) => item !== e.target.value);
+        }
+        updateQueryParam({ ...query, [filterParams]: newBrand.join(',') });
     };
+
     return (
         <FilterWrap filterName={filterName}>
-            <Radio.Group
-                buttonStyle='solid'
-                className='flex flex-wrap gap-x-2 gap-y-6'
-                onChange={onChange}
-                value={query[filterParams] || ''}
-            >
+            <Checkbox.Group className='flex flex-wrap gap-x-2 gap-y-6' value={opitons}>
                 {data.map((item) => (
-                    <Radio.Button className='rounded-none border' key={item._id} value={item._id}>
+                    <Checkbox
+                        onChange={onChange}
+                        className={cn('hidden-checkbox rounded-none border-2 border-black border-opacity-10', {
+                            [`rounded-md border-blue-700 border-opacity-100 shadow-2xl shadow-blue-600`]:
+                                opitons.includes(item._id),
+                        })}
+                        key={item._id}
+                        value={item._id}
+                    >
                         {item.name}
-                    </Radio.Button>
+                    </Checkbox>
                 ))}
-            </Radio.Group>
+            </Checkbox.Group>
         </FilterWrap>
     );
 };

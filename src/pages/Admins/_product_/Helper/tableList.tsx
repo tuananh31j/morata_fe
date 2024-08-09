@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Button, Space, TableProps, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 

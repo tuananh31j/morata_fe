@@ -1,5 +1,7 @@
 import { UploadFile } from 'antd';
 import { IProductForm, IThumbnailAntd } from '~/types/Product';
+import convertData from './convertData';
+import { DataTypeConvert } from '~/constants/enum';
 
 type IHandleEditProductProp = {
     imagesInit: UploadFile<any>[];
@@ -21,7 +23,8 @@ export const handleEditProduct = async ({
 }: IHandleEditProductProp) => {
     const dataTransfer = new DataTransfer();
     const formDataUpdateProduct = new FormData();
-    // const formDataUpdateProductVariant = new FormData();
+    const oldImages = [];
+    const oldImagesRefs = [];
     const {
         name,
         images,
@@ -32,22 +35,16 @@ export const handleEditProduct = async ({
         brandId: brandIdData,
         categoryId: categoryIdData,
     } = data;
-    const attributesData = [];
+    const attributesData = convertData({ data: attributes, to: DataTypeConvert.raw });
     const firstElement = 0;
-
-    /* eslint-disable */
-    for (const [key, value] of Object.entries(attributes)) {
-        attributesData.push({
-            name: key.replace(/_/g, ' '),
-            key,
-            value,
-        });
-    }
+    console.log(attributes, 'attributes');
     if (variations) {
-        variations.map((value) => {
+        variations.forEach((value) => {
             if (value._id) {
+                // Update product variant
                 const formDataUpdateProductVariant = new FormData();
                 if (value.thumbnail?.fileList?.[firstElement]?.originFileObj) {
+                    console.log(value.thumbnail?.fileList?.[firstElement]);
                     formDataUpdateProductVariant.append(
                         'image',
                         value.thumbnail?.fileList?.[firstElement].originFileObj as File
@@ -55,18 +52,19 @@ export const handleEditProduct = async ({
                 }
                 delete value.thumbnail;
                 const { imageUrlRef, price, stock, ...variantAttributesObj } = value;
-                const variantAttributes = [];
-                for (const [key, value] of Object.entries(variantAttributesObj.variantAttributes)) {
-                    variantAttributes.push({
-                        name: key.replace(/_/g, ' '),
-                        key,
-                        value,
-                    });
-                }
+                console.log(variantAttributesObj.variantAttributes, 'variantAttributesObj');
+                const variantAttributes = variantAttributesObj.variantAttributes
+                    ? convertData({
+                          data: variantAttributesObj.variantAttributes,
+                          to: DataTypeConvert.raw,
+                      })
+                    : [];
+                console.log(value, '?', variantAttributesObj.variantAttributes, '/', 'value._id');
                 const variantFinal = { imageUrlRef, price, stock, variantAttributes };
                 formDataUpdateProductVariant.append('variantString', JSON.stringify(variantFinal));
                 updateProductVariant({ data: formDataUpdateProductVariant, variantId: value._id });
             } else {
+                // Create product variant
                 const formDataCreateProductVariant = new FormData();
                 if (value.thumbnail?.fileList?.[firstElement]?.originFileObj) {
                     formDataCreateProductVariant.append(
@@ -76,16 +74,10 @@ export const handleEditProduct = async ({
                 }
                 delete value.thumbnail;
                 const { imageUrlRef, price, stock, ...variantAttributesObj } = value;
-                const variantAttributes = [];
-                if (variantAttributesObj.variantAttributes) {
-                    for (const [key, value] of Object.entries(variantAttributesObj.variantAttributes)) {
-                        variantAttributes.push({
-                            name: key.replace(/_/g, ' '),
-                            key,
-                            value,
-                        });
-                    }
-                }
+                const variantAttributes = convertData({
+                    data: variantAttributesObj.variantAttributes,
+                    to: DataTypeConvert.raw,
+                });
 
                 const variantFinal = { imageUrlRef, price, stock, variantAttributes };
                 formDataCreateProductVariant.append('variantString', JSON.stringify(variantFinal));
@@ -93,14 +85,12 @@ export const handleEditProduct = async ({
                 createProductVariant(formDataCreateProductVariant);
             }
         });
-        /* eslint-enable */
+
         formDataUpdateProduct.append('name', name);
         formDataUpdateProduct.append('attributes', JSON.stringify(attributesData));
-        const oldImages = [];
-        const oldImagesRefs = [];
 
+        // Update product
         /* eslint-disable */
-        console.log(images?.fileList, 'xxxxxxxxxxxxxxxxxxxxxxxx');
         if (images?.fileList) {
             for (const file of images?.fileList) {
                 if ((file as any).originFileObj) {
@@ -135,7 +125,6 @@ export const handleEditProduct = async ({
         formDataUpdateProduct.append('oldImages', JSON.stringify(oldImages));
         formDataUpdateProduct.append('oldImageRefs', JSON.stringify(oldImagesRefs));
 
-        /* eslint-enable */
         formDataUpdateProduct.append('categoryId', categoryIdData);
         formDataUpdateProduct.append('brandId', brandIdData);
 
