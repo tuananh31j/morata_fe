@@ -26,4 +26,5 @@ export const QUERY_KEY = {
     DATE_RANGE: 'dateRange',
     LOCATION: 'location',
     PRODUCT_STATS: 'productStats',
+    TOP_BUYERS: 'topBuyers',
 };

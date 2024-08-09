@@ -71,8 +71,8 @@ export const STATS_ENDPOINT = {
     MONTHLY_STATS: '/stats/monthly',
     YEARLY_STATS: '/stats/yearly',
     DATE_RANGE: 'stats/dateRange',
-
     PRODUCTS: '/stats/productStats',
+    TOP_BUYERS: '/stats/topBuyers',
 };
 
 export const USER_ENDPOINT = {

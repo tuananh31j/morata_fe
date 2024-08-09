@@ -1,14 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { STATS_ENDPOINT } from '~/constants/endpoint';
 import { QUERY_KEY } from '~/constants/queryKey';
-import instance from '~/utils/api/axiosIntance';
+import statsService from '~/services/stats.service';
 
-export const useMonthlyStats = () => {
+export const useMonthlyStats = (year: number) => {
     return useQuery({
-        queryKey: [QUERY_KEY.MONTHLY_STATS],
-        queryFn: async () => {
-            const { data } = await instance.get(STATS_ENDPOINT.MONTHLY_STATS);
-            return data;
-        },
+        queryKey: [QUERY_KEY.MONTHLY_STATS, year],
+        queryFn: () => statsService.getOrderAndRevenueByMonthly(year),
     });
 };

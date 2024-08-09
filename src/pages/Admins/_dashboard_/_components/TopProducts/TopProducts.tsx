@@ -37,8 +37,9 @@ export const TopProducts: React.FC = () => {
 
     const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>([today, today]);
     const { data } = useGetProductStatsByRange(dateRange[0], dateRange[1]);
-    const topSellingProducts = data?.data?.topSellingProducts;
-    const leastSellingProducts = data?.data?.leastSellingProducts;
+    const topSellingProducts = data?.data?.data?.topSellingProducts;
+    const leastSellingProducts = data?.data?.data?.leastSellingProducts;
+    console.log(data);
 
     const [tableData, setTableData] = useState<DataType[]>(topSellingProducts);
     const [currentTab, setCurrentTab] = useState('top products');
@@ -121,7 +122,7 @@ export const TopProducts: React.FC = () => {
             {
                 title: (
                     <Tooltip
-                        title='Percentage of amount sold divided by amount in stock of each respective product'
+                        title='Percentage of amount sold for the respective product divided by the amount of all products'
                         color='blue'
                         className='text-base'
                     >
@@ -166,7 +167,7 @@ export const TopProducts: React.FC = () => {
             key: 'worst products',
             label: (
                 <Space>
-                    Worst Sales <FallOutlined />
+                    Least Sales <FallOutlined />
                 </Space>
             ),
             children: dataTable(),
