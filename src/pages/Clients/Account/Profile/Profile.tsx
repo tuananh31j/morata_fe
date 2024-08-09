@@ -1,6 +1,7 @@
 import { DeleteOutlined, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, FormProps, GetProp, Image, Input, Modal, Upload, UploadFile, UploadProps } from 'antd';
 import { useEffect, useState } from 'react';
+import StaticImages from '~/assets';
 import WrapperList from '~/components/_common/WrapperList';
 import useWindowSize from '~/hooks/_common/useWindowSize';
 import { useMutationUpdateProfle } from '~/hooks/profile/Mutations/useUpdateProfile';
@@ -8,6 +9,7 @@ import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 import { ACCEPT_FILE_TYPE, FileType, getBase64, MAX_SIZE } from '~/pages/Admins/_product_/Helper/_helper_';
 import convertApiResponseToFileList from '~/pages/Admins/_product_/Helper/convertImageUrlToFileList';
 import { IProductFiles, IThumbnailAntd } from '~/types/Product';
+import showMessage from '~/utils/ShowMessage';
 import { errorMessage } from '~/validation/Products/Product';
 
 const Profile = () => {
@@ -19,7 +21,6 @@ const Profile = () => {
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
     const [previewThumbnail, setPreviewThumbnail] = useState<string>('');
 
-    // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
     const [form] = Form.useForm();
 
     const [open, setOpen] = useState<boolean>(false);
@@ -53,8 +54,6 @@ const Profile = () => {
     };
 
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        // console.log('Success:', values);
-
         const formDataUpdateProfile = new FormData();
 
         formDataUpdateProfile.append('username', values.username);
@@ -62,7 +61,6 @@ const Profile = () => {
         formDataUpdateProfile.append('phone', values.phone);
         formDataUpdateProfile.append('avatar', (values.avatar?.fileList[0] as IThumbnailAntd)?.originFileObj);
 
-        console.log(formDataUpdateProfile.get('avatar'));
         updateProfile(formDataUpdateProfile);
     };
 
@@ -104,6 +102,7 @@ const Profile = () => {
                 url: profile?.avatar,
                 urlRef: profile?.avatar,
                 isArr: true,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             }) as UploadFile<any>[];
 
             setThumbnailFile(thumbnailConvert);
@@ -156,28 +155,6 @@ const Profile = () => {
                 {/* @Content */}
                 <div className='flex items-center justify-center'>
                     <div className='w-[80%] rounded-2xl bg-white px-6 py-4'>
-                        {/* User avatar */}
-                        {/* <div className='mb-6 flex items-center justify-center'>
-                            <div className='mt-4 flex w-24 select-none items-center justify-center rounded-full'>
-                                {profile && profile.avatar && (
-                                    <img
-                                        src={profile.avatar}
-                                        loading='lazy'
-                                        alt='user'
-                                        className='w-full rounded-full '
-                                    />
-                                )}
-                                {profile && !profile.avatar && (
-                                    <img
-                                        src={StaticImages.userImageDf}
-                                        loading='lazy'
-                                        alt='user'
-                                        className='w-full rounded-full '
-                                    />
-                                )}
-                            </div>
-                        </div> */}
-
                         <Form form={form} layout='vertical' className='w-full' onFinish={onFinish}>
                             <Form.Item<FieldType>
                                 label='Avatar'
@@ -210,17 +187,12 @@ const Profile = () => {
                                         onVisibleChange: (visible) => setPreviewThumbnailOpen(visible),
                                         afterOpenChange: (visible) => !visible && setPreviewThumbnail(''),
                                     }}
-                                    src={previewThumbnail}
+                                    src={previewThumbnail || StaticImages.userImageDf}
                                 />
                             )}
 
                             <Form.Item<FieldType> label='Họ và tên' className='mt-1' name='username'>
-                                <Input
-                                    placeholder='Họ và tên'
-                                    className='py-3'
-                                    // defaultValue={profile?.username}
-                                    // value={profile?.username}
-                                />
+                                <Input placeholder='Họ và tên' className='py-3' />
                             </Form.Item>
 
                             <Form.Item<FieldType> label='Số điện thoại' name='phone'>
@@ -256,7 +228,6 @@ const Profile = () => {
                     </div>
                 </div>
                 <Modal
-                    // title='Thay đổi mật khẩu'
                     open={open}
                     onOk={handleOk}
                     centered

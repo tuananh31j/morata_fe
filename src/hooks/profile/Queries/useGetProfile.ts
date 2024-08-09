@@ -6,6 +6,7 @@ const useGetProfile = () => {
     return useQuery({
         queryKey: [QUERY_KEY.USERS],
         queryFn: () => userService.getProfile(),
+        refetchOnMount: true,
     });
 };
 
