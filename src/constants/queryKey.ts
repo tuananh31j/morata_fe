@@ -27,4 +27,10 @@ export const QUERY_KEY = {
     LOCATION: 'location',
     PRODUCT_STATS: 'productStats',
     TOP_BUYERS: 'topBuyers',
+    // wishlist
+    WISHLIST: {
+        LIST: 'wishlist',
+        ADD: 'add',
+        REMOVE: 'remove',
+    },
 };

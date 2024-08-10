@@ -40,23 +40,23 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                 {/* Image */}
                 <div
                     className='group relative w-full'
-                    data-active={isActiveProductActions ? 'card' : ''}
-                    onMouseEnter={handleSetDateActive}
-                    onMouseLeave={handleSetDateActive}
+                    // data-active={isActiveProductActions ? 'card' : ''}
+                    // onMouseEnter={handleSetDateActive}
+                    // onMouseLeave={handleSetDateActive}
                 >
                     <Link
                         to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}
                         className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                     >
                         {/* HOVER IMAGE */}
-                        {isActiveProductActions && (
-                            <img
-                                loading='lazy'
-                                src={product.images[0]}
-                                alt=''
-                                className='absolute h-full w-full transition-transform duration-700 ease-linear md:w-56'
-                            />
-                        )}
+                        {/* {isActiveProductActions && ( */}
+                        <img
+                            loading='lazy'
+                            src={product.images[0]}
+                            alt=''
+                            className='absolute h-full w-full transition-transform duration-700 ease-linear md:w-56'
+                        />
+                        {/* )} */}
 
                         {/* THUMBNAIL */}
                         <img
@@ -66,7 +66,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             className='relative z-10 h-full w-full opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
-                    <ProductActions alignLeft={87} />
+                    <ProductActions id={product._id} />
                 </div>
 
                 {/* Name */}
@@ -89,7 +89,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                                 {Currency.format(product.variationIds[0].price)}
                             </span>
                             {discountPercentage > 0 && (
-                                <del className=' text-gray-400 text-base font-semibold leading-5'>
+                                <del className='text-gray-400 text-base font-semibold leading-5 '>
                                     {Currency.format(newPrice)}
                                 </del>
                             )}
@@ -129,7 +129,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                 {/* Discount */}
                 {discountPercentage > 0 ? (
-                    <div className='absolute left-0 top-0  z-10 inline-block select-none rounded-sm bg-lime-600 px-2 text-sm leading-6 text-white'>
+                    <div className='absolute left-0 top-0 z-10 inline-block select-none rounded-sm bg-lime-600 px-2 text-sm leading-6 text-white'>
                         -{discountPercentage}%
                     </div>
                 ) : (

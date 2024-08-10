@@ -93,3 +93,8 @@ export const LOCATION_ENDPOINT = {
     ROOT: '/locations',
     USER: '/locations/user',
 };
+export const WISHLIST_ENDPOINT = {
+    MY_WISHLIST: '/users/private/wish-list',
+    ADD_WISHLIST: '/users/private/wish-list/add',
+    REMOVE_WISHLIST: '/users/private/wish-list/remove',
+};

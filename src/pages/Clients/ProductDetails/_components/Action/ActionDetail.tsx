@@ -105,7 +105,7 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                             </div>
                         </Form.Item>
                     </div>
-                    <div className=' items-center gap-5 md:flex'>
+                    <div className='items-center gap-5 md:flex'>
                         <div className='mb-[15px] flex w-[100%] items-center gap-[5px] md:mb-0 lg:w-[28%]'>
                             <Button
                                 onClick={handleDecrement}
