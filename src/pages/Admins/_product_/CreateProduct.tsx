@@ -327,6 +327,7 @@ const CreateProduct = () => {
                                                 <Form.Item>
                                                     <Button
                                                         type='dashed'
+                                                        htmlType='button'
                                                         onClick={() => add()}
                                                         block
                                                         icon={<PlusOutlined />}

@@ -13,7 +13,9 @@ const useCancelOrder = (orderId: string) => {
                 data: { orderId, description: reason },
             }),
         onSuccess() {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
+            queryClient.resetQueries({
+                predicate: (query) => query.queryKey.includes(QUERY_KEY.ORDERS),
+            });
         },
     });
 };

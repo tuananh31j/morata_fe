@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import StaticImages from '~/assets';
 import MenuAccount from './MenuAccount';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
@@ -54,16 +54,21 @@ const AccountSidebarLeft = () => {
                 </div>
 
                 <div className='my-5 flex flex-col items-center justify-center gap-5'>
-                    <div className='w-[30%]'>
+                    <div className='h-34 w-34'>
                         {profile && profile.avatar && (
-                            <img src={profile.avatar} loading='lazy' alt='user' className='w-full rounded-full ' />
+                            <img
+                                src={profile.avatar}
+                                loading='lazy'
+                                alt='user'
+                                className='h-full w-full rounded-full object-cover'
+                            />
                         )}
                         {profile && !profile.avatar && (
                             <img
                                 src={StaticImages.userImageDf}
                                 loading='lazy'
                                 alt='user'
-                                className='w-full rounded-full '
+                                className='h-full w-full rounded-full object-cover'
                             />
                         )}
                     </div>

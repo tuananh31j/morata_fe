@@ -37,7 +37,7 @@ const VariationItem = ({
     return (
         <>
             {attributesForVariant && (
-                <Space align='center' className='flex items-center'>
+                <Space align='center' className='flex items-end'>
                     <Form.Item className='capitalize' {...restField} name={[fieldName, '_id']} dependencies={['_id']}>
                         <InputNumber className='hidden' />
                     </Form.Item>
@@ -110,15 +110,17 @@ const VariationItem = ({
                     >
                         <InputNumber placeholder='Stock' className='w-full' />
                     </Form.Item>
-                    {!id && (
-                        <MinusCircleOutlined
-                            onClick={() => {
-                                handleRemoveThumbnail(index);
-                                removeVariation(fieldName);
-                            }}
-                            className='text-lg'
-                        />
-                    )}
+                    <div className='h-14 w-14'>
+                        {!id && (
+                            <MinusCircleOutlined
+                                onClick={() => {
+                                    handleRemoveThumbnail(index);
+                                    removeVariation(fieldName);
+                                }}
+                                className='translate-y-[20%] text-lg'
+                            />
+                        )}
+                    </div>
                 </Space>
             )}
         </>

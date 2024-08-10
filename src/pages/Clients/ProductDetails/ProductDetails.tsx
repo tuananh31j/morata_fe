@@ -1,5 +1,5 @@
 import { DockerOutlined, HeartOutlined, RedoOutlined } from '@ant-design/icons';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, Navigate, useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
@@ -55,20 +55,15 @@ const ProductDetails = () => {
             showMessage('You need to login first!', 'warning');
         }
     };
+
     const product = productDetail?.data;
-    /* eslint-disable */
     const dispatch = useDispatch();
+
     /* eslint-enable */
     const isInitialMount = useRef(true);
-    // const oldPrice = product ? product?.price * (1 + product?.discountPercentage / 100) : 0;
     useDocumentTitle(`${product?.name}`);
     const variant = useSelector((state: RootState) => state.detailProductReducer.variant);
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //     if (product) {
-    //         dispatch(setImages(product.images));
-    //     }
-    // }, [product]);
+
     /* eslint-disable */
     useEffect(() => {
         if (isInitialMount.current) {
@@ -127,13 +122,13 @@ const ProductDetails = () => {
                                     )}
                                 </div>
                                 {/* information product */}
-                                <div className='information-product mt-[25px]'>
+                                {/* <div className='information-product mt-[25px]'>
                                     <ul className='list-inside list-disc text-sm leading-6 text-[#777777]'>
                                         <li>Bass and Stereo Sound</li>
                                         <li>Display with 3088 x 1440 pixels resolution.</li>
                                         <li>Memory, Storage & SIM: 12GB RAM, 256GB.</li>
                                     </ul>
-                                </div>
+                                </div> */}
                                 {/* viewer now */}
                                 {/* <div className='mt-[29px] flex items-center gap-2'>
                                     <span className='flex items-center justify-center rounded-[50%] bg-black px-2 py-2'>
@@ -256,6 +251,3 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
-function dispatch(arg0: { payload: { orderId: string; isOpen: boolean }; type: 'rateProduct/setRateData' }) {
-    throw new Error('Function not implemented.');
-}

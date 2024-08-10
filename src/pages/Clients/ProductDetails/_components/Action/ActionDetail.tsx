@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Form, InputNumber, Radio } from 'antd';
+import { Button, ConfigProvider, Form, InputNumber } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -60,7 +60,6 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
     }, [product._id]);
     /* eslint-enable */
     const handleOnclickVariant = (item: IVariantItem) => {
-        console.log(item);
         dispatch(updateVariant(item));
         if (valueQuantity > item.stock) {
             setQuantityValue(item.stock);
@@ -85,7 +84,7 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                 <Form onFinish={handleOnSubmit} layout='vertical'>
                     <div className='my-4'>
                         <Form.Item name={'variant'}>
-                            <div className='flex items-center gap-3'>
+                            <div className='flex flex-wrap items-center gap-3'>
                                 {product?.variationIds.map((item, Pindex) => (
                                     <div
                                         key={item._id}

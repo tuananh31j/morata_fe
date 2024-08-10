@@ -132,13 +132,13 @@ const ManageUsers = () => {
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
                     </Tooltip>
-                    <Tooltip title='Delete'>
+                    {/* <Tooltip title='Delete'>
                         <DeleteOutlined
                             onClick={showModal}
                             className='bg-red-100 text-red-500 rounded-full p-2'
                             style={{ fontSize: '1rem' }}
                         />
-                    </Tooltip>
+                    </Tooltip> */}
                 </Space>
             ),
         },
