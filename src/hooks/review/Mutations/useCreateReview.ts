@@ -10,12 +10,16 @@ import { ReviewData } from '~/types/Review';
 const useCreateReview = () => {
     const queryClient = useQueryClient();
     const orderId = useTypedSelector((state) => state.rateProductSlice.orderId);
+    const productId = useTypedSelector((state) => state.rateProductSlice.orderId);
     const dispatch = useDispatch();
 
     return useMutation({
         mutationFn: (data: ReviewData) => reviewService.createReview(data),
         onSuccess() {
+            // setTimeout(() => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
+            // }, 100);
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
 
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.ORDERS],

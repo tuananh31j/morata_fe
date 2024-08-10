@@ -125,7 +125,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                     <div className='mx-auto flex max-w-[1280px] flex-col items-center gap-4 lg:flex-row lg:justify-between'>
                         <div>
                             <div className='flex gap-2'>
-                                <Rate allowHalf defaultValue={TopReviews} disabled={true} />
+                                <Rate allowHalf value={TopReviews} disabled={true} />
                                 <span className='text-base font-medium  text-[#777777]'>
                                     {TopReviews.toFixed(1)} out of 5
                                 </span>
