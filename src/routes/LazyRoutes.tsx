@@ -16,7 +16,7 @@ export const LoginPage = lazy(() => import('~/pages/Clients/AuthPage/Login'));
 export const RegisterPage = lazy(() => import('~/pages/Clients/AuthPage/Register'));
 export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
 export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
-export const CheckoutPage = lazy(() => import('~/pages/Clients/Checkout/Checkout'));
+export const CheckoutPage = lazy(() => import('~/pages/Clients/Checkout/CheckOut'));
 
 // @admin page
 export const DashboardPage = lazy(() => import('~/pages/Admins/_dashboard_'));
