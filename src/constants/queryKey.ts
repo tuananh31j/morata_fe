@@ -17,7 +17,13 @@ export const QUERY_KEY = {
 
     ORDERS: 'orders',
     CHECKOUT: 'checkout',
-    VNPAY_RETURN: 'vnpay-return',
+
+    SHIPPING_SERVICES: 'shippingServices',
+    GET_PROVINCE: 'province',
+    GET_DISTRICT: 'district',
+    GET_WARD: 'ward',
+    CALCULATE_FEE: 'calculateFee',
+
     // Stats
     TOTAL_STATS: 'totalStats',
     DAILY_STATS: 'dailyStats',

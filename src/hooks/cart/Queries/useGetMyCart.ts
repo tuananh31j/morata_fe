@@ -10,12 +10,13 @@ const useGetMyCart = (id?: string) => {
         refetchOnWindowFocus: true,
         enabled: !!id,
     });
-    const responsePayloadCheckout = data?.data.items.map((item) => ({
-        name: item.productVariation.productId.name,
-        price: item.productVariation.price,
-        quantity: item.quantity,
-        image: item.productVariation.image,
-        productId: item.productVariation.productId._id,
+
+    const responsePayloadCheckout = data?.data?.items.map((item) => ({
+        name: item?.productVariation?.productId?.name,
+        price: item?.productVariation?.price,
+        quantity: item?.quantity,
+        image: item?.productVariation?.image,
+        productId: item?.productVariation?.productId?._id,
     }));
 
     return { data, ...rest, responsePayloadCheckout };

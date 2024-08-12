@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationRemoveAll } from '~/hooks/cart/Mutations/useRemoveAll';
-import UseVNpayReturn from '~/hooks/orders/Queries/UseVNpayReturn';
 import { RootState } from '~/store/store';
 
 export default function Success() {
@@ -12,7 +11,7 @@ export default function Success() {
     const params = new URLSearchParams(window.location.search);
     console.log(params);
     const user = useSelector((state: RootState) => state.authReducer.user);
-    UseVNpayReturn(params);
+
     const { mutate } = useMutationRemoveAll();
     useEffect(() => {
         mutate({ userId: user ? user._id : '' });

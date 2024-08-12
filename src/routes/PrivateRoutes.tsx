@@ -85,30 +85,6 @@ const PrivateRoutes = [
                             </Suspense>
                         ),
                     },
-                    // {
-                    //     path: ADMIN_ROUTES.PRODUCTS_CREATE,
-                    //     element: (
-                    //         <Suspense>
-                    //             <CreateProduct />
-                    //         </Suspense>
-                    //     ),
-                    // },
-                    // {
-                    //     path: ':id/edit',
-                    //     element: (
-                    //         <Suspense>
-                    //             <UpdateProduct />
-                    //         </Suspense>
-                    //     ),
-                    // },
-                    // {
-                    //     path: ':id/detail',
-                    //     element: (
-                    //         <Suspense>
-                    //             <AdminProductDetail />
-                    //         </Suspense>
-                    //     ),
-                    // },
                 ],
             },
             {

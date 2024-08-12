@@ -1,4 +1,3 @@
-import Checkout from './CheckOut';
-import CheckoutDetails from './CheckoutDetails';
+import Shipping from './Shipping';
 
-export { Checkout, CheckoutDetails };
+export { Shipping };

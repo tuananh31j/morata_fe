@@ -7,7 +7,6 @@ const ProtectedRouteAuth = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
     const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
-    console.log(location.pathname);
     if (!user && !isAuthPage) {
         return <Navigate to={'/'} replace />;
     }

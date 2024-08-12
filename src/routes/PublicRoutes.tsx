@@ -3,7 +3,6 @@ import { MAIN_ROUTES } from '~/constants/router';
 import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
 import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
-import ProtectedRoute from '~/layouts/Protected/ProtectedRoute';
 import { CheckEmail } from '~/pages/Clients/AuthPage/Email/CheckEmail';
 import { VerifyPage } from '~/pages/Clients/AuthPage/Email/Verify';
 import ForgotPassword from '~/pages/Clients/AuthPage/ForgotPassword/ForgotPassword';
@@ -12,8 +11,7 @@ import Success from '~/pages/Clients/Order/Success';
 import {
     AboutPage,
     AuthLayoutPage,
-    CheckoutDetailsPage,
-    CheckoutPage,
+    SHippingPage,
     ContactPage,
     ErrorPage,
     HomePage,
@@ -27,6 +25,7 @@ import {
     RegisterPage,
     Suspense,
     WishlistPage,
+    CheckoutPage,
 } from '~/routes/LazyRoutes';
 
 const PublicRoutes = [
@@ -76,21 +75,21 @@ const PublicRoutes = [
                 ),
             },
             {
-                path: MAIN_ROUTES.CHECKOUT,
+                path: MAIN_ROUTES.SHIPPING,
                 element: (
                     <Suspense>
                         <ProtectedRouteAuth>
-                            <CheckoutPage />
+                            <SHippingPage />
                         </ProtectedRouteAuth>
                     </Suspense>
                 ),
             },
             {
-                path: MAIN_ROUTES.CHECKOUT_DETAILS,
+                path: MAIN_ROUTES.CHECKOUT,
                 element: (
                     <Suspense>
                         <ProtectedRouteAuth>
-                            <CheckoutDetailsPage />
+                            <CheckoutPage />
                         </ProtectedRouteAuth>
                     </Suspense>
                 ),

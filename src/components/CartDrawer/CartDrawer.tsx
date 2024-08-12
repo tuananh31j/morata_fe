@@ -38,11 +38,11 @@ const CartDrawer = ({ children, item }: PropsType) => {
         [freeShippingThreshold]: `$${freeShippingThreshold}`,
     };
     const responsePayloadCheckout = products?.map((product) => ({
-        name: product.productVariation.productId.name,
-        price: product.productVariation.price,
-        quantity: product.quantity,
-        image: product.productVariation.image,
-        productId: product.productVariation.productId._id,
+        name: product?.productVariation?.productId?.name,
+        price: product?.productVariation?.price,
+        quantity: product?.quantity,
+        image: product?.productVariation?.image,
+        productId: product?.productVariation?.productId?._id,
     }));
     const handlePayStripe = () => {
         stripeCheckout({
@@ -173,9 +173,9 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                     <Link
                                                         style={{ color: '#0068c9' }}
                                                         className='text-[14px] font-bold text-[#0068c9]'
-                                                        to={`${MAIN_ROUTES.PRODUCTS}/${product.productVariation.productId._id}`}
+                                                        to={`${MAIN_ROUTES.PRODUCTS}/${product?.productVariation?.productId?._id}`}
                                                     >
-                                                        {product.productVariation.productId.name}
+                                                        {product?.productVariation?.productId?.name}
                                                     </Link>
                                                 }
                                                 description={
@@ -307,7 +307,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 </button>
                             </div>
                             <div className='mt-6'>
-                                <Link to={MAIN_ROUTES.CHECKOUT}>
+                                <Link to={MAIN_ROUTES.SHIPPING}>
                                     <Button
                                         onClick={onClose}
                                         className='h-[50px] bg-[#222222] text-sm font-semibold uppercase text-white'
