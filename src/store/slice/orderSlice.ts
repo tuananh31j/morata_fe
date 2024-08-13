@@ -15,7 +15,7 @@ type InitialState = {
     };
     shippingAddress: {
         serviceId: number;
-        provinceId: number;
+        provinceId: number | null;
         province: string;
         district: string;
         districtId: number | null;
@@ -43,7 +43,7 @@ const initialState: InitialState = {
     },
     shippingAddress: {
         serviceId: 53320,
-        provinceId: 0,
+        provinceId: null,
         province: '',
         districtId: null,
         district: '',
@@ -76,7 +76,10 @@ export const shippingSlice = createSlice({
             state.shippingFee = action.payload;
         },
         clearCheckoutInfo: (state) => {
-            state = initialState;
+            state.description = '';
+            state.shippingFee = 0;
+            state.receiverInfo = { ...initialState.receiverInfo };
+            state.shippingAddress = { ...initialState.shippingAddress };
         },
     },
 });

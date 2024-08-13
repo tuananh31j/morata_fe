@@ -45,7 +45,7 @@ const ProductItemsCheckout = () => {
                     district: shippingAddress.district,
                     ward: shippingAddress.ward,
                     address: shippingAddress.address,
-                    provinceId: shippingAddress.provinceId,
+                    provinceId: shippingAddress.provinceId!,
                     districtId: shippingAddress.districtId!,
                     wardCode: shippingAddress.wardCode,
                 },
