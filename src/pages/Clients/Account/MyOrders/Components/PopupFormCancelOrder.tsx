@@ -68,7 +68,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
     return (
         <>
             <Button onClick={showModal} type='primary' danger>
-                Cancel
+                Hủy Đơn Hàng
             </Button>
             <Modal open={isModalOpen} footer='' onCancel={handleCancel}>
                 <WrapperList classic className='m-0' title='Tell us why you are cancelling this order'>

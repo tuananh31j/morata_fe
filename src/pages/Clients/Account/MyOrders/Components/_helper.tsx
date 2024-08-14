@@ -5,6 +5,8 @@ import PopupOrderDetails from './PopupOrderDetails';
 import OrderStatusTag from '~/components/OrderStatusTag';
 import { Currency } from '~/utils';
 import dayjs from 'dayjs';
+import { MAIN_ROUTES } from '~/constants/router';
+import { Link } from 'react-router-dom';
 
 export interface DataType {
     _id: string;
@@ -91,8 +93,12 @@ export const columns: TableColumnsType<DataType> = [
         dataIndex: 'orderStatus',
         render: (value, record) => (
             <>
-                <PopupOrderDetails id={record._id} />
-                <ActionLink status={value} orderId={record._id} />
+                <Link to={`${MAIN_ROUTES.MY_ORDERS}/${record._id}`}>
+                    <Button type='primary' className='mr-2'>
+                        Xem chi tiết
+                    </Button>
+                </Link>
+                {value === 'done' && <ActionLink status={value} orderId={record._id} />}
             </>
         ),
         // sorter: (a, b) => a.name.length - b.name.length,

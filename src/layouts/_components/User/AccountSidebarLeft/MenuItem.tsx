@@ -5,7 +5,6 @@ const MenuItem = ({ name, path }: { name: string; path: string }) => {
     return (
         <NavLink
             to={path}
-            end
             className={({ isActive }) => {
                 const classActive = isActive ? 'translate-x-6 bg-[#16bcdc] font-medium text-white' : '';
                 return `rounded-sm border  p-2 transition-transform duration-150 ease-in-out ${classActive} flex justify-between`;

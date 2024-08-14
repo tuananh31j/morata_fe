@@ -6,9 +6,9 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export const Currency = new Intl.NumberFormat('en-US', {
+export const Currency = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'VND',
 });
 
 export const addKeysToArray = <T extends object>(data: T[]): (T & { key: number })[] => {
