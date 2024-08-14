@@ -1,4 +1,5 @@
-import { Button, Form, Input, Space } from 'antd';
+import React from 'react';
+import { Form, Input, Button, Card, Space, Typography, Row, Col } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setDescription, setReceiver } from '~/store/slice/orderSlice';
@@ -6,18 +7,19 @@ import DeliveryMethod from './DeliveryMethod';
 import ReceiverInfo from './ReceiverInfo';
 import ShippingAddress from './ShippingAdress';
 
-const Shipping = () => {
+const { Title, Text } = Typography;
+
+const Shipping: React.FC = () => {
     const [form] = Form.useForm();
     const districtId = Form.useWatch('districtId', form);
     const navigate = useNavigate();
-
     const dispatch = useDispatch();
 
-    const handleDescriptionChange = (e: any) => {
+    const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         dispatch(setDescription({ description: e.target.value }));
     };
 
-    const onClickProceed = (values: any) => {
+    const onFinish = (values: any) => {
         dispatch(
             setReceiver({
                 customer: {
@@ -37,32 +39,41 @@ const Shipping = () => {
     };
 
     return (
-        <Form
-            layout='vertical'
-            form={form}
-            onFinish={onClickProceed}
-            className='grid grid-cols-2 gap-3 rounded-lg bg-[#fff] p-5'
-        >
-            <Space className='w-full' direction='vertical'>
-                <ReceiverInfo />
-                <ShippingAddress />
-
-                <Form.Item label='Ghi chú cho đơn hàng này (Tùy chọn)' name='description'>
-                    <Input.TextArea rows={3} onChange={handleDescriptionChange} />
+        <Card className='mx-auto my-8 w-full max-w-6xl shadow-lg'>
+            <Title level={2} className='mb-6 text-center'>
+                Thông tin giao hàng
+            </Title>
+            <Form layout='vertical' form={form} onFinish={onFinish} className='space-y-8'>
+                <Row gutter={24}>
+                    <Col xs={24} lg={12}>
+                        <Space direction='vertical' className='w-full'>
+                            <ReceiverInfo form={form} />
+                            <ShippingAddress />
+                            <Form.Item label='Ghi chú đơn hàng (Tùy chọn)' name='description'>
+                                <Input.TextArea rows={4} onChange={handleDescriptionChange} />
+                            </Form.Item>
+                        </Space>
+                    </Col>
+                    <Col xs={24} lg={12}>
+                        <Card className='bg-gray-50 h-full'>
+                            <Title level={4} className='mb-4'>
+                                Phương thức vận chuyển
+                            </Title>
+                            {districtId ? (
+                                <DeliveryMethod districtId={districtId} />
+                            ) : (
+                                <Text type='secondary'>Vui lòng chọn địa chỉ giao hàng trước</Text>
+                            )}
+                        </Card>
+                    </Col>
+                </Row>
+                <Form.Item>
+                    <Button type='primary' htmlType='submit' size='large' block className='h-12 text-lg font-semibold'>
+                        Tiếp tục thanh toán
+                    </Button>
                 </Form.Item>
-            </Space>
-
-            <Space className='w-full bg-[#fff]' direction='vertical'>
-                {districtId && (
-                    <>
-                        <DeliveryMethod districtId={districtId} />
-                        <Button className='h-[3rem] w-full text-lg font-semibold' type='primary' htmlType='submit'>
-                            Tiếp tục thanh toán
-                        </Button>
-                    </>
-                )}
-            </Space>
-        </Form>
+            </Form>
+        </Card>
     );
 };
 

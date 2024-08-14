@@ -1,19 +1,20 @@
-import { PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Space, Typography } from 'antd';
-import { useEffect, useState } from 'react';
+import React from 'react';
+import { UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Form, Input, Switch, Card, Typography, Divider } from 'antd';
+import { FormInstance } from 'antd/lib/form';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 
-const ReceiverInfo = () => {
-    const form = Form.useFormInstance();
-    const [showReceiverInfo, setShowReceiverInfo] = useState(false);
+const { Title, Text } = Typography;
 
+interface ReceiverInfoProps {
+    form: FormInstance;
+}
+
+const ReceiverInfo: React.FC<ReceiverInfoProps> = ({ form }) => {
+    const [showReceiverInfo, setShowReceiverInfo] = React.useState(false);
     const { data: customer } = useGetProfile();
 
-    const handleClickAddReceiver = () => {
-        setShowReceiverInfo(!showReceiverInfo);
-    };
-
-    useEffect(() => {
+    React.useEffect(() => {
         if (customer) {
             form.setFieldsValue({
                 customerName: customer.data.username,
@@ -21,46 +22,84 @@ const ReceiverInfo = () => {
                 customerPhone: customer.data.phone,
             });
         }
-    }, [customer]);
+    }, [customer, form]);
+
+    const toggleReceiverInfo = (checked: boolean) => {
+        setShowReceiverInfo(checked);
+    };
 
     return (
-        <Space direction='vertical' className='w-full rounded-lg border border-gray p-3'>
-            <Typography.Text className='text-[1.2rem] font-semibold'>Thông tin khách hàng</Typography.Text>
-            <Form.Item label='Tên khách hàng' name='customerName' rules={[{ required: true, message: <></> }]}>
-                <Input />
+        <Card className='w-full shadow-md transition-shadow duration-300 hover:shadow-lg'>
+            <Title level={4} className='mb-6'>
+                Thông tin khách hàng
+            </Title>
+            <Form.Item
+                name='customerName'
+                label='Tên khách hàng'
+                rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng' }]}
+            >
+                <Input prefix={<UserOutlined className='text-gray-400' />} />
             </Form.Item>
-            <Form.Item label='Email' name='customerEmail' rules={[{ required: true, message: <></> }]}>
-                <Input />
+            <Form.Item
+                name='customerEmail'
+                label='Email'
+                rules={[
+                    { required: true, message: 'Vui lòng nhập email' },
+                    { type: 'email', message: 'Email không hợp lệ' },
+                ]}
+            >
+                <Input prefix={<MailOutlined className='text-gray-400' />} />
             </Form.Item>
-            <Form.Item label='Số điện thoai' name='customerPhone' rules={[{ required: true, message: <></> }]}>
-                <Input />
+            <Form.Item
+                name='customerPhone'
+                label='Số điện thoại'
+                rules={[
+                    { required: true, message: 'Vui lòng nhập số điện thoại' },
+                    { pattern: /^[0-9]{10}$/, message: 'Số điện thoại không hợp lệ' },
+                ]}
+            >
+                <Input prefix={<PhoneOutlined className='text-gray-400' />} />
             </Form.Item>
-            <Button onClick={handleClickAddReceiver} icon={<PlusCircleOutlined />}>
-                Giao đến người nhận khác
-            </Button>
+
+            <Divider />
+
+            <div className='mb-4 flex items-center justify-between'>
+                <Text strong>Giao đến người nhận khác</Text>
+                <Switch onChange={toggleReceiverInfo} checked={showReceiverInfo} />
+            </div>
 
             {showReceiverInfo && (
                 <>
-                    <Form.Item label='Tên người nhận' name='receiverName' rules={[{ required: true, message: <></> }]}>
-                        <Input />
+                    <Form.Item
+                        name='receiverName'
+                        label='Tên người nhận'
+                        rules={[{ required: true, message: 'Vui lòng nhập tên người nhận' }]}
+                    >
+                        <Input prefix={<UserOutlined className='text-gray-400' />} />
                     </Form.Item>
                     <Form.Item
-                        label='Email người nhận'
                         name='receiverEmail'
-                        rules={[{ required: true, message: <></> }]}
+                        label='Email người nhận'
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập email người nhận' },
+                            { type: 'email', message: 'Email không hợp lệ' },
+                        ]}
                     >
-                        <Input />
+                        <Input prefix={<MailOutlined className='text-gray-400' />} />
                     </Form.Item>
                     <Form.Item
-                        label='Số điện thoại người nhận'
                         name='receiverPhone'
-                        rules={[{ required: true, message: <></> }]}
+                        label='Số điện thoại người nhận'
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập số điện thoại người nhận' },
+                            { pattern: /^[0-9]{10}$/, message: 'Số điện thoại không hợp lệ' },
+                        ]}
                     >
-                        <Input />
+                        <Input prefix={<PhoneOutlined className='text-gray-400' />} />
                     </Form.Item>
                 </>
             )}
-        </Space>
+        </Card>
     );
 };
 

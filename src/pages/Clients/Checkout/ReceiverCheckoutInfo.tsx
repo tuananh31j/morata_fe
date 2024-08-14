@@ -1,115 +1,106 @@
-import { Descriptions, Space } from 'antd';
-import type { DescriptionsProps } from 'antd';
+import React from 'react';
+import { Card, Descriptions, Divider, Typography, Tag } from 'antd';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import { UserOutlined, EnvironmentOutlined, InfoCircleOutlined, DollarOutlined } from '@ant-design/icons';
 
-const ReceiverCheckoutInfo = () => {
+const { Title, Text } = Typography;
+
+const ReceiverCheckoutInfo: React.FC = () => {
     const { receiverInfo, shippingAddress, shippingFee, tax, description } = useSelector(
         (state: RootState) => state.order
     );
-    const customerItems: DescriptionsProps['items'] = [
-        {
-            key: '1',
-            label: 'Tên khách hàng',
-            children: `${receiverInfo.customer.name}`,
-        },
-        {
-            key: '2',
-            label: 'Số điện thoại',
-            children: `${receiverInfo.customer.phone}`,
-        },
-        {
-            key: '3',
-            label: 'Email',
-            children: `${receiverInfo.customer.email}`,
-        },
-    ];
 
-    const addReceiverItems: DescriptionsProps['items'] = [
-        {
-            key: '1',
-            label: 'Tên người nhận mới',
-            children: `${receiverInfo.addReceiver.name}`,
-        },
-        {
-            key: '2',
-            label: 'Số điện thoại',
-            children: `${receiverInfo.addReceiver.phone}`,
-        },
-        {
-            key: '3',
-            label: 'Email',
-            children: `${receiverInfo.addReceiver.email}`,
-        },
-    ];
-
-    const shippingAddressItems: DescriptionsProps['items'] = [
-        {
-            key: '1',
-            label: 'Tinh/Thành phố',
-            children: `${shippingAddress.province}`,
-        },
-        {
-            key: '2',
-            label: 'Quận/Huyện',
-            children: `${shippingAddress.district}`,
-        },
-        {
-            key: '3',
-            label: 'Phường/Xã',
-            children: `${shippingAddress.ward}`,
-        },
-        {
-            key: '3',
-            label: 'Đia chỉ',
-            children: `${shippingAddress.address}`,
-        },
-    ];
-    const serviceItems: DescriptionsProps['items'] = [
-        {
-            key: '1',
-            label: 'Cước phí vận chuyển',
-            children: `${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(shippingFee)}`,
-        },
-        {
-            key: '2',
-            label: 'Thuế VAT',
-            children: `${tax * 100}%`,
-        },
-        {
-            key: '3',
-            label: 'Ghi chú từ khách hàng',
-            children: `${description}`,
-        },
-        {
-            key: '4',
-            label: 'Thời giang giao hàng dự kiến',
-            children: `3-5 ngày từ khi admin xác nhận đơn hàng`,
-        },
-    ];
+    const formatCurrency = (value: number) =>
+        new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
 
     return (
-        <Space direction='vertical' className='gap-5 border-r-2 '>
-            <Descriptions layout='vertical' title='Thông tin khách hàng' items={customerItems} />
+        <Card className='w-full shadow-md transition-shadow duration-300 hover:shadow-lg'>
+            <Title level={3} className='mb-6 text-xl sm:text-2xl'>
+                Thông tin đơn hàng
+            </Title>
+
             <Descriptions
-                className='border-t-2 border-gray pt-3'
-                layout='vertical'
-                title='Thông tin người nhận mới'
-                items={addReceiverItems}
-            />
+                title={
+                    <Title level={5}>
+                        <UserOutlined className='mr-2' />
+                        Thông tin khách hàng
+                    </Title>
+                }
+                bordered
+                column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+            >
+                <Descriptions.Item label='Tên khách hàng'>{receiverInfo.customer.name}</Descriptions.Item>
+                <Descriptions.Item label='Số điện thoại'>{receiverInfo.customer.phone}</Descriptions.Item>
+                <Descriptions.Item label='Email'>{receiverInfo.customer.email}</Descriptions.Item>
+            </Descriptions>
+
+            <Divider />
+
+            {receiverInfo.addReceiver.name && (
+                <>
+                    <Descriptions
+                        title={
+                            <Title level={5}>
+                                <UserOutlined className='mr-2' />
+                                Thông tin người nhận mới
+                            </Title>
+                        }
+                        bordered
+                        column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+                    >
+                        <Descriptions.Item label='Tên người nhận'>{receiverInfo.addReceiver.name}</Descriptions.Item>
+                        <Descriptions.Item label='Số điện thoại'>{receiverInfo.addReceiver.phone}</Descriptions.Item>
+                        <Descriptions.Item label='Email'>{receiverInfo.addReceiver.email}</Descriptions.Item>
+                    </Descriptions>
+                    <Divider />
+                </>
+            )}
+
             <Descriptions
-                className='border-t-2 border-gray pt-3'
-                layout='vertical'
-                title='Địa Chỉ giao hàng'
-                items={shippingAddressItems}
-            />
+                title={
+                    <Title level={5}>
+                        <EnvironmentOutlined className='mr-2' />
+                        Địa chỉ giao hàng
+                    </Title>
+                }
+                bordered
+                column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+            >
+                <Descriptions.Item label='Tỉnh/Thành phố'>{shippingAddress.province}</Descriptions.Item>
+                <Descriptions.Item label='Quận/Huyện'>{shippingAddress.district}</Descriptions.Item>
+                <Descriptions.Item label='Phường/Xã'>{shippingAddress.ward}</Descriptions.Item>
+                <Descriptions.Item label='Địa chỉ'>{shippingAddress.address}</Descriptions.Item>
+            </Descriptions>
+
+            <Divider />
+
             <Descriptions
-                className='border-t-2 border-gray pt-3'
-                layout='vertical'
-                title='Thông tin dịch vụ'
-                items={serviceItems}
-            />
-        </Space>
+                title={
+                    <Title level={5}>
+                        <InfoCircleOutlined className='mr-2' />
+                        Thông tin dịch vụ
+                    </Title>
+                }
+                bordered
+                column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+            >
+                <Descriptions.Item label='Cước phí vận chuyển'>
+                    <Tag color='blue'>
+                        <DollarOutlined /> {formatCurrency(shippingFee)}
+                    </Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label='Thuế VAT'>
+                    <Tag color='green'>{tax * 100}%</Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label='Ghi chú từ khách hàng'>
+                    {description || <Text type='secondary'>Không có ghi chú</Text>}
+                </Descriptions.Item>
+                <Descriptions.Item label='Thời gian giao hàng dự kiến'>
+                    <Tag color='orange'>3-5 ngày từ khi admin xác nhận đơn hàng</Tag>
+                </Descriptions.Item>
+            </Descriptions>
+        </Card>
     );
 };
 

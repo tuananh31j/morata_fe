@@ -1,4 +1,5 @@
-import { Button, Space, Typography } from 'antd';
+import React from 'react';
+import { Button, Card, List, Typography, Divider, Tag, Image, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -7,7 +8,9 @@ import { useCreateOrder } from '~/hooks/orders/Mutations/useCreateOrder';
 import { clearCheckoutInfo } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
 
-const ProductItemsCheckout = () => {
+const { Text, Title } = Typography;
+
+const ProductItemsCheckout: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -15,21 +18,20 @@ const ProductItemsCheckout = () => {
         (state: RootState) => state.order
     );
     const { data: cartItems } = useGetMyCart();
-    const items = cartItems?.data?.items?.map((item) => {
-        return {
-            productId: item.productVariation._id,
-            name: item?.productVariation?.productId?.name,
-            price: item?.productVariation?.price,
-            image: item?.productVariation?.image,
-            quantity: item.quantity,
-        };
-    });
+    const items = cartItems?.data?.items?.map((item) => ({
+        productId: item.productVariation._id,
+        name: item?.productVariation?.productId?.name,
+        price: item?.productVariation?.price,
+        image: item?.productVariation?.image,
+        quantity: item.quantity,
+        variants: item.productVariation.variantAttributes,
+    }));
 
-    const subTotal = cartItems?.data?.items?.reduce((acc, item) => {
-        return acc + +item.productVariation.price * item.quantity;
-    }, 0);
+    const subTotal =
+        cartItems?.data?.items?.reduce((acc, item) => acc + +item.productVariation.price * item.quantity, 0) || 0;
 
-    const totalPrice = Number(subTotal) + Number(tax * subTotal!) + shippingFee;
+    const taxAmount = tax * subTotal;
+    const totalPrice = subTotal + taxAmount + shippingFee;
 
     const createOrder = useCreateOrder();
 
@@ -49,9 +51,9 @@ const ProductItemsCheckout = () => {
                     districtId: shippingAddress.districtId!,
                     wardCode: shippingAddress.wardCode,
                 },
-                totalPrice: totalPrice,
-                tax: tax,
-                shippingFee: shippingFee,
+                totalPrice,
+                tax,
+                shippingFee,
             },
             {
                 onSuccess: () => {
@@ -65,58 +67,84 @@ const ProductItemsCheckout = () => {
         );
     };
 
+    const formatCurrency = (value: number) =>
+        new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+
     return (
-        <>
-            <Space className='w-full' direction='vertical'>
-                {cartItems && cartItems.data.items && cartItems.data.items.length ? (
-                    cartItems.data.items.map((item, index) => {
-                        return (
-                            <Space key={index} className='w-full justify-between rounded-lg border-2 bg-[#fff] px-5 '>
-                                <Space className='h-[8rem] w-[8rem]'>
-                                    <img src={item.productVariation?.image} alt='' />
-                                </Space>
+        <div className='flex h-full flex-col'>
+            <Title level={4} className='mb-4'>
+                Đơn hàng của bạn
+            </Title>
 
-                                <Space className='flex flex-col'>
-                                    {item.productVariation.variantAttributes.map((variant, index: number) => {
-                                        return (
-                                            <Typography.Text key={index}>
-                                                {variant.name} {variant.value}
-                                            </Typography.Text>
-                                        );
-                                    })}
-                                </Space>
-                                <Space>
-                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
-                                        item.productVariation.price
-                                    )}
-                                </Space>
-                                <Space>Số lượng: {item.quantity}</Space>
-                            </Space>
-                        );
-                    })
-                ) : (
-                    <></>
-                )}
+            <div className='mb-4 flex-grow overflow-auto' style={{ maxHeight: '400px' }}>
+                <List
+                    itemLayout='horizontal'
+                    dataSource={items}
+                    renderItem={(item) => (
+                        <List.Item>
+                            <List.Item.Meta
+                                avatar={<Image width={60} src={item.image} preview={false} />}
+                                title={<Text strong>{item.name}</Text>}
+                                description={
+                                    <>
+                                        <Space wrap>
+                                            {item.variants.map((variant, index) => (
+                                                <Tag key={index} color='blue'>
+                                                    {variant.name}: {variant.value}
+                                                </Tag>
+                                            ))}
+                                        </Space>
+                                        <div className='mt-2'>
+                                            <Text>Đơn giá: {formatCurrency(item.price)}</Text>
+                                            <Text className='ml-4'>Số lượng: {item.quantity}</Text>
+                                        </div>
+                                    </>
+                                }
+                            />
+                            <div>
+                                <Text strong>{formatCurrency(item.price * item.quantity)}</Text>
+                            </div>
+                        </List.Item>
+                    )}
+                />
+            </div>
 
-                <Space className='w-full px-5' direction='vertical' align='end'>
-                    <Typography.Text className='font-bold'>Tạm tính</Typography.Text>
-                    <Typography.Text>
-                        {subTotal &&
-                            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(subTotal)}
-                    </Typography.Text>
-                    <Typography.Text className='font-bold'>Thuế VAT</Typography.Text>
-                    <Typography.Text>{tax * 100}%</Typography.Text>
-
-                    <Typography.Text className='font-bold'>Phí vận chuyển</Typography.Text>
-                    <Typography.Text>
-                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(shippingFee)}
-                    </Typography.Text>
+            <div>
+                <Divider />
+                <Space direction='vertical' className='w-full'>
+                    <div className='flex justify-between'>
+                        <Text>Tạm tính:</Text>
+                        <Text>{formatCurrency(subTotal)}</Text>
+                    </div>
+                    <div className='flex justify-between'>
+                        <Text>Thuế VAT ({tax * 100}%):</Text>
+                        <Text>{formatCurrency(taxAmount)}</Text>
+                    </div>
+                    <div className='flex justify-between'>
+                        <Text>Phí vận chuyển:</Text>
+                        <Text>{formatCurrency(shippingFee)}</Text>
+                    </div>
+                    <Divider />
+                    <div className='flex justify-between'>
+                        <Title level={3}>Tổng cộng:</Title>
+                        <Title level={3} type='danger'>
+                            {formatCurrency(totalPrice)}
+                        </Title>
+                    </div>
                 </Space>
-                <Button className='mt-5 w-full p-5 font-semibold' type='primary' onClick={handleCheckout}>
-                    Đặt hàng
-                </Button>
-            </Space>
-        </>
+                <Card className='mt-4 border-blue-200 bg-blue-50'>
+                    <Button
+                        type='primary'
+                        size='large'
+                        block
+                        onClick={handleCheckout}
+                        className='h-12 text-lg font-semibold'
+                    >
+                        Đặt hàng
+                    </Button>
+                </Card>
+            </div>
+        </div>
     );
 };
 
