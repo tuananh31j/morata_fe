@@ -27,6 +27,7 @@ interface DataType {
     key: number;
     code: string;
     total: number;
+    customerName: string;
     paymentMethod: string;
     paymentStatus: string;
     orderStatus: string;
@@ -39,12 +40,14 @@ const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
+
     const dataSource =
         ordersList && ordersList.length
             ? ordersList.map((order: any, index) => {
                   return {
                       key: index,
                       code: order._id,
+                      customerName: order?.customerInfo?.name,
                       total: order.totalPrice,
                       paymentMethod: order.paymentMethod,
                       paymentStatus: order.isPaid ? 'Paid' : 'Unpaid',
@@ -149,9 +152,19 @@ const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
             ellipsis: true,
         },
         {
+            key: 'customerName',
+            dataIndex: 'customerName',
+            title: 'Tên khách hàng',
+            ...getColumnSearchProps('customerName'),
+            ellipsis: true,
+        },
+        {
             key: 'total',
             dataIndex: 'total',
             title: 'Tổng tiền',
+            render: (text: number) => {
+                return <span>{text.toLocaleString()} đ</span>;
+            },
             sorter: (a: any, b: any) => a.total - b.total,
             sortDirections: ['descend'],
         },
