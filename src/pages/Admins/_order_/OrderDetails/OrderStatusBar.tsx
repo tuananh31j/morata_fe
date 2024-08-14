@@ -43,27 +43,27 @@ const OrderStatusBar = ({ orderStatus }: Props) => {
                 className='w-[66vw]'
                 items={[
                     {
-                        title: 'Pending',
+                        title: 'Chờ xác nhận',
                         className: 'text-primary',
                         icon: <MdOutlinePendingActions />,
                     },
                     {
-                        title: 'Confirmed',
+                        title: 'Đã xác nhận',
                         className: 'text-primary',
                         icon: <GiConfirmed />,
                     },
                     {
-                        title: 'Shipping',
+                        title: 'Đang giao',
                         className: 'text-primary',
                         icon: <LiaShippingFastSolid />,
                     },
                     {
-                        title: 'Delivered',
+                        title: 'Đã giao hàng',
                         className: 'text-primary',
                         icon: <RiUserReceivedLine />,
                     },
                     {
-                        title: 'Done',
+                        title: 'Hoàn thành',
                         className: 'text-primary',
                         icon: <FaStar />,
                     },

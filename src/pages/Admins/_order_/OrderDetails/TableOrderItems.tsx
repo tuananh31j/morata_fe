@@ -24,33 +24,41 @@ const TableOrderItems = ({ orderItems }: Props) => {
             render: (key) => <p>{key + 1}</p>,
         },
         {
-            title: 'Image',
+            title: 'Hình ảnh',
             dataIndex: 'image',
             key: 'image',
             render: (image) => <img src={image} alt='product' className='h-20 w-20 object-cover' />,
         },
         {
-            title: 'Name',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: 'Price',
+            title: 'Giá',
             dataIndex: 'price',
             key: 'price',
-            render: (price) => <p>{price}</p>,
+            render: (price) => (
+                <p>{new Intl.NumberFormat('vi-vn', { style: 'currency', currency: 'vnd' }).format(price)}</p>
+            ),
         },
         {
-            title: 'Quantity',
+            title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
             render: (quantity) => <p>{quantity}</p>,
         },
         {
-            title: 'Total',
+            title: 'Tổng tiền',
             dataIndex: 'total',
             key: 'total',
-            render: (_, record) => <p>{record.price * record.quantity}</p>,
+            render: (_, record) => (
+                <p>
+                    {new Intl.NumberFormat('vi-vn', { style: 'currency', currency: 'vnd' }).format(
+                        record.price * record.quantity
+                    )}
+                </p>
+            ),
         },
     ];
 

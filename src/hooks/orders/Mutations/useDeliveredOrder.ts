@@ -1,20 +1,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
-import orderService from '~/services/order.service';
-import showMessage from '~/utils/ShowMessage';
+import request from '../../../utils/api/axiosIntance';
+import { HTTP_METHOD } from '~/constants/http';
+import { ORDER_ENDPOINT } from '~/constants/endpoint';
 
-export default function useDeliverdOrder() {
+export const useDeliveredOrder = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationKey: ['CONFIRM_ORDER'],
-        mutationFn: ({ orderId, reason }: { orderId: string; reason: string }) =>
-            orderService.deliveredOrder({ orderId, reason }),
+        mutationFn: async (orderId: string) => {
+            const response = await request({
+                method: HTTP_METHOD.PATCH,
+                url: ORDER_ENDPOINT.DELIVERED_ORDER,
+                data: { orderId },
+            });
+
+            return response?.data?.data;
+        },
         onSuccess() {
-            showMessage('Delived order!', 'info');
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
         },
-        onError: () => {
-            showMessage('Order update is failed.', 'error');
-        },
     });
-}
+};

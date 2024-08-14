@@ -6,8 +6,8 @@ import moment from 'moment';
 import { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
-import PopConFirmOrder from './PopConfirmOrder';
 import { TableProps } from 'antd/lib';
+import { ORDER_STATUS } from '~/constants/order';
 
 interface Props {
     ordersList: {
@@ -35,7 +35,7 @@ interface DataType {
 
 type DataIndex = keyof DataType;
 
-const OrderTable = ({ ordersList, totalDocs, totalPages, setCurrentPage }: Props) => {
+const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
@@ -144,57 +144,67 @@ const OrderTable = ({ ordersList, totalDocs, totalPages, setCurrentPage }: Props
         {
             key: 'Code',
             dataIndex: 'code',
-            title: 'Code',
+            title: 'Mã đơn hàng',
             ...getColumnSearchProps('code'),
             ellipsis: true,
         },
         {
             key: 'total',
             dataIndex: 'total',
-            title: 'Total',
+            title: 'Tổng tiền',
             sorter: (a: any, b: any) => a.total - b.total,
             sortDirections: ['descend'],
         },
         {
-            key: 'paymentMethod',
-            dataIndex: 'paymentMethod',
-            title: 'Payment Method',
-            render: (text: string) => <span className='font-semibold'>{text.toUpperCase()}</span>,
-            filters: [
-                { text: 'Cash', value: 'cash' },
-                { text: 'Card', value: 'card' },
-            ],
-            onFilter: (value: any, record: any) => record.paymentMethod.indexOf(value) === 0,
-        },
-        {
             key: 'paymentStatus',
             dataIndex: 'paymentStatus',
-            title: 'Payment Status',
+            title: 'Trạng thái thanh toán',
+            render: (text: string) => {
+                if (text === 'Unpaid') {
+                    return <span className='font-semibold text-red'>Chưa thanh toán</span>;
+                }
+
+                return <span className='font-semibold text-green-500'>Đã thanh toán</span>;
+            },
             filters: [
-                { text: 'Paid', value: 'Paid' },
-                { text: 'Unpaid', value: 'Unpaid' },
+                { text: 'Đã thanh toán', value: 'Paid' },
+                { text: 'Chưa thanh toán', value: 'Unpaid' },
             ],
             onFilter: (value: any, record: any) => record.paymentStatus?.indexOf(value) === 0,
         },
         {
             key: 'orderStatus',
             dataIndex: 'orderStatus',
-            title: 'Order Status',
-            render: (text: string) => <span className='font-semibold'>{text?.toUpperCase()}</span>,
+            title: 'Trạng thái đơn hàng',
+            render: (text: string) => {
+                if (text === ORDER_STATUS.CANCELLED) {
+                    return <span className='font-semibold text-red'>Đã hủy</span>;
+                } else if (text === ORDER_STATUS.CONFIRMED) {
+                    return <span className='font-semibold text-blue-500'>Đã xác nhận</span>;
+                } else if (text === ORDER_STATUS.SHIPPING) {
+                    return <span className='font-semibold text-green-500'>Đang giao</span>;
+                } else if (text === ORDER_STATUS.DELIVERED) {
+                    return <span className='font-semibold text-green-500'>Đã giao</span>;
+                } else if (text === ORDER_STATUS.DONE) {
+                    return <span className='font-semibold text-green-500'>Hoàn thành</span>;
+                }
+
+                return <span className='font-semibold text-yellow-500'>Chờ xác nhận</span>;
+            },
             filters: [
-                { text: 'Pending', value: 'pending' },
-                { text: 'Confirmed', value: 'confirmed' },
-                { text: 'Shipping', value: 'shipping' },
-                { text: 'Delivered', value: 'delivered' },
-                { text: 'Done', value: 'done' },
-                { text: 'Cancelled', value: 'cancelled' },
+                { text: 'Chờ Xác nhận', value: 'pending' },
+                { text: 'Đã xác nhận', value: 'confirmed' },
+                { text: 'Đang giao', value: 'shipping' },
+                { text: 'Đã giao', value: 'delivered' },
+                { text: 'Hoàn thành', value: 'done' },
+                { text: 'Đã hủy', value: 'cancelled' },
             ],
             onFilter: (value: any, record: any) => record.orderStatus?.indexOf(value) === 0,
         },
         {
             key: 'createdAt',
             dataIndex: 'createdAt',
-            title: 'Created At',
+            title: 'Ngày đặt hàng',
             render: (text: string) => {
                 return moment(text).format('DD/MM/YYYY hh:mm:ss');
             },
@@ -203,15 +213,12 @@ const OrderTable = ({ ordersList, totalDocs, totalPages, setCurrentPage }: Props
         },
         {
             key: 'action',
-            title: 'Action',
+            title: 'Thao tác',
             render: (text, record) => {
                 return (
-                    <Space>
-                        <Link to={`/admin/orders/${record.code}/detail`}>
-                            <Button type='primary'>View</Button>
-                        </Link>
-                        {record.orderStatus === 'pending' && <PopConFirmOrder orderId={record.code} />}
-                    </Space>
+                    <Link to={`/admin/orders/${record.code}/detail`}>
+                        <Button type='primary'>Xem chi tiết</Button>
+                    </Link>
                 );
             },
         },

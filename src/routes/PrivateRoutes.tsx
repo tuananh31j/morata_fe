@@ -172,7 +172,11 @@ const PrivateRoutes = [
             },
             {
                 path: ADMIN_ROUTES.ORDERS_LIST,
-                element: <ManageOrders />,
+                element: (
+                    <Suspense>
+                        <ManageOrders />
+                    </Suspense>
+                ),
             },
             {
                 path: ADMIN_ROUTES.CATEGORIES,

@@ -1,5 +1,6 @@
 import { Descriptions, Space } from 'antd';
 import { DescriptionsProps } from 'antd/lib';
+import { log } from 'console';
 
 interface User {
     email: string;
@@ -11,45 +12,88 @@ interface Props {
     customerInfo: User;
     receiverInfo: User;
     shippingAddress: {
-        city: string;
-        line1: string;
-        line2: string;
-        postal_code: string;
-        state: string;
+        country: string;
+        province: string;
+        district: string;
+        ward: string;
+        address: string;
     };
 }
 
 const CustomerInfo = ({ customerInfo, receiverInfo, shippingAddress }: Props) => {
-    const customerItems: DescriptionsProps['items'] =
-        customerInfo &&
-        Object.entries(customerInfo!).map(([key, value]) => {
-            return {
-                key,
-                label: <span className='font-semibold capitalize'>{key}</span>,
-                children: <p className='capitalize'>{value}</p>,
-            };
-        });
-    const receiverItems: DescriptionsProps['items'] =
-        receiverInfo &&
-        Object.entries(receiverInfo).map(([key, value]) => ({
-            key,
-            label: <span className='font-semibold capitalize'>{key}</span>,
-            children: <p className='capitalize'>{value}</p>,
-        }));
+    const customerItems: DescriptionsProps['items'] = [
+        {
+            key: 'name',
+            label: <span className='font-semibold capitalize'>Tên khách hàng</span>,
+            children: <p className='capitalize'>{customerInfo?.name}</p>,
+        },
+        {
+            key: 'email',
+            label: <span className='font-semibold capitalize'>Email</span>,
+            children: <p className='capitalize'>{customerInfo?.email}</p>,
+        },
+        {
+            key: 'phone',
+            label: <span className='font-semibold capitalize'>Số điện thoại</span>,
+            children: <p className='capitalize'>{customerInfo?.phone}</p>,
+        },
+    ];
 
-    const shippingAddressItems: DescriptionsProps['items'] =
-        shippingAddress &&
-        Object.entries(shippingAddress).map(([key, value]) => ({
-            key,
-            label: <span className='font-semibold capitalize'>{key}</span>,
-            children: <p className='capitalize'>{value}</p>,
-        }));
+    const receiverItems: DescriptionsProps['items'] = [
+        {
+            key: 'name',
+            label: <span className='font-semibold capitalize'>Tên khách hàng</span>,
+            children: <p className='capitalize'>{receiverInfo?.name}</p>,
+        },
+        {
+            key: 'email',
+            label: <span className='font-semibold capitalize'>Email</span>,
+            children: <p className='capitalize'>{receiverInfo?.email}</p>,
+        },
+        {
+            key: 'phone',
+            label: <span className='font-semibold capitalize'>Số điện thoại</span>,
+            children: <p className='capitalize'>{receiverInfo?.phone}</p>,
+        },
+    ];
+
+    const shippingAddressItems: DescriptionsProps['items'] = [
+        {
+            key: 'country',
+            label: <span className='font-semibold capitalize'>Quốc gia</span>,
+            children: <p className='capitalize'>{shippingAddress?.country}</p>,
+        },
+        {
+            key: 'province',
+            label: <span className='font-semibold capitalize'>Tỉnh/Thành phố</span>,
+            children: <p className='capitalize'>{shippingAddress?.province}</p>,
+        },
+        {
+            key: 'district',
+            label: <span className='font-semibold capitalize'>Quận/Huyện</span>,
+            children: <p className='capitalize'>{shippingAddress?.district}</p>,
+        },
+        {
+            key: 'ward',
+            label: <span className='font-semibold capitalize'>Phường/Xã</span>,
+            children: <p className='capitalize'>{shippingAddress?.ward}</p>,
+        },
+        {
+            key: 'address',
+            label: <span className='font-semibold capitalize'>Địa chỉ liên hệ</span>,
+            children: <p className='capitalize'>{shippingAddress?.address}</p>,
+        },
+    ];
 
     return (
         <Space className='mt-5 w-full  rounded-lg bg-[#fff] p-4 ' direction='vertical'>
-            <Descriptions title='Customer' items={customerItems} />
-            {receiverInfo && receiverInfo.name ? <Descriptions title='Receiver' items={receiverItems} /> : ''}
-            <Descriptions title='Shipping Address' items={shippingAddressItems} />
+            <Descriptions title='Thông tin khách hàng' items={customerItems} />
+            {receiverInfo && receiverInfo.name ? (
+                <Descriptions className='my-5' title='Thông tin người nhận' items={receiverItems} />
+            ) : (
+                ''
+            )}
+            <Descriptions title='Địa chỉ giao hàng' items={shippingAddressItems} />
         </Space>
     );
 };

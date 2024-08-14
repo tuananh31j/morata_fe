@@ -45,14 +45,14 @@ const CancelOrderModal = ({ orderId }: Props) => {
     return (
         <>
             <Button danger onClick={() => setOpen(true)}>
-                Terminate
+                Hủy đơn
             </Button>
             <Modal
                 maskClosable={false}
                 forceRender
                 open={open}
-                title='Are you sure you want to terminate this order?'
-                okText='Terminate'
+                title='Bạn muốn hủy đơn hàng này?'
+                okText='Hủy đơn'
                 okType='danger'
                 cancelText='Cancel'
                 okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
@@ -72,12 +72,12 @@ const CancelOrderModal = ({ orderId }: Props) => {
             >
                 <Form.Item name='reason' className='collection-create-form_last-form-item'>
                     <Radio.Group className='flex flex-col'>
-                        <Radio value='delayed'>Delayed</Radio>
-                        <Radio value='out_of_stock'>Out of Stock</Radio>
-                        <Radio value='wrong_item'>Wrong Item</Radio>
-                        <Radio value='customer_request'>Customer Request</Radio>
-                        <Radio value='payment_issue'>Payment Issue</Radio>
-                        <Radio value='other'>Other</Radio>
+                        <Radio value='Đơn hang bị hoãn'>Đơn hang bị hoãn</Radio>
+                        <Radio value='Hết hàng'>Hết hàng</Radio>
+                        <Radio value='Sai thông tin sản phẩm'>Sai thông tin sản phẩm</Radio>
+                        <Radio value='Khách hàng yêu cầu hủy đơn'>Khách hàng yêu cầu hủy đơn</Radio>
+                        <Radio value='Lỗi thanh toán'>Lỗi thanh toán</Radio>
+                        <Radio value='Khác'>Khác</Radio>
                     </Radio.Group>
                 </Form.Item>
             </Modal>
