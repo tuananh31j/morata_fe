@@ -15,6 +15,7 @@ const AttributesItem = ({
 }) => {
     return (
         <Form.Item
+            className='capitalize'
             name={['attributes', attribute.attributeKey]}
             label={attribute.name}
             required={attribute.isRequired}

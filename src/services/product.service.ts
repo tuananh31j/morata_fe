@@ -4,6 +4,7 @@ import {
     IAllProductResponseNew,
     IProductItemNew,
     IProductDetailsAdmin,
+    IFilterResponse,
 } from '~/types/Product';
 import { IParams, Params } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
@@ -62,22 +63,22 @@ const productService = {
         return res.data;
     },
     async createProduct(data: FormData) {
-        const res = await instance.post<IAxiosResponse<any>>(`${PRODUCT_ENDPOINT.CREATE}`, data);
+        const res = await instance.post<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.CREATE}`, data);
         return res.data;
     },
     async updateProduct(data: FormData, id: string) {
-        const res = await instance.patch<IAxiosResponse<any>>(`${PRODUCT_ENDPOINT.UPDATE}/${id}`, data);
+        const res = await instance.patch<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.UPDATE}/${id}`, data);
         return res.data;
     },
     async updateProductVariant(data: FormData, variantId: string) {
-        const res = await instance.patch<IAxiosResponse<any>>(
+        const res = await instance.patch<IAxiosResponse<null>>(
             `${PRODUCT_ENDPOINT.UPDATE}/variation/${variantId}`,
             data
         );
         return res.data;
     },
     async createProductVariant(data: FormData) {
-        const res = await instance.post<IAxiosResponse<any>>(`${PRODUCT_ENDPOINT.UPDATE}/variation`, data);
+        const res = await instance.post<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.UPDATE}/variation`, data);
         return res.data;
     },
     async updateVariations(data: FormData, id: string) {
@@ -90,6 +91,10 @@ const productService = {
     },
     async deleteProduct(id: string) {
         const res = await instance.delete<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.DELETE}/${id}`);
+        return res.data;
+    },
+    async getFilterByCategory(id: string) {
+        const res = await instance.get<IAxiosResponse<IFilterResponse[]>>(`${PRODUCT_ENDPOINT.FILTER}/${id}`);
         return res.data;
     },
 };

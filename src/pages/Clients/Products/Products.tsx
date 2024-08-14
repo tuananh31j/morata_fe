@@ -1,6 +1,5 @@
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
-import useGetProducts from '~/hooks/products/Queries/useGetProductsForAdmin';
 import FilterProducts from './FilterSidebar';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import { Empty, Pagination } from 'antd';

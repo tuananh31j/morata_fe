@@ -1,10 +1,12 @@
-import { type TableColumnsType } from 'antd';
+import { Button, type TableColumnsType } from 'antd';
 import { OrderStatus, PaymentMethod } from '~/constants/enum';
 import ActionLink from './ActionLink';
-import dayjs from 'dayjs';
 import PopupOrderDetails from './PopupOrderDetails';
 import OrderStatusTag from '~/components/OrderStatusTag';
 import { Currency } from '~/utils';
+import dayjs from 'dayjs';
+import { MAIN_ROUTES } from '~/constants/router';
+import { Link } from 'react-router-dom';
 
 export interface DataType {
     _id: string;
@@ -20,6 +22,10 @@ const filterStatusItems = [
         value: OrderStatus.pending,
     },
     {
+        text: 'Cancelled',
+        value: OrderStatus.cancelled,
+    },
+    {
         text: 'Confirmed',
         value: OrderStatus.confirmed,
     },
@@ -28,24 +34,27 @@ const filterStatusItems = [
         value: OrderStatus.shipping,
     },
     {
-        text: 'Canceled',
-        value: OrderStatus.cancelled,
+        text: 'Delivered',
+        value: OrderStatus.delivered,
     },
     {
         text: 'Done',
         value: OrderStatus.done,
     },
 ];
+const updateFilterStatus = (value: any, record: any) => record.orderStatus.indexOf(value) === 0;
 
 export const columns: TableColumnsType<DataType> = [
     {
         title: 'ID',
         dataIndex: '_id',
-        render: (value) => <PopupOrderDetails id={value} />,
+        render: (value) => <span>{value}</span>,
     },
     {
-        title: 'Payments',
+        title: 'Payments Method',
         dataIndex: 'paymentMethod',
+
+        render: (text: string) => <span className='font-semibold'>{text.toUpperCase()}</span>,
         filters: [
             {
                 text: 'Card',
@@ -56,6 +65,22 @@ export const columns: TableColumnsType<DataType> = [
                 value: PaymentMethod.cash,
             },
         ],
+        onFilter: (value: any, record: any) => record.paymentMethod.indexOf(value) === 0,
+    },
+
+    {
+        title: 'Total price',
+        dataIndex: 'totalPrice',
+        showSorterTooltip: { target: 'full-header' },
+        render: (value) => <span>{Currency.format(value)}</span>,
+        sorter: (a: any, b: any) => a.totalPrice - b.totalPrice,
+    },
+    {
+        title: 'Payment Status',
+        dataIndex: 'orderStatus',
+        render: (value) => <OrderStatusTag status={value} />,
+        filters: filterStatusItems,
+        onFilter: updateFilterStatus,
     },
     {
         title: 'Date',
@@ -64,21 +89,18 @@ export const columns: TableColumnsType<DataType> = [
         render: (value) => <span>{dayjs(value).format('DD/MM/YYYY')}</span>,
     },
     {
-        title: 'Total price',
-        dataIndex: 'totalPrice',
-        showSorterTooltip: { target: 'full-header' },
-        render: (value) => <span>{Currency.format(value)}</span>,
-    },
-    {
-        title: 'Status',
-        dataIndex: 'orderStatus',
-        render: (value) => <OrderStatusTag status={value} />,
-        filters: filterStatusItems,
-    },
-    {
         title: 'Actions',
         dataIndex: 'orderStatus',
-        render: (value, record) => <ActionLink status={value} orderId={record._id} />,
+        render: (value, record) => (
+            <>
+                <Link to={`${MAIN_ROUTES.MY_ORDERS}/${record._id}`}>
+                    <Button type='primary' className='mr-2'>
+                        Xem chi tiết
+                    </Button>
+                </Link>
+                {value === 'done' && <ActionLink status={value} orderId={record._id} />}
+            </>
+        ),
         // sorter: (a, b) => a.name.length - b.name.length,
         // sortDirections: ['descend'],
     },

@@ -64,14 +64,20 @@ const Shipping: React.FC = () => {
                             ) : (
                                 <Text type='secondary'>Vui lòng chọn địa chỉ giao hàng trước</Text>
                             )}
+                            <Form.Item>
+                                <Button
+                                    type='primary'
+                                    htmlType='submit'
+                                    size='large'
+                                    block
+                                    className='h-12 text-lg font-semibold'
+                                >
+                                    Tiếp tục thanh toán
+                                </Button>
+                            </Form.Item>
                         </Card>
                     </Col>
                 </Row>
-                <Form.Item>
-                    <Button type='primary' htmlType='submit' size='large' block className='h-12 text-lg font-semibold'>
-                        Tiếp tục thanh toán
-                    </Button>
-                </Form.Item>
             </Form>
         </Card>
     );

@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Form, InputNumber, Radio } from 'antd';
+import { Button, ConfigProvider, Form, InputNumber } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -60,7 +60,6 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
     }, [product._id]);
     /* eslint-enable */
     const handleOnclickVariant = (item: IVariantItem) => {
-        console.log(item);
         dispatch(updateVariant(item));
         if (valueQuantity > item.stock) {
             setQuantityValue(item.stock);
@@ -85,18 +84,18 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                 <Form onFinish={handleOnSubmit} layout='vertical'>
                     <div className='my-4'>
                         <Form.Item name={'variant'}>
-                            <div className='flex items-center gap-3'>
-                                {product?.variationIds.map((item, index) => (
+                            <div className='flex flex-wrap items-center gap-3'>
+                                {product?.variationIds.map((item, Pindex) => (
                                     <div
                                         key={item._id}
-                                        onClick={() => handleChangeVariant(item, index)}
-                                        className={` flex cursor-pointer items-center justify-between gap-3 rounded-sm border-2 ${active === index ? 'border-blue-600' : 'border-blue-200'} bg-white px-2 py-1 transition duration-300 hover:border-blue-600`}
+                                        onClick={() => handleChangeVariant(item, Pindex)}
+                                        className={` flex cursor-pointer items-center justify-between gap-3 rounded-sm border-2 ${active === Pindex ? 'border-blue-600' : 'border-blue-200'} bg-white px-2 py-1 transition duration-300 hover:border-blue-600`}
                                     >
                                         <div className='select-none'>
                                             <img src={item.image} alt='variant product' className='h-10 w-10' />
                                         </div>
-                                        {item?.variantAttributes?.map((attr: variationAttribute) => (
-                                            <span key={attr._id} className='select-none text-sm text-black'>
+                                        {item?.variantAttributes?.map((attr: variationAttribute, index) => (
+                                            <span key={index} className='select-none text-sm font-medium text-black'>
                                                 {attr.value}{' '}
                                             </span>
                                         ))}
@@ -105,7 +104,7 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                             </div>
                         </Form.Item>
                     </div>
-                    <div className=' items-center gap-5 md:flex'>
+                    <div className='items-center gap-5 md:flex'>
                         <div className='mb-[15px] flex w-[100%] items-center gap-[5px] md:mb-0 lg:w-[28%]'>
                             <Button
                                 onClick={handleDecrement}

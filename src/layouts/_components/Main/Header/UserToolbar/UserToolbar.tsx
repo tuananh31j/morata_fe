@@ -7,11 +7,14 @@ import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { RootState } from '~/store/store';
 import IconButton from './IconButton';
 import { MAIN_ROUTES } from '~/constants/router';
+import useGetAllWishlist from '~/hooks/wishlist/Queries/useGetAllWishlist';
 
 const UserToolbar = () => {
+    const location = useLocation();
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { data, isLoading } = useGetMyCart(user?._id);
-    const location = useLocation();
+    const { data: wishListData } = useGetAllWishlist({ userId: user?._id });
+    const wishListAllItems = wishListData?.data?.wishList.length;
     const totalOrderAmount = data
         ? data?.data?.items?.reduce(
               (total: number, product) => total + product.productVariation.price * product.quantity,
@@ -21,6 +24,7 @@ const UserToolbar = () => {
     const totalQuantityAmount = data
         ? data?.data?.items?.reduce((total: number, product) => total + product.quantity, 0)
         : 0;
+
     return (
         <div className='justify-between gap-2 lg:flex'>
             {isLoading && !data && (
@@ -32,18 +36,19 @@ const UserToolbar = () => {
             )}
             {user && !isLoading && (
                 <>
+                    {/* <WishListDrawer> */}
+                    <Link className='cursor-pointer' to={MAIN_ROUTES.WISH_LIST}>
+                        <IconButton count={wishListAllItems} name='Wishlist' isWishlist={true} icon='HeartOutlined' />
+                    </Link>
+                    {/* </WishListDrawer> */}
+
                     <Link className='cursor-pointer' to={MAIN_ROUTES.PROFILE}>
                         <IconButton name={`${user.username}`} subName='Hello' icon='UserOutlined' />
                     </Link>
-                    <WishListDrawer>
-                        <div className='text-white'>
-                            <IconButton count={0} name='my favorite' subName='favorite' icon='HeartOutlined' />
-                        </div>
-                    </WishListDrawer>
 
                     {location.pathname !== '/checkout-details' ? (
                         <CartDrawer item={data ? data.data : undefined}>
-                            <div className='text-white'>
+                            <div>
                                 <IconButton
                                     name={`${totalOrderAmount}$`}
                                     count={totalQuantityAmount}

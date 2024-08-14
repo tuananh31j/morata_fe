@@ -235,7 +235,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                                 />
                                                             </div>
                                                             {/* {product.productId.discountPercentage > 0 && (
-                                                            <del className=' text-gray-400 text-base font-semibold leading-5'>
+                                                            <del className='text-base font-semibold leading-5 text-gray-400 '>
                                                                 {Currency.format(
                                                                     product.productId.price *
                                                                         product.quantity *
@@ -259,7 +259,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 );
                             }}
                         />
-                        {totalOrderAmount < freeShippingThreshold && (
+                        {/* {totalOrderAmount < freeShippingThreshold && (
                             <div className='free-shipping__text mb-14'>
                                 <Slider
                                     className='custom-slider'
@@ -277,7 +277,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                     </p>
                                 )}
                             </div>
-                        )}
+                        )} */}
                         <div className='border-gray-200 border-t px-4 py-6'>
                             <div className='text-gray-900 flex justify-between text-base font-bold'>
                                 <p className='text-xs uppercase '>Subtotal:</p>

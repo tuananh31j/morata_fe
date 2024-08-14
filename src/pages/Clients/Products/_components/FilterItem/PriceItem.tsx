@@ -1,8 +1,7 @@
 import FilterItem from './FilterWrap';
-import { useMemo, useState } from 'react';
-import { Form, InputNumber, Slider } from 'antd';
+import { useEffect, useState } from 'react';
+import { Button, Form, InputNumber, Slider } from 'antd';
 import { MinusOutlined } from '@ant-design/icons';
-import _, { debounce, parseInt } from 'lodash';
 import useFilter from '~/hooks/_common/useFilter';
 import { FormProps } from 'antd/lib/form';
 
@@ -11,30 +10,58 @@ type FieldType = {
     smaller?: number;
 };
 const PriceFilterItem = () => {
-    const [isDispatch, setIsDispatch] = useState<boolean>(false);
-    // const { query, updateQueryParam } = useFilter();
+    const defaultMin = 0;
+    const defaultMax = 10000000;
+    const { query, updateQueryParam } = useFilter();
+    const [value, setValue] = useState<number[]>([defaultMin, 9999999]);
 
-    const handleSubmit = (value: number[]) => {
-        console.log(value);
-        // updateQueryParam({ ...query, ['price[gte]']: value[0], ['price[lte]']: value[1] });
+    const onChnageInputMin = (valueMin: number | null) => {
+        if (valueMin !== null) {
+            setValue([valueMin, value[1]]);
+        }
+    };
+    const onChnageInputMax = (valueMax: number | null) => {
+        console.log(valueMax, 'onChnageInputMax');
+        if (valueMax !== null) {
+            setValue([value[0], valueMax]);
+        }
     };
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        console.log('Success:', values);
+        updateQueryParam({ ...query, ['rawprice[gte]']: value[0], ['rawprice[lte]']: value[1] });
     };
+
+    useEffect(() => {
+        const minValue = query['rawprice[gte]'] ? Number(query['rawprice[gte]']) : defaultMin;
+        const maxValue = query['rawprice[lte]'] ? Number(query['rawprice[lte]']) : defaultMax;
+        setValue([minValue, maxValue]);
+    }, [query]);
 
     return (
         <FilterItem filterName='Price'>
             <Form onFinish={onFinish}>
-                <div className='flex items-center justify-center gap-3'>
+                <Slider
+                    min={defaultMin}
+                    max={defaultMax}
+                    range={{ draggableTrack: true }}
+                    value={value}
+                    onChange={setValue}
+                />
+                <div className='flex items-center justify-between'>
                     <Form.Item>
-                        {' '}
-                        <InputNumber className='flex-1' onBlur={() => setIsDispatch(!isDispatch)} />
-                        <MinusOutlined />
+                        <InputNumber value={value[0]} onChange={onChnageInputMin} placeholder='Min price' />
                     </Form.Item>
+                    <div className=''>
+                        <MinusOutlined />
+                    </div>
                     <Form.Item>
-                        <InputNumber className='flex-1' onBlur={() => setIsDispatch(!isDispatch)} />
+                        <InputNumber value={value[1]} onChange={onChnageInputMax} placeholder='Max price' />
                     </Form.Item>
                 </div>
+                <Form.Item>
+                    <Button className='w-full' htmlType='submit'>
+                        Submit
+                    </Button>
+                </Form.Item>
             </Form>
         </FilterItem>
     );

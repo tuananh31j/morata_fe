@@ -30,5 +30,13 @@ export const QUERY_KEY = {
     MONTHLY_STATS: 'monthlyStats',
     YEARLY_STATS: 'yearlyStats',
     DATE_RANGE: 'dateRange',
+    LOCATION: 'location',
     PRODUCT_STATS: 'productStats',
+    TOP_BUYERS: 'topBuyers',
+    // wishlist
+    WISHLIST: {
+        LIST: 'wishlist',
+        ADD: 'add',
+        REMOVE: 'remove',
+    },
 };

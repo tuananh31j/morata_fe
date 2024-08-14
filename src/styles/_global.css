@@ -316,3 +316,37 @@ img {
 /* .anticon-file {
     display: none;
 } */
+
+.hidden-checkbox .ant-checkbox-input {
+    display: none;
+}
+
+.hidden-checkbox .ant-checkbox-inner {
+    display: none;
+}
+
+.hidden-checkbox .ant-checkbox-wrapper {
+    display: inline-block;
+    padding-left: 24px; /* Để tạo khoảng cách cho custom checkbox indicator */
+    position: relative;
+    cursor: pointer;
+}
+
+/* Add a custom checkbox indicator (before) */
+.hidden-checkbox .ant-checkbox-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    transform: translateY(-50%);
+}
+
+/* Add a custom checkmark indicator (after) when checked */
+.hidden-checkbox .ant-checkbox-wrapper-checked::before {
+    background-color: #1890ff;
+}

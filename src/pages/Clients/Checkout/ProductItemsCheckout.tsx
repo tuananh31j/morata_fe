@@ -19,7 +19,7 @@ const ProductItemsCheckout: React.FC = () => {
     );
     const { data: cartItems } = useGetMyCart();
     const items = cartItems?.data?.items?.map((item) => ({
-        productId: item.productVariation._id,
+        productId: item.productVariation.productId._id,
         name: item?.productVariation?.productId?.name,
         price: item?.productVariation?.price,
         image: item?.productVariation?.image,

@@ -3,6 +3,7 @@ import { MAIN_ROUTES } from '~/constants/router';
 import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
 import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
+import OrderDetailPage from '~/pages/Clients/Account/MyOrders/OrderDetail/OrderDetailPage';
 import { CheckEmail } from '~/pages/Clients/AuthPage/Email/CheckEmail';
 import { VerifyPage } from '~/pages/Clients/AuthPage/Email/Verify';
 import ForgotPassword from '~/pages/Clients/AuthPage/ForgotPassword/ForgotPassword';
@@ -113,6 +114,7 @@ const PublicRoutes = [
                 children: [
                     { path: MAIN_ROUTES.PROFILE, element: <ProfilePage /> },
                     { path: MAIN_ROUTES.MY_ORDERS, element: <MyOrdersPage /> },
+                    { path: MAIN_ROUTES.MY_ORDERS_DETAIL, element: <OrderDetailPage /> },
                     { path: MAIN_ROUTES.MY_ADDRESS, element: <MyAddressPage /> },
                 ],
             },
