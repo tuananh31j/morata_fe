@@ -17,6 +17,7 @@ export const LoginPage = lazy(() => import('~/pages/Clients/AuthPage/Login'));
 export const RegisterPage = lazy(() => import('~/pages/Clients/AuthPage/Register'));
 export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
 export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
+export const CartDetail = lazy(() => import('~/pages/Clients/Cart/CartDetail'));
 
 // @admin page
 export const DashboardPage = lazy(() => import('~/pages/Admins/_dashboard_'));

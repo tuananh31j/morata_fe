@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import LoadingBar from '~/components/_common/Loading/LoadingBar';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useCart } from '~/hooks/_common/useCart';
+import { useMutationRemoveAll } from '~/hooks/cart/Mutations/useRemoveAll';
 import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
 import { useUpdateQuantity } from '~/hooks/cart/Mutations/useUpdateQuantity';
 import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
@@ -23,7 +24,7 @@ type PropsType = {
 };
 const CartDrawer = ({ children, item }: PropsType) => {
     const { handleRemoveCart, isPending } = useMutationRemoveItem();
-    const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
+    // const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
     const { mutate: updateQuantity } = useUpdateQuantity();
     const { handleOpenCart, onClose, cart } = useCart();
     const user = useSelector((state: RootState) => state.authReducer.user?._id);
@@ -37,18 +38,18 @@ const CartDrawer = ({ children, item }: PropsType) => {
         [totalOrderAmount]: `$${totalOrderAmount}`,
         [freeShippingThreshold]: `$${freeShippingThreshold}`,
     };
-    const responsePayloadCheckout = products?.map((product) => ({
-        name: product.productVariation.productId.name,
-        price: product.productVariation.price,
-        quantity: product.quantity,
-        image: product.productVariation.image,
-        productId: product.productVariation.productId._id,
-    }));
-    const handlePayStripe = () => {
-        stripeCheckout({
-            items: responsePayloadCheckout,
-        });
-    };
+    // const responsePayloadCheckout = products?.map((product) => ({
+    //     name: product.productVariation.productId.name,
+    //     price: product.productVariation.price,
+    //     quantity: product.quantity,
+    //     image: product.productVariation.image,
+    //     productId: product.productVariation.productId._id,
+    // }));
+    // const handlePayStripe = () => {
+    //     stripeCheckout({
+    //         items: responsePayloadCheckout,
+    //     });
+    // };
     const [quantityProduct, setQuantityProduct] = useState<{ quantity: number; id: string }[]>([]);
     const [pendingUpdates, setPendingUpdates] = useState<{ productVariation: string; quantity: number } | null>(null);
     useEffect(() => {
@@ -160,7 +161,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 const quantity =
                                     quantityProduct?.find((p) => p.id === product.productVariation._id)?.quantity || 0;
                                 return (
-                                    <List.Item>
+                                    <List.Item key={product.productVariation._id}>
                                         <div className='flex w-full items-center justify-between'>
                                             <List.Item.Meta
                                                 avatar={
@@ -183,8 +184,8 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                         <div className='flex items-center gap-2'>
                                                             <div className='flex flex-col'>
                                                                 {product.productVariation?.variantAttributes?.map(
-                                                                    (itemP) => (
-                                                                        <div key={itemP._id}>
+                                                                    (itemP, index) => (
+                                                                        <div key={index}>
                                                                             <span className='capitalize text-black'>
                                                                                 {itemP.name}
                                                                             </span>
@@ -283,7 +284,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 <p className='text-xs uppercase '>Subtotal:</p>
                                 <p className='text-base text-[#cc1414]'>{Currency.format(totalOrderAmount)}</p>
                             </div>
-                            <div className='mt-6'>
+                            {/* <div className='mt-6'>
                                 <button
                                     onClick={handlePayStripe}
                                     disabled={!products.length}
@@ -305,6 +306,18 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                     )}
                                     {PendingStripe && <Spin />}
                                 </button>
+                            </div> */}
+                            <div className='mt-6'>
+                                <Link to={MAIN_ROUTES.CART}>
+                                    <Button
+                                        onClick={onClose}
+                                        className='h-[50px] bg-white text-sm font-semibold uppercase text-black transition-colors duration-300 hover:bg-[#16bcdc] hover:text-white'
+                                        type='default'
+                                        block
+                                    >
+                                        Xem giỏ hàng
+                                    </Button>
+                                </Link>
                             </div>
                             <div className='mt-6'>
                                 <Link to={MAIN_ROUTES.CHECKOUT}>
@@ -314,12 +327,12 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                         type='default'
                                         block
                                     >
-                                        CheckOut
+                                        Thanh toán
                                     </Button>
                                 </Link>
                             </div>
                             {totalOrderAmount > 1000 && (
-                                <div className='h-[30px]'>
+                                <div className='mt-2 h-[30px]'>
                                     <p className='px-2 text-yellow-500'>
                                         Warning: Your order has exceeded the checkout limit of $1000, please proceed to
                                         online checkout!

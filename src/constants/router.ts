@@ -17,6 +17,7 @@ export const MAIN_ROUTES = {
     NOT_FOUND: '/404',
     SUCCESS_ORDER: '/success',
     VERIFY_ORDER: '/verify-order',
+    CART: '/cart',
 };
 
 export const ADMIN_ROUTES = {
