@@ -40,9 +40,11 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
 
     const generateUniqueId = (prefix: string) => `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
 
-    const dateRangeId = generateUniqueId('date-range');
-    const monthId = generateUniqueId('month');
-    const yearId = generateUniqueId('year');
+    const dateRangeId = generateUniqueId('date-range-ee');
+    const monthId = generateUniqueId('monthhhh');
+    const yearId = generateUniqueId('yearhhh');
+    const weekId = generateUniqueId('week1hhh');
+    const monthLastID = generateUniqueId('monthLasthhhh');
 
     useEffect(() => {
         setPicked(initialDate);
@@ -145,6 +147,7 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
                 <Space direction='vertical' className='border-r p-4'>
                     <div>
                         <DropDownItem
+                            lableId={weekId}
                             title='Past 7 Days'
                             handleClick={() => {
                                 const sevenDaysRange: DateInput = { type: 'range', start: dateSevenDayAgo, end: today };
@@ -156,6 +159,7 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
                             onMouseLeave={() => setHoveredDate(null)}
                         />
                         <DropDownItem
+                            lableId={monthLastID}
                             title='Past 30 Days'
                             handleClick={() => {
                                 const thirtyDaysRange: DateInput = {
