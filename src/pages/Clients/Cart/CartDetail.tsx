@@ -166,23 +166,26 @@ const CartDetail = () => {
             key: 'stock',
             dataIndex: 'stock',
             title: 'Số lượng',
-            render: (_, product) => (
-                <div className='ml-5 flex items-center justify-center'>
-                    <Button
-                        type='default'
-                        disabled={product.quantity < 2}
-                        icon={<MinusOutlined className='transform transition duration-500 hover:rotate-180' />}
-                        onClick={() => handleDecreaseQuantity(product.productVariation._id)}
-                    />
-                    <InputNumber min={1} value={product.quantity} />
-                    <Button
-                        type='default'
-                        disabled={product.quantity === product.productVariation.stock}
-                        icon={<PlusOutlined className='transform transition duration-500 hover:rotate-180' />}
-                        onClick={() => handleIncreaseQuantity(product.productVariation._id)}
-                    />
-                </div>
-            ),
+            render: (_, product) => {
+                const quantity = quantityProduct?.find((p) => p.id === product.productVariation._id)?.quantity || 0;
+                return (
+                    <div className='ml-5 flex items-center justify-center'>
+                        <Button
+                            type='default'
+                            disabled={quantity < 2}
+                            icon={<MinusOutlined className='transform transition duration-500 hover:rotate-180' />}
+                            onClick={() => handleDecreaseQuantity(product.productVariation._id)}
+                        />
+                        <InputNumber min={1} value={quantity} />
+                        <Button
+                            type='default'
+                            disabled={quantity === product.productVariation.stock}
+                            icon={<PlusOutlined className='transform transition duration-500 hover:rotate-180' />}
+                            onClick={() => handleIncreaseQuantity(product.productVariation._id)}
+                        />
+                    </div>
+                );
+            },
         },
         {
             key: 'subTotal',
