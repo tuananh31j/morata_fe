@@ -3,6 +3,7 @@ export interface IReviewProductResponse {
     content: string;
     userId: {
         username: string;
+        avatar: string;
         _id: string;
     };
     productId: string;

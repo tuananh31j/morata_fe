@@ -1,4 +1,4 @@
-import { Collapse, ConfigProvider, Tabs, TabsProps } from 'antd';
+import { Collapse, CollapseProps, ConfigProvider, Tabs, TabsProps } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useWindowSize from '~/hooks/_common/useWindowSize';
@@ -9,7 +9,6 @@ import { useTypedSelector } from '~/store/store';
 import { IProductItemNew } from '~/types/Product';
 import { useInView } from 'react-intersection-observer';
 
-const { Panel } = Collapse;
 const DescriptionProduct = ({ review, product }: { review: number; product: IProductItemNew }) => {
     const windowSize = useWindowSize();
     const targetToReview = useRef<HTMLDivElement>();
@@ -21,6 +20,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
         root: null,
         threshold: 0,
         triggerOnce: true,
+        rootMargin: '0px 0px 0px 0px',
     });
 
     const descriptionTabKey = {
@@ -30,7 +30,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
         reviews: '4',
     };
     const activekey = orderId ? descriptionTabKey.reviews : descriptionTabKey.additionalInformation;
-    const items: TabsProps['items'] = [
+    const items: TabsProps['items'] | CollapseProps['items'] = [
         // {
         //     key: descriptionTabKey.description,
         //     label: 'DESCRIPTION',
@@ -52,6 +52,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
             children: <ReviewsContent TopReviews={review} />,
         },
     ];
+
     const setRefs = useCallback(
         (node: HTMLDivElement) => {
             targetToReview.current = node;
@@ -63,6 +64,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
     useEffect(() => {
         if (orderId && targetToReview.current) {
             setTimeout(() => {
+                document.body.classList.add('noscroll');
                 targetToReview.current?.scrollIntoView({ behavior: 'smooth' });
             }, 1000);
         }
@@ -71,6 +73,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
     useEffect(() => {
         if (inView && orderId) {
             dispatch(setReviewData({ orderId: orderId, isOpen: true }));
+            document.body.classList.remove('noscroll');
         }
     }, [inView, orderId]);
     /* eslint-enable */
@@ -98,26 +101,18 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
                     {windowSize.windowWidth > 1024 && (
                         <Tabs
                             className='mt-[25px] w-full px-5 font-semibold'
-                            items={items}
+                            items={items as TabsProps['items']}
                             defaultActiveKey={activekey}
                             centered={true}
                         ></Tabs>
                     )}
                     {windowSize.windowWidth < 1024 && (
-                        <Collapse defaultActiveKey={['1']} className='mt-[25px]' expandIconPosition='end'>
-                            {/* <Panel header='DESCRIPTION' key='1'>
-                            <DescriptionContent />
-                        </Panel> */}
-                            <Panel header='ADDITIONAL INFORMATION' key='2'>
-                                <AddInformationContent attributes={product.attributes} />
-                            </Panel>
-                            {/* <Panel header='SHIPPING & RETURN' key='3'>
-                            <ShipReturnContent />
-                        </Panel> */}
-                            <Panel header='REVIEWS' key='4'>
-                                <ReviewsContent TopReviews={review} />
-                            </Panel>
-                        </Collapse>
+                        <Collapse
+                            defaultActiveKey={activekey}
+                            items={items}
+                            className='mt-[25px]'
+                            expandIconPosition='end'
+                        ></Collapse>
                     )}
                 </div>
             </ConfigProvider>

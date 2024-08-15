@@ -2,7 +2,7 @@ import { TinyColor } from '@ctrl/tinycolor';
 import { Button, ConfigProvider } from 'antd';
 
 type RateBtnProps = {
-    handleRate: (productId: string, orderId: string) => void;
+    handleRate: (productId: string, orderId: string, isDeleted: boolean) => void;
     productId: string;
     orderId: string;
 };

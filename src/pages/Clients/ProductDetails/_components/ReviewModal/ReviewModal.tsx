@@ -1,7 +1,5 @@
 import { Button, Form, Input, Modal, Rate } from 'antd';
-import _ from 'lodash';
 import { useEffect } from 'react';
-import { validators } from 'tailwind-merge';
 import { IReviewProductResponse } from '~/types/Review';
 import { errorMessage } from '~/validation/Products/Product';
 
@@ -17,15 +15,6 @@ const { TextArea } = Input;
 const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit, handleCancel }: ReviewModalProps) => {
     const [form] = Form.useForm();
 
-    useEffect(() => {
-        if (form) {
-            form.setFieldsValue({
-                rating: initialValue.rating,
-                content: initialValue.content,
-            });
-        }
-    }, [initialValue, form]);
-
     /* eslint-disable */
     const ratingValidator = async (_: any, rating: number) => {
         if (!rating) {
@@ -33,7 +22,6 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
         }
         return Promise.resolve();
     };
-
     const contentValidator = async (_: any, content: string) => {
         if (!content) {
             return errorMessage('Please input your rating!');
@@ -44,7 +32,22 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
 
         return Promise.resolve();
     };
+    const content = [
+        {
+            validator: contentValidator,
+        },
+    ];
+
     /* eslint-enable */
+
+    useEffect(() => {
+        if (isModalVisible) {
+            form.setFieldsValue({
+                rating: initialValue.rating,
+                content: initialValue.content,
+            });
+        }
+    }, [initialValue, form]);
 
     return (
         <Modal title='Write a review' open={isModalVisible} footer={null} onCancel={handleCancel}>
@@ -72,11 +75,7 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
                         label='Review'
                         initialValue={initialValue.content}
                         dependencies={['content']}
-                        rules={[
-                            {
-                                validator: contentValidator,
-                            },
-                        ]}
+                        rules={content}
                     >
                         <TextArea placeholder='Write your review' rows={4} />
                     </Form.Item>

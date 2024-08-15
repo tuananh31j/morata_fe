@@ -51,8 +51,9 @@ const ProductDetails = () => {
         } else {
             return () => {
                 if (!isInitialMount.current) {
-                    dispatch(setReviewData({ orderId: '', isOpen: false }));
+                    dispatch(setReviewData({ orderId: '', isOpen: false, productId: '' }));
                 }
+                window.localStorage.removeItem('orderId');
             };
         }
     }, []);
@@ -231,6 +232,3 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
-function dispatch(arg0: { payload: { orderId: string; isOpen: boolean }; type: 'rateProduct/setRateData' }) {
-    throw new Error('Function not implemented.');
-}
