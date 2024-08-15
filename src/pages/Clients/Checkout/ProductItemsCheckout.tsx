@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Card, List, Typography, Divider, Tag, Image, Space } from 'antd';
+import React, { useState } from 'react';
+import { Button, Card, List, Typography, Divider, Tag, Image, Space, Checkbox, CheckboxProps, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -7,12 +7,15 @@ import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { useCreateOrder } from '~/hooks/orders/Mutations/useCreateOrder';
 import { clearCheckoutInfo } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
+import PolicyModal from '~/components/PolicyPopup/Policy';
 
 const { Text, Title } = Typography;
 
 const ProductItemsCheckout: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const [policyAgreed, setPolicyAgreed] = useState<boolean>(false);
 
     const { description, receiverInfo, shippingAddress, tax, shippingFee } = useSelector(
         (state: RootState) => state.order
@@ -70,6 +73,10 @@ const ProductItemsCheckout: React.FC = () => {
     const formatCurrency = (value: number) =>
         new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
 
+    const onChange: CheckboxProps['onChange'] = (e) => {
+        setPolicyAgreed(e.target.checked);
+    };
+
     return (
         <div className='flex h-full flex-col'>
             <Title level={4} className='mb-4'>
@@ -111,20 +118,29 @@ const ProductItemsCheckout: React.FC = () => {
 
             <div>
                 <Divider />
+
                 <Space direction='vertical' className='w-full'>
                     <div className='flex justify-between'>
                         <Text>Tạm tính:</Text>
                         <Text>{formatCurrency(subTotal)}</Text>
                     </div>
+
                     <div className='flex justify-between'>
                         <Text>Thuế VAT ({tax * 100}%):</Text>
                         <Text>{formatCurrency(taxAmount)}</Text>
                     </div>
+
                     <div className='flex justify-between'>
                         <Text>Phí vận chuyển:</Text>
                         <Text>{formatCurrency(shippingFee)}</Text>
                     </div>
+
+                    <Checkbox onChange={onChange} defaultChecked={false} className='cursor-default'>
+                        Tôi đồng ý với <PolicyModal />
+                    </Checkbox>
+
                     <Divider />
+
                     <div className='flex justify-between'>
                         <Title level={3}>Tổng cộng:</Title>
                         <Title level={3} type='danger'>
@@ -132,17 +148,28 @@ const ProductItemsCheckout: React.FC = () => {
                         </Title>
                     </div>
                 </Space>
+
                 <Card className='mt-4 border-blue-200 bg-blue-50'>
-                    <Button
-                        type='primary'
-                        loading={createOrder.isPending}
-                        size='large'
-                        block
-                        onClick={handleCheckout}
-                        className='h-12 text-lg font-semibold'
+                    <Tooltip
+                        title={
+                            policyAgreed
+                                ? ''
+                                : 'Bạn cần đồng ý với điều khoản và chính sách của chúng tôi để tiếp tục đặt hàng'
+                        }
+                        color='blue'
                     >
-                        Đặt hàng
-                    </Button>
+                        <Button
+                            type='primary'
+                            loading={createOrder.isPending}
+                            size='large'
+                            block
+                            onClick={handleCheckout}
+                            className='h-12 text-lg font-semibold'
+                            disabled={!policyAgreed}
+                        >
+                            Đặt hàng
+                        </Button>
+                    </Tooltip>
                 </Card>
             </div>
         </div>
