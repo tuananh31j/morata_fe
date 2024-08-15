@@ -14,9 +14,11 @@ interface Props {
         ward: string;
         address: string;
     };
+    paymentMethod: string;
 }
 
-export default function ReceiverInfor({ receiverInfo, shippingAddress }: Props) {
+export default function ReceiverInfor({ receiverInfo, shippingAddress, paymentMethod }: Props) {
+    console.log(paymentMethod);
     const receiverItems: DescriptionsProps['items'] = [
         {
             key: 'name',
@@ -41,7 +43,8 @@ export default function ReceiverInfor({ receiverInfo, shippingAddress }: Props) 
             label: <span className='font-semibold capitalize'>Địa chỉ nhận hàng:</span>,
             children: (
                 <p>
-                    [{shippingAddress?.address}] - {shippingAddress?.ward}, {shippingAddress?.district},{' '}
+                    [{shippingAddress?.address}] -{' '}
+                    {paymentMethod === 'card' ? '' : `${shippingAddress?.ward}, ${shippingAddress?.district},`}{' '}
                     {shippingAddress?.province} - {shippingAddress?.country}
                 </p>
             ),
