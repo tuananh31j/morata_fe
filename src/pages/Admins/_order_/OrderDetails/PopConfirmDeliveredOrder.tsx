@@ -19,16 +19,18 @@ const PopConfirmDeliveredOrder = ({ orderId }: Props) => {
     };
 
     const handleConfirm = () => {
-        deliveredOrder.mutate(orderId, {
-            onSuccess: () => {
-                toast.success('Đơn hàng đã được giao thành công');
-                navigate(`/admin/orders/${orderId}/detail`);
-                setOpen(false);
-            },
-            onError: (error) => {
-                toast.error(error.message);
-            },
-        });
+        if (!deliveredOrder.isPending) {
+            deliveredOrder.mutate(orderId, {
+                onSuccess: () => {
+                    toast.success('Đơn hàng đã được giao thành công');
+                    navigate(`/admin/orders/${orderId}/detail`);
+                    setOpen(false);
+                },
+                onError: (error) => {
+                    toast.error(error.message);
+                },
+            });
+        }
     };
 
     const handleCancel = () => {
@@ -42,7 +44,7 @@ const PopConfirmDeliveredOrder = ({ orderId }: Props) => {
             onConfirm={handleConfirm}
             onCancel={handleCancel}
         >
-            <Button type='default' onClick={showPopconfirm}>
+            <Button type='default' loading={deliveredOrder.isPending} onClick={showPopconfirm}>
                 Xác nhận đã giao hàng thành công
             </Button>
         </Popconfirm>

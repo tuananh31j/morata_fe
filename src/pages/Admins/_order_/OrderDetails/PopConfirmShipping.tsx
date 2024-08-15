@@ -19,16 +19,18 @@ const PopConfirmShipping = ({ orderId }: Props) => {
     };
 
     const handleConfirm = () => {
-        shippingOrder.mutate(orderId, {
-            onSuccess: () => {
-                toast.success('Đơn hàng đang trong quá trình vận chuyển');
-                navigate(`/admin/orders/${orderId}/detail`);
-                setOpen(false);
-            },
-            onError: (error) => {
-                toast.error(error.message);
-            },
-        });
+        if (!shippingOrder.isPending) {
+            shippingOrder.mutate(orderId, {
+                onSuccess: () => {
+                    toast.success('Đơn hàng đang trong quá trình vận chuyển');
+                    navigate(`/admin/orders/${orderId}/detail`);
+                    setOpen(false);
+                },
+                onError: (error) => {
+                    toast.error(error.message);
+                },
+            });
+        }
     };
 
     const handleCancel = () => {
@@ -42,7 +44,7 @@ const PopConfirmShipping = ({ orderId }: Props) => {
             onConfirm={handleConfirm}
             onCancel={handleCancel}
         >
-            <Button type='default' onClick={showPopconfirm}>
+            <Button type='default' loading={shippingOrder.isPending} onClick={showPopconfirm}>
                 Bắt đầu quá trình giao hàng
             </Button>
         </Popconfirm>

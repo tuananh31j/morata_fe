@@ -58,6 +58,7 @@ const CancelOrderModal = ({ orderId }: Props) => {
                 okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
                 onCancel={handleCancel}
                 destroyOnClose
+                confirmLoading={cancelOrder.isPending}
                 modalRender={(dom) => (
                     <Form
                         layout='vertical'

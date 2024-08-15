@@ -20,16 +20,18 @@ const PopConfirmFinishOrder = ({ orderId }: Props) => {
     };
 
     const handleConfirm = () => {
-        finishOrder.mutate(orderId, {
-            onSuccess: () => {
-                toast.success('Người nhận đã xác nhận đã nhận hàng');
-                navigate(`/admin/orders/${orderId}/detail`);
-                setOpen(false);
-            },
-            onError: (error) => {
-                toast.error(error.message);
-            },
-        });
+        if (!finishOrder.isPending) {
+            finishOrder.mutate(orderId, {
+                onSuccess: () => {
+                    toast.success('Người nhận đã xác nhận đã nhận hàng');
+                    navigate(`/admin/orders/${orderId}/detail`);
+                    setOpen(false);
+                },
+                onError: (error) => {
+                    toast.error(error.message);
+                },
+            });
+        }
     };
 
     const handleCancel = () => {
@@ -43,7 +45,7 @@ const PopConfirmFinishOrder = ({ orderId }: Props) => {
             onConfirm={handleConfirm}
             onCancel={handleCancel}
         >
-            <Button type='default' onClick={showPopconfirm}>
+            <Button type='default' loading={finishOrder.isPending} onClick={showPopconfirm}>
                 Hoàn thành đơn hàng
             </Button>
         </Popconfirm>

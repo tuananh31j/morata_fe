@@ -135,6 +135,7 @@ const ProductItemsCheckout: React.FC = () => {
                 <Card className='mt-4 border-blue-200 bg-blue-50'>
                     <Button
                         type='primary'
+                        loading={createOrder.isPending}
                         size='large'
                         block
                         onClick={handleCheckout}

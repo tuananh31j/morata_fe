@@ -17,7 +17,7 @@ import { formatDate } from '~/utils/formatDate';
 
 const OrderDetailPage = () => {
     const { id } = useParams();
-    const { data } = useOrderDetails(id!);
+    const { data, isLoading } = useOrderDetails(id!);
 
     const orderStatus = data?.orderStatus;
 
@@ -39,41 +39,47 @@ const OrderDetailPage = () => {
 
     return (
         <>
-            <WrapperList
-                title='Chi Tiết Đơn Hàng'
-                option={
-                    <Link to={MAIN_ROUTES.MY_ORDERS}>
-                        <LeftOutlined /> Quay Trở Về Danh Sach
-                    </Link>
-                }
-            >
-                <Space className='flex w-full items-center justify-between rounded-lg bg-[#fff] p-4 font-semibold'>
-                    <span>Ngày Đặt Đơn Hàng: {formatDate(data?.createdAt)} </span>
-                    <span>Mã Đơn Hàng: #{id} </span>
-                </Space>
-                {orderStatus !== 'cancelled' ? (
-                    <>
-                        <OrderStatusBar orderStatus={orderStatus} />
-                        <div className='ml-4 mt-2'>
-                            <ActionLink orderId={id!} status={orderStatus} />
-                        </div>
-                    </>
-                ) : (
-                    <Space className='mt-5 flex w-full flex-col  items-center justify-center rounded-lg bg-[#fff] p-4 font-semibold'>
-                        <Space align='center' direction='vertical'>
-                            <h2 className='text-rose-500'>
-                                Đơn hàng đã bị hủy bởi{' '}
-                                {data?.canceledBy === 'admin' ? <span>Bạn</span> : <span>Admin</span>}
-                            </h2>
-                            <p className='font-normal'>{data?.description}</p>
-                        </Space>
-                        <Space></Space>
+            {!isLoading && (
+                <WrapperList
+                    title='Chi Tiết Đơn Hàng'
+                    option={
+                        <Link to={MAIN_ROUTES.MY_ORDERS}>
+                            <LeftOutlined /> Quay Trở Về Danh Sach
+                        </Link>
+                    }
+                >
+                    <Space className='flex w-full items-center justify-between rounded-lg bg-[#fff] p-4 font-semibold'>
+                        <span>Ngày Đặt Đơn Hàng: {formatDate(data?.createdAt)} </span>
+                        <span>Mã Đơn Hàng: #{id} </span>
                     </Space>
-                )}
-                <ReceiverInfor receiverInfo={receiverInfo} shippingAddress={shippingAddress} />
-                <ServicesDetail services={serviceInfo} totalQuantity={getTotalQuantity(orderItems)} />
-                <TableDetailOrder orderItems={orderItems} status={orderStatus} />
-            </WrapperList>
+                    {orderStatus !== 'cancelled' ? (
+                        <>
+                            <OrderStatusBar orderStatus={orderStatus} />
+                            <div className='ml-4 mt-2'>
+                                <ActionLink orderId={id!} status={orderStatus} />
+                            </div>
+                        </>
+                    ) : (
+                        <Space className='mt-5 flex w-full flex-col  items-center justify-center rounded-lg bg-[#fff] p-4 font-semibold'>
+                            <Space align='center' direction='vertical'>
+                                <h2 className='text-rose-500'>
+                                    Đơn hàng đã bị hủy bởi{' '}
+                                    {data?.canceledBy === 'admin' ? <span>Bạn</span> : <span>Admin</span>}
+                                </h2>
+                                <p className='font-normal'>{data?.description}</p>
+                            </Space>
+                            <Space></Space>
+                        </Space>
+                    )}
+                    <ReceiverInfor
+                        receiverInfo={receiverInfo}
+                        shippingAddress={shippingAddress}
+                        paymentMethod={data.paymentMethod}
+                    />
+                    <ServicesDetail services={serviceInfo} totalQuantity={getTotalQuantity(orderItems)} />
+                    <TableDetailOrder orderItems={orderItems} status={orderStatus} />
+                </WrapperList>
+            )}
         </>
     );
 };
