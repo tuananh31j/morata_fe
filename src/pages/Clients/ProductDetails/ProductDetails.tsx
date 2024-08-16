@@ -26,10 +26,10 @@ export type IVariantItem = {
     price: number;
     discountPercentage?: number;
     stock: number;
-    sku: string;
-    color: string;
+    // sku: string;
     image?: string;
     productId: string;
+    isActive: boolean;
 };
 
 const ProductDetails = () => {
@@ -71,8 +71,9 @@ const ProductDetails = () => {
         } else {
             return () => {
                 if (!isInitialMount.current) {
-                    dispatch(setReviewData({ orderId: '', isOpen: false }));
+                    dispatch(setReviewData({ orderId: '', isOpen: false, productId: '' }));
                 }
+                window.localStorage.removeItem('orderId');
             };
         }
     }, []);
@@ -189,14 +190,14 @@ const ProductDetails = () => {
                                         <p>
                                             <DockerOutlined />{' '}
                                             <span className='text-[#777777]'>
-                                                Estimate Delivery: <b className='text-black'>2 - 5 days</b>
+                                                Thời gian giao hàng: <b className='text-black'>2 - 5 ngày</b>
                                             </span>
                                         </p>
                                         <p className='mt-[15px]'>
                                             <RedoOutlined />{' '}
                                             <span className='text-[#777777]'>
-                                                Return within <b className='text-black'>30 days</b> of purchase. Taxes
-                                                are non-refundable.
+                                                Trả hàng trong vòng <b className='text-black'>30 days</b> khi đã mua.
+                                                Thuế không được hoàn trả
                                             </span>
                                         </p>
                                     </div>
@@ -205,12 +206,12 @@ const ProductDetails = () => {
                                 <div className='ml-[15px] mt-[35px] flex flex-col gap-2'>
                                     <div className='flex '>
                                         <p className='w-[115px] text-[#777777]'>Availability: </p>
-                                        {product.isAvailable && <b className='text-green-500'>In Stock</b>}
-                                        {!product.isAvailable && <b className='text-red-500'>Out in Stock</b>}
+                                        {(variant?.stock as number) > 0 && <b className='text-green-500'>Còn hàng</b>}
+                                        {!variant?.stock && <b className='text-red'>Hết hàng</b>}
                                     </div>
 
                                     <div className='flex'>
-                                        <p className='w-[115px]  text-[#777777]'>Vendor: </p>
+                                        <p className='w-[115px]  text-[#777777]'>Thương hiệu: </p>
                                         {product.brandId.name && (
                                             <Link
                                                 to={`/products?brandId=${product.brandId._id}`}
@@ -221,7 +222,7 @@ const ProductDetails = () => {
                                         )}
                                     </div>
                                     <div className='flex'>
-                                        <p className='w-[115px]  text-[#777777]'>Categories: </p>
+                                        <p className='w-[115px]  text-[#777777]'>Danh mục: </p>
                                         {product.categoryId.name && (
                                             <Link
                                                 to={`/products?categoryId=${product.categoryId._id}`}

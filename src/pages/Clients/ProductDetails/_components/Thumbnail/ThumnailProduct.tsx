@@ -20,7 +20,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
         ref.current?.next();
     };
     return (
-        <div className='product-thumbnail flex w-full gap-[16px]'>
+        <div className='product-thumbnail flex w-full gap-4'>
             {items.length > 0 && (
                 <div className='product-thumbnail-gallery hidden flex-col gap-2 lg:flex '>
                     {items?.map((item, index: number) => (
@@ -36,7 +36,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
             )}
 
             {items.length > 0 && (
-                <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[625px]'>
+                <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[500px]'>
                     <div className='group relative'>
                         <Carousel
                             dots={false}

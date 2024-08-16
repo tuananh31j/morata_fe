@@ -3,6 +3,7 @@ import StaticImages from '~/assets';
 import MenuAccount from './MenuAccount';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 import { useSendVerify } from '~/hooks/auth/useSendVerify';
+import { Avatar } from 'antd';
 
 const AccountSidebarLeft = () => {
     const { data } = useGetProfile();
@@ -45,7 +46,6 @@ const AccountSidebarLeft = () => {
             localStorage.setItem('countdown', '30');
         }
     };
-
     return (
         <>
             <div className='hidden flex-col bg-white md:flex'>
@@ -54,25 +54,7 @@ const AccountSidebarLeft = () => {
                 </div>
 
                 <div className='my-5 flex flex-col items-center justify-center gap-5'>
-                    <div className='h-34 w-34'>
-                        {profile && profile.avatar && (
-                            <img
-                                src={profile.avatar}
-                                loading='lazy'
-                                alt='user'
-                                className='h-full w-full rounded-full object-cover'
-                            />
-                        )}
-                        {profile && !profile.avatar && (
-                            <img
-                                src={StaticImages.userImageDf}
-                                loading='lazy'
-                                alt='user'
-                                className='h-full w-full rounded-full object-cover'
-                            />
-                        )}
-                    </div>
-
+                    <Avatar alt='user avatar' size={120} src={profile?.avatar ?? StaticImages.userImageDf}></Avatar>
                     {profile && (
                         <div>
                             <p className='text-center text-[16px] capitalize'>{profile?.username}</p>

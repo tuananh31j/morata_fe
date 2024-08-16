@@ -48,13 +48,13 @@ const PriceFilterItem = () => {
                 />
                 <div className='flex items-center justify-between'>
                     <Form.Item>
-                        <InputNumber value={value[0]} onChange={onChnageInputMin} placeholder='Min price' />
+                        <InputNumber value={value[0]} onChange={onChnageInputMin} placeholder='Giá tiền tối thiểu' />
                     </Form.Item>
                     <div className=''>
                         <MinusOutlined />
                     </div>
                     <Form.Item>
-                        <InputNumber value={value[1]} onChange={onChnageInputMax} placeholder='Max price' />
+                        <InputNumber value={value[1]} onChange={onChnageInputMax} placeholder='Giá tiền tối đa' />
                     </Form.Item>
                 </div>
                 <Form.Item>

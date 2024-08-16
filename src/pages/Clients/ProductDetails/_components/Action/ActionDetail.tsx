@@ -1,4 +1,5 @@
-import { Button, ConfigProvider, Form, InputNumber } from 'antd';
+import { Button, ConfigProvider, Form, InputNumber, Radio } from 'antd';
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -22,8 +23,8 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
     const { mutate } = useMutationCart();
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.authReducer.user);
-    const initialVariant = product?.variationIds?.[0];
-    const [active, setActive] = useState<number>(0);
+    const initialVariant = product?.variationIds?.find((item) => item.stock > 0 && item.isActive);
+    const [active, setActive] = useState<string>();
 
     // @ function
     const handleIncrement = () => {
@@ -65,15 +66,27 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
             setQuantityValue(item.stock);
         }
     };
-    const handleChangeVariant = (item: IVariantItem, index: number) => {
+    const handleChangeVariant = (item: IVariantItem) => {
         handleOnclickVariant(item);
-        setActive(index);
+        setActive(item._id);
     };
 
     /* eslint-disable */
     useEffect(() => {
         // default variant value
-        dispatch(updateVariant(initialVariant));
+        dispatch(
+            updateVariant(
+                initialVariant || {
+                    _id: '',
+                    stock: 0,
+                    price: 0,
+                    image: '',
+                    productId: '',
+                    isActive: false,
+                }
+            )
+        );
+        setActive(initialVariant?._id || '');
     }, []);
     /* eslint-enable */
 
@@ -84,27 +97,49 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                 <Form onFinish={handleOnSubmit} layout='vertical'>
                     <div className='my-4'>
                         <Form.Item name={'variant'}>
-                            <div className='flex flex-wrap items-center gap-3'>
-                                {product?.variationIds.map((item, Pindex) => (
-                                    <div
-                                        key={item._id}
-                                        onClick={() => handleChangeVariant(item, Pindex)}
-                                        className={` flex cursor-pointer items-center justify-between gap-3 rounded-sm border-2 ${active === Pindex ? 'border-blue-600' : 'border-blue-200'} bg-white px-2 py-1 transition duration-300 hover:border-blue-600`}
-                                    >
-                                        <div className='select-none'>
-                                            <img src={item.image} alt='variant product' className='h-10 w-10' />
+                            <div className='flex items-center gap-3'>
+                                {product?.variationIds.map((item) => {
+                                    return (
+                                        <div
+                                            key={item._id}
+                                            onClick={() => handleChangeVariant(item)}
+                                            className={clsx(
+                                                `flex cursor-pointer items-center justify-between gap-3 rounded-sm border-2  bg-white px-2 py-1 transition duration-300 hover:border-blue-600`,
+                                                active === item._id && item.stock >= 1
+                                                    ? 'border-blue-600'
+                                                    : 'border-blue-200',
+                                                item.stock < 1 || !item.isActive ? 'pointer-events-none opacity-50' : ''
+                                            )}
+                                        >
+                                            <div className='select-none'>
+                                                <img src={item.image} alt='variant product' className='h-10 w-10' />
+                                            </div>
+                                            {item?.variantAttributes?.map((attr: variationAttribute, index) => (
+                                                <span
+                                                    key={index}
+                                                    className='select-none text-sm font-medium text-black'
+                                                >
+                                                    {attr.value}{' '}
+                                                </span>
+                                            ))}
                                         </div>
-                                        {item?.variantAttributes?.map((attr: variationAttribute, index) => (
-                                            <span key={index} className='select-none text-sm font-medium text-black'>
-                                                {attr.value}{' '}
-                                            </span>
-                                        ))}
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </Form.Item>
                     </div>
-                    <div className='items-center gap-5 md:flex'>
+                    <div className='my-3 flex items-baseline gap-2'>
+                        <span className='select-none text-lg font-medium'>Số lượng:</span>
+
+                        {variant?.stock === 0 || !variant?.isActive ? (
+                            <span className='text-red'>Sản phẩm hết hàng</span>
+                        ) : (
+                            ''
+                        )}
+                        {(variant?.stock as number) > 0 && <span className='font-medium'>{variant?.stock}</span>}
+                    </div>
+
+                    <div className=' items-center gap-5 md:flex'>
                         <div className='mb-[15px] flex w-[100%] items-center gap-[5px] md:mb-0 lg:w-[28%]'>
                             <Button
                                 onClick={handleDecrement}
@@ -115,9 +150,9 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                             </Button>
                             <InputNumber
                                 min={1}
-                                max={variant?.stock}
+                                max={variant?.stock || 1}
                                 onChange={onChangeInputQuantity}
-                                className='flex h-[48px] w-[58px] items-center '
+                                className='flex h-[48px] w-[58px] items-center'
                                 value={valueQuantity}
                                 controls={false}
                             />
@@ -142,10 +177,11 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                                 }}
                             >
                                 <button
+                                    disabled={variant?.stock === 0 || !variant?.isActive}
                                     type='submit'
-                                    className='h-[50px] w-[100%] rounded-[30px] bg-[#222222] font-bold text-white hover:bg-[#16bcdc]'
+                                    className={`h-[50px] w-[100%] rounded-[30px] bg-[#222222] font-bold text-white ${variant?.stock === 0 || !variant?.isActive ? 'pointer-events-none opacity-60' : 'hover:bg-[#16bcdc]'}`}
                                 >
-                                    Add to Cart
+                                    Thêm vào giỏ hàng
                                 </button>
                             </ConfigProvider>
                         </div>
@@ -166,9 +202,10 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                     >
                         <Button
                             size={'large'}
-                            className='h-[50px] w-full rounded-[30px] bg-[#5a31f4]  font-bold text-white'
+                            disabled={variant?.stock === 0 || !variant?.isActive}
+                            className={`h-[50px] w-full rounded-[30px] bg-[#5a31f4] ${variant?.stock === 0 || !variant?.isActive ? 'pointer-events-none opacity-60' : ''}  font-bold text-white`}
                         >
-                            Buy with Stripe
+                            Thanh toán với Stripe
                         </Button>
                     </ConfigProvider>
                 </div>

@@ -117,10 +117,12 @@ const VariationItem = ({
                     <Form.Item
                         className='capitalize'
                         {...restField}
+                        valuePropName='checked'
                         name={[fieldName, 'isActive']}
                         dependencies={['isActive']}
+                        initialValue={true}
                     >
-                        <Checkbox value={false}>Công khai</Checkbox>
+                        <Checkbox>Công khai</Checkbox>
                     </Form.Item>
                     <div className='h-14 w-14'>
                         {!id && (

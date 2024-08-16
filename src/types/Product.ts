@@ -92,6 +92,7 @@ export type IProductItemNew = {
         image?: string;
         productId: string;
         variantAttributes: variationAttribute[];
+        isActive: boolean;
     }[];
     attributes: IAttributesProduct;
 };

@@ -9,6 +9,7 @@ import { Currency } from '~/utils';
 import RateBtn from './RateBtn';
 import { setReviewData } from '~/store/slice/rateProductSlice';
 import { ORDER_STATUS } from '~/constants/order';
+import showMessage from '~/utils/ShowMessage';
 
 type ProductItem = {
     productId: string;
@@ -17,11 +18,11 @@ type ProductItem = {
     price: number;
     image: string;
     isReviewed: boolean;
+    isDeleted: boolean;
 };
 
 const PopupOrderDetails = ({ id }: { id: string }) => {
     const { data } = useOrderDetails(id);
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const orderDetails = data;
 
@@ -35,7 +36,9 @@ const PopupOrderDetails = ({ id }: { id: string }) => {
         setIsModalOpen(false);
     };
     const handleRateProduct = (productId: string, orderId: string) => {
-        dispatch(setReviewData({ orderId, isOpen: false }));
+        window.localStorage.setItem('orderId', orderId);
+        dispatch(setReviewData({ orderId, isOpen: false, productId }));
+
         navigate(`${MAIN_ROUTES.PRODUCTS}/${productId}`);
     };
 
