@@ -1,111 +1,157 @@
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Form, Input } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
-import { useEffect } from 'react';
-import { SubmitHandler, useForm, Controller, useWatch } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
-import { z } from 'zod';
-import useMessage from '~/hooks/_common/useMessage';
-import { useMutationUpdateCategory } from '~/hooks/categories/Mutations/useUpdateCategory';
+import { Button, Checkbox, Form, FormProps, Input, Skeleton } from 'antd';
+import { useEffect, useState } from 'react';
+import { useGetAllAttributesScroll } from '~/hooks/attributes/Queries/useGetAllAttributesScroll';
+import { IAttributesValue } from '~/types/Attributes';
+import { ICategoryFormData, IValueCheckbox } from '~/types/Category';
+import Annotaion from './_components/Annotaion';
+import LableCheckbox from './_components/LableCheckbox';
+import { useParams } from 'react-router-dom';
 import useGetDetailCategory from '~/hooks/categories/Queries/useGetDetailCategory';
-import { ICategoryFormData } from '~/types/Category';
+import { useMutationUpdateCategory } from '~/hooks/categories/Mutations/useUpdateCategory';
+import showMessage from '~/utils/ShowMessage';
 
-const UpdateCategory = () => {
-    const params = useParams();
-    const id = String(params.id);
-    const navigate = useNavigate();
-
-    const { data } = useGetDetailCategory(id);
-    const categoryDetails = data?.data;
-
+const CreateCategory = () => {
+    const { id } = useParams();
+    const category = useGetDetailCategory(id as string);
+    const [form] = Form.useForm<ICategoryFormData>();
     const { mutate: updateCategory, isPending } = useMutationUpdateCategory();
-    const { handleMessage, contextHolder } = useMessage();
 
-    const categorySchema = z.object({
-        name: z.string({ message: 'Category name is required!' }),
-        description: z.string({ message: 'Category description is required!' }),
-    });
+    const { Observer, data: attributesScroll } = useGetAllAttributesScroll();
+    const attributes = attributesScroll?.pages.map((page) => page.data.attributes).flat();
 
-    const {
-        handleSubmit,
-        control,
-        reset,
-        formState: { errors },
-    } = useForm<ICategoryFormData>({
-        resolver: zodResolver(categorySchema),
-        defaultValues: {
-            name: categoryDetails?.name,
-            description: categoryDetails?.description,
-        },
-    });
+    const [attributeOptions, setAttributeOptions] = useState<IValueCheckbox[]>([]);
+    const [attributeChecked, setAttributeChecked] = useState<IValueCheckbox[]>([]);
 
-    useEffect(() => {
-        reset({
-            name: categoryDetails?.name,
-            description: categoryDetails?.description,
-        });
-    }, [reset, categoryDetails]);
-
-    const onSubmit: SubmitHandler<ICategoryFormData> = async (body) => {
-        console.log(body);
-        updateCategory({ id, payload: body });
-        navigate('/admin/categories', { replace: true });
-
-        if (isPending) {
-            handleMessage({ type: 'loading', content: '...Updating!' });
-        }
+    const handleCheckboxChange = (checkedValues: string[]) => {
+        const attributeTag = attributeOptions.filter((attr) => checkedValues.includes(attr.value));
+        setAttributeChecked(attributeTag);
     };
 
+    const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
+        if (id) {
+            updateCategory({ id, payload: values });
+        } else {
+            showMessage('Không tìm thấy _id danh mục', 'error');
+        }
+    };
+    const onFinishFailed: FormProps<ICategoryFormData>['onFinishFailed'] = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
+    useEffect(() => {
+        if (id && category.data && attributes) {
+            const attributeCheckedIds = [];
+            const newAttributesUnique: IValueCheckbox[] = [];
+            const attributeCheckedsData: IValueCheckbox[] = [];
+            const seenIds = new Set();
+
+            const allAttributes = attributes.map((attr: IAttributesValue) => ({
+                name: attr.name,
+                label: (
+                    <LableCheckbox
+                        optionsValue={attr.values}
+                        title={attr.name}
+                        isRequired={attr.isRequired}
+                        isVariant={attr.isVariant}
+                    />
+                ),
+                value: attr._id,
+            }));
+
+            if (attributeChecked.length === 0) {
+                category.data.data.attributeIds.forEach((attr) => {
+                    attributeCheckedsData.push({
+                        name: attr.name,
+                        label: (
+                            <LableCheckbox
+                                optionsValue={attr.values}
+                                title={attr.name}
+                                isRequired={attr.isRequired}
+                                isVariant={attr.isVariant}
+                            />
+                        ),
+                        value: attr._id,
+                    });
+                });
+                attributeCheckedIds.push(...category.data.data.attributeIds.map((attr) => attr._id));
+            } else {
+                attributeCheckedsData.push(...attributeChecked);
+                attributeCheckedIds.push(...attributeChecked.map((attr) => attr.value));
+            }
+            [...allAttributes, ...attributeCheckedsData].forEach((item) => {
+                if (!seenIds.has(item.value)) {
+                    newAttributesUnique.push(item);
+                    seenIds.add(item.value);
+                }
+            });
+            form.setFieldsValue({
+                name: category.data.data.name,
+                attributeIds: attributeCheckedIds,
+            });
+            setAttributeChecked(attributeCheckedsData);
+            setAttributeOptions(newAttributesUnique);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [category.data, form, id, attributesScroll]);
     return (
         <>
-            {contextHolder}
-            <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-                <div className='m-auto'>
-                    <Form layout='vertical' onFinish={handleSubmit(onSubmit)}>
-                        <div>
-                            <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
-                                <h3 className='my-2 text-lg font-medium text-[#08090F]'>
-                                    Update category with ID: <span className='text-[#1677FF]'>{id}</span>
-                                </h3>
+            <div className='rounded-lg bg-white py-6'>
+                <div className='col-span-9 m-auto'>
+                    <Form
+                        form={form}
+                        layout='vertical'
+                        className='grid grid-cols-12 '
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                    >
+                        <div className='col-span-8'>
+                            <div className='w-full rounded-lg p-2 px-4'>
+                                <h3 className='my-2 text-xl font-medium text-primary'>Cập nhật thông tin danh mục</h3>
 
-                                <Form.Item
-                                    label='Category Name'
+                                <Form.Item<ICategoryFormData>
+                                    label='Name'
+                                    name='name'
                                     className='font-medium text-[#08090F]'
-                                    validateStatus={errors.name ? 'error' : ''}
-                                    help={errors.name?.message}
+                                    rules={[{ required: true, message: 'Please enter category name!' }]}
                                 >
-                                    <Controller
-                                        name='name'
-                                        control={control}
-                                        render={({ field }) => <Input {...field} size='large' />}
-                                    />
+                                    <Input placeholder='Nhập tên cho danh mục...' />
                                 </Form.Item>
-
-                                <Form.Item
-                                    label='Category Description'
-                                    className='font-medium text-[#08090F]'
-                                    validateStatus={errors.description ? 'error' : ''}
-                                    help={errors.description?.message}
+                                {!attributesScroll && <Skeleton active />}
+                                {attributesScroll && (
+                                    <>
+                                        <Form.Item<ICategoryFormData>
+                                            label='Attributes'
+                                            name='attributeIds'
+                                            className='font-medium text-[#08090F]'
+                                            rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
+                                        >
+                                            <Checkbox.Group
+                                                value={attributeChecked.map((attr) => attr.value)}
+                                                onChange={handleCheckboxChange}
+                                                options={attributeOptions}
+                                                className='grid grid-cols-3 gap-2'
+                                            />
+                                        </Form.Item>
+                                        <Observer />
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                        <div className='col-span-4 flex flex-col justify-between border-s border-black border-opacity-20 px-4'>
+                            <Annotaion attributeChecked={attributeChecked} />
+                            <div className='sticky bottom-0 right-0 my-2 flex justify-end border-t-2 border-black border-opacity-5 bg-white py-4'>
+                                <Button
+                                    type='primary'
+                                    htmlType='submit'
+                                    icon={<PlusSquareOutlined />}
+                                    className='px-5'
+                                    loading={isPending}
+                                    disabled={isPending}
+                                    size='large'
                                 >
-                                    <Controller
-                                        name='description'
-                                        control={control}
-                                        render={({ field }) => <TextArea {...field} rows={4} className='w-full' />}
-                                    />
-                                </Form.Item>
-
-                                <Form.Item className='flex justify-end'>
-                                    <Button
-                                        type='primary'
-                                        htmlType='submit'
-                                        icon={<PlusSquareOutlined />}
-                                        className='mr-3 px-5'
-                                        size='large'
-                                    >
-                                        Update
-                                    </Button>
-                                </Form.Item>
+                                    Cập nhật
+                                </Button>
                             </div>
                         </div>
                     </Form>
@@ -115,4 +161,4 @@ const UpdateCategory = () => {
     );
 };
 
-export default UpdateCategory;
+export default CreateCategory;

@@ -1,83 +1,35 @@
-import { PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
-import { Button, Form, FormProps, Input, Popover, TreeSelect } from 'antd';
-import { ReactNode, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useMessage from '~/hooks/_common/useMessage';
-import { useGetAllAtributesNew } from '~/hooks/attributes/Queries/useGetAllAttributes';
+import { PlusSquareOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, FormProps, Input, Skeleton } from 'antd';
+import { useEffect, useState } from 'react';
+import { useGetAllAttributesScroll } from '~/hooks/attributes/Queries/useGetAllAttributesScroll';
 import { useMutationCreateCategory } from '~/hooks/categories/Mutations/useCreateCategory';
-import { ICategoryFormData } from '~/types/Category';
-import { cn } from '~/utils';
-import showMessage from '~/utils/ShowMessage';
-
-const ItemComp = ({ title, isRequired, isVariant }: { title: string; isRequired: boolean; isVariant: boolean }) => {
-    return (
-        <span className='flex items-center justify-between'>
-            <p className={cn({ ['text-red']: isRequired, ['text-purple-900']: isVariant }, 'inline')}>{title}</p>
-            <span>
-                {isVariant && (
-                    <Popover
-                        placement='right'
-                        zIndex={99999999}
-                        content='This is a mandatory attribute when creating a variant within a product.'
-                        title='Details about the Hint'
-                    >
-                        <Button icon={<QuestionOutlined />} size='small' type='text' />
-                    </Popover>
-                )}
-                {isRequired && !isVariant && (
-                    <Popover
-                        placement='right'
-                        zIndex={99999999}
-                        content='This is a mandatory attribute when creating a product.'
-                        title='Details about the Hint'
-                    >
-                        <Button icon={<QuestionOutlined />} size='small' type='text' />
-                    </Popover>
-                )}
-            </span>
-        </span>
-    );
-};
+import { IAttributesValue } from '~/types/Attributes';
+import { ICategoryFormData, IValueCheckbox } from '~/types/Category';
+import Annotaion from './_components/Annotaion';
+import LableCheckbox from './_components/LableCheckbox';
 
 const CreateCategory = () => {
-    const navigate = useNavigate();
-    const { mutate: createCategory, isPending, isSuccess, isError } = useMutationCreateCategory();
+    const [form] = Form.useForm<ICategoryFormData>();
+    const { mutate: createCategory, isPending } = useMutationCreateCategory();
 
-    const { data } = useGetAllAtributesNew();
-    const attributes = data?.data;
+    const { Observer, data } = useGetAllAttributesScroll();
+    const attributes = data?.pages.map((page) => page.data.attributes).flat();
 
-    const [attributeOptions, setAttributeOptions] = useState<
-        {
-            title: ReactNode;
-            value: string;
-            children: {
-                title: string | number;
-                value: string | number;
-                selectable: boolean;
-            }[];
-        }[]
-    >([]);
+    const [attributeOptions, setAttributeOptions] = useState<IValueCheckbox[]>([]);
+    const [attributeChecked, setAttributeChecked] = useState<IValueCheckbox[]>([]);
 
-    useEffect(() => {
-        if (attributes) {
-            const options = attributes?.map((attr) => ({
-                title: <ItemComp title={attr.name} isRequired={attr.isRequired} isVariant={attr.isVariant} />,
-                value: attr._id,
-                children: attr.values?.map((value) => ({
-                    title: value,
-                    value,
-                    selectable: false,
-                })),
-            }));
-            setAttributeOptions(options);
-        }
-    }, [attributes]);
-
-    const { handleMessage, contextHolder } = useMessage();
+    const handleCheckboxChange = (checkedValues: string[]) => {
+        const attributeTag = attributeOptions.filter((attr) => checkedValues.includes(attr.value));
+        setAttributeChecked(attributeTag);
+    };
+    // const handleCloseTag = (value: string) => {
+    //     // setSelectedAttributes(checkedValues);
+    //     console.log(value);
+    //     const attributeValues = attributeChecked.filter((attr) => attr.value !== value);
+    //     setAttributeChecked(attributeValues);
+    // };
 
     const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
-        console.log('Success:', values);
-
         createCategory(values);
     };
 
@@ -85,99 +37,84 @@ const CreateCategory = () => {
         console.log('Failed:', errorInfo);
     };
 
-    const onChange = (newValue: string[]) => {
-        console.log('onChange ', newValue);
-    };
     useEffect(() => {
-        if (isSuccess) {
-            showMessage('Category created successfully!', 'success');
-            navigate('/admin/categories', { replace: true });
-        }
-
-        if (isPending) {
-            handleMessage({ type: 'loading', content: '...Creating!' });
-        }
-
-        if (isError) {
-            showMessage('Category creation failed!', 'error');
+        if (attributes) {
+            const options = attributes.map((attr: IAttributesValue) => ({
+                name: attr.name,
+                label: (
+                    <LableCheckbox
+                        optionsValue={attr.values}
+                        title={attr.name}
+                        isRequired={attr.isRequired}
+                        isVariant={attr.isVariant}
+                    />
+                ),
+                value: attr._id,
+                values: attr.values.map(String),
+            }));
+            setAttributeOptions(options);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isPending, isSuccess, isError]);
+    }, [data]);
 
     return (
         <>
-            {contextHolder}
             <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-                <div className='m-auto'>
-                    <Form layout='vertical' onFinish={onFinish} onFinishFailed={onFinishFailed}>
-                        <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
-                            <h3 className='my-2 text-xl font-medium text-primary'>Create a new category</h3>
+                <div className='col-span-9 m-auto'>
+                    <Form
+                        form={form}
+                        layout='vertical'
+                        className='grid grid-cols-12 '
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                    >
+                        <div className='col-span-8'>
+                            <div className='w-full rounded-lg p-2 px-4'>
+                                <h3 className='my-2 text-xl font-medium text-primary'>Create a new category</h3>
 
-                            <Form.Item<ICategoryFormData>
-                                label='Name'
-                                name='name'
-                                className='font-medium text-[#08090F]'
-                                rules={[{ required: true, message: 'Please enter category name!' }]}
-                            >
-                                <Input />
-                            </Form.Item>
-
-                            <Form.Item<ICategoryFormData>
-                                label='Attributes'
-                                name='attributeIds'
-                                className='font-medium text-[#08090F]'
-                                rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
-                            >
-                                {/* <Checkbox.Group options={attributeOptions} className='grid grid-cols-3 gap-2' /> */}
-
-                                {/* <Select
-                                    showSearch
-                                    allowClear
-                                    mode='multiple'
-                                    optionFilterProp='label'
-                                    style={{ width: '100%' }}
-                                    placeholder='Please select attributes'
-                                    onChange={handleChange}
-                                    onSearch={onSearch}
-                                    options={optionsWithTooltips}
-                                    optionLabelProp='label'
-                                /> */}
-
-                                <TreeSelect
-                                    showSearch
-                                    multiple
-                                    treeNodeFilterProp='title'
-                                    style={{ width: '100%' }}
-                                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                                    treeData={attributeOptions}
-                                    placeholder='Please select attributes'
-                                    onChange={onChange}
-                                />
-
-                                {/* <div className='grid grid-cols-3 gap-2'>
-                                    {attributeOptions.map((option) => (
-                                        <Checkbox key={option.value} value={option.value}>
-                                            <Popover content={attributeValues(option)} title={option.label}>
-                                                {option.label}
-                                            </Popover>
-                                        </Checkbox>
-                                    ))}
-                                </div> */}
-                            </Form.Item>
-
-                            <Form.Item className='flex justify-end'>
+                                <Form.Item<ICategoryFormData>
+                                    label='Name'
+                                    name='name'
+                                    className='font-medium text-[#08090F]'
+                                    rules={[{ required: true, message: 'Please enter category name!' }]}
+                                >
+                                    <Input placeholder='Nhập tên cho danh mục...' />
+                                </Form.Item>
+                                {!data && <Skeleton active />}
+                                {data && (
+                                    <>
+                                        <Form.Item<ICategoryFormData>
+                                            label='Attributes'
+                                            name='attributeIds'
+                                            className='font-medium text-[#08090F]'
+                                            rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
+                                        >
+                                            <Checkbox.Group
+                                                value={attributeChecked.map((attr) => attr.value)}
+                                                onChange={handleCheckboxChange}
+                                                options={attributeOptions}
+                                                className='grid grid-cols-3 gap-2'
+                                            />
+                                        </Form.Item>
+                                        <Observer />
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                        <div className='col-span-4 flex flex-col justify-between border-s border-black border-opacity-20 px-4'>
+                            <Annotaion attributeChecked={attributeChecked} />
+                            <div className='sticky bottom-0 right-0 my-2 flex justify-end border-t-2 border-black border-opacity-5 bg-white p-4'>
                                 <Button
                                     type='primary'
                                     htmlType='submit'
                                     icon={<PlusSquareOutlined />}
-                                    className='mr-3 px-5'
-                                    size='large'
                                     loading={isPending}
                                     disabled={isPending}
+                                    size='large'
                                 >
-                                    Add Category
+                                    Thêm mới
                                 </Button>
-                            </Form.Item>
+                            </div>
                         </div>
                     </Form>
                 </div>

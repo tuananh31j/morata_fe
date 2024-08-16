@@ -11,11 +11,19 @@ import { IProductItemNew } from '~/types/Product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
+import ProductAttributeShort from '../_common/ProductAttributeShort';
 
 const MediumCard = ({ product }: { product: IProductItemNew }) => {
     const discountPercentage = 10;
     const { mutate, isPending } = useMutationCart();
     const user = useSelector((state: RootState) => state.authReducer.user);
+    const productSold = product.variationIds.reduce((acc, item) => {
+        const sold = item.sold || 0;
+        return acc + sold;
+    }, 0);
+    const productStock = product.variationIds.reduce((acc, item) => acc + item.stock, 0);
+    const totalQuantity = productSold + productStock;
+    const percentageSoldProducts = (productSold / totalQuantity) * 100;
     const handleAddCart = () => {
         mutate({
             productVariation: product.variationIds[0]._id,
@@ -59,7 +67,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                 </div>
                 <div className='mt-3 flex h-full flex-col'>
                     <Link to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>
-                        <h1 className='line-clamp-2 h-16 flex-shrink-0 text-ellipsis text-title-md font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
+                        <h1 className='line-clamp-2 h-15 flex-shrink-0 text-ellipsis text-title-md font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h1>
                         <div className='my-2 mb-3 flex flex-wrap items-end gap-1 sm:mb-2'>
@@ -79,27 +87,13 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                                 </del>
                             )}
                         </div>
-                        <ul className='mb-5'>
-                            <li>
-                                <span className="text-gray-600 after:bg-gray-400 relative line-clamp-1 select-none pl-3 text-sm after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:content-['']">
-                                    Screen Size 10.9 inch
-                                </span>
-                            </li>
-                            <li>
-                                <span className="text-gray-600 after:bg-gray-400 relative  line-clamp-1 select-none text-ellipsis pl-3 text-sm after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:content-['']">
-                                    Operating System iOS 14.0
-                                </span>
-                            </li>
-                            <li>
-                                <span className="text-gray-600 after:bg-gray-400 relative  line-clamp-1 select-none text-ellipsis pl-3 text-sm after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:content-['']">
-                                    Product Length 9.74 inch
-                                </span>
-                            </li>
-                        </ul>
-                        <ProgressBar stock={product.variationIds?.[0].stock} />
+                        <ProductAttributeShort attributes={product.attributes} />
+                        <ProgressBar percentageSoldProducts={percentageSoldProducts} />
                         <div className='text-sx mb-6 leading-8'>
                             Sold:
-                            <span className='mx-1 font-semibold'>{product.variationIds?.[0].stock}/100</span>
+                            <span className='mx-1 font-semibold'>
+                                {productSold}/{totalQuantity}
+                            </span>
                             products
                         </div>
                     </Link>

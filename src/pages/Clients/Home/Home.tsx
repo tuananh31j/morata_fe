@@ -15,11 +15,13 @@ import ShopBenefits from '~/components/ShopBenefits';
 import TopFeaturedProducts from '~/components/TopFeaturedProducts';
 import { MAIN_ROUTES } from '~/constants/router';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
+import useGetAllProductsScroll from '~/hooks/products/Queries/useGetAllProductsScroll';
 import useQueriesHomepage from '~/hooks/useQueriesHomepage';
 
 const Home = () => {
     useDocumentTitle('Home');
-
+    const { Observer, data: ProductScroll, hasNextPage, isLoading } = useGetAllProductsScroll();
+    console.log({ Observer, data: ProductScroll, hasNextPage, isLoading });
     const [
         { data: ProductsList, isLoading: isLoadingProductsAll },
         { data: TopDeals, isLoading: isLoadingTopDeals },
@@ -141,6 +143,21 @@ const Home = () => {
                         <MediumSkeleton />
                     </div>
                 )}
+            </WrapperList>
+            <WrapperList classic title='Gợi ý cho bạn'>
+                <div className='grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5'>
+                    {ProductScroll &&
+                        ProductScroll.pages.map((item) => [
+                            ...item.data.products.map((product) => <SmallCard key={product._id} product={product} />),
+                        ])}
+                </div>
+                {isLoadingProductsLatest && (
+                    <div className='flex justify-between gap-2'>
+                        <MediumSkeleton />
+                        <MediumSkeleton />
+                    </div>
+                )}
+                <Observer />
             </WrapperList>
 
             {/* add popup productlist */}

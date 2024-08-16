@@ -1,10 +1,12 @@
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
+import { debounce } from 'lodash';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import useFilter from '~/hooks/_common/useFilter';
 import useMutationAddWishList from '~/hooks/wishlist/Mutations/useAddWishList';
+import { useMutationRemoveWishList } from '~/hooks/wishlist/Mutations/useRemoveWishList';
 import useGetAllWishlist from '~/hooks/wishlist/Queries/useGetAllWishlist';
 import { RootState } from '~/store/store';
 import showMessage from '~/utils/ShowMessage';
@@ -15,8 +17,10 @@ const ProductActions = ({ id }: { id: string }) => {
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { mutate: addWishlist } = useMutationAddWishList();
     const { data: allWishList } = useGetAllWishlist(query);
-    console.log('🚀 ~ ProductActions ~ allWishList:', allWishList);
     const wishListIds = allWishList?.data.wishList.map((item) => item._id);
+    const { handleRemoveWishList } = useMutationRemoveWishList();
+    const debouncedRemove = debounce((ProductId: string) => handleRemoveWishList(ProductId), 500);
+
     const handleAddWishlist = () => {
         if (!user) {
             showMessage('You need to login first!', 'warning');
@@ -32,7 +36,7 @@ const ProductActions = ({ id }: { id: string }) => {
             <div className='bg-gray-100 flex items-center justify-center rounded-full p-2 transition-colors duration-300 ease-linear hover:border-[#16bcdc] hover:bg-[#16bcdc] hover:text-white hover:duration-300 hover:ease-linear '>
                 {wishListIds?.includes(id) ? (
                     <Tooltip placement='left' title='Added to Wishlist' arrow={true}>
-                        <HeartFilled className='text-red' />
+                        <HeartFilled className='text-red' onClick={() => debouncedRemove(id)} />
                     </Tooltip>
                 ) : (
                     <Tooltip placement='left' title='Add to Wishlist' arrow={true}>

@@ -7,34 +7,34 @@ const FilterRating = ({ filterName }: { filterName: string }) => {
     const { query, updateQueryParam } = useFilter();
 
     const onChange = (e: RadioChangeEvent) => {
-        updateQueryParam({ ...query, ['rating[gte]']: String(e.target.value) });
+        updateQueryParam({ ...query, ['rating[gte]']: String(e.target.value), page: 1 });
     };
     return (
         <FilterWrap filterName={filterName}>
-            <Radio.Group onChange={onChange} value={Number(query.rating) || ''}>
+            <Radio.Group onChange={onChange} value={Number(query['rating[gte]']) || ''}>
                 <Space direction='vertical'>
                     <Radio value={1}>
                         <span className='cursor-pointer'>
-                            <RatingDisplay reviews={1} rating={1} />
+                            <RatingDisplay rating={1} />
                         </span>
                     </Radio>
                     <Radio value={2}>
                         <span className='cursor-pointer'>
-                            <RatingDisplay reviews={2} rating={2} />
+                            <RatingDisplay rating={2} />
                         </span>
                     </Radio>
                     <Radio value={3}>
                         <span className='cursor-pointer'>
-                            <RatingDisplay reviews={3} rating={3} />
+                            <RatingDisplay rating={3} />
                         </span>
                     </Radio>
                     <Radio value={4}>
                         <span className='cursor-pointer'>
-                            <RatingDisplay reviews={4} rating={4} />
+                            <RatingDisplay rating={4} />
                         </span>
                     </Radio>
                     <Radio value={5}>
-                        <RatingDisplay reviews={5} rating={5} />
+                        <RatingDisplay rating={5} />
                     </Radio>
                 </Space>
             </Radio.Group>

@@ -12,9 +12,12 @@ const useCancelOrder = (orderId: string) => {
                 method: 'PATCH',
                 data: { orderId, description: reason },
             }),
-        onSuccess() {
-            queryClient.resetQueries({
-                predicate: (query) => query.queryKey.includes(QUERY_KEY.ORDERS),
+        onSuccess: () => {
+            queryClient.refetchQueries({
+                predicate: (query) =>
+                    query.queryKey.some((element) =>
+                        [QUERY_KEY.ORDERS, QUERY_KEY.PRODUCTS].includes(element as string)
+                    ),
             });
         },
     });

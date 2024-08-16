@@ -1,3 +1,7 @@
+import { ReactNode } from 'react';
+import { IAttributesValue } from './Attributes';
+import { AttributeType } from '~/constants/enum';
+
 export interface ICategoryPopular {
     totalProducts?: number;
     categoryId: string;
@@ -7,7 +11,7 @@ export interface ICategoryPopular {
 export type ICategory = {
     _id: string;
     name: string;
-    attributeIds: string[];
+    attributeIds: IAttributesValue[];
 };
 
 export type ICategoryFormData = {
@@ -15,12 +19,8 @@ export type ICategoryFormData = {
     attributeIds: string[];
 };
 
-export enum AttributeType {
-    options = 'options',
-    manual = 'manual',
-}
-
 export type IAttributeFormData = {
+    _id?: string;
     name: string;
     type: AttributeType;
     values: string[];
@@ -28,3 +28,9 @@ export type IAttributeFormData = {
     isRequired: boolean;
     // inputValues?: string[];
 };
+
+export interface IValueCheckbox {
+    name: string;
+    label: ReactNode;
+    value: string;
+}

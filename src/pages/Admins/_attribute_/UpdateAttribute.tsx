@@ -1,15 +1,20 @@
 import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
-import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
+import useUpdateAttribute from '~/hooks/attributes/Mutations/useUpdateAttribute';
+import useGetDetailsAttribute from '~/hooks/attributes/Queries/useGetDetailsAttribute';
 import { IAttributeFormData } from '~/types/Category';
 import showMessage from '~/utils/ShowMessage';
 
-const CreateAttribute = () => {
+const UpdateAttribute = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
-    const { mutate: createAttribute, isPending, isSuccess, isError } = useMutationCreateAttribute();
+    // @Form
+    const [form] = Form.useForm<IAttributeFormData>();
+    const { mutate: createAttribute, isPending, isSuccess, isError } = useUpdateAttribute();
+    const { data: attributeDetailsRes } = useGetDetailsAttribute(id as string);
     const { handleMessage, contextHolder } = useMessage();
     // const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
 
@@ -24,8 +29,8 @@ const CreateAttribute = () => {
         setInputFields([...inputFields, { id: Date.now(), value: '' }]);
     };
 
-    const handleRemoveField = (id: number) => {
-        setInputFields(inputFields.filter((field) => field.id !== id));
+    const handleRemoveField = (fieldId: number) => {
+        setInputFields(inputFields.filter((field) => field.id !== fieldId));
     };
 
     const [typeSelected, setTypeSelected] = useState<string>('');
@@ -58,17 +63,36 @@ const CreateAttribute = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPending, isSuccess, isError]);
 
+    useEffect(() => {
+        if (attributeDetailsRes && id) {
+            console.log(attributeDetailsRes);
+
+            form.setFieldsValue({
+                ...attributeDetailsRes.data,
+                values: attributeDetailsRes.data.values.map(String),
+            });
+        }
+    }, [attributeDetailsRes, id, form]);
+
     return (
         <>
             {contextHolder}
             <div className='mx-6 rounded-lg bg-white px-4 py-6'>
                 <div className='m-auto'>
-                    <Form layout='vertical' onFinish={onFinish} initialValues={{ isRequired: false, isVariant: false }}>
+                    <Form
+                        form={form}
+                        layout='vertical'
+                        onFinish={onFinish}
+                        initialValues={{ isRequired: false, isVariant: false }}
+                    >
                         <div>
                             <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
                                 <h3 className='my-2 text-xl font-medium text-primary'>Create a new attribute</h3>
 
                                 <div className='flex gap-1'>
+                                    <Form.Item<IAttributeFormData> name='_id' className='hidden'>
+                                        <Input size='large' />
+                                    </Form.Item>
                                     <Form.Item<IAttributeFormData>
                                         label='Name'
                                         name='name'
@@ -182,40 +206,6 @@ const CreateAttribute = () => {
                                     </>
                                 )}
 
-                                {/* {inputFields.map((field, index) => (
-                                    <Form.Item
-                                        key={field.id}
-                                        name='values'
-                                        label='Add New Value'
-                                        className='mb-3 font-medium text-[#08090F]'
-                                        rules={[{ required: true, message: 'Please enter at least one value!' }]}
-                                    >
-                                        <div className='flex w-full justify-between'>
-                                            <Input
-                                                className='w-[93%]'
-                                                placeholder='Enter value'
-                                                value={field.value}
-                                                onChange={(e) => {
-                                                    const newFields = [...inputFields];
-                                                    newFields[index].value = e.target.value;
-                                                    setInputFields(newFields);
-                                                }}
-                                            />
-                                            <Button
-                                                danger
-                                                className='flex items-center'
-                                                onClick={() => handleRemoveField(field.id)}
-                                            >
-                                                <DeleteOutlined />
-                                            </Button>
-                                        </div>
-                                    </Form.Item>
-                                ))}
-
-                                <Button type='primary' icon={<PlusCircleOutlined />} onClick={handleAddField}>
-                                    Add value
-                                </Button> */}
-
                                 <Form.Item className='flex justify-end'>
                                     <Button
                                         type='primary'
@@ -238,4 +228,4 @@ const CreateAttribute = () => {
     );
 };
 
-export default CreateAttribute;
+export default UpdateAttribute;

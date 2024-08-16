@@ -46,7 +46,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
 
                 <div className='col-span-7'>
                     <Link className='cursor-pointer' to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>
-                        <h4 className='line-clamp-2 text-ellipsis text-title-sm font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
+                        <h4 className='line-clamp-2 text-ellipsis text-title-md font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
 
@@ -54,7 +54,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
 
                         <div className='mb-3 flex gap-x-2'>
                             <span
-                                className={clsx('text-base font-semibold leading-5', {
+                                className={clsx('text-[14px] font-semibold leading-5', {
                                     'text-red-600': discountPercentage,
                                 })}
                             >
@@ -62,9 +62,11 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                             </span>
 
                             {discountPercentage > 0 && (
-                                <del className=' text-gray-500 hidden text-[12px] font-semibold leading-5 lg:block'>
-                                    {Currency.format(newPrice)}
-                                </del>
+                                <sub>
+                                    <del className=' text-gray-500 hidden text-[10px] font-semibold italic  leading-5 lg:block'>
+                                        {Currency.format(newPrice)}
+                                    </del>
+                                </sub>
                             )}
                         </div>
                     </Link>

@@ -123,6 +123,7 @@ const UpdateProduct = () => {
     };
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
+        console.log(values, 'values');
         if (productDetails) {
             handleEditProduct({
                 productId: id as string,
@@ -447,7 +448,7 @@ const UpdateProduct = () => {
                                 </>
                             )}
                         </div>
-                        <div className='sticky bottom-0 right-0 my-2 flex justify-end bg-white p-4'>
+                        <div className='sticky bottom-0 right-0 my-2 flex justify-end border-t-2 border-black border-opacity-5 bg-white p-4'>
                             <Button
                                 type='primary'
                                 htmlType='submit'

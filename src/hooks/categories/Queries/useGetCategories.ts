@@ -4,7 +4,7 @@ import categoryService from '~/services/category.service';
 
 const useGetCategories = () => {
     return useQuery({
-        queryKey: [QUERY_KEY.CATEGORIES.LIST],
+        queryKey: [QUERY_KEY.CATEGORIES],
         queryFn: () => categoryService.getAll(),
     });
 };

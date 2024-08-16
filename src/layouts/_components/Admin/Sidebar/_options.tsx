@@ -1,11 +1,11 @@
 import {
+    BgColorsOutlined,
     CommentOutlined,
+    CrownOutlined,
     LineChartOutlined,
     ProductOutlined,
     ProfileOutlined,
-    ShopOutlined,
     ShoppingOutlined,
-    UserOutlined,
 } from '@ant-design/icons';
 import { ADMIN_ROUTES } from '~/constants/router';
 
@@ -62,11 +62,26 @@ export const menuGroups: IMenuItem[] = [
     // },
     {
         icon: <ProductOutlined />,
-        label: 'Category',
+        label: 'Quản lý danh mục',
         children: [
-            { label: 'All', route: ADMIN_ROUTES.CATEGORIES },
-            { label: 'Create', route: ADMIN_ROUTES.CATEGORIES_CREATE },
-            { label: 'Attributes', route: ADMIN_ROUTES.CATEGORIES_ATTRIBUTES },
+            { label: 'Tất cả danh mục', route: ADMIN_ROUTES.CATEGORIES },
+            { label: 'Thêm mới danh mục', route: ADMIN_ROUTES.CATEGORIES_CREATE },
+        ],
+    },
+    {
+        icon: <BgColorsOutlined />,
+        label: 'Quản lý thuộc tính',
+        children: [
+            { label: 'Tất cả thuộc tính', route: ADMIN_ROUTES.ATTRIBUTES },
+            { label: 'Thêm mới thuộc tính', route: ADMIN_ROUTES.ATTRIBUTES_CREATE },
+        ],
+    },
+    {
+        icon: <CrownOutlined />,
+        label: 'Quản lý thương hiệu',
+        children: [
+            { label: 'Tất cả thương hiệu', route: ADMIN_ROUTES.BRANDS },
+            { label: 'Thêm mới thương hiệu', route: ADMIN_ROUTES.BRAND_CREATE },
         ],
     },
 ];

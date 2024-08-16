@@ -27,7 +27,7 @@ const PriceFilterItem = () => {
         }
     };
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        updateQueryParam({ ...query, ['rawprice[gte]']: value[0], ['rawprice[lte]']: value[1] });
+        updateQueryParam({ ...query, ['rawprice[gte]']: value[0], ['rawprice[lte]']: value[1], page: 1 });
     };
 
     useEffect(() => {

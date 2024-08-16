@@ -58,6 +58,7 @@ export type IProductItem = {
 };
 export type IAttributesProduct = Array<{
     key: string;
+    name: string;
     value: string;
     _id: string;
     id: string;
@@ -85,8 +86,8 @@ export type IProductItemNew = {
         price: number;
         discountPercentage?: number;
         stock: number;
+        sold?: number;
         sku: string;
-        color: string;
         storage?: string;
         image?: string;
         productId: string;
@@ -172,6 +173,7 @@ export type IAttribute = {
     name: string;
     attributeKey: string;
     isRequired: boolean;
+    isVariant: boolean;
     values?: string[];
 };
 export type IProductVariation = {

@@ -1,11 +1,8 @@
 export const QUERY_KEY = {
     CART: 'CART',
     PRODUCTS: 'products',
-    CATEGORIES: {
-        LIST: 'list',
-        CREATE: 'create',
-        UPDATE: 'update',
-    },
+    PRODUCTS_LAZY: 'products_lazy',
+    CATEGORIES: 'categories',
     LATEST: 'latest',
     DEALS: 'deals',
     REVIEWS: 'review',
@@ -13,6 +10,7 @@ export const QUERY_KEY = {
     POPULARCATEGORIES: 'poularCategories',
     BRANDS: 'brands',
     ATTRIBUTES: 'attributes',
+    ATTRIBUTES_LAZY: 'attributes_lazy',
     USERS: 'users',
 
     ORDERS: 'orders',

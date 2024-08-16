@@ -1,5 +1,5 @@
 import { MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
 import { IAttributesValue } from '~/types/Attributes';
 import {
     variationsPriceValidator,
@@ -98,7 +98,11 @@ const VariationItem = ({
                         dependencies={['price']}
                         rules={[variationsPriceValidator()]}
                     >
-                        <InputNumber placeholder='Price' className='w-full' />
+                        <InputNumber<number>
+                            className='w-full'
+                            formatter={(value) => `${value} đ`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                            parser={(value) => value?.replace(/\s?đ|(,*)/g, '') as unknown as number}
+                        />
                     </Form.Item>
                     <Form.Item
                         className='capitalize'
@@ -109,6 +113,14 @@ const VariationItem = ({
                         rules={[variationsStockValidator()]}
                     >
                         <InputNumber placeholder='Stock' className='w-full' />
+                    </Form.Item>
+                    <Form.Item
+                        className='capitalize'
+                        {...restField}
+                        name={[fieldName, 'isActive']}
+                        dependencies={['isActive']}
+                    >
+                        <Checkbox value={false}>Công khai</Checkbox>
                     </Form.Item>
                     <div className='h-14 w-14'>
                         {!id && (

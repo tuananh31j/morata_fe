@@ -1,6 +1,6 @@
-import { EditOutlined, PlusOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined, VerticalAlignBottomOutlined, WarningOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -29,6 +29,15 @@ const CategoryList = () => {
 
     const [searchText, setSearch] = useState('');
     const [inputSearchValue, setInputSearchValue] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     const columns: TableProps<DataType>['columns'] = [
         {
@@ -66,7 +75,7 @@ const CategoryList = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size={'middle'}>
-                    <Tooltip title='Cập nhật danh mục'>
+                    <Tooltip title='Cập nhậy danh mục'>
                         <Link to={`${ADMIN_ROUTES.CATEGORIES_EDIT}/${record._id}`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>
@@ -138,6 +147,28 @@ const CategoryList = () => {
                     <p>Loading...</p>
                 )}
             </div>
+
+            <Modal
+                title={
+                    <div>
+                        <WarningOutlined className='text-yellow-500' style={{ fontSize: '1.5rem' }} />
+                        <h4 className='ml-2 inline-block'>Confirm</h4>
+                    </div>
+                }
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key='back' type='default' onClick={handleCancel}>
+                        Cancel
+                    </Button>,
+                    <Button key='button' danger type='primary' onClick={handleOk}>
+                        Delete
+                    </Button>,
+                ]}
+            >
+                <p>Are you sure want to delete this category?</p>
+            </Modal>
         </>
     );
 };

@@ -9,7 +9,12 @@ export type IAttributesValue = {
     values: number[] | string[];
     attributeKey: string;
 };
-
+export type IAllAttributesResponse = {
+    attributes: IAttributesValue[];
+    page: number;
+    totalDocs: number;
+    totalPages: number;
+};
 export type IAttributeReponse = {
     categoryId: string;
     productAttributes: {

@@ -40,8 +40,15 @@ export const ADMIN_ROUTES = {
 
     CATEGORIES: '/admin/categories',
     CATEGORIES_CREATE: '/admin/categories/create',
-    CATEGORIES_EDIT: '/admin/categories/edit/:id', // @id
-    CATEGORIES_ATTRIBUTES: '/admin/categories/attributes',
+    CATEGORIES_EDIT: '/admin/categories/edit', // @id
+
+    ATTRIBUTES: '/admin/attributes',
+    ATTRIBUTES_EDIT: '/admin/attributes/edit', // @id
+    ATTRIBUTES_CREATE: '/admin/attributes/create',
+
+    BRANDS: '/admin/brands',
+    BRAND_EDIT: '/admin/brands/edit', // @id
+    BRAND_CREATE: '/admin/brands/create',
 
     // SHOP
     SHOP: '/admin/shop',

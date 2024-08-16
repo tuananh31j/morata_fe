@@ -50,8 +50,11 @@ export const useCreateOrder = () => {
             });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.ORDERS],
+            queryClient.refetchQueries({
+                predicate: (query) =>
+                    query.queryKey.some((element) =>
+                        [QUERY_KEY.ORDERS, QUERY_KEY.PRODUCTS].includes(element as string)
+                    ),
             });
         },
     });

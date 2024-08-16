@@ -18,7 +18,7 @@ export type IParams = Partial<{
 
 export type Params = {
     [key: string]: any;
-    page?: string;
+    page?: string | number;
     sort?: string;
     limit?: string;
     fields?: string;

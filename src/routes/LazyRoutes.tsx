@@ -35,10 +35,12 @@ export const OrdersDetails = lazy(() => import('~/pages/Admins/_order_/OrderDeta
 export const CategoryList = lazy(() => import('~/pages/Admins/_category_'));
 export const CreateCategory = lazy(() => import('~/pages/Admins/_category_/CreateCategory'));
 export const UpdateCategory = lazy(() => import('~/pages/Admins/_category_/UpdateCategory'));
-export const CreateAttribute = lazy(() => import('~/pages/Admins/_category_/CreateAttribute'));
-export const RedirectToProductList = lazy(
-    () => import('~/components/_common/RedirectToProductList/RedirectToProductList')
-);
+export const AttributesList = lazy(() => import('~/pages/Admins/_attribute_'));
+export const CreateAttribute = lazy(() => import('~/pages/Admins/_attribute_/CreateAttribute'));
+export const UpdateAttribute = lazy(() => import('~/pages/Admins/_attribute_/UpdateAttribute'));
+export const BrandList = lazy(() => import('~/pages/Admins/_brand_'));
+export const CreateBrand = lazy(() => import('~/pages/Admins/_brand_/CreateBrand'));
+export const UpdateBrand = lazy(() => import('~/pages/Admins/_brand_/UpdateBrand'));
 
 // @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {

@@ -17,6 +17,7 @@ const useGetMyCart = (id?: string) => {
         quantity: item?.quantity,
         image: item?.productVariation?.image,
         productId: item?.productVariation?.productId?._id,
+        productVariationId: item?.productVariation?._id,
     }));
 
     return { data, ...rest, responsePayloadCheckout };

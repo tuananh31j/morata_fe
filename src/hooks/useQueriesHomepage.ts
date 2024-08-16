@@ -6,27 +6,25 @@ import productService from '~/services/product.service';
 const useQueriesHomepage = () => {
     return useQueries({
         queries: [
-            // { queryKey: [QUERY_KEY.PRODUCTS], queryFn: () => productService.getAll(), refetchInterval: Infinity },
             {
                 queryKey: [QUERY_KEY.PRODUCTS],
                 queryFn: () => productService.getAllProducts(),
-                refetchInterval: Infinity,
             },
             {
-                queryKey: [QUERY_KEY.DEALS],
+                queryKey: [QUERY_KEY.PRODUCTS, QUERY_KEY.DEALS],
                 queryFn: () => productService.getTopDeals(),
-                refetchInterval: Infinity,
             },
             {
-                queryKey: [QUERY_KEY.REVIEWS],
+                queryKey: [QUERY_KEY.PRODUCTS, QUERY_KEY.REVIEWS],
                 queryFn: () => productService.getTopReviews(),
-                refetchInterval: Infinity,
             },
-            { queryKey: [QUERY_KEY.LATEST], queryFn: () => productService.getLatest(), refetchInterval: Infinity },
             {
-                queryKey: [QUERY_KEY.POPULARCATEGORIES],
+                queryKey: [QUERY_KEY.PRODUCTS, QUERY_KEY.LATEST],
+                queryFn: () => productService.getLatest(),
+            },
+            {
+                queryKey: [QUERY_KEY.CATEGORIES, QUERY_KEY.POPULARCATEGORIES],
                 queryFn: () => cateogoryService.getPopular(),
-                refetchInterval: Infinity,
             },
         ],
     });

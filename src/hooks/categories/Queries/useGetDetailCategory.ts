@@ -6,6 +6,7 @@ const useGetDetailCategory = (id: string) => {
     return useQuery({
         queryKey: [QUERY_KEY.CATEGORIES, id],
         queryFn: async () => categoryService.getDetail(id),
+        enabled: !!id,
     });
 };
 

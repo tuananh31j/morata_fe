@@ -38,7 +38,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
                 <div className=' flex flex-col overflow-y-auto duration-300 ease-linear'>
                     {/* <!-- Sidebar Menu --> */}
-                    <nav className='mt-3 px-4 py-4 '>
+                    <nav className='mt-3 px-2 py-4 '>
                         <ul className='mb-6 flex flex-col gap-1.5'>
                             {menuGroups.map((menuItem, menuIndex) => (
                                 <SidebarItem key={menuIndex} item={menuItem} />

@@ -182,40 +182,6 @@ const CreateAttribute = () => {
                                     </>
                                 )}
 
-                                {/* {inputFields.map((field, index) => (
-                                    <Form.Item
-                                        key={field.id}
-                                        name='values'
-                                        label='Add New Value'
-                                        className='mb-3 font-medium text-[#08090F]'
-                                        rules={[{ required: true, message: 'Please enter at least one value!' }]}
-                                    >
-                                        <div className='flex w-full justify-between'>
-                                            <Input
-                                                className='w-[93%]'
-                                                placeholder='Enter value'
-                                                value={field.value}
-                                                onChange={(e) => {
-                                                    const newFields = [...inputFields];
-                                                    newFields[index].value = e.target.value;
-                                                    setInputFields(newFields);
-                                                }}
-                                            />
-                                            <Button
-                                                danger
-                                                className='flex items-center'
-                                                onClick={() => handleRemoveField(field.id)}
-                                            >
-                                                <DeleteOutlined />
-                                            </Button>
-                                        </div>
-                                    </Form.Item>
-                                ))}
-
-                                <Button type='primary' icon={<PlusCircleOutlined />} onClick={handleAddField}>
-                                    Add value
-                                </Button> */}
-
                                 <Form.Item className='flex justify-end'>
                                     <Button
                                         type='primary'

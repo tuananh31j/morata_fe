@@ -28,7 +28,7 @@ const FilterBox = ({
         } else {
             newBrand = old.filter((item: string) => item !== e.target.value);
         }
-        updateQueryParam({ ...query, [filterParams]: newBrand.join(',') });
+        updateQueryParam({ ...query, [filterParams]: newBrand.join(','), page: 1 });
     };
 
     return (

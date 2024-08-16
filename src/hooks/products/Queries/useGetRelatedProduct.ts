@@ -4,7 +4,7 @@ import productService from '~/services/product.service';
 
 export const useGetRelatedProduct = (body: { cateId: string; id: string }) => {
     return useQuery({
-        queryKey: [QUERY_KEY.RELATED, body.id],
+        queryKey: [QUERY_KEY.RELATED, QUERY_KEY.PRODUCTS, body.id],
         queryFn: () => productService.getRelated(body),
     });
 };

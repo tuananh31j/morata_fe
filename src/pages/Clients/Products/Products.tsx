@@ -12,12 +12,13 @@ import { cn } from '~/utils';
 const Products = () => {
     useDocumentTitle('Products');
     const { query, grid, updateQueryParam } = useFilter();
+    const limit = 8;
     // @Query
     const [{ data: brands }, { data: categoies }] = useGetCategoriesAndBrands();
     const { data: products, isLoading: isProductsLoading } = useGetAllProducts(query);
 
     const onPageChange = (page: number) => {
-        updateQueryParam({ ...query, page: page.toString() });
+        updateQueryParam({ ...query, page: page.toString(), limit });
     };
     return (
         <>
@@ -44,13 +45,13 @@ const Products = () => {
                         {products &&
                             !Array.isArray(products.data) &&
                             products.data.products.map((item, i) => <SmallCard product={item} key={i} />)}
-                        {!products && <Empty />}
+                        {products && products.data.products.length === 0 && !isProductsLoading && <Empty />}
                     </div>
                     <div>
                         {products?.data && !Array.isArray(products.data) && (
                             <Pagination
                                 current={Number(query.page)}
-                                pageSize={10}
+                                pageSize={limit}
                                 total={products.data.totalDocs}
                                 onChange={onPageChange}
                             />

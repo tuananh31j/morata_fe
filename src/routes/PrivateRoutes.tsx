@@ -5,7 +5,6 @@ import {
     CreateUser,
     DashboardPage,
     ManageUsers,
-    ManageProducts,
     Suspense,
     UpdateProduct,
     OrdersDetails,
@@ -15,8 +14,12 @@ import {
     UpdateUser,
     ManageOrders,
     UpdateCategory,
+    BrandList,
+    CreateBrand,
+    UpdateBrand,
+    AttributesList,
     CreateAttribute,
-    RedirectToProductList,
+    UpdateAttribute,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
 import RedirectToOrderList from '~/components/_common/RedirectToOrderList/RedirectToOrderList';
@@ -40,53 +43,7 @@ const PrivateRoutes = [
                     </Suspense>
                 ),
             },
-            {
-                path: ADMIN_ROUTES.PRODUCTS_LIST,
-                element: <ManageProducts />,
-                children: [
-                    {
-                        index: true,
-                        element: (
-                            <Suspense>
-                                <ProductsListAll />
-                            </Suspense>
-                        ),
-                    },
 
-                    {
-                        path: 'all',
-                        element: (
-                            <Suspense>
-                                <ProductsListAll />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'live',
-                        element: (
-                            <Suspense>
-                                <ProductsListAll />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'deleted',
-                        element: (
-                            <Suspense>
-                                <div>Deleted</div>
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: 'hidden',
-                        element: (
-                            <Suspense>
-                                <div>Hidden</div>
-                            </Suspense>
-                        ),
-                    },
-                ],
-            },
             {
                 path: ADMIN_ROUTES.PRODUCTS,
                 element: (
@@ -99,7 +56,16 @@ const PrivateRoutes = [
                         index: true,
                         element: (
                             <Suspense>
-                                <RedirectToProductList />
+                                <ProductsListAll />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: 'list',
+
+                        element: (
+                            <Suspense>
+                                <ProductsListAll />
                             </Suspense>
                         ),
                     },
@@ -178,6 +144,8 @@ const PrivateRoutes = [
                     </Suspense>
                 ),
             },
+
+            // @Category
             {
                 path: ADMIN_ROUTES.CATEGORIES,
                 children: [
@@ -198,18 +166,72 @@ const PrivateRoutes = [
                         ),
                     },
                     {
-                        path: ADMIN_ROUTES.CATEGORIES_EDIT,
+                        path: `${ADMIN_ROUTES.CATEGORIES_EDIT}/:id`,
                         element: (
                             <Suspense>
                                 <UpdateCategory />
                             </Suspense>
                         ),
                     },
+                ],
+            },
+
+            // @Attribute
+            {
+                path: ADMIN_ROUTES.ATTRIBUTES,
+                children: [
                     {
-                        path: ADMIN_ROUTES.CATEGORIES_ATTRIBUTES,
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <AttributesList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: ADMIN_ROUTES.ATTRIBUTES_CREATE,
                         element: (
                             <Suspense>
                                 <CreateAttribute />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: `${ADMIN_ROUTES.ATTRIBUTES_EDIT}/:id`,
+                        element: (
+                            <Suspense>
+                                <UpdateAttribute />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+
+            // @Brand
+            {
+                path: ADMIN_ROUTES.BRANDS,
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <BrandList />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: ADMIN_ROUTES.BRAND_CREATE,
+                        element: (
+                            <Suspense>
+                                <CreateBrand />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: `${ADMIN_ROUTES.BRAND_EDIT}/:id`,
+                        element: (
+                            <Suspense>
+                                <UpdateBrand />
                             </Suspense>
                         ),
                     },

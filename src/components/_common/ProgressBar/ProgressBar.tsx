@@ -1,9 +1,9 @@
 import { Progress } from 'antd';
 
-const ProgressBar = ({ stock }: { stock: number }) => {
+const ProgressBar = ({ percentageSoldProducts }: { percentageSoldProducts: number }) => {
     return (
         <>
-            <Progress size={'small'} percent={stock} showInfo={false} status='exception' />
+            <Progress size={'small'} percent={percentageSoldProducts} showInfo={false} status='exception' />
         </>
     );
 };

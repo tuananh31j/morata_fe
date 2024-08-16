@@ -27,6 +27,10 @@ const SmallCard = ({ product }: PropTypeProduct) => {
             userId: user ? user._id : '',
         });
     };
+    const productSold = product.variationIds.reduce((acc, item) => {
+        const sold = item.sold || 0;
+        return acc + sold;
+    }, 0);
     const newPrice = product.variationIds[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
 
@@ -77,7 +81,10 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                         </h4>
 
                         {/* Review */}
-                        <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
+                        <div className='flex items-center justify-between'>
+                            <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
+                            <span className='text-gray-400 text-sm'>Đã bán: {productSold ? productSold : 100}</span>
+                        </div>
 
                         {/* Price */}
                         <div className='mb-3 mt-[10px] flex items-center gap-4'>

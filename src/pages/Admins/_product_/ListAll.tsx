@@ -56,13 +56,13 @@ const ListAll = () => {
     const columns = ProductsListColumns(handleOpenModal);
 
     const onChange: TableProps<IProductItem>['onChange'] = (paginations) => {
-        updateQueryParam({ ...query, page: paginations.current || 1 });
+        updateQueryParam({ ...query, page: String(paginations.current || 1) });
     };
 
     // @ submit form
     const onSubmit: FormProps['onFinish'] = (values: IProductParams) => {
         const newQuery = _.omitBy(values, _.isUndefined);
-        updateQueryParam({ ...newQuery, page: '1' } as Params);
+        updateQueryParam({ ...newQuery, page: '1' });
     };
 
     useEffect(() => {
@@ -127,7 +127,7 @@ const ListAll = () => {
                     pagination={{
                         pageSize: 10,
                         total: totalDocs,
-                        current: +query.page || 1,
+                        current: Number(query.page || 1),
                     }}
                 />
             </div>

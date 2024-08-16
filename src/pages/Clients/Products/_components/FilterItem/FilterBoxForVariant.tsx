@@ -22,17 +22,17 @@ const FilterBoxForVariant = ({
     const onChange: CheckboxProps['onChange'] = (e) => {
         console.log(e.target.value, e.target.checked);
         const old = query[filterKey] ? query[filterKey].split(',') : [];
-        let newBrand: string[] = [];
+        let newAttributeQuery: string[] = [];
         if (e.target.checked) {
             const copyBRandQuery = old.filter((item: string) => item !== e.target.value);
-            newBrand = [...copyBRandQuery, e.target.value];
+            newAttributeQuery = [...copyBRandQuery, e.target.value];
         } else {
-            newBrand = old.filter((item: string) => item !== e.target.value);
+            newAttributeQuery = old.filter((item: string) => item !== e.target.value);
         }
         if (suffixKey) {
-            newBrand = [suffixKey, ...newBrand];
+            newAttributeQuery = [suffixKey, ...newAttributeQuery];
         }
-        updateQueryParam({ ...query, [filterKey]: newBrand.join(',') });
+        updateQueryParam({ ...query, [filterKey]: newAttributeQuery.join(','), page: 1 });
     };
 
     return (

@@ -3,12 +3,12 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import { attributesServices } from '~/services/attributes.service';
 import { IAttributeFormData } from '~/types/Category';
 
-export const useMutationCreateAttribute = () => {
+const useUpdateAttribute = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationKey: [QUERY_KEY.ATTRIBUTES],
-        mutationFn: (payload: IAttributeFormData) => attributesServices.createAttribute(payload),
+        mutationFn: (payload: IAttributeFormData) => attributesServices.updateAttibute(payload),
 
         onSuccess: () => {
             queryClient.resetQueries({
@@ -17,3 +17,5 @@ export const useMutationCreateAttribute = () => {
         },
     });
 };
+
+export default useUpdateAttribute;
