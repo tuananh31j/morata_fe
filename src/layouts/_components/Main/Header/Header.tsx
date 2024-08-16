@@ -91,7 +91,7 @@ const Header = () => {
 
     const { data } = useGetCategories();
     const categoryList = data?.data;
-    const additionalCategories = [{ label: 'All Category', key: '' }];
+    const additionalCategories = [{ label: 'Tất cả danh mục', key: '' }];
     const items: MenuProps['items'] = categoryList
         ? [
               ...additionalCategories,
@@ -112,7 +112,7 @@ const Header = () => {
         const categoryName = category ? category.name : '';
         if (key.key === '') {
             disPatch(setFocusSearch(false));
-            disPatch(setCategoryId({ id: '', name: 'All Categories' }));
+            disPatch(setCategoryId({ id: '', name: 'Tất cả danh mục' }));
         } else if (key.key !== '') {
             disPatch(setFocusSearch(true));
             disPatch(setCategoryId({ id: key.key, name: categoryName }));
@@ -140,8 +140,8 @@ const Header = () => {
         <header className='bg-blue-900 '>
             <div className='mx-3 lg:mx-4'>
                 {/* thongtin-header-laptop */}
-                <div className='hidden justify-between border-b border-[#3b50a3] py-5 lg:flex '>
-                    {/* <div className='justify-between gap-5 lg:flex'>
+                <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex '>
+                    <div className='justify-between gap-5 lg:flex'>
                         <div className='lg: inline-block text-left'>
                             <div>
                                 <Dropdown menu={{ items, onClick }}>
@@ -203,7 +203,7 @@ const Header = () => {
                                 FAQs
                             </h3>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
                 <div className='flex grid-cols-[280px,0.9fr,420px] items-center justify-between gap-10 border-[#3b50a3]  bg-blue-900 pt-5 lg:grid lg:border-b lg:p-0 lg:py-5'>
                     {/* icon-menu-mobi */}

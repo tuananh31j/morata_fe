@@ -151,7 +151,7 @@ const Profile = () => {
 
     return (
         <>
-            <WrapperList classic title='My Profile' className='my-0'>
+            <WrapperList classic title='Thông tin của tôi' className='my-0'>
                 {/* @Content */}
                 <div className='flex items-center justify-center'>
                     <div className='w-[80%] rounded-2xl bg-white px-6 py-4'>
@@ -210,7 +210,7 @@ const Profile = () => {
                                         size='large'
                                         htmlType='submit'
                                     >
-                                        Update Profile
+                                        Cập nhật thông tin
                                     </Button>
 
                                     <Button
@@ -220,7 +220,7 @@ const Profile = () => {
                                         onClick={showModal}
                                         className='w-full rounded-3xl'
                                     >
-                                        Change Password
+                                        Thay đổi mật khẩu
                                     </Button>
                                 </div>
                             </Form.Item>

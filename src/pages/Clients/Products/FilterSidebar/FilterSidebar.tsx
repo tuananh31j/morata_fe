@@ -17,14 +17,13 @@ type IFilterProps = {
 const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
     const { reset, query } = useFilter();
     const { data: filterByCate } = useGetFilterByCategory(query.categoryId);
-    console.log(filterByCate);
 
     return (
         <div className='rounded-md border border-transparent bg-white p-3 py-0'>
             <div className='relative hidden h-full md:block'>
                 <div className='h-[100vh] w-full overflow-x-hidden overflow-y-scroll'>
-                    <FilterRadio data={categories} filterName='Category' filterParams='categoryId' />
-                    <FilterBox data={brands} filterName='Brand' filterParams='brandId' />
+                    <FilterRadio data={categories} filterName='Danh Mục' filterParams='categoryId' />
+                    <FilterBox data={brands} filterName='Hãng' filterParams='brandId' />
                     {filterByCate &&
                         filterByCate.data.map((item) => (
                             <FilterBoxForVariant
@@ -36,14 +35,14 @@ const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
                                 filterParams={item.attributeKey}
                             />
                         ))}
-                    <RatingFilter filterName='Rating' />
+                    <RatingFilter filterName='Đánh Giá' />
                     <PriceFilterItem />
                 </div>
                 <button
                     onClick={reset}
                     className='sticky my-4 w-full rounded-md border border-[#1e3a8a] bg-white p-3 text-black hover:bg-[#1e3a8a] hover:text-white'
                 >
-                    Reset All
+                    Xóa bộ lọc
                 </button>
             </div>
         </div>
