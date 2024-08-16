@@ -26,7 +26,7 @@ const RateBtn = ({ handleRate, productId, orderId }: RateBtnProps) => {
             }}
         >
             <Button type='primary' size='middle' onClick={() => handleRate(productId, orderId)}>
-                Rate us!!
+                Đánh giá
             </Button>
         </ConfigProvider>
     );

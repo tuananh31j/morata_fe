@@ -21,7 +21,7 @@ const OrderDetailPage = () => {
 
     const orderStatus = data?.orderStatus;
 
-    const receiverInfo = data && data?.receiverInfo;
+    const receiverInfo = data?.paymentMethod === 'card' ? data?.customerInfo : data?.receiverInfo;
     const shippingAddress = data && data?.shippingAddress;
 
     const serviceInfo = {
@@ -41,7 +41,7 @@ const OrderDetailPage = () => {
         <>
             {!isLoading && (
                 <WrapperList
-                    title='Chi Tiết Đơn Hàng'
+                    title={`Chi tiết đơn hàng #${id}`}
                     option={
                         <Link to={MAIN_ROUTES.MY_ORDERS}>
                             <LeftOutlined /> Quay Trở Về Danh Sach
@@ -50,14 +50,13 @@ const OrderDetailPage = () => {
                 >
                     <Space className='flex w-full items-center justify-between rounded-lg bg-[#fff] p-4 font-semibold'>
                         <span>Ngày Đặt Đơn Hàng: {formatDate(data?.createdAt)} </span>
-                        <span>Mã Đơn Hàng: #{id} </span>
+                        <div className='ml-4 mt-2'>
+                            <ActionLink orderId={id!} status={orderStatus} />
+                        </div>
                     </Space>
                     {orderStatus !== 'cancelled' ? (
                         <>
                             <OrderStatusBar orderStatus={orderStatus} />
-                            <div className='ml-4 mt-2'>
-                                <ActionLink orderId={id!} status={orderStatus} />
-                            </div>
                         </>
                     ) : (
                         <Space className='mt-5 flex w-full flex-col  items-center justify-center rounded-lg bg-[#fff] p-4 font-semibold'>
