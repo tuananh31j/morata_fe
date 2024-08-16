@@ -165,11 +165,11 @@ const CartDetail = () => {
         {
             key: 'stock',
             dataIndex: 'stock',
-            title: 'Số lượng',
+            title: <span className='flex items-center justify-center'>Số lượng</span>,
             render: (_, product) => {
                 const quantity = quantityProduct?.find((p) => p.id === product.productVariation._id)?.quantity || 0;
                 return (
-                    <div className='ml-5 flex items-center justify-center'>
+                    <div className='flex items-center justify-center'>
                         <Button
                             type='default'
                             disabled={quantity < 2}
@@ -234,22 +234,23 @@ const CartDetail = () => {
                                     onClick={() => removeAllCart({ userId: user ? user : '' })}
                                     className='block rounded-sm bg-black px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
                                 >
-                                    Xóa hết
+                                    Xóa tất cả
                                 </Button>
                             </div>
                             <div></div>
                         </div>
-                        <div className='mt-8'>
+                        {/* <div className='mt-8'>
                             <h4 className='m-2 text-lg font-medium'>Thêm ghi chú</h4>
                             <TextArea
                                 placeholder='Điền ghi chú để chúng tôi có thể hỗ trợ bạn'
                                 rows={6}
                                 className='font-semibold text-black'
                             ></TextArea>
-                        </div>
+                        </div> */}
                     </Form>
+
                     <div className='border-2 border-[#16bcdc] px-8 py-6 text-base text-black'>
-                        <div className='flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
+                        {/* <div className='flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
                             <span>Tổng tiền phụ:</span>
                             <span>{Currency.format(totalOrderAmount)}</span>
                         </div>
@@ -278,13 +279,13 @@ const CartDetail = () => {
                                     </Link>
                                 </span>
                             </Checkbox>
-                        </div>
+                        </div> */}
                         <div className='mt-4'>
-                            <Link to={MAIN_ROUTES.CHECKOUT}>
+                            <Link to={MAIN_ROUTES.SHIPPING}>
                                 <Button
                                     size='large'
-                                    disabled={!isAgree || totalOrderAmount > 5000000}
-                                    className={`block w-full rounded-sm  bg-black ${isAgree ? 'hover:bg-[#16bcdc] ' : 'cursor-default opacity-30'} px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear`}
+                                    disabled={totalOrderAmount > 5000000}
+                                    className={`block w-full rounded-sm bg-black px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]`}
                                 >
                                     Thanh Toán
                                 </Button>
