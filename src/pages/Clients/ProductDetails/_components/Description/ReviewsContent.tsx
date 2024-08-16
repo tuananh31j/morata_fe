@@ -81,6 +81,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     };
     const handleCancel = () => {
         setIsModalVisible(false);
+        document.body.classList.remove('noscroll');
     };
     const handleSubmit = (Reviewdata: ReviewData) => {
         if (Reviewdata.reviewId) {
@@ -130,7 +131,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                 <div className='mx-auto flex max-w-[1280px] flex-col items-center gap-4 lg:flex-row lg:justify-between'>
                     <div>
                         <div className='flex gap-2'>
-                            <Rate allowHalf defaultValue={TopReviews} disabled={true} />
+                            <Rate allowHalf value={TopReviews} disabled={true} />
                             <span className='text-base font-medium  text-[#777777]'>{TopReviews.toFixed(1)}</span>
                         </div>
                         <p className='text-center text-base font-medium text-[#777777] lg:text-start'>
@@ -183,7 +184,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                     {reviewContent &&
                         reviewContent.map((item, index) => (
                             <div key={index} className='mb-6 flex flex-col gap-2 py-2'>
-                                <Rate defaultValue={item.rating} disabled className='text-[16px]' />
+                                <Rate value={item.rating} disabled className='text-[16px]' />
                                 <div>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='flex items-center gap-2'>

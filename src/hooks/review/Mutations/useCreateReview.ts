@@ -20,6 +20,7 @@ const useCreateReview = () => {
             // @Remove review data in redux and localstorage
             dispatch(setReviewData({ orderId: '', isOpen: false, productId: '' }));
             window.localStorage.removeItem('orderId');
+            document.body.classList.remove('noscroll');
         },
         onError(error) {
             console.log(error.message);

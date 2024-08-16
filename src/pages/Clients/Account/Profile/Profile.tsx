@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import StaticImages from '~/assets';
 import WrapperList from '~/components/_common/WrapperList';
 import useWindowSize from '~/hooks/_common/useWindowSize';
+import useSendResetPassword from '~/hooks/auth/useSendResetPassword';
 import { useMutationUpdateProfle } from '~/hooks/profile/Mutations/useUpdateProfile';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 import { ACCEPT_FILE_TYPE, FileType, getBase64, MAX_SIZE } from '~/pages/Admins/_product_/Helper/_helper_';
@@ -15,7 +16,9 @@ import { errorMessage } from '~/validation/Products/Product';
 const Profile = () => {
     const [loading, setLoading] = useState(false);
 
-    const { mutate: updateProfile } = useMutationUpdateProfle();
+    const { mutate: updateProfile, isPending } = useMutationUpdateProfle();
+
+    const { mutate: sendResetPassword, error, isError, isPending: isPendingPassword } = useSendResetPassword();
 
     const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
@@ -209,19 +212,24 @@ const Profile = () => {
                                         className='block w-full rounded-3xl bg-black text-center text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc] '
                                         size='large'
                                         htmlType='submit'
+                                        loading={isPending}
                                     >
                                         Cập nhật thông tin
                                     </Button>
 
-                                    <Button
-                                        type='primary'
-                                        size='large'
-                                        danger
-                                        onClick={showModal}
-                                        className='w-full rounded-3xl'
-                                    >
-                                        Thay đổi mật khẩu
-                                    </Button>
+                                    {profile && (
+                                        <Button
+                                            type='primary'
+                                            size='large'
+                                            danger
+                                            // onClick={showModal}
+                                            onClick={() => sendResetPassword({ email: profile.email! })}
+                                            className='w-full rounded-3xl'
+                                            loading={isPendingPassword}
+                                        >
+                                            Thay đổi mật khẩu
+                                        </Button>
+                                    )}
                                 </div>
                             </Form.Item>
                         </Form>

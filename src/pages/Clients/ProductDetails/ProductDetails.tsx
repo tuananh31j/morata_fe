@@ -1,4 +1,4 @@
-import { DockerOutlined, HeartOutlined, RedoOutlined } from '@ant-design/icons';
+import { DockerOutlined, HeartFilled, HeartOutlined, RedoOutlined } from '@ant-design/icons';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, Navigate, useParams } from 'react-router-dom';
@@ -20,6 +20,8 @@ import showMessage from '~/utils/ShowMessage';
 import { MAIN_ROUTES } from '~/constants/router';
 import useGetAllWishlist from '~/hooks/wishlist/Queries/useGetAllWishlist';
 import useFilter from '~/hooks/_common/useFilter';
+import { useMutationRemoveWishList } from '~/hooks/wishlist/Mutations/useRemoveWishList';
+import { debounce } from 'lodash';
 
 export type IVariantItem = {
     _id: string;
@@ -38,7 +40,11 @@ const ProductDetails = () => {
     const navigate = useNavigate();
 
     const { data: productDetail, isLoading } = useGetDetailProduct(id as string);
+
     const { mutate: addWishlist } = useMutationAddWishList();
+    const { handleRemoveWishList } = useMutationRemoveWishList();
+    const debouncedRemove = debounce((ProductId: string) => handleRemoveWishList(ProductId), 500);
+
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { data: allWishList } = useGetAllWishlist(query);
     const wishListIds = allWishList?.data.wishList.map((item) => item._id);
@@ -49,7 +55,6 @@ const ProductDetails = () => {
                 return;
             }
             addWishlist({ productId: id as string });
-            navigate(MAIN_ROUTES.WISHLIST);
         } else {
             navigate(MAIN_ROUTES.LOGIN);
             showMessage('You need to login first!', 'warning');
@@ -162,9 +167,23 @@ const ProductDetails = () => {
                                             },
                                         }}
                                     >
-                                        <Button className='flex items-center' onClick={handleAddWishlist}>
-                                            <HeartOutlined /> Add to wishlist
-                                        </Button>
+                                        {wishListIds?.includes(id as string) ? (
+                                            <>
+                                                <Button
+                                                    className='flex items-center'
+                                                    onClick={() => debouncedRemove(id!)}
+                                                >
+                                                    <HeartFilled className='text-red' /> Đã thêm vào yêu thích
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Button className='flex items-center' onClick={handleAddWishlist}>
+                                                    <HeartOutlined /> Thêm vào yêu thích
+                                                </Button>
+                                            </>
+                                        )}
+
                                         {/* <Button className='flex items-center'>
                                             <MenuOutlined /> Add compare
                                         </Button> */}
@@ -196,8 +215,8 @@ const ProductDetails = () => {
                                         <p className='mt-[15px]'>
                                             <RedoOutlined />{' '}
                                             <span className='text-[#777777]'>
-                                                Trả hàng trong vòng <b className='text-black'>30 days</b> khi đã mua.
-                                                Thuế không được hoàn trả
+                                                Trả hàng trong vòng <b className='text-black'>7 ngày</b> sau khi đã mua.
+                                                Thuế không được hoàn trả.
                                             </span>
                                         </p>
                                     </div>
@@ -205,7 +224,7 @@ const ProductDetails = () => {
                                 {/* Availability product */}
                                 <div className='ml-[15px] mt-[35px] flex flex-col gap-2'>
                                     <div className='flex '>
-                                        <p className='w-[115px] text-[#777777]'>Availability: </p>
+                                        <p className='w-[115px] text-[#777777]'>Trạng thái: </p>
                                         {(variant?.stock as number) > 0 && <b className='text-green-500'>Còn hàng</b>}
                                         {!variant?.stock && <b className='text-red'>Hết hàng</b>}
                                     </div>
