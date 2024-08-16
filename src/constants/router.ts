@@ -13,7 +13,7 @@ export const MAIN_ROUTES = {
     VERIFY: '/verifyAccount/:token',
     REGISTER: '/register',
     CHECKEMAIL: '/checkEmail',
-    FORGOT_PASSWORD: '/forgotPassword',
+    FORGOT_PASSWORD: '/forgotpassword',
     RESET_PASSWORD: '/resetPassword/:token',
     NOT_FOUND: '/404',
     SUCCESS_ORDER: '/success',

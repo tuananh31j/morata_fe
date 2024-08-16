@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import useSendResetPassword from '~/hooks/auth/useSendResetPassword';
@@ -15,7 +15,7 @@ export default function ForgotPassword() {
     } = useForm<{ email: string }>({
         resolver: zodResolver(forgotPasswordSchema),
     });
-    const { mutate, error, isError } = useSendResetPassword();
+    const { mutate, error, isError, isPending } = useSendResetPassword();
 
     const handleOnSubmit = async (data: any) => {
         mutate({ email: data.email });
@@ -53,12 +53,13 @@ export default function ForgotPassword() {
                     </Form.Item>
 
                     <Form.Item>
-                        <button
-                            type='submit'
+                        <Button
+                            htmlType='submit'
+                            loading={isPending}
                             className='h-12 w-full rounded-md bg-[#1e3a8a] font-semibold text-white transition-colors duration-300 hover:bg-cyan-600'
                         >
                             Send Reset Link
-                        </button>
+                        </Button>
                     </Form.Item>
                 </Form>
             </div>
