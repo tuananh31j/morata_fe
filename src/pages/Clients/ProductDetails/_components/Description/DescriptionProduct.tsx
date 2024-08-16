@@ -20,7 +20,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
         root: null,
         threshold: 0,
         triggerOnce: true,
-        rootMargin: '0px 0px 0px 0px',
+        rootMargin: '100px 0px 0px 0px',
     });
 
     const descriptionTabKey = {
@@ -38,7 +38,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
         // },
         {
             key: descriptionTabKey.additionalInformation,
-            label: 'ADDITIONAL INFORMATION',
+            label: 'THÔNG TIN BỔ SUNG',
             children: <AddInformationContent attributes={product.attributes} />,
         },
         // {
@@ -48,7 +48,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
         // },
         {
             key: descriptionTabKey.reviews,
-            label: 'REVIEWS',
+            label: 'ĐÁNH GIÁ',
             children: <ReviewsContent TopReviews={review} />,
         },
     ];

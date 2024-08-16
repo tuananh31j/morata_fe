@@ -123,16 +123,17 @@ const UpdateProduct = () => {
     };
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
-        if (productDetails) {
-            handleEditProduct({
-                productId: id as string,
-                data: values,
-                imagesInit: imagesfileList,
-                updateProduct,
-                updateProductVariant,
-                createProductVariant,
-            });
-        }
+        // if (productDetails) {
+        //     handleEditProduct({
+        //         productId: id as string,
+        //         data: values,
+        //         imagesInit: imagesfileList,
+        //         updateProduct,
+        //         updateProductVariant,
+        //         createProductVariant,
+        //     });
+        // }
+        console.log(values);
     };
     const onReset = () => {
         form.setFieldsValue(initialValues.initialValue);

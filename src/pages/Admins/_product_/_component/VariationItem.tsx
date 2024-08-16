@@ -1,5 +1,5 @@
 import { MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
 import { IAttributesValue } from '~/types/Attributes';
 import {
     variationsPriceValidator,
@@ -109,6 +109,16 @@ const VariationItem = ({
                         rules={[variationsStockValidator()]}
                     >
                         <InputNumber placeholder='Stock' className='w-full' />
+                    </Form.Item>
+                    <Form.Item
+                        className='capitalize'
+                        {...restField}
+                        valuePropName='checked'
+                        name={[fieldName, 'isActive']}
+                        dependencies={['isActive']}
+                        initialValue={true}
+                    >
+                        <Checkbox>Công khai</Checkbox>
                     </Form.Item>
                     {!id && (
                         <MinusCircleOutlined

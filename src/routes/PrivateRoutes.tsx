@@ -27,9 +27,9 @@ const PrivateRoutes = [
     {
         path: ADMIN_ROUTES.DASHBOARD,
         element: (
-            <ProtectedRoute>
-                <AdminLayout />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <AdminLayout />
+            // </ProtectedRoute>
         ),
         children: [
             {

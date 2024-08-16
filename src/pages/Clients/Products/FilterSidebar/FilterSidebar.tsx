@@ -41,7 +41,7 @@ const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
                     onClick={reset}
                     className='my-4 w-full rounded-md border border-[#1e3a8a] bg-white p-3 text-black hover:bg-[#1e3a8a] hover:text-white'
                 >
-                    Reset All
+                    Đặt lại tất cả
                 </button>
             </div>
         </div>

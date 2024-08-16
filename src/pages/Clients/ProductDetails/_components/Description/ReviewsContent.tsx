@@ -70,7 +70,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                     reviewData.userId._id === userInfoData?._id ? (
                         <span onClick={() => handleEditReview(reviewData)}>Chỉnh sửa</span>
                     ) : (
-                        <span>Báo cáo</span>
+                        <span></span>
                     ),
             },
         ];
@@ -125,18 +125,16 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
 
     return (
         <>
-            <h3 className='my-6 text-center text-xl'>Customer Reviews</h3>
+            <h3 className='my-6 text-center text-xl'>Đánh giá của khách hàng</h3>
             <div>
                 <div className='mx-auto flex max-w-[1280px] flex-col items-center gap-4 lg:flex-row lg:justify-between'>
                     <div>
                         <div className='flex gap-2'>
                             <Rate allowHalf defaultValue={TopReviews} disabled={true} />
-                            <span className='text-base font-medium  text-[#777777]'>
-                                {TopReviews.toFixed(1)} out of 5
-                            </span>
+                            <span className='text-base font-medium  text-[#777777]'>{TopReviews.toFixed(1)}</span>
                         </div>
                         <p className='text-center text-base font-medium text-[#777777] lg:text-start'>
-                            Base on {reviewContent?.length} reviews
+                            Dựa trên {reviewContent?.length} đánh giá
                         </p>
                     </div>
                     <div>
@@ -177,7 +175,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                             disabled={orderId ? false : true}
                             className='flex h-[40px] w-[340px] items-center justify-center bg-[#ffb800] font-bold text-white'
                         >
-                            {orderId ? ' Write a review' : ' Purchase required for review'}
+                            {orderId ? 'Viết đánh giá' : 'Bạn cần mua hàng để đánh giá'}
                         </button>
                     </div>
                 </div>
@@ -216,7 +214,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                                                 onClick={() => toggleSeeMore(index)}
                                                 className='text-[14px] text-cyan-500 hover:underline'
                                             >
-                                                See More
+                                                Xem thêm
                                             </button>
                                         )}
                                         {contentSee[index] && (
@@ -224,7 +222,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                                                 onClick={() => toggleSeeMore(index)}
                                                 className='text-[14px] text-cyan-500 hover:underline'
                                             >
-                                                See Less
+                                                Rút gọn
                                             </button>
                                         )}
                                     </div>
