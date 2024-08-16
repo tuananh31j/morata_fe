@@ -34,7 +34,7 @@ export const handleCreateProduct = (data: IProductForm, createProduct: (product:
                 });
                 // Delete thumbnail
                 const { thumbnail, ...rest } = value;
-                const { imageUrlRef, price, stock, ...variantAttributesObj } = rest;
+                const { imageUrlRef, price, stock, isActive, ...variantAttributesObj } = rest;
                 const variantAttributes = [];
                 if (variantAttributesObj.variantAttributes) {
                     for (const [key, value] of Object.entries(variantAttributesObj.variantAttributes)) {
@@ -45,7 +45,7 @@ export const handleCreateProduct = (data: IProductForm, createProduct: (product:
                         });
                     }
                 }
-                const variantFinal = { imageUrlRef, price, stock, variantAttributes };
+                const variantFinal = { imageUrlRef, price, stock, isActive, variantAttributes };
                 newVariations.push(variantFinal);
             }
         }

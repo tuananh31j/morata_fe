@@ -184,7 +184,7 @@ const UpdateProduct = () => {
                 newVariantFile = [...variantFile];
                 newVariantFile[i] = image;
                 setVariantFile((prev) => [...prev, image]);
-
+                console.log(varia, 'varia');
                 const newVaria = { ...varia, variantAttributes, thumbnail: image };
                 delete newVaria.image;
                 return newVaria;
@@ -199,6 +199,7 @@ const UpdateProduct = () => {
                 brandId: brandId._id,
                 ...rest,
             };
+            console.log(variaConverts, 'variaConverts');
             setImagesFileList(imagesConvert);
             setThumbnailFile(thumbnailConvert);
             setInitialValues({

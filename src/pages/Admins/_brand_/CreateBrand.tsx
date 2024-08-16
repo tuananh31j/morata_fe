@@ -1,241 +1,177 @@
-import { DeleteOutlined, PlusCircleOutlined, PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useMessage from '~/hooks/_common/useMessage';
-import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
-import { IAttributeFormData } from '~/types/Category';
-import showMessage from '~/utils/ShowMessage';
+import { EditOutlined, PlusOutlined, VerticalAlignBottomOutlined, WarningOutlined } from '@ant-design/icons';
+import type { TableProps } from 'antd';
+import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
+import Search from 'antd/es/input/Search';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ADMIN_ROUTES } from '~/constants/router';
+import useGetAllBrands from '~/hooks/brands/useGetAllBrands';
 
-const CreateAttribute = () => {
-    const navigate = useNavigate();
-    const { mutate: createAttribute, isPending, isSuccess, isError } = useMutationCreateAttribute();
-    const { handleMessage, contextHolder } = useMessage();
-    // const [attributeOptions, setAttributeOptions] = useState<{ label: string; value: string; values: string[] }[]>([]);
+type DataType = {
+    _id?: string;
+    key?: string;
+    name: string;
+};
 
-    const [inputFields, setInputFields] = useState([{ id: Date.now(), value: '' }]);
+const CategoryList = () => {
+    const { data: brandResponse } = useGetAllBrands();
+    const brandsLIst = brandResponse?.data;
 
-    const handleAddField = () => {
-        // Check if the first input field is filled
-        if (inputFields[0].value.trim() === '') {
-            handleMessage({ type: 'error', content: 'Please enter at least one value!' });
-            return;
-        }
-        setInputFields([...inputFields, { id: Date.now(), value: '' }]);
+    // Add attributeNames to categoryList
+    const categoryListWithAttributes = brandsLIst?.map((category) => ({
+        ...category,
+        key: category._id,
+    }));
+
+    const [searchText, setSearch] = useState('');
+    const [inputSearchValue, setInputSearchValue] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOk = () => {
+        setIsModalOpen(false);
     };
 
-    const handleRemoveField = (id: number) => {
-        setInputFields(inputFields.filter((field) => field.id !== id));
+    const handleCancel = () => {
+        setIsModalOpen(false);
     };
 
-    const [typeSelected, setTypeSelected] = useState<string>('');
+    const columns: TableProps<DataType>['columns'] = [
+        {
+            title: 'ID',
+            dataIndex: '_id',
+            key: '_id',
+            render: (text) => <h4>{text}</h4>,
+            filteredValue: [searchText],
+        },
+        {
+            title: 'Tên thương hiệu',
+            dataIndex: 'name',
+            key: 'name',
+            render: (text) => <h4>{text}</h4>,
+            filteredValue: [searchText],
+            onFilter: (value, record) => {
+                const searchValue = (typeof value === 'string' && value.toLowerCase()) || '';
+                return typeof value && record.name.toLowerCase().includes(searchValue);
+            },
+            sorter: (a, b) => a.name.localeCompare(b.name),
+        },
+        {
+            title: 'Attributes',
+            dataIndex: 'attributeNames',
+            key: 'attributeNames',
+            render: (_, record) => (
+                <>
+                    {/* {attributeNames?.map((attributeName) => {
+                        return (
+                            <Tag color={'geekblue'} key={attributeName}>
+                                {attributeName.toUpperCase()}
+                            </Tag>
+                        );
+                    })} */}
+                </>
+            ),
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size={'middle'}>
+                    <Tooltip title='Cập nhậy danh mục'>
+                        <Link to={`${ADMIN_ROUTES.CATEGORIES_EDIT}/${record._id}`} className='text-blue-500'>
+                            <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
+                        </Link>
+                    </Tooltip>
+                </Space>
+            ),
+        },
+    ];
 
-    const handleChange = (value: string) => {
-        setTypeSelected(value);
+    const rowSelection = {
+        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {},
+        getCheckboxProps: (record: DataType) => ({
+            disabled: record.name === 'Disabled User', // Column configuration not to be checked
+            name: record.name,
+        }),
     };
 
-    const onFinish: FormProps<IAttributeFormData>['onFinish'] = (values) => {
-        // Filter out empty values
-        console.log(values, 'values');
-        const inputValues = inputFields.map((field) => field.value).filter((value) => value.trim() !== '');
-        const payload = { ...values, values: inputValues };
-
-        createAttribute(payload);
-    };
     useEffect(() => {
-        if (isPending) {
-            handleMessage({ type: 'loading', content: '...Creating!' });
-        }
+        const searchId = setTimeout(() => {
+            setSearch(inputSearchValue);
+        }, 800);
+        return () => clearTimeout(searchId);
+    }, [inputSearchValue]);
 
-        if (isSuccess) {
-            showMessage('Attribute created successfully!', 'success');
-            navigate('/admin/categories/create', { replace: true });
-        }
-
-        if (isError) {
-            showMessage('Attribute creation failed!', 'error');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isPending, isSuccess, isError]);
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        const search = e.target.value;
+        setInputSearchValue(search);
+    };
 
     return (
         <>
-            {contextHolder}
-            <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-                <div className='m-auto'>
-                    <Form layout='vertical' onFinish={onFinish} initialValues={{ isRequired: false, isVariant: false }}>
-                        <div>
-                            <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
-                                <h3 className='my-2 text-xl font-medium text-primary'>Create a new attribute</h3>
+            <div className='flex items-center justify-between'>
+                <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Categories</h1>
 
-                                <div className='flex gap-1'>
-                                    <Form.Item<IAttributeFormData>
-                                        label='Name'
-                                        name='name'
-                                        className='w-1/2 font-medium text-[#08090F]'
-                                        rules={[{ required: true, message: 'Please enter attribute name!' }]}
-                                    >
-                                        <Input size='large' />
-                                    </Form.Item>
-
-                                    <Form.Item<IAttributeFormData>
-                                        label='Type'
-                                        name='type'
-                                        className='w-1/2 font-medium text-[#08090F]'
-                                        rules={[{ required: true, message: 'Please choose a type!' }]}
-                                    >
-                                        <Select
-                                            className='h-[39.6px]'
-                                            placeholder='Select a type'
-                                            onChange={handleChange}
-                                            options={[
-                                                { value: 'manual', label: <span>Manual</span> },
-                                                {
-                                                    value: 'options',
-                                                    label: (
-                                                        <span className='flex items-center justify-between'>
-                                                            <span>Options</span>
-                                                            <Popover
-                                                                content='Create options for attributes. Streamlines the addition of new items with precision and ease, while enhancing the customer experience by simplifying product selection.'
-                                                                title='Recommended'
-                                                            >
-                                                                <Button
-                                                                    icon={<QuestionOutlined />}
-                                                                    size='small'
-                                                                    type='text'
-                                                                />
-                                                            </Popover>
-                                                        </span>
-                                                    ),
-                                                },
-                                            ]}
-                                        />
-                                    </Form.Item>
-                                </div>
-                                <Form.Item<IAttributeFormData>
-                                    name='isVariant'
-                                    valuePropName='checked'
-                                    className='w-1/2 font-medium text-[#08090F]'
-                                >
-                                    <Checkbox>
-                                        Is this an attribute for the variant
-                                        <Popover
-                                            content='This question asks if the given attribute is specific to a product variant.'
-                                            title='Explanation of the Question'
-                                        >
-                                            <Button icon={<QuestionOutlined />} size='small' type='text' />
-                                        </Popover>
-                                    </Checkbox>
-                                </Form.Item>
-                                <Form.Item<IAttributeFormData>
-                                    name='isRequired'
-                                    valuePropName='checked'
-                                    className='w-1/2 font-medium text-[#08090F]'
-                                >
-                                    <Checkbox>
-                                        Require
-                                        <Popover
-                                            content='This question is asking whether the attribute in question is mandatory'
-                                            title='Explanation of the Question'
-                                        >
-                                            <Button icon={<QuestionOutlined />} size='small' type='text' />
-                                        </Popover>
-                                    </Checkbox>
-                                </Form.Item>
-                                {typeSelected === 'options' && (
-                                    <>
-                                        {inputFields.map((field, index) => (
-                                            <Form.Item
-                                                key={field.id}
-                                                name='values'
-                                                label='Add New Value'
-                                                className='mb-3 font-medium text-[#08090F]'
-                                                rules={[
-                                                    { required: true, message: 'Please enter at least one value!' },
-                                                ]}
-                                            >
-                                                <div className='flex w-full justify-between'>
-                                                    <Input
-                                                        className='w-[93%]'
-                                                        placeholder='Enter value'
-                                                        value={field.value}
-                                                        onChange={(e) => {
-                                                            const newFields = [...inputFields];
-                                                            newFields[index].value = e.target.value;
-                                                            setInputFields(newFields);
-                                                        }}
-                                                    />
-                                                    <Button
-                                                        danger
-                                                        className='flex items-center'
-                                                        onClick={() => handleRemoveField(field.id)}
-                                                    >
-                                                        <DeleteOutlined />
-                                                    </Button>
-                                                </div>
-                                            </Form.Item>
-                                        ))}
-
-                                        <Button type='primary' icon={<PlusCircleOutlined />} onClick={handleAddField}>
-                                            Add value
-                                        </Button>
-                                    </>
-                                )}
-
-                                {/* {inputFields.map((field, index) => (
-                                    <Form.Item
-                                        key={field.id}
-                                        name='values'
-                                        label='Add New Value'
-                                        className='mb-3 font-medium text-[#08090F]'
-                                        rules={[{ required: true, message: 'Please enter at least one value!' }]}
-                                    >
-                                        <div className='flex w-full justify-between'>
-                                            <Input
-                                                className='w-[93%]'
-                                                placeholder='Enter value'
-                                                value={field.value}
-                                                onChange={(e) => {
-                                                    const newFields = [...inputFields];
-                                                    newFields[index].value = e.target.value;
-                                                    setInputFields(newFields);
-                                                }}
-                                            />
-                                            <Button
-                                                danger
-                                                className='flex items-center'
-                                                onClick={() => handleRemoveField(field.id)}
-                                            >
-                                                <DeleteOutlined />
-                                            </Button>
-                                        </div>
-                                    </Form.Item>
-                                ))}
-
-                                <Button type='primary' icon={<PlusCircleOutlined />} onClick={handleAddField}>
-                                    Add value
-                                </Button> */}
-
-                                <Form.Item className='flex justify-end'>
-                                    <Button
-                                        type='primary'
-                                        htmlType='submit'
-                                        icon={<PlusSquareOutlined />}
-                                        className='mr-3 px-5'
-                                        size='large'
-                                        loading={isPending}
-                                        disabled={isPending}
-                                    >
-                                        Add Attribute
-                                    </Button>
-                                </Form.Item>
-                            </div>
-                        </div>
-                    </Form>
-                </div>
+                <Link to='create'>
+                    <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
+                        Add category
+                    </Button>
+                </Link>
             </div>
+
+            <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
+                <div className='my-2 flex justify-between'>
+                    <Search
+                        placeholder='Search name...'
+                        size='large'
+                        className='w-[18.75rem]'
+                        onChange={handleSearch}
+                    />
+                    <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
+                        Export
+                    </Button>
+                </div>
+
+                {categoryListWithAttributes ? (
+                    <Table
+                        size='large'
+                        rowSelection={{
+                            type: 'checkbox',
+                            ...rowSelection,
+                        }}
+                        columns={columns}
+                        dataSource={categoryListWithAttributes}
+                        pagination={{
+                            pageSize: 4,
+                        }}
+                    />
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
+
+            <Modal
+                title={
+                    <div>
+                        <WarningOutlined className='text-yellow-500' style={{ fontSize: '1.5rem' }} />
+                        <h4 className='ml-2 inline-block'>Confirm</h4>
+                    </div>
+                }
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key='back' type='default' onClick={handleCancel}>
+                        Cancel
+                    </Button>,
+                    <Button key='button' danger type='primary' onClick={handleOk}>
+                        Delete
+                    </Button>,
+                ]}
+            >
+                <p>Are you sure want to delete this category?</p>
+            </Modal>
         </>
     );
 };
 
-export default CreateAttribute;
+export default CategoryList;

@@ -2,7 +2,8 @@ import { Navigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
-import ProtectedRouteAuth from '~/layouts/Protected/AuthProtected';
+import AuthProtected from '~/layouts/Protected/AuthProtected';
+import ProtectedSelf from '~/layouts/Protected/ProtectedSelf';
 import OrderDetailPage from '~/pages/Clients/Account/MyOrders/OrderDetail/OrderDetailPage';
 import { CheckEmail } from '~/pages/Clients/AuthPage/Email/CheckEmail';
 import { VerifyPage } from '~/pages/Clients/AuthPage/Email/Verify';
@@ -80,9 +81,9 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.SHIPPING,
                 element: (
                     <Suspense>
-                        <ProtectedRouteAuth>
+                        <ProtectedSelf>
                             <ShippingPage />
-                        </ProtectedRouteAuth>
+                        </ProtectedSelf>
                     </Suspense>
                 ),
             },
@@ -90,9 +91,9 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.CHECKOUT,
                 element: (
                     <Suspense>
-                        <ProtectedRouteAuth>
+                        <AuthProtected>
                             <CheckoutPage />
-                        </ProtectedRouteAuth>
+                        </AuthProtected>
                     </Suspense>
                 ),
             },
@@ -139,9 +140,9 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.FORGOT_PASSWORD,
                 element: (
                     <Suspense>
-                        <ProtectedRouteAuth>
+                        <AuthProtected>
                             <ForgotPassword />
-                        </ProtectedRouteAuth>
+                        </AuthProtected>
                     </Suspense>
                 ),
             },
@@ -149,9 +150,9 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.RESET_PASSWORD,
                 element: (
                     <Suspense>
-                        <ProtectedRouteAuth>
+                        <AuthProtected>
                             <ResetPassword />
-                        </ProtectedRouteAuth>
+                        </AuthProtected>
                     </Suspense>
                 ),
             },
@@ -159,9 +160,9 @@ const PublicRoutes = [
             {
                 element: (
                     <Suspense>
-                        <ProtectedRouteAuth>
+                        <AuthProtected>
                             <AuthLayoutPage />
-                        </ProtectedRouteAuth>
+                        </AuthProtected>
                     </Suspense>
                 ),
                 children: [

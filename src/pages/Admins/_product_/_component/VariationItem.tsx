@@ -98,11 +98,7 @@ const VariationItem = ({
                         dependencies={['price']}
                         rules={[variationsPriceValidator()]}
                     >
-                        <InputNumber<number>
-                            className='w-full'
-                            formatter={(value) => `${value} đ`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-                            parser={(value) => value?.replace(/\s?đ|(,*)/g, '') as unknown as number}
-                        />
+                        <InputNumber<number> className='w-full' />
                     </Form.Item>
                     <Form.Item
                         className='capitalize'
@@ -120,7 +116,6 @@ const VariationItem = ({
                         valuePropName='checked'
                         name={[fieldName, 'isActive']}
                         dependencies={['isActive']}
-                        initialValue={true}
                     >
                         <Checkbox>Công khai</Checkbox>
                     </Form.Item>

@@ -130,6 +130,7 @@ export type IProductDetailsAdmin = {
         image?: string;
         stock: number;
         imageUrlRef: string;
+        isActive: boolean;
         variantAttributes: {
             name: string;
             key: string;

@@ -19,7 +19,7 @@ const MenuAccount = ({ isAdmin }: { isAdmin: boolean }) => {
                 {isAdmin && <MenuItem name='Quản lý Admin' path={ADMIN_ROUTES.DASHBOARD} />}
 
                 <button
-                    onClick={handleLogout}
+                    onClick={() => handleLogout.mutate()}
                     className='mt-5 border p-2 transition-transform duration-200 ease-in-out hover:border-[#16bcdc] active:-translate-y-3'
                 >
                     Đăng xuất

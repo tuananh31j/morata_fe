@@ -51,16 +51,14 @@ export const handleEditProduct = async ({
                     );
                 }
                 delete value.thumbnail;
-                const { imageUrlRef, price, stock, ...variantAttributesObj } = value;
-                console.log(variantAttributesObj.variantAttributes, 'variantAttributesObj');
+                const { imageUrlRef, price, stock, isActive, ...variantAttributesObj } = value;
                 const variantAttributes = variantAttributesObj.variantAttributes
                     ? convertData({
                           data: variantAttributesObj.variantAttributes,
                           to: DataTypeConvert.raw,
                       })
                     : [];
-                console.log(value, '?', variantAttributesObj.variantAttributes, '/', 'value._id');
-                const variantFinal = { imageUrlRef, price, stock, variantAttributes };
+                const variantFinal = { imageUrlRef, price, stock, isActive, variantAttributes };
                 formDataUpdateProductVariant.append('variantString', JSON.stringify(variantFinal));
                 updateProductVariant({ data: formDataUpdateProductVariant, variantId: value._id });
             } else {
@@ -73,13 +71,13 @@ export const handleEditProduct = async ({
                     );
                 }
                 delete value.thumbnail;
-                const { imageUrlRef, price, stock, ...variantAttributesObj } = value;
+                const { imageUrlRef, price, stock, isActive, ...variantAttributesObj } = value;
                 const variantAttributes = convertData({
                     data: variantAttributesObj.variantAttributes,
                     to: DataTypeConvert.raw,
                 });
 
-                const variantFinal = { imageUrlRef, price, stock, variantAttributes };
+                const variantFinal = { imageUrlRef, price, isActive, stock, variantAttributes };
                 formDataCreateProductVariant.append('variantString', JSON.stringify(variantFinal));
                 formDataCreateProductVariant.append('productId', productId);
                 createProductVariant(formDataCreateProductVariant);

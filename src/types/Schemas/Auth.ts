@@ -31,6 +31,7 @@ export type ILoginResponse = {
         _id: string;
         username: string;
         email: string;
+        phone: string;
         role: 'user' | 'admin';
         createdAt: string;
         updatedAt: string;
