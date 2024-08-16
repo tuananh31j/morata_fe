@@ -12,6 +12,7 @@ import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
 import ProductAttributeShort from '../_common/ProductAttributeShort';
+import VariantPickerDrawer from '~/components/VariantDrawer/VariantPickerDrawer';
 
 const MediumCard = ({ product }: { product: IProductItemNew }) => {
     const discountPercentage = 10;
@@ -97,13 +98,12 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                             Sản phẩm
                         </div>
                     </Link>
-                    <button
-                        onClick={handleAddCart}
-                        className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
-                    >
-                        {isPending && <Spin />}
-                        {!isPending && 'Thêm vào giỏ hàng'}
-                    </button>
+                    <VariantPickerDrawer product={product}>
+                        <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
+                            {isPending && <Spin />}
+                            {!isPending && 'Thêm vào giỏ hàng'}
+                        </button>
+                    </VariantPickerDrawer>
                 </div>
             </div>
             {discountPercentage > 0 && (

@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Form, InputNumber, Radio } from 'antd';
+import { Button, ConfigProvider, Form, InputNumber } from 'antd';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -128,8 +128,8 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                             </div>
                         </Form.Item>
                     </div>
-                    <div className='my-3 flex items-baseline gap-2'>
-                        <span className='select-none text-lg font-medium'>Số lượng:</span>
+                    <div className='my-3 flex items-center gap-2'>
+                        <span className='select-none font-medium text-[#777777]'>Sản phẩm còn lại:</span>
 
                         {variant?.stock === 0 || !variant?.isActive ? (
                             <span className='text-red'>Sản phẩm hết hàng</span>

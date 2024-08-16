@@ -10,6 +10,7 @@ import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { MAIN_ROUTES } from '~/constants/router';
+import VariantPickerDrawer from '~/components/VariantDrawer/VariantPickerDrawer';
 
 type PropTypeProduct = {
     product: IProductItemNew;
@@ -124,13 +125,12 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                     {/* Add to cart btn */}
                     {/* <PopupAttributes product={product}> */}
-                    <button
-                        onClick={handleAddCart}
-                        className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
-                    >
-                        {isPending && <Spin />}
-                        {!isPending && 'Thêm vào giỏ hàng'}
-                    </button>
+                    <VariantPickerDrawer product={product}>
+                        <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
+                            {isPending && <Spin />}
+                            {!isPending && 'Thêm vào giỏ hàng'}
+                        </button>
+                    </VariantPickerDrawer>
                     {/* </PopupAttributes> */}
                 </div>
 
