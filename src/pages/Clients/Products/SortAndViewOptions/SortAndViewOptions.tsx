@@ -32,7 +32,7 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
     return (
         <div className='flex items-center justify-between rounded-md border border-transparent bg-white p-4'>
             <div>
-                <p className='text-gray-500 capitalize'>{totalProducts} Products</p>
+                <p className='text-gray-500 capitalize'>{totalProducts} Sản Phẩm</p>
             </div>
             <div className='hidden items-center xl:flex xl:gap-4'>
                 <button

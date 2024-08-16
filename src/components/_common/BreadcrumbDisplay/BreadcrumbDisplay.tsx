@@ -1,6 +1,20 @@
 import { Breadcrumb, ConfigProvider } from 'antd';
 import { useLocation } from 'react-router-dom';
 
+// Function to translate English words to Vietnamese
+const translateToVietnamese = (word: string) => {
+    const translations: { [key: string]: string } = {
+        Home: 'Trang chủ',
+        Products: 'Sản phẩm',
+        Wishlist: 'Danh sách yêu thích',
+        Profile: 'Thông tin tài khoản',
+        'My Orders': 'Đơn hàng của tôi',
+
+        // Add more translations as needed
+    };
+    return translations[word] || word; // Return the original word if no translation is found
+};
+
 const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
     const location = useLocation();
 
@@ -9,7 +23,6 @@ const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
         const { pathname } = location;
 
         // capitalize the first letter of the each segment
-
         const capatilize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
         // seperate the segments from the URL
@@ -37,13 +50,15 @@ const BreadcrumbDisplay = ({ titleProduct }: { titleProduct?: string }) => {
                     <Breadcrumb
                         separator='>'
                         items={[
-                            pathnames.length <= 0 ? { title: 'Home' } : { title: 'Home', href: '/' },
+                            pathnames.length <= 0
+                                ? { title: translateToVietnamese('Home') }
+                                : { title: translateToVietnamese('Home'), href: '/' },
 
                             ...pathnames.map((name) => ({
                                 title:
                                     name === pathnames[pathnames.length - 1] && titleProduct
                                         ? titleProduct
-                                        : capatilize(name),
+                                        : translateToVietnamese(capatilize(name)),
                             })),
                         ]}
                     />

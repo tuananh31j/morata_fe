@@ -12,7 +12,8 @@ import Success from '~/pages/Clients/Order/Success';
 import {
     AboutPage,
     AuthLayoutPage,
-    SHippingPage,
+    CartDetail,
+    ShippingPage,
     ContactPage,
     ErrorPage,
     HomePage,
@@ -80,7 +81,7 @@ const PublicRoutes = [
                 element: (
                     <Suspense>
                         <ProtectedRouteAuth>
-                            <SHippingPage />
+                            <ShippingPage />
                         </ProtectedRouteAuth>
                     </Suspense>
                 ),
@@ -167,6 +168,15 @@ const PublicRoutes = [
                     { path: MAIN_ROUTES.LOGIN, element: <LoginPage /> },
                     { path: MAIN_ROUTES.REGISTER, element: <RegisterPage /> },
                 ],
+            },
+            // @Cart
+            {
+                path: MAIN_ROUTES.CART,
+                element: (
+                    <Suspense>
+                        <CartDetail />
+                    </Suspense>
+                ),
             },
         ],
     },

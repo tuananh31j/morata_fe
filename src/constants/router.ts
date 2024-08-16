@@ -19,6 +19,7 @@ export const MAIN_ROUTES = {
     SUCCESS_ORDER: '/success',
     VERIFY_ORDER: '/verify-order',
     WISHLIST: '/wish-list',
+    CART: '/cart',
 };
 
 export const ADMIN_ROUTES = {

@@ -35,9 +35,9 @@ const Banner = () => {
                             />
                             <div className=' absolute inset-0 flex w-[80%] flex-col items-start justify-center p-4 md:w-[70%]'>
                                 <Title style={{ color: 'white' }} className='pb-2' level={4}>
-                                    Phone Galaxy S20
+                                    Samsung Galaxy S
                                 </Title>
-                                <Paragraph className='text-white'>Cellphone & Tablets</Paragraph>
+                                <Paragraph className='text-white'>Smartphone & Tablets</Paragraph>
                             </div>
                         </div>
                     </div>

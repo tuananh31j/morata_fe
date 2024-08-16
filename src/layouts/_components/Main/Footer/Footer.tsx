@@ -242,7 +242,7 @@ const Footer = () => {
                         </div>
                         <p className='text-center text-[16px] text-[#999999]'>
                             Copyright @ <span className='font-semibold text-cyan-500'>Morata</span>. All Rights
-                            Reserved. Powered by <span className='font-semibold text-cyan-500'>Alothemes</span>
+                            Reserved.
                         </p>
                     </div>
                 </div>

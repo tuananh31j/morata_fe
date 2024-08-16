@@ -37,7 +37,7 @@ const PriceFilterItem = () => {
     }, [query]);
 
     return (
-        <FilterItem filterName='Price'>
+        <FilterItem filterName='Giá'>
             <Form onFinish={onFinish}>
                 <Slider
                     min={defaultMin}

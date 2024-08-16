@@ -7,7 +7,7 @@ export const HomePage = lazy(() => import('~/pages/Clients/Home'));
 export const ProductsPage = lazy(() => import('~/pages/Clients/Products'));
 export const ProductDetailsPage = lazy(() => import('~/pages/Clients/ProductDetails'));
 export const WishlistPage = lazy(() => import('~/pages/Clients/WishList'));
-export const SHippingPage = lazy(() => import('~/pages/Clients/Checkout/Shipping'));
+export const ShippingPage = lazy(() => import('~/pages/Clients/Checkout/Shipping'));
 export const AccountLayoutPage = lazy(() => import('~/layouts/AccountLayout'));
 export const MyOrdersPage = lazy(() => import('~/pages/Clients/Account/MyOrders'));
 export const MyAddressPage = lazy(() => import('~/pages/Clients/Account/MyAddress'));
@@ -17,6 +17,7 @@ export const RegisterPage = lazy(() => import('~/pages/Clients/AuthPage/Register
 export const AuthLayoutPage = lazy(() => import('~/layouts/AuthLayout'));
 export const ContactPage = lazy(() => import('~/pages/Clients/Contact'));
 export const CheckoutPage = lazy(() => import('~/pages/Clients/Checkout/CheckOut'));
+export const CartDetail = lazy(() => import('~/pages/Clients/Cart/CartDetail'));
 
 // @admin page
 export const DashboardPage = lazy(() => import('~/pages/Admins/_dashboard_'));

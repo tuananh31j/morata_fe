@@ -8,6 +8,7 @@ import { RootState } from '~/store/store';
 import IconButton from './IconButton';
 import { MAIN_ROUTES } from '~/constants/router';
 import useGetAllWishlist from '~/hooks/wishlist/Queries/useGetAllWishlist';
+import { Currency } from '~/utils';
 
 const UserToolbar = () => {
     const location = useLocation();
@@ -38,30 +39,30 @@ const UserToolbar = () => {
                 <>
                     {/* <WishListDrawer> */}
                     <Link className='cursor-pointer' to={MAIN_ROUTES.WISH_LIST}>
-                        <IconButton count={wishListAllItems} name='Wishlist' isWishlist={true} icon='HeartOutlined' />
+                        <IconButton count={wishListAllItems} name='Yêu thích' isWishlist={true} icon='HeartOutlined' />
                     </Link>
                     {/* </WishListDrawer> */}
 
                     <Link className='cursor-pointer' to={MAIN_ROUTES.PROFILE}>
-                        <IconButton name={`${user.username}`} subName='Hello' icon='UserOutlined' />
+                        <IconButton name={`${user.username}`} subName='Xin chào' icon='UserOutlined' />
                     </Link>
 
                     {location.pathname !== '/checkout-details' ? (
                         <CartDrawer item={data ? data.data : undefined}>
                             <div>
                                 <IconButton
-                                    name={`${totalOrderAmount}$`}
+                                    name={`${Currency.format(totalOrderAmount)}`}
                                     count={totalQuantityAmount}
-                                    subName='Your Cart'
+                                    subName='Giỏ hàng'
                                     icon='ShoppingCartOutlined'
                                 />
                             </div>
                         </CartDrawer>
                     ) : (
                         <IconButton
-                            name={`${totalOrderAmount}$`}
+                            name={`${Currency.format(totalOrderAmount)}`}
                             count={totalQuantityAmount}
-                            subName='Your Cart'
+                            subName='Giỏ hàng'
                             icon='ShoppingCartOutlined'
                         />
                     )}
@@ -69,14 +70,25 @@ const UserToolbar = () => {
             )}
             {!user && !isLoading && (
                 <>
-                    <Link className='cursor-pointer text-white' to={MAIN_ROUTES.LOGIN}>
-                        <IconButton name='account' subName='login' icon='UserOutlined' />
-                    </Link>
-                    <Link to={MAIN_ROUTES.LOGIN} className='cursor-pointer text-white'>
+                    {/* <Link to={MAIN_ROUTES.LOGIN} className='cursor-pointer text-white'>
                         <IconButton count={0} name='my favorite' subName='favorite' icon='HeartOutlined' />
+                    </Link> */}
+
+                    <Link className='cursor-pointer' to={MAIN_ROUTES.WISH_LIST}>
+                        <IconButton count={wishListAllItems} name='Yêu thích' isWishlist={true} icon='HeartOutlined' />
                     </Link>
+
+                    <Link className='cursor-pointer text-white' to={MAIN_ROUTES.LOGIN}>
+                        <IconButton name='Đăng nhập' subName='Đăng ký' icon='UserOutlined' />
+                    </Link>
+
                     <Link to={MAIN_ROUTES.LOGIN} className='cursor-pointer text-white'>
-                        <IconButton name='0$' count={0} subName='your cart' icon='ShoppingCartOutlined' />
+                        <IconButton
+                            name={`${Currency.format(0)}`}
+                            count={0}
+                            subName='Giỏ hàng'
+                            icon='ShoppingCartOutlined'
+                        />
                     </Link>
                 </>
             )}

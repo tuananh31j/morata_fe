@@ -21,9 +21,10 @@ const OrderTable: React.FC = () => {
             setFilteredData(searchResults || null);
         }
     };
+
     return (
         <>
-            <Input.Search className='mb-5 w-1/4' placeholder='Search by ID' onSearch={handleSearch} />
+            <Input.Search className='mb-5 w-1/4' placeholder='Tìm kiếm theo ID đơn hàng' onSearch={handleSearch} />
             {!isLoading && data && (
                 <Table
                     rowKey={(record) => record._id}

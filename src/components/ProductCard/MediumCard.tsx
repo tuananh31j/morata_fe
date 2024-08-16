@@ -90,11 +90,11 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                         <ProductAttributeShort attributes={product.attributes} />
                         <ProgressBar percentageSoldProducts={percentageSoldProducts} />
                         <div className='text-sx mb-6 leading-8'>
-                            Sold:
+                            Đã bán:
                             <span className='mx-1 font-semibold'>
                                 {productSold}/{totalQuantity}
                             </span>
-                            products
+                            Sản phẩm
                         </div>
                     </Link>
                     <button
@@ -102,7 +102,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                         className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
                     >
                         {isPending && <Spin />}
-                        {!isPending && 'Add to cart'}
+                        {!isPending && 'Thêm vào giỏ hàng'}
                     </button>
                 </div>
             </div>
