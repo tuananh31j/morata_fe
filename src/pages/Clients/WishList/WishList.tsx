@@ -46,7 +46,7 @@ const Wishlist = () => {
     };
     return (
         <WrapperList classic title='My Wish List' className='mt-0'>
-            {!wishList && (
+            {!wishList?.data.wishList.length && (
                 <Flex vertical={true}>
                     <Card className='w-full rounded-lg'>
                         <Space className='flex flex-col'>

@@ -140,9 +140,7 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.FORGOT_PASSWORD,
                 element: (
                     <Suspense>
-                        <AuthProtected>
-                            <ForgotPassword />
-                        </AuthProtected>
+                        <ForgotPassword />
                     </Suspense>
                 ),
             },
@@ -150,9 +148,7 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.RESET_PASSWORD,
                 element: (
                     <Suspense>
-                        <AuthProtected>
-                            <ResetPassword />
-                        </AuthProtected>
+                        <ResetPassword />
                     </Suspense>
                 ),
             },

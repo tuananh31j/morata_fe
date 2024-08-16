@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +16,7 @@ export default function ResetPassword() {
     } = useForm({
         resolver: zodResolver(resetPasswordSchema),
     });
-    const { mutate } = useResetPassword();
+    const { mutate, isPending } = useResetPassword();
     const handleOnSubmit = (data: any) => {
         mutate({ token: token ? token : '', password: data.password });
     };
@@ -63,12 +63,13 @@ export default function ResetPassword() {
                     </Form.Item>
 
                     <Form.Item>
-                        <button
-                            type='submit'
+                        <Button
+                            htmlType='submit'
+                            loading={isPending}
                             className='h-12 w-full rounded-md bg-[#1e3a8a] font-semibold text-white transition-colors duration-300 hover:bg-cyan-600'
                         >
                             Reset Password
-                        </button>
+                        </Button>
                     </Form.Item>
                 </Form>
             </div>
