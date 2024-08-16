@@ -2,11 +2,12 @@ export const MAIN_ROUTES = {
     ABOUT: '/about',
     PRODUCTS: '/products',
     WISH_LIST: '/wishlist',
+    SHIPPING: '/shipping',
     CHECKOUT: '/checkout',
-    CHECKOUT_DETAILS: '/checkout-details',
     CONTACT: '/contact',
     PROFILE: '/profile',
     MY_ORDERS: '/my-orders',
+    MY_ORDERS_DETAIL: '/my-orders/:id',
     MY_ADDRESS: '/my-address',
     LOGIN: '/login',
     VERIFY: '/verifyAccount/:token',
@@ -17,6 +18,8 @@ export const MAIN_ROUTES = {
     NOT_FOUND: '/404',
     SUCCESS_ORDER: '/success',
     VERIFY_ORDER: '/verify-order',
+    WISHLIST: '/wish-list',
+    CART: '/cart',
 };
 
 export const ADMIN_ROUTES = {

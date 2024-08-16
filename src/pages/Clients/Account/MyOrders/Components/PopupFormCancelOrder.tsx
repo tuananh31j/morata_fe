@@ -17,7 +17,7 @@ type IFormCancelOrder = z.infer<typeof schemaFormCancelOrder>;
 
 const PopupFormCancelOrder = ({ id }: { id: string }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { mutateAsync, isSuccess } = useCancelOrder(id);
+    const { mutateAsync, isSuccess, isPending } = useCancelOrder(id);
     const {
         control,
         handleSubmit,
@@ -68,7 +68,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
     return (
         <>
             <Button onClick={showModal} type='primary' danger>
-                Cancel
+                Hủy Đơn Hàng
             </Button>
             <Modal open={isModalOpen} footer='' onCancel={handleCancel}>
                 <WrapperList classic className='m-0' title='Tell us why you are cancelling this order'>
@@ -115,7 +115,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                             <Button onClick={handleCancel} type='text'>
                                 Cancel
                             </Button>
-                            <Button htmlType='submit' type='primary'>
+                            <Button htmlType='submit' loading={isPending} type='primary'>
                                 Send
                             </Button>
                         </Flex>

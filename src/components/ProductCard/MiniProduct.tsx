@@ -15,7 +15,7 @@ const MiniProduct: FC<ICartItemsResponse> = ({ quantity, productVariation }) => 
                 </span>
             </div>
             <div className='w-full'>
-                <span className='text-[14px]'>{productVariation?.productId.name}</span>
+                <span className='text-[14px]'>{productVariation?.productId?.name}</span>
             </div>
             <div>
                 <span className='text-[14px]'>{Currency.format(productVariation?.price)}</span>

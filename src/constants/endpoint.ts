@@ -52,11 +52,12 @@ export const CHECKOUT_ENDPOINT = {
 export const ORDER_ENDPOINT = {
     GET_ALL_ORDERS: '/orders',
     MY_ORDERS: '/orders/user',
-    VNPAY_RETURN: '/vnpay-return',
     CANCEL_ORDER: '/orders/cancel',
     CONFIRM_ORDER: '/orders/confirm',
+    SHIPPING_ORDER: '/orders/shipping',
+    DELIVERED_ORDER: '/orders/delivered',
     FINISH_ORDER: '/orders/done',
-    UPDATE_ISREVIEWED: '/orders',
+    CREATE_ORDER: '/orders',
 };
 
 export const ATTRIBUTES_ENDPOINT = {
@@ -92,4 +93,17 @@ export const REVIEW_ENDPOINT = {
 export const LOCATION_ENDPOINT = {
     ROOT: '/locations',
     USER: '/locations/user',
+};
+export const WISHLIST_ENDPOINT = {
+    MY_WISHLIST: '/users/private/wish-list',
+    ADD_WISHLIST: '/users/private/wish-list/add',
+    REMOVE_WISHLIST: '/users/private/wish-list/remove',
+};
+
+export const SHIPPING_ENDPOINT = {
+    GET_SERVICES: '/shipping/get-service',
+    GET_PROVINCE: '/shipping/get-province',
+    GET_DISTRICT: '/shipping/get-district',
+    GET_WARD: '/shipping/get-ward',
+    CALCULATE_FEE: '/shipping/calculate-shipping-fee',
 };

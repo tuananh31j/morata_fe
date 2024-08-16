@@ -1,4 +1,4 @@
-import { Descriptions, Space } from 'antd';
+import { Descriptions, Input, Space } from 'antd';
 import { DescriptionsProps } from 'antd/lib';
 
 interface Props {
@@ -9,40 +9,63 @@ interface Props {
         totalPrice: number;
         isPaid: boolean;
     };
+    description: string;
 }
 
-const ServiceInfo = ({ serviceInfo }: Props) => {
+const ServiceInfo = ({ serviceInfo, description }: Props) => {
     const items: DescriptionsProps['items'] = [
         {
             key: 'Payment Method',
-            label: <span className='font-semibold capitalize'>Payment Method</span>,
-            children: <p className='capitalize'>{serviceInfo.paymentMethod}</p>,
+            label: <span className='font-semibold capitalize'>Phương thức thanh toán</span>,
+            children: (
+                <p className='capitalize'>
+                    {serviceInfo.paymentMethod === 'cash' ? 'Thanh toán khi nhận hàng' : 'Thanh toán Online'}
+                </p>
+            ),
         },
         {
-            key: 'Shipping Fee',
-            label: <span className='font-semibold capitalize'>Shipping Fee</span>,
-            children: <p>{Number(serviceInfo.shippingFee)}</p>,
+            key: 'ShippingFee',
+            label: <span className='font-semibold capitalize'>Cước phí vận chuyển</span>,
+            children: (
+                <p>
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+                        serviceInfo.shippingFee
+                    )}
+                </p>
+            ),
         },
         {
             key: 'Tax',
-            label: <span className='font-semibold capitalize'>Tax</span>,
+            label: <span className='font-semibold capitalize'>Thuế</span>,
             children: <p>{`${Number(serviceInfo.tax) * 100}% VAT `}</p>,
         },
         {
             key: 'Total Price',
-            label: <span className='font-semibold capitalize'>Total Price</span>,
-            children: <p>{serviceInfo.totalPrice}</p>,
+            label: <span className='font-semibold capitalize'>Tổng tiền</span>,
+            children: (
+                <p>
+                    {new Intl.NumberFormat('vi-vn', { style: 'currency', currency: 'vnd' }).format(
+                        serviceInfo.totalPrice
+                    )}
+                </p>
+            ),
         },
         {
             key: 'Payment Status',
-            label: <span className='font-semibold capitalize'>Is Paid</span>,
-            children: <p>{serviceInfo.isPaid ? 'Paid' : 'Not Paid'}</p>,
+            label: <span className='font-semibold capitalize'>Trạng thái thanh toán</span>,
+            children: <p>{serviceInfo.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}</p>,
         },
     ];
 
     return (
-        <Space className='mt-5 w-full rounded-lg bg-[#fff] p-4'>
-            <Descriptions title='Service Info' items={items} />
+        <Space className='mt-5 w-full rounded-lg bg-[#fff] p-4' direction='vertical'>
+            <Descriptions title='Thông tin dịch vụ' items={items} />
+            <Input.TextArea
+                className='mt-3'
+                rows={3}
+                readOnly
+                value={description ? description : 'Không có ghi chú nào cho đơn hàng này'}
+            />
         </Space>
     );
 };

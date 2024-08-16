@@ -6,29 +6,29 @@ const ShopBenefits = () => {
             <div className='flex items-center justify-center gap-3 text-center'>
                 <DeliveryIcon className='h-14 duration-75 hover:animate-pulse' />
                 <div className='hidden text-start lg:inline-block'>
-                    <h4 className=' text-md font-semibold text-[#212224] lg:text-lg'>Free Delivery</h4>
-                    <p className='mt-1 text-sm font-light text-[#16bcdc]'>For all orders over $120</p>
+                    <h4 className=' text-md font-semibold text-[#212224] lg:text-lg'>Vận chuyển miễn phí</h4>
+                    <p className='mt-1 text-sm font-light text-[#16bcdc]'>Cho tất cả các đơn thanh toán online</p>
                 </div>
             </div>
             <div className='flex items-center justify-center gap-3 text-center'>
                 <PaymentIcon className='h-14 duration-75 hover:animate-pulse' />
                 <div className='hidden text-start lg:inline-block'>
-                    <h4 className='text-md font-semibold text-[#212224] lg:text-lg'>Safe Payment</h4>
-                    <p className='mt-1 text-sm font-light text-[#16bcdc]'>100% secure payment</p>
+                    <h4 className='text-md font-semibold text-[#212224] lg:text-lg'>Giao dịch bảo mật</h4>
+                    <p className='mt-1 text-sm font-light text-[#16bcdc]'>An toàn 100%</p>
                 </div>
             </div>
             <div className='flex items-center justify-center gap-3 text-center'>
                 <HelpCenterIcon className='h-14 duration-75 hover:animate-pulse' />
                 <div className='hidden text-start lg:inline-block'>
-                    <h4 className='text-md font-semibold text-[#212224] lg:text-lg'>24/7 Help Center</h4>
-                    <p className='mt-1 text-sm font-light text-[#16bcdc]'>Dedicated 24/7 support</p>
+                    <h4 className='text-md font-semibold text-[#212224] lg:text-lg'>Hỗ trợ khách hàng</h4>
+                    <p className='mt-1 text-sm font-light text-[#16bcdc]'>Hỗ trợ 24/7</p>
                 </div>
             </div>
             <div className='flex items-center justify-center gap-3 text-center'>
                 <HandIcon className='h-14 duration-75 hover:animate-pulse' />
                 <div className='hidden text-start lg:inline-block'>
-                    <h4 className='text-md font-semibold text-[#212224] lg:text-lg'>Shop With Confidence</h4>
-                    <p className='mt-1 text-sm font-light text-[#16bcdc]'>If goods have problems</p>
+                    <h4 className='text-md font-semibold text-[#212224] lg:text-lg'>Bảo đảm chất lượng</h4>
+                    <p className='mt-1 text-sm font-light text-[#16bcdc]'>Đổi hàng bị lỗi</p>
                 </div>
             </div>
         </div>

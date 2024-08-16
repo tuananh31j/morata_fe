@@ -15,13 +15,16 @@ const MainLayout = () => {
     const isProductDetailPage = location.pathname === `${MAIN_ROUTES.PRODUCTS}/${id}`;
     const isVerifyAccountPage = location.pathname === `/verifyAccount/${token}`;
     const isResetPasswordPage = location.pathname === `/resetPassword/${token}`;
+    const isOrderDetailPage = location.pathname === `/my-orders/${id}`;
     return (
         <div className='bg-[#f6f7f9]'>
             <Header />
             <main className='mx-3 min-h-[80vh] lg:mx-4'>
-                {!isHomePage && !isProductDetailPage && !isVerifyAccountPage && !isResetPasswordPage && (
-                    <BreadcrumbDisplay />
-                )}
+                {!isHomePage &&
+                    !isProductDetailPage &&
+                    !isVerifyAccountPage &&
+                    !isResetPasswordPage &&
+                    !isOrderDetailPage && <BreadcrumbDisplay />}
                 <Outlet />
             </main>
             <Footer />

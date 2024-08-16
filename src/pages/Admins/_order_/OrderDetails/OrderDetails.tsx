@@ -1,11 +1,12 @@
-import { Button, Space, Typography } from 'antd';
+import { Space } from 'antd';
 import { useParams } from 'react-router-dom';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
-import OrderStatusBar from './OrderStatusBar';
+import CancelOrderModal from './CancelOrderModal';
 import CustomerInfo from './CustomerInfo';
+import OrderStatusBar from './OrderStatusBar';
 import ServiceInfo from './ServiceInfo';
 import TableOrderItems from './TableOrderItems';
-import CancelOrderModal from './CancelOrderModal';
+import OrderDetailNavbar from './OrderDetailNavbar';
 
 const OrderDetail = () => {
     const { id } = useParams();
@@ -24,15 +25,13 @@ const OrderDetail = () => {
         totalPrice: data?.totalPrice || '',
         isPaid: data?.isPaid || '',
     };
+    const description = data?.description || '';
 
     const orderItems = data?.items || [];
 
     return (
         <>
-            <Space className='flex w-full items-center justify-between rounded-lg bg-[#fff] p-4 font-semibold'>
-                <span>Order Detail </span>
-                {orderStatus === 'pending' && <CancelOrderModal orderId={id!} />}
-            </Space>
+            <OrderDetailNavbar orderStatus={orderStatus} id={id!} />
             {orderStatus !== 'cancelled' ? (
                 <OrderStatusBar orderStatus={orderStatus} />
             ) : (
@@ -48,7 +47,7 @@ const OrderDetail = () => {
                 </Space>
             )}
             <CustomerInfo customerInfo={customerInfo} receiverInfo={receiverInfo} shippingAddress={shippingAddress} />
-            <ServiceInfo serviceInfo={serviceInfo} />
+            <ServiceInfo serviceInfo={serviceInfo} description={description} />
             <TableOrderItems orderItems={orderItems} />
         </>
     );

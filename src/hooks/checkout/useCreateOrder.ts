@@ -6,12 +6,16 @@ import { checkoutService } from '~/services/checkout.service';
 import { ICheckoutCash } from '~/types/checkout/Checkout';
 import showMessage from '~/utils/ShowMessage';
 
+/**
+ * Custom hook for creating an order mutation.
+ * @returns The mutation object for creating an order.
+ */
 export const useMutationCreateOrder = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     return useMutation({
         mutationKey: [QUERY_KEY.CHECKOUT],
-        mutationFn: (payload: ICheckoutCash) => checkoutService.createOrder(payload),
+        mutationFn: async (payload: ICheckoutCash) => checkoutService.createOrder(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
             navigate(MAIN_ROUTES.SUCCESS_ORDER, { state: { authorized: true } });

@@ -12,6 +12,7 @@ const rateProductSlice = createSlice({
     reducers: {
         setReviewData: (state, action: PayloadAction<{ orderId: string; isOpen: boolean; productId?: string }>) => {
             state.orderId = action.payload.orderId;
+            // state.productId = action.payload.productId;
             state.isOpen = action.payload.isOpen;
             state.productId = action.payload.productId || '';
         },

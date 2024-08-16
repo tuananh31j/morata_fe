@@ -18,11 +18,11 @@ const SlideItem = ({ status }: { status: boolean }) => {
             <div className='absolute inset-0 flex w-[70%] flex-col items-start justify-center p-4'>
                 <Animation status={status}>
                     <Title style={{ color: 'white' }} level={3} className='pb-2 text-white'>
-                        Sport Edition Rest Special Edition
+                        Phiên bản thể thao đặc biệt
                     </Title>
-                    <Paragraph className='text-white'>Wireless Connection with TV , Computer, Laptop ...</Paragraph>
+                    <Paragraph className='text-white'>Kết nối không day với TV , Máy tính, Laptop ...</Paragraph>
                     <Button type='primary' className='rounded bg-black text-white'>
-                        DISCOVER NOW
+                        Xem chi tiết
                     </Button>
                 </Animation>
             </div>

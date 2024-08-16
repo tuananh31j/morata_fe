@@ -42,6 +42,8 @@ module.exports = {
         'no-unsafe-optional-chaining': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
         'spaced-comment': ['warn', 'always', { markers: ['/'] }],
+        'no-shadow': 'off',
+        '@typescript-eslint/no-shadow': ['error'],
         'prefer-destructuring': [
             'warn',
             {

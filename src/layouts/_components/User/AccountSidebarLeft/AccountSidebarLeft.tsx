@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import StaticImages from '~/assets';
 import MenuAccount from './MenuAccount';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
@@ -50,19 +50,22 @@ const AccountSidebarLeft = () => {
         <>
             <div className='hidden flex-col bg-white md:flex'>
                 <div className=''>
-                    <h1 className='pt-5 text-center text-2xl font-semibold uppercase text-[#16bcdc]'>Account</h1>
+                    <h1 className='pt-5 text-center text-2xl font-semibold uppercase text-[#16bcdc]'>Tài khoản</h1>
                 </div>
 
                 <div className='my-5 flex flex-col items-center justify-center gap-5'>
                     <Avatar alt='user avatar' size={120} src={profile?.avatar ?? StaticImages.userImageDf}></Avatar>
                     {profile && (
                         <div>
-                            <p className='text-[16px] capitalize'>{profile?.username}</p>
+                            <p className='text-center text-[16px] capitalize'>{profile?.username}</p>
+
                             <div className='flex gap-4'>
                                 <p className='text-[16px]'>
-                                    Status: {profile?.isActive && <span className='text-green-500'>Verified</span>}
-                                    {!profile?.isActive && <span className='text-red'>Unverified</span>}
+                                    Trạng thái:{' '}
+                                    {profile?.isActive && <span className='text-green-500'>Đã kích hoạt</span>}
+                                    {!profile?.isActive && <span className='text-red'>Chưa kích hoạt</span>}
                                 </p>
+
                                 {!profile?.isActive && (
                                     <div className='flex items-center'>
                                         {!isButtonDisabled && (
@@ -71,14 +74,13 @@ const AccountSidebarLeft = () => {
                                                 className={`text-blue-400 ${isButtonDisabled ? 'cursor-not-allowed' : ''}`}
                                                 disabled={isButtonDisabled}
                                             >
-                                                Verify Now
+                                                Kích hoạt ngay
                                             </button>
                                         )}
                                         {isButtonDisabled && <p className='w-[67px] text-sm text-red'>{countdown}s</p>}
                                     </div>
                                 )}
                             </div>
-                            <p className='text-[14px] font-thin'>{profile?.phone}</p>
                         </div>
                     )}
                 </div>

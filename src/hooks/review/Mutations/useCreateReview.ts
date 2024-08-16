@@ -12,6 +12,7 @@ const useCreateReview = () => {
     return useMutation({
         mutationFn: (data: ReviewData) => reviewService.createReview(data),
         onSuccess() {
+            // setTimeout(() => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.RELATED] });

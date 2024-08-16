@@ -85,30 +85,6 @@ const PrivateRoutes = [
                             </Suspense>
                         ),
                     },
-                    // {
-                    //     path: ADMIN_ROUTES.PRODUCTS_CREATE,
-                    //     element: (
-                    //         <Suspense>
-                    //             <CreateProduct />
-                    //         </Suspense>
-                    //     ),
-                    // },
-                    // {
-                    //     path: ':id/edit',
-                    //     element: (
-                    //         <Suspense>
-                    //             <UpdateProduct />
-                    //         </Suspense>
-                    //     ),
-                    // },
-                    // {
-                    //     path: ':id/detail',
-                    //     element: (
-                    //         <Suspense>
-                    //             <AdminProductDetail />
-                    //         </Suspense>
-                    //     ),
-                    // },
                 ],
             },
             {
@@ -196,7 +172,11 @@ const PrivateRoutes = [
             },
             {
                 path: ADMIN_ROUTES.ORDERS_LIST,
-                element: <ManageOrders />,
+                element: (
+                    <Suspense>
+                        <ManageOrders />
+                    </Suspense>
+                ),
             },
             {
                 path: ADMIN_ROUTES.CATEGORIES,

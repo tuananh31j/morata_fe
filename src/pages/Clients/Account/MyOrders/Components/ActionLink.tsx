@@ -11,7 +11,7 @@ const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor
 const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
 
 const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string }) => {
-    const { mutateAsync: finishOrder } = useFinishOrderClient();
+    const { mutateAsync: finishOrder, isPending } = useFinishOrderClient();
     const handleFinishOrder = async () => {
         const res = await finishOrder(orderId);
 
@@ -30,15 +30,15 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
 
         case OrderStatus.delivered:
             return (
-                <Button onClick={() => handleFinishOrder()} type='primary'>
-                    I have Received
+                <Button onClick={() => handleFinishOrder()} loading={isPending} type='primary'>
+                    Tôi đã nhận được hàng
                 </Button>
             );
 
         case OrderStatus.cancelled:
             return (
                 <Button type='primary' danger disabled>
-                    Cancelled!!
+                    Đã bị hủy
                 </Button>
             );
 
@@ -67,7 +67,7 @@ const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string 
         default:
             return (
                 <Tag icon={<MinusCircleOutlined />} color='default'>
-                    Oops!!
+                    Lỗi!!
                 </Tag>
             );
     }

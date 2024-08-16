@@ -37,8 +37,8 @@ const CreateProduct = () => {
     const [isChooseCategory, setIsChooseCategory] = useState<boolean>(false);
     const [categoryId, setCategoryId] = useState<string>('');
     const { data: attributesRes, isLoading: isAttributeLoading } = useGetAllAtributes(categoryId);
-    const attributesForProduct = attributesRes?.data.productAttributes.attributeIds;
-    const attributesForVariant = attributesRes?.data.variantAttribute.attributeIds;
+    const attributesForProduct = attributesRes?.data?.productAttributes?.attributeIds;
+    const attributesForVariant = attributesRes?.data?.variantAttribute?.attributeIds;
     const categoriesAndBrandData = useGetCategoriesAndBrands();
     const {
         mutateAsync: createProduct,
@@ -327,6 +327,7 @@ const CreateProduct = () => {
                                                 <Form.Item>
                                                     <Button
                                                         type='dashed'
+                                                        htmlType='button'
                                                         onClick={() => add()}
                                                         block
                                                         icon={<PlusOutlined />}
