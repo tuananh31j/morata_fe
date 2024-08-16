@@ -14,7 +14,7 @@ const DropDownItem: React.FC<DropDownItemProps> = ({ handleClick, title, lableId
             <div className='my-1.5'>
                 <label
                     onClick={handleClick}
-                    htmlFor='test'
+                    htmlFor={lableId}
                     className='my-3 flex items-center justify-between gap-x-7'
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}

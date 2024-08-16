@@ -1,5 +1,17 @@
 import { FallOutlined, QuestionCircleOutlined, RiseOutlined } from '@ant-design/icons';
-import { ConfigProvider, Flex, Image, Progress, Space, Table, TableProps, Tabs, TabsProps, Tooltip } from 'antd';
+import {
+    ConfigProvider,
+    Flex,
+    Image,
+    Progress,
+    Space,
+    Table,
+    TableProps,
+    Tabs,
+    TabsProps,
+    Tooltip,
+    Typography,
+} from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,6 +22,8 @@ import useGetProductStatsByRange from '~/hooks/stats/useGetProductStatsByRange';
 import DateRangePickerComponent from '~/pages/Admins/_dashboard_/_components/Charts/RangePicker/DateRangePickerComponent';
 import { Currency } from '~/utils';
 
+const { Text } = Typography;
+
 type DataType = {
     '#': number;
     _id: string;
@@ -19,6 +33,7 @@ type DataType = {
     totalQuantity: number;
     totalRevenue: number;
     percentageOfTotal: number;
+    percentageOfAllProducts: number;
     details: string;
 };
 
@@ -30,6 +45,7 @@ type ProductDataType = {
     totalQuantity: number;
     totalRevenue: number;
     percentageOfTotal: number;
+    percentageOfAllProducts: number;
 };
 
 export const TopProducts: React.FC = () => {
@@ -68,7 +84,7 @@ export const TopProducts: React.FC = () => {
                 title: <span className='text-base'>Product details</span>,
                 dataIndex: 'details',
                 key: 'details',
-                width: '50%',
+                width: '40%',
                 render: (_, product: ProductDataType) => (
                     <>
                         <Flex>
@@ -122,11 +138,11 @@ export const TopProducts: React.FC = () => {
             {
                 title: (
                     <Tooltip
-                        title='Percentage of amount sold for the respective product divided by the amount of all products'
+                        title='Percentage of amount sold for this product divided by its total stock'
                         color='blue'
                         className='text-base'
                     >
-                        Percentage <QuestionCircleOutlined />
+                        % of Stock Sold <QuestionCircleOutlined />
                     </Tooltip>
                 ),
                 dataIndex: 'percentageOfTotal',
@@ -134,8 +150,30 @@ export const TopProducts: React.FC = () => {
                 align: 'center',
                 width: '15%',
                 render: (percent) => (
-                    <Progress type='circle' percent={Math.round(percent)} strokeColor='#3c50e0' size='small' />
+                    <Progress
+                        type='circle'
+                        percent={Math.round(parseFloat(percent))}
+                        strokeColor='#3c50e0'
+                        size='small'
+                    />
                 ),
+            },
+            {
+                title: (
+                    <Tooltip
+                        title='Percentage of this products stock compared to all products'
+                        color='blue'
+                        className='text-base'
+                    >
+                        % of Total Stock <QuestionCircleOutlined />
+                    </Tooltip>
+                ),
+
+                dataIndex: 'percentageOfAllProducts',
+                key: 'percentageOfAllProducts',
+                align: 'center',
+                width: '15%',
+                render: (percent) => <Text>{parseFloat(percent).toFixed(2)}%</Text>,
             },
         ];
 
