@@ -45,13 +45,13 @@ const Home = () => {
             {/* @Hot Trending Products */}
             <WrapperList
                 classic
-                title='Hot Trending Products'
+                title='Top Sản phẩm theo xu hướng'
                 option={
                     <Link
                         to={MAIN_ROUTES.PRODUCTS}
                         className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
                     >
-                        View all products <RightOutlined className='text-[7px] md:text-[10px]' />
+                        Xem tất cả <RightOutlined className='text-[7px] md:text-[10px]' />
                     </Link>
                 }
             >
@@ -80,7 +80,7 @@ const Home = () => {
             </WrapperList>
 
             {/* {/* @Top Deals Of The Day */}
-            <WrapperList classic title='Top Deals Of The Day'>
+            <WrapperList classic title='Top Sản Phẩm Ưu Đãi'>
                 {!isLoadingTopDeals && (
                     <CarouselDisplay responsiveCustom={{ laptop: 2, tablet: 1, mobile: 1 }}>
                         {TopDealsProductsList?.map((item, i: number) => {
@@ -124,13 +124,13 @@ const Home = () => {
             {/* @Top Featured Products */}
             <WrapperList
                 classic
-                title='Top Featured Products'
+                title='Top Sản phẩm mới nhất'
                 option={
                     <Link
                         to={MAIN_ROUTES.PRODUCTS}
                         className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
                     >
-                        View all products <RightOutlined className='text-[7px] md:text-[10px]' />
+                        Xem tất cả <RightOutlined className='text-[7px] md:text-[10px]' />
                     </Link>
                 }
             >

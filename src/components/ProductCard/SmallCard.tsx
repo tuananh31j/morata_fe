@@ -122,7 +122,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                         className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
                     >
                         {isPending && <Spin />}
-                        {!isPending && 'Add to cart'}
+                        {!isPending && 'Thêm vào giỏ hàng'}
                     </button>
                     {/* </PopupAttributes> */}
                 </div>
@@ -134,7 +134,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                     </div>
                 ) : (
                     <div className='absolute left-0 top-0 z-[50] inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>
-                        New
+                        Mới
                     </div>
                 )}
             </div>

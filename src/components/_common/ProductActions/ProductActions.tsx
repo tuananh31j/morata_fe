@@ -15,7 +15,6 @@ const ProductActions = ({ id }: { id: string }) => {
     const user = useSelector((state: RootState) => state.authReducer.user);
     const { mutate: addWishlist } = useMutationAddWishList();
     const { data: allWishList } = useGetAllWishlist(query);
-    console.log('🚀 ~ ProductActions ~ allWishList:', allWishList);
     const wishListIds = allWishList?.data.wishList.map((item) => item._id);
     const handleAddWishlist = () => {
         if (!user) {
@@ -31,11 +30,11 @@ const ProductActions = ({ id }: { id: string }) => {
         <div className='absolute right-[12px] top-1 z-10 gap-3 opacity-100 transition-opacity duration-300 ease-linear  md:left-[75%] md:right-[unset] md:flex md:translate-x-3/4 md:flex-col'>
             <div className='bg-gray-100 flex items-center justify-center rounded-full p-2 transition-colors duration-300 ease-linear hover:border-[#16bcdc] hover:bg-[#16bcdc] hover:text-white hover:duration-300 hover:ease-linear '>
                 {wishListIds?.includes(id) ? (
-                    <Tooltip placement='left' title='Added to Wishlist' arrow={true}>
+                    <Tooltip placement='left' title='Sản phẩm yêu thích' arrow={true}>
                         <HeartFilled className='text-red' />
                     </Tooltip>
                 ) : (
-                    <Tooltip placement='left' title='Add to Wishlist' arrow={true}>
+                    <Tooltip placement='left' title='Thêm vào yêu thích' arrow={true}>
                         <HeartOutlined className='hover:text-white' onClick={handleAddWishlist} />
                     </Tooltip>
                 )}

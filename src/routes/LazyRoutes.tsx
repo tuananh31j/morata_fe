@@ -7,7 +7,7 @@ export const HomePage = lazy(() => import('~/pages/Clients/Home'));
 export const ProductsPage = lazy(() => import('~/pages/Clients/Products'));
 export const ProductDetailsPage = lazy(() => import('~/pages/Clients/ProductDetails'));
 export const WishlistPage = lazy(() => import('~/pages/Clients/WishList'));
-export const SHippingPage = lazy(() => import('~/pages/Clients/Checkout/Shipping'));
+export const ShippingPage = lazy(() => import('~/pages/Clients/Checkout/Shipping'));
 export const AccountLayoutPage = lazy(() => import('~/layouts/AccountLayout'));
 export const MyOrdersPage = lazy(() => import('~/pages/Clients/Account/MyOrders'));
 export const MyAddressPage = lazy(() => import('~/pages/Clients/Account/MyAddress'));

@@ -13,7 +13,7 @@ import {
     AboutPage,
     AuthLayoutPage,
     CartDetail,
-    SHippingPage,
+    ShippingPage,
     ContactPage,
     ErrorPage,
     HomePage,
@@ -81,7 +81,7 @@ const PublicRoutes = [
                 element: (
                     <Suspense>
                         <ProtectedRouteAuth>
-                            <SHippingPage />
+                            <ShippingPage />
                         </ProtectedRouteAuth>
                     </Suspense>
                 ),

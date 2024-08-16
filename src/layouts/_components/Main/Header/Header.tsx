@@ -211,6 +211,7 @@ const Header = () => {
                         <Space>
                             <MenuOutlined style={{ color: '#ffffff', fontSize: '24px' }} onClick={showDrawer} />
                         </Space>
+
                         <Drawer
                             placement={placement}
                             closable={false}
@@ -221,7 +222,7 @@ const Header = () => {
                         >
                             <div onClick={onClose} className='flex items-center justify-center gap-1 '>
                                 <p className='font-bold'>
-                                    CLOSE <CloseOutlined />
+                                    Đóng <CloseOutlined />
                                 </p>
                             </div>
                             <p className='mt-12 flex justify-center font-bold'>WHAT ARE YOU LOOKING FOR?</p>
@@ -238,9 +239,9 @@ const Header = () => {
                                     <div>
                                         <UserOutlined className='mr-1 text-base' />
                                     </div>
-                                    <div className=''>Login</div>
+                                    <div className=''>Đăng nhập</div>
                                     <div className='mx-1'>/</div>
-                                    <div className=''> Register</div>
+                                    <div className=''>Đăng ký</div>
                                 </Link>
                             </div>
                             <div className='w-full -translate-x-2 '>
@@ -298,7 +299,7 @@ const Header = () => {
                                         onChange={(e) => debounceSearch(e.target.value)}
                                         type='text'
                                         className='searchBox peer h-14 w-full  bg-white  outline outline-0 transition-all '
-                                        placeholder='Search for products ...'
+                                        placeholder='Tìm kiếm sản phẩm ...'
                                     />
                                     {searchValue.length > 1 && (
                                         <CloseOutlined
@@ -331,7 +332,7 @@ const Header = () => {
                                         className='w- absolute right-0 top-[100%]  z-50  rounded-b-lg border-b-[5px]  border-[#1e3a8a] bg-white'
                                     >
                                         <div className='my-2 flex items-center justify-between px-4'>
-                                            <span className='text-sm font-medium'>Search Result</span>
+                                            <span className='text-sm font-medium'>Kết quả tìm kiếm</span>
                                             <CloseOutlined
                                                 onClick={handleLeaveInput}
                                                 className='transform cursor-pointer text-base transition duration-500 hover:rotate-180'
@@ -349,7 +350,7 @@ const Header = () => {
                                             {!searchResult?.data.products.length && !isLoading && (
                                                 <div className='flex h-[20vh] w-full items-center justify-center'>
                                                     <h3 className='font-medium'>
-                                                        No products found with the keyword:{' '}
+                                                        Không tìm thấy sản phẩm với từ khóa:{' '}
                                                         <b className='text-cyan-500'>{searchValue}</b>
                                                     </h3>
                                                 </div>
@@ -378,7 +379,7 @@ const Header = () => {
                                 onChange={(e) => debounceSearch(e.target.value)}
                                 type='email'
                                 className='searchBox peer relative h-14 w-full bg-white  pl-4  outline outline-0 transition-all '
-                                placeholder='Search for products ...'
+                                placeholder='Tìm kiếm sản phẩm ...'
                             />
                             {searchValue.length > 1 && (
                                 <CloseOutlined
@@ -411,7 +412,7 @@ const Header = () => {
                                 className='w- absolute right-0 top-[120%]  z-50  rounded-b-lg border-b-[5px]  border-[#1e3a8a] bg-white'
                             >
                                 <div className='my-2 flex items-center justify-between px-4'>
-                                    <span className='text-sm font-medium'>Search Result</span>
+                                    <span className='text-sm font-medium'>Kết quả tìm kiếm</span>
                                     <CloseOutlined
                                         onClick={handleLeaveInput}
                                         className='transform cursor-pointer text-base transition duration-500 hover:rotate-180'
@@ -429,7 +430,7 @@ const Header = () => {
                                     {!searchResult?.data.products.length && !isLoading && (
                                         <div className='flex h-[20vh] w-full items-center justify-center'>
                                             <h3 className='font-medium'>
-                                                No products found with the keyword:{' '}
+                                                Không tìm thấy sản phẩm với từ khóa:{' '}
                                                 <b className='text-cyan-500'>{searchValue}</b>
                                             </h3>
                                         </div>

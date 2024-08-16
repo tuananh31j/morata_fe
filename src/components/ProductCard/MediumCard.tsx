@@ -79,7 +79,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                                 </del>
                             )}
                         </div>
-                        <ul className='mb-5'>
+                        {/* <ul className='mb-5'>
                             <li>
                                 <span className="text-gray-600 after:bg-gray-400 relative line-clamp-1 select-none pl-3 text-sm after:absolute after:left-0 after:top-2/4 after:block after:h-[0.188rem] after:w-[0.188rem] after:select-none after:rounded-full after:content-['']">
                                     Screen Size 10.9 inch
@@ -95,7 +95,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                                     Product Length 9.74 inch
                                 </span>
                             </li>
-                        </ul>
+                        </ul> */}
                         <ProgressBar stock={product.variationIds?.[0].stock} />
                         <div className='text-sx mb-6 leading-8'>
                             Sold:
@@ -108,7 +108,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                         className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
                     >
                         {isPending && <Spin />}
-                        {!isPending && 'Add to cart'}
+                        {!isPending && 'Thêm vào giỏ hàng'}
                     </button>
                 </div>
             </div>
