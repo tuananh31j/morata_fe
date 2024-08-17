@@ -9,7 +9,7 @@ export const useMutationCheckOutSession = () => {
 
     return useMutation({
         mutationKey: ['CREATE_ORDER_SESSION'],
-        mutationFn: (payload: { items: IPayloadItemsOrder[] | undefined }) =>
+        mutationFn: (payload: { items: IPayloadItemsOrder[] | undefined; currency: string }) =>
             checkoutService.createOrderSession(payload),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });

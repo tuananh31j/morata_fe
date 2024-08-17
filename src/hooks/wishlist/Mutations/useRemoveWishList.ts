@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { QUERY_KEY } from '~/constants/queryKey';
 import wishlistService from '~/services/wishlist.service';
 import { RootState } from '~/store/store';
-import showMessage from '~/utils/ShowMessage';
 
 export const useMutationRemoveWishList = () => {
     const queryClient = useQueryClient();
@@ -15,7 +14,7 @@ export const useMutationRemoveWishList = () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.WISHLIST.LIST],
             });
-            showMessage('Product successfully removed from wishlist!', 'success');
+            // showMessage('Product successfully removed from wishlist!', 'success');
         },
     });
     const handleRemoveWishList = (id: string) => {

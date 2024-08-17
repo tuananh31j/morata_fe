@@ -40,6 +40,8 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
 
     const generateUniqueId = (prefix: string) => `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
 
+    console.log('idRandom', generateUniqueId('date-range-ee'));
+
     const dateRangeId = generateUniqueId('date-range-ee');
     const monthId = generateUniqueId('monthhhh');
     const yearId = generateUniqueId('yearhhh');
@@ -105,7 +107,7 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
     };
 
     const CustomInput = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>((props, ref) => (
-        <input ref={ref} className='fixed cursor-default opacity-0' {...props} id={DATE_FIELD} />
+        <input ref={ref} className='fixed cursor-default opacity-0' {...props} id={generateUniqueId(DATE_FIELD)} />
     ));
 
     CustomInput.displayName = 'CustomInput';
@@ -147,7 +149,7 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
                 <Space direction='vertical' className='border-r p-4'>
                     <div>
                         <DropDownItem
-                            lableId={weekId}
+                            labelId={weekId}
                             title='Past 7 Days'
                             handleClick={() => {
                                 const sevenDaysRange: DateInput = { type: 'range', start: dateSevenDayAgo, end: today };
@@ -159,7 +161,7 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
                             onMouseLeave={() => setHoveredDate(null)}
                         />
                         <DropDownItem
-                            lableId={monthLastID}
+                            labelId={monthLastID}
                             title='Past 30 Days'
                             handleClick={() => {
                                 const thirtyDaysRange: DateInput = {
@@ -178,7 +180,7 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
                     <hr />
                     <div>
                         <DropDownItem
-                            lableId={dateRangeId}
+                            labelId={dateRangeId}
                             title='By Date Range'
                             handleClick={() => {
                                 handlePickerType(Picker.Date);
@@ -186,7 +188,7 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
                             }}
                         />
                         <DropDownItem
-                            lableId={monthId}
+                            labelId={monthId}
                             title='By Month'
                             handleClick={() => {
                                 handlePickerType(Picker.Month);
@@ -194,7 +196,7 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
                             }}
                         />
                         <DropDownItem
-                            lableId={yearId}
+                            labelId={yearId}
                             title='By Year'
                             handleClick={() => {
                                 handlePickerType(Picker.Year);

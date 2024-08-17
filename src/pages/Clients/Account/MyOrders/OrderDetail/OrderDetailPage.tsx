@@ -1,13 +1,10 @@
 import { LeftOutlined } from '@ant-design/icons';
-import { Button, Space, Typography } from 'antd';
+import { Space } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import WrapperList from '~/components/_common/WrapperList';
 import { MAIN_ROUTES } from '~/constants/router';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
-import CustomerInfo from '~/pages/Admins/_order_/OrderDetails/CustomerInfo';
 import OrderStatusBar from '~/pages/Admins/_order_/OrderDetails/OrderStatusBar';
-import ServiceInfo from '~/pages/Admins/_order_/OrderDetails/ServiceInfo';
-import TableOrderItems from '~/pages/Admins/_order_/OrderDetails/TableOrderItems';
 import ActionLink from '~/pages/Clients/Account/MyOrders/Components/ActionLink';
 import ReceiverInfor from '~/pages/Clients/Account/MyOrders/OrderDetail/_Components/ReceiverInfor';
 import ServicesDetail from '~/pages/Clients/Account/MyOrders/OrderDetail/_Components/ServicesDetail';

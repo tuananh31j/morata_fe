@@ -3,18 +3,18 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 type DropDownItemProps = {
     handleClick: () => void;
     title: string;
-    lableId?: string;
+    labelId?: string;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
 };
 
-const DropDownItem: React.FC<DropDownItemProps> = ({ handleClick, title, lableId, onMouseEnter, onMouseLeave }) => {
-    if (lableId)
+const DropDownItem: React.FC<DropDownItemProps> = ({ handleClick, title, labelId, onMouseEnter, onMouseLeave }) => {
+    if (labelId)
         return (
             <div className='my-1.5'>
                 <label
                     onClick={handleClick}
-                    htmlFor={lableId}
+                    htmlFor={labelId}
                     className='my-3 flex items-center justify-between gap-x-7'
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}

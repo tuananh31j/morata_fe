@@ -24,6 +24,8 @@ enum Picker {
 }
 
 const DATE_FIELD = 'date-field';
+
+const DATE_FIELDD = 'date-fielddd';
 const MONTH_FIELD = 'month-field';
 const YEAR_FIELD = 'year-field';
 const YTD_FIELD = 'yesterday-field';
@@ -102,7 +104,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
     };
 
     const CustomInput = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>((props, ref) => (
-        <input ref={ref} className='fixed cursor-default opacity-0' {...props} id={DATE_FIELD} />
+        <input ref={ref} className='fixed cursor-default opacity-0' {...props} id={generateUniqueId(DATE_FIELDD)} />
     ));
 
     CustomInput.displayName = 'CustomInput';
@@ -143,7 +145,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                 <Space direction='vertical' className='border-r p-4'>
                     <div>
                         <DropDownItem
-                            lableId={generateUniqueId(DAY_FIELD)}
+                            labelId={generateUniqueId(DAY_FIELD)}
                             title='Today'
                             handleClick={() => {
                                 const todayDate: DateInput = { type: 'single', date: today };
@@ -155,7 +157,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                             onMouseLeave={() => setHoveredDate(null)}
                         />
                         <DropDownItem
-                            lableId={generateUniqueId(YTD_FIELD)}
+                            labelId={generateUniqueId(YTD_FIELD)}
                             title='Yesterday'
                             handleClick={() => {
                                 const yesterdayDate: DateInput = { type: 'single', date: yesterday };
@@ -167,7 +169,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                             onMouseLeave={() => setHoveredDate(null)}
                         />
                         <DropDownItem
-                            lableId={generateUniqueId(WEEK_FIELD)}
+                            labelId={generateUniqueId(WEEK_FIELD)}
                             title='Past 7 Days'
                             handleClick={() => {
                                 const sevenDaysRange: DateInput = { type: 'range', start: dateSevenDayAgo, end: today };
@@ -179,7 +181,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                             onMouseLeave={() => setHoveredDate(null)}
                         />
                         <DropDownItem
-                            lableId={generateUniqueId(DAY30_FIELD)}
+                            labelId={generateUniqueId(DAY30_FIELD)}
                             title='Past 30 Days'
                             handleClick={() => {
                                 const thirtyDaysRange: DateInput = {
@@ -198,7 +200,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                     <hr />
                     <div>
                         <DropDownItem
-                            lableId={generateUniqueId(DATE_FIELD)}
+                            labelId={generateUniqueId(DATE_FIELD)}
                             title='By Date Range'
                             handleClick={() => {
                                 handlePickerType(Picker.Date);
@@ -206,7 +208,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                             }}
                         />
                         <DropDownItem
-                            lableId={generateUniqueId(MONTH_FIELD)}
+                            labelId={generateUniqueId(MONTH_FIELD)}
                             title='By Month'
                             handleClick={() => {
                                 handlePickerType(Picker.Month);
@@ -214,7 +216,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                             }}
                         />
                         <DropDownItem
-                            lableId={generateUniqueId(YEAR_FIELD)}
+                            labelId={generateUniqueId(YEAR_FIELD)}
                             title='By Year'
                             handleClick={() => {
                                 handlePickerType(Picker.Year);
