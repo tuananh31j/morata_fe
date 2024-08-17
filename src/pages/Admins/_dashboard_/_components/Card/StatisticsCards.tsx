@@ -13,6 +13,7 @@ import React, { useRef, useState } from 'react';
 import { useTotalStats } from '~/hooks/stats/useTotal';
 import CardDataStats from '~/pages/Admins/_dashboard_/_components/Card/CardDataStats';
 import DatePickerCard from '~/pages/Admins/_dashboard_/_components/DatePickerCard/DatePickerCard';
+import { Currency } from '~/utils';
 
 type DateInput =
     | { type: 'single'; date: string }
@@ -47,8 +48,8 @@ const StatisticsCards: React.FC = () => {
         },
         {
             title: 'Total Revenue',
-            total: `$${(statsData.totalRevenue || 0).toFixed(2)}`,
-            rate: `$${(statsData.averageDailyRevenue || 0).toFixed(2)}`,
+            total: Currency.format(statsData.totalRevenue || 0),
+            rate: Currency.format(statsData.averageDailyRevenue || 0),
             subtitle: 'Average Daily Revenue',
             icon: <DollarCircleOutlined />,
             tooltip: 'Total revenue generated in the selected period. The rate shows average daily revenue.',

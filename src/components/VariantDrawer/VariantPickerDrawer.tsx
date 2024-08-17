@@ -92,7 +92,7 @@ export default function VariantPickerDrawer({
     useEffect(() => {
         setVariant(initialVariant);
         setActive(initialVariant?._id || '');
-    }, []);
+    }, [product]);
     const { query } = useFilter();
     const { data: allWishList } = useGetAllWishlist(query);
     const wishListIds = allWishList?.data.wishList.map((item) => item._id);

@@ -1,13 +1,10 @@
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Image, InputNumber, List, Spin, Table } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
+import { Button, Form, Image, InputNumber, Spin, Table } from 'antd';
 import { TableProps } from 'antd/lib';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { RiH3 } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-import { record } from 'zod';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationRemoveAll } from '~/hooks/cart/Mutations/useRemoveAll';
 import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
@@ -16,7 +13,7 @@ import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
 import { useTypedSelector } from '~/store/store';
 import { IAddCartPayload } from '~/types/cart/CartPayload';
-import { ICartDataResponse, ICartItemsResponse } from '~/types/cart/CartResponse';
+import { ICartItemsResponse } from '~/types/cart/CartResponse';
 import { Currency } from '~/utils';
 
 const CartDetail = () => {
@@ -37,11 +34,6 @@ const CartDetail = () => {
           )
         : 0;
 
-    const marks = {
-        0: `$0`,
-        [totalOrderAmount]: `$${totalOrderAmount}`,
-        [freeShippingThreshold]: `$${freeShippingThreshold}`,
-    };
     const responsePayloadCheckout = products?.items?.map((product) => ({
         name: product.productVariation.productId.name,
         price: product.productVariation.price,
@@ -250,41 +242,17 @@ const CartDetail = () => {
                     </Form>
 
                     <div className='border-2 border-[#16bcdc] px-8 py-6 text-base text-black'>
-                        {/* <div className='flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                            <span>Tổng tiền phụ:</span>
-                            <span>{Currency.format(totalOrderAmount)}</span>
-                        </div>
-                        <div className='mt-4 flex items-center justify-between border-b  border-gray pb-6 text-base font-semibold'>
-                            <span>Voucher:</span>
-                            <Link to={'/'} className='hover:text-[#16bcdc]'>
-                                Chọn voucher
-                            </Link>
-                        </div>
                         <div className='mt-4 flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                            <span>Bạn tiết kiệm được:</span>
-                            <span>{Currency.format(10000)}</span>
-                        </div>
-                        <div className='mt-4 flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                            <span>Tổng tiền:</span>
+                            <span>Tạm tính:</span>
                             <span className='text-lg text-green-500'>{Currency.format(totalOrderAmount)}</span>
                         </div>
                         <p className='my-4 opacity-90'>Thuế và phí vận chuyển sẽ được tính khi thanh toán.</p>
-                        <div className='mb-3'>
-                            <Checkbox checked={isAgree} onChange={(e) => setIsAgree(e.target.checked)}>
-                                {' '}
-                                <span className='select-none'>
-                                    Tôi đồng ý với{' '}
-                                    <Link to={'/'} className='text-base font-semibold text-black hover:text-[#16bcdc]'>
-                                        Điều khoản và Chính sách
-                                    </Link>
-                                </span>
-                            </Checkbox>
-                        </div> */}
+
                         <div className='mt-4'>
                             <Link to={MAIN_ROUTES.SHIPPING}>
                                 <Button
                                     size='large'
-                                    disabled={totalOrderAmount > 5000000}
+                                    disabled={totalOrderAmount > 50000000 || !products?.items.length}
                                     className={`block w-full rounded-sm bg-black px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]`}
                                 >
                                     Thanh Toán
