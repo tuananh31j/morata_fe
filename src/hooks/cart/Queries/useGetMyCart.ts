@@ -1,14 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import { cartService } from '~/services/cart.service';
+import { useTypedSelector } from '~/store/store';
 
 const useGetMyCart = (id?: string) => {
+    const user = useTypedSelector((state) => state.authReducer.user);
     const { data, ...rest } = useQuery({
         queryKey: [QUERY_KEY.CART],
-        queryFn: () => cartService.getItemCart(id),
+        queryFn: () => cartService.getItemCart(user?._id),
         retry: 0,
         refetchOnWindowFocus: true,
-        enabled: !!id,
+        enabled: !!user?._id,
     });
 
     const responsePayloadCheckout = data?.data?.items.map((item) => ({

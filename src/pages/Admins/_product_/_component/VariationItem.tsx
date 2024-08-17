@@ -98,17 +98,21 @@ const VariationItem = ({
                         dependencies={['price']}
                         rules={[variationsPriceValidator()]}
                     >
-                        <InputNumber<number> className='w-full' />
+                        <InputNumber<number>
+                            min={1}
+                            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={(value) => value?.replace(/VNĐ\s?|(,*)/g, '') as unknown as number}
+                            className='w-full'
+                        />
                     </Form.Item>
                     <Form.Item
                         className='capitalize'
                         {...restField}
                         name={[fieldName, 'stock']}
                         label='stock'
-                        dependencies={['stock']}
                         rules={[variationsStockValidator()]}
                     >
-                        <InputNumber placeholder='Stock' className='w-full' />
+                        <InputNumber min={1} placeholder='Stock' className='w-full' />
                     </Form.Item>
                     <Form.Item
                         className='capitalize'

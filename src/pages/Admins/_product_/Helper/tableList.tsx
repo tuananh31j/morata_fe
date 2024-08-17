@@ -1,6 +1,7 @@
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Button, Space, TableProps, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
+import { Currency } from '~/utils';
 
 export interface DataType {
     name: string;
@@ -39,8 +40,13 @@ export const ProductsListColumns = (handleHiddenProduct: (id: string) => void): 
             key: 'price',
             render: (_, record) => {
                 return (
-                    <h4>
-                        {record.variationIds[0]?.price} - {record.variationIds[record.variationIds.length - 1]?.price}
+                    <h4 className='whitespace-nowrap'>
+                        {record.variationIds &&
+                            record.variationIds.length > 1 &&
+                            `${Currency.format(record.variationIds[0].price)} - ${Currency.format(record.variationIds[record.variationIds.length - 1].price)}`}
+                        {record.variationIds &&
+                            record.variationIds.length === 1 &&
+                            `${Currency.format(record.variationIds[0].price)}`}
                     </h4>
                 );
             },
