@@ -24,7 +24,7 @@ type PropsType = {
 };
 const CartDrawer = ({ children, item }: PropsType) => {
     const { handleRemoveCart, isPending } = useMutationRemoveItem();
-    // const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
+    const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
     const { mutate: updateQuantity } = useUpdateQuantity();
     const { handleOpenCart, onClose, cart } = useCart();
     const user = useSelector((state: RootState) => state.authReducer.user?._id);
@@ -38,18 +38,20 @@ const CartDrawer = ({ children, item }: PropsType) => {
         [totalOrderAmount]: `$${totalOrderAmount}`,
         [freeShippingThreshold]: `$${freeShippingThreshold}`,
     };
-    // const responsePayloadCheckout = products?.map((product) => ({
-    //     name: product.productVariation.productId.name,
-    //     price: product.productVariation.price,
-    //     quantity: product.quantity,
-    //     image: product.productVariation.image,
-    //     productId: product.productVariation.productId._id,
-    // }));
-    // const handlePayStripe = () => {
-    //     stripeCheckout({
-    //         items: responsePayloadCheckout,
-    //     });
-    // };
+    const responsePayloadCheckout = products?.map((item) => ({
+        name: item?.productVariation?.productId?.name,
+        price: item?.productVariation?.price,
+        quantity: item?.quantity,
+        image: item?.productVariation?.image,
+        productId: item?.productVariation?.productId?._id,
+        productVariationId: item?.productVariation?._id,
+    }));
+    const handlePayStripe = () => {
+        stripeCheckout({
+            items: responsePayloadCheckout,
+            currency: 'vnd',
+        });
+    };
     const [quantityProduct, setQuantityProduct] = useState<{ quantity: number; id: string }[]>([]);
     const [pendingUpdates, setPendingUpdates] = useState<{ productVariation: string; quantity: number } | null>(null);
     useEffect(() => {
@@ -284,29 +286,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 <p className='text-xs uppercase '>Subtotal:</p>
                                 <p className='text-base text-[#cc1414]'>{Currency.format(totalOrderAmount)}</p>
                             </div>
-                            {/* <div className='mt-6'>
-                                <button
-                                    onClick={handlePayStripe}
-                                    disabled={!products.length}
-                                    className='
-                                    flex
-                                    h-[48px] w-full items-center justify-center gap-5 rounded-[5px] bg-blue-700 text-sm font-semibold text-white duration-500 hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-65'
-                                >
-                                    {!PendingStripe && (
-                                        <>
-                                            <img
-                                                src='https://asset.brandfetch.io/idxAg10C0L/idTHPdqoDR.jpeg'
-                                                width={40}
-                                                height={40}
-                                                className='rounded-full'
-                                                alt=''
-                                            />
-                                            <span>PAY WITH STRIPE</span>
-                                        </>
-                                    )}
-                                    {PendingStripe && <Spin />}
-                                </button>
-                            </div> */}
+
                             <div className='mt-6'>
                                 <Link to={MAIN_ROUTES.CART}>
                                     <Button
@@ -320,22 +300,34 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                 </Link>
                             </div>
                             <div className='mt-6'>
-                                <Link to={MAIN_ROUTES.SHIPPING}>
-                                    <Button
-                                        onClick={onClose}
-                                        className='h-[50px] bg-[#222222] text-sm font-semibold uppercase text-white'
-                                        type='default'
-                                        block
+                                {totalOrderAmount < 50000000 && (
+                                    <button
+                                        onClick={handlePayStripe}
+                                        disabled={!products.length}
+                                        className='
+                                    flex
+                                    h-[48px] w-full items-center justify-center gap-5 rounded-[5px] bg-blue-700 text-sm font-semibold text-white duration-500 hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-65'
                                     >
-                                        Thanh toán
-                                    </Button>
-                                </Link>
+                                        {!PendingStripe && (
+                                            <>
+                                                <img
+                                                    src='https://asset.brandfetch.io/idxAg10C0L/idTHPdqoDR.jpeg'
+                                                    width={40}
+                                                    height={40}
+                                                    className='rounded-full'
+                                                    alt=''
+                                                />
+                                                <span>PAY WITH STRIPE</span>
+                                            </>
+                                        )}
+                                        {PendingStripe && <Spin />}
+                                    </button>
+                                )}
                             </div>
-                            {totalOrderAmount > 1000 && (
+                            {totalOrderAmount > 50000000 && (
                                 <div className='mt-2 h-[30px]'>
                                     <p className='px-2 text-yellow-500'>
-                                        Warning: Your order has exceeded the checkout limit of $1000, please proceed to
-                                        online checkout!
+                                        Đơn hàng của bạn đã trên 50 triệu theo chính sách bạn sẽ chỉ thanh toán online
                                     </p>
                                 </div>
                             )}
