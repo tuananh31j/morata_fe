@@ -22,22 +22,22 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
 
     return (
         <div className='rounded-xl bg-white p-8'>
-            <div className='relative grid grid-cols-12 justify-between gap-5 rounded'>
+            <div className='relative grid grid-cols-12 justify-between rounded'>
                 <Link
                     to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}
-                    className='relative col-span-5 hidden w-full max-w-24 md:block'
+                    className='relative col-span-5 hidden w-full max-w-20 md:block'
                 >
                     <img
                         loading='lazy'
                         src={product.images[1]}
                         alt=''
-                        className={`absolute bottom-0 left-0 right-0 top-0 scale-105 transition-transform duration-500 ease-linear ${!isScale ? 'hover:duration-500 hover:ease-linear' : ''}`}
+                        className={`absolute bottom-0 left-0 right-0 top-0 scale-105 transition-transform duration-500 ease-linear ${!isScale ? 'object-cover hover:duration-500 hover:ease-linear' : ''}`}
                     />
                     <img
                         loading='lazy'
                         src={product.thumbnail}
                         alt=''
-                        className='absolute bottom-0 left-0 right-0 top-0 opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear'
+                        className='absolute bottom-0 left-0 right-0 top-0 object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear'
                         onFocus={() => handleScale('open')}
                         onMouseOver={() => handleScale('open')}
                         onMouseLeave={() => handleScale('close')}
@@ -46,7 +46,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
 
                 <div className='col-span-7'>
                     <Link className='cursor-pointer' to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}>
-                        <h4 className='line-clamp-2 text-ellipsis text-title-md font-medium text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
+                        <h4 className='line-clamp-2 text-ellipsis font-satoshi text-title-xsm font-semibold text-[#0068c9] hover:text-[#ea0d42] hover:transition-colors hover:duration-500'>
                             {product.name}
                         </h4>
 

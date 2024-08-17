@@ -25,10 +25,10 @@ export const imagesValidator = async (_: any, images: IProductFiles) => {
 
 export const thumbnailValidator = async (_: any, thumbnail: IProductFiles) => {
     //  (thumbnail.fileList[0] as any).originFileObj
+    if (thumbnail?.fileList?.length < 1 || !thumbnail) {
+        return errorMessage('Please input your thumbnail!');
+    }
     if (thumbnail && thumbnail.fileList && thumbnail.fileList.length > 0) {
-        if (thumbnail?.fileList?.length < 1 || !thumbnail) {
-            return errorMessage('Please input your thumbnail!');
-        }
         if (thumbnail && thumbnail.file.size && thumbnail?.file.size >= MAX_SIZE) {
             return errorMessage('Image size must be smaller than 5MB!');
         }

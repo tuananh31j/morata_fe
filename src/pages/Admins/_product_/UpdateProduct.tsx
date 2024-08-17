@@ -279,6 +279,7 @@ const UpdateProduct = () => {
                                         name='images'
                                         // valuePropName='fileList'
                                         // getValueFromEvent={normFile}
+                                        required
                                         className='font-medium text-[#08090F]'
                                         dependencies={['images']}
                                         rules={[
@@ -315,6 +316,7 @@ const UpdateProduct = () => {
                                     <Form.Item<IProductForm>
                                         label='Product Thumbnail'
                                         name='thumbnail'
+                                        required
                                         className='font-medium text-[#08090F]'
                                         dependencies={['thumbnail']}
                                         rules={[
@@ -353,10 +355,12 @@ const UpdateProduct = () => {
                                     <Form.Item<IProductForm>
                                         label='Product Name'
                                         name='name'
+                                        required
                                         className='font-medium text-[#08090F]'
                                         rules={[
                                             {
                                                 validator: nameValidator,
+                                                required: true,
                                             },
                                         ]}
                                     >

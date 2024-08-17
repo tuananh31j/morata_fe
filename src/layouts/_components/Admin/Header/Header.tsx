@@ -33,13 +33,13 @@ const Header = (props: { sidebarOpen: string | boolean | undefined; setSidebarOp
                 <div className='flex items-center gap-3 2xsm:gap-7'>
                     <ul className='flex items-center gap-2 2xsm:gap-4'>
                         {/* <!-- Dark Mode Toggler --> */}
-                        <DarkModeSwitcher />
+                        {/* <DarkModeSwitcher /> */}
 
                         {/* <!-- Notification Menu Area --> */}
-                        <DropdownNotification />
+                        {/* <DropdownNotification /> */}
 
                         {/* <!-- Chat Notification Area --> */}
-                        <DropdownMessage />
+                        {/* <DropdownMessage /> */}
                     </ul>
 
                     {/* <!-- User Area --> */}
