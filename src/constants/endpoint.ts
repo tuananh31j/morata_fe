@@ -30,6 +30,8 @@ export const CART_ENDPOINT = {
 export const BRAND_ENDPOINT = {
     ALL: '/brands/all',
     DETAIL: '/brands',
+    CREATE: '/brands',
+    UPDATE: '/brands',
 };
 
 export const AUTH_ENDPOINT = {

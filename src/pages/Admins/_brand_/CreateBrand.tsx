@@ -1,177 +1,74 @@
-import { EditOutlined, PlusOutlined, VerticalAlignBottomOutlined, WarningOutlined } from '@ant-design/icons';
-import type { TableProps } from 'antd';
-import { Button, Modal, Space, Table, Tag, Tooltip } from 'antd';
-import Search from 'antd/es/input/Search';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ADMIN_ROUTES } from '~/constants/router';
-import useGetAllBrands from '~/hooks/brands/useGetAllBrands';
+import { PlusSquareOutlined } from '@ant-design/icons';
+import { Button, Form, FormProps, Input } from 'antd';
+import { useEffect } from 'react';
+import useMessage from '~/hooks/_common/useMessage';
+import { useCreateBrand } from '~/hooks/brands/Mutations/useCreateBrand';
+import { IAttributeFormData } from '~/types/Category';
+import showMessage from '~/utils/ShowMessage';
 
-type DataType = {
-    _id?: string;
-    key?: string;
-    name: string;
-};
+const CreateBrand = () => {
+    const [form] = Form.useForm<{ name: string }>();
+    const { mutate: createBrandMutate, isPending, isSuccess, isError } = useCreateBrand();
+    const { handleMessage, contextHolder } = useMessage();
 
-const CategoryList = () => {
-    const { data: brandResponse } = useGetAllBrands();
-    const brandsLIst = brandResponse?.data;
-
-    // Add attributeNames to categoryList
-    const categoryListWithAttributes = brandsLIst?.map((category) => ({
-        ...category,
-        key: category._id,
-    }));
-
-    const [searchText, setSearch] = useState('');
-    const [inputSearchValue, setInputSearchValue] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-
-    const columns: TableProps<DataType>['columns'] = [
-        {
-            title: 'ID',
-            dataIndex: '_id',
-            key: '_id',
-            render: (text) => <h4>{text}</h4>,
-            filteredValue: [searchText],
-        },
-        {
-            title: 'Tên thương hiệu',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text) => <h4>{text}</h4>,
-            filteredValue: [searchText],
-            onFilter: (value, record) => {
-                const searchValue = (typeof value === 'string' && value.toLowerCase()) || '';
-                return typeof value && record.name.toLowerCase().includes(searchValue);
-            },
-            sorter: (a, b) => a.name.localeCompare(b.name),
-        },
-        {
-            title: 'Attributes',
-            dataIndex: 'attributeNames',
-            key: 'attributeNames',
-            render: (_, record) => (
-                <>
-                    {/* {attributeNames?.map((attributeName) => {
-                        return (
-                            <Tag color={'geekblue'} key={attributeName}>
-                                {attributeName.toUpperCase()}
-                            </Tag>
-                        );
-                    })} */}
-                </>
-            ),
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: (_, record) => (
-                <Space size={'middle'}>
-                    <Tooltip title='Cập nhậy danh mục'>
-                        <Link to={`${ADMIN_ROUTES.CATEGORIES_EDIT}/${record._id}`} className='text-blue-500'>
-                            <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
-                        </Link>
-                    </Tooltip>
-                </Space>
-            ),
-        },
-    ];
-
-    const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {},
-        getCheckboxProps: (record: DataType) => ({
-            disabled: record.name === 'Disabled User', // Column configuration not to be checked
-            name: record.name,
-        }),
+    const onFinish: FormProps<{ name: string }>['onFinish'] = (values) => {
+        createBrandMutate(values);
     };
 
     useEffect(() => {
-        const searchId = setTimeout(() => {
-            setSearch(inputSearchValue);
-        }, 800);
-        return () => clearTimeout(searchId);
-    }, [inputSearchValue]);
-
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        const search = e.target.value;
-        setInputSearchValue(search);
-    };
+        if (isPending) {
+            handleMessage({ type: 'loading', content: '...Creating!' });
+        }
+        if (isError) {
+            showMessage('Brand creation failed!', 'error');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isPending, isSuccess, isError]);
 
     return (
         <>
-            <div className='flex items-center justify-between'>
-                <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Categories</h1>
-
-                <Link to='create'>
-                    <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
-                        Add category
-                    </Button>
-                </Link>
-            </div>
-
-            <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
-                <div className='my-2 flex justify-between'>
-                    <Search
-                        placeholder='Search name...'
-                        size='large'
-                        className='w-[18.75rem]'
-                        onChange={handleSearch}
-                    />
-                    <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
-                        Export
-                    </Button>
+            {contextHolder}
+            <div className='rounded-lg bg-white'>
+                <div className='m-auto'>
+                    <Form
+                        form={form}
+                        layout='vertical'
+                        onFinish={onFinish}
+                        initialValues={{ isRequired: false, isVariant: false }}
+                    >
+                        <div>
+                            <div className='p-2 px-4'>
+                                <h3 className='my-2 text-xl font-medium text-primary'>Thêm mới thương hiệu</h3>
+                                <div className='flex gap-1'>
+                                    <Form.Item<IAttributeFormData>
+                                        label='Name'
+                                        name='name'
+                                        className='w-1/2 font-medium text-[#08090F]'
+                                        rules={[{ required: true, message: 'Please enter attribute name!' }]}
+                                    >
+                                        <Input size='large' />
+                                    </Form.Item>
+                                </div>
+                                <Form.Item className='flex justify-end'>
+                                    <Button
+                                        type='primary'
+                                        htmlType='submit'
+                                        icon={<PlusSquareOutlined />}
+                                        className='mr-3 px-5'
+                                        size='large'
+                                        loading={isPending}
+                                        disabled={isPending}
+                                    >
+                                        Thêm mới
+                                    </Button>
+                                </Form.Item>
+                            </div>
+                        </div>
+                    </Form>
                 </div>
-
-                {categoryListWithAttributes ? (
-                    <Table
-                        size='large'
-                        rowSelection={{
-                            type: 'checkbox',
-                            ...rowSelection,
-                        }}
-                        columns={columns}
-                        dataSource={categoryListWithAttributes}
-                        pagination={{
-                            pageSize: 4,
-                        }}
-                    />
-                ) : (
-                    <p>Loading...</p>
-                )}
             </div>
-
-            <Modal
-                title={
-                    <div>
-                        <WarningOutlined className='text-yellow-500' style={{ fontSize: '1.5rem' }} />
-                        <h4 className='ml-2 inline-block'>Confirm</h4>
-                    </div>
-                }
-                open={isModalOpen}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={[
-                    <Button key='back' type='default' onClick={handleCancel}>
-                        Cancel
-                    </Button>,
-                    <Button key='button' danger type='primary' onClick={handleOk}>
-                        Delete
-                    </Button>,
-                ]}
-            >
-                <p>Are you sure want to delete this category?</p>
-            </Modal>
         </>
     );
 };
 
-export default CategoryList;
+export default CreateBrand;

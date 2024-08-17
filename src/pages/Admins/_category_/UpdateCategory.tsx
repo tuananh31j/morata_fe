@@ -1,4 +1,4 @@
-import { PlusSquareOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, FormProps, Input, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { useGetAllAttributesScroll } from '~/hooks/attributes/Queries/useGetAllAttributesScroll';
@@ -144,7 +144,7 @@ const CreateCategory = () => {
                                 <Button
                                     type='primary'
                                     htmlType='submit'
-                                    icon={<PlusSquareOutlined />}
+                                    icon={<EditOutlined />}
                                     className='px-5'
                                     loading={isPending}
                                     disabled={isPending}

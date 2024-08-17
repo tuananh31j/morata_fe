@@ -1,3 +1,1 @@
-import { ICategory } from './Category';
-
-export type IBrand = ICategory;
+export type IBrand = { name: string; _id: string };

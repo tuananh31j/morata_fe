@@ -1,38 +1,14 @@
-import {
-    DeleteOutlined,
-    MinusCircleOutlined,
-    PlusCircleOutlined,
-    PlusOutlined,
-    PlusSquareOutlined,
-    QuestionOutlined,
-} from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined, PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useMessage from '~/hooks/_common/useMessage';
 import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
 import { IAttributeFormData } from '~/types/Category';
 import showMessage from '~/utils/ShowMessage';
 
 const CreateAttribute = () => {
-    const navigate = useNavigate();
     const { mutate: createAttribute, isPending, isSuccess, isError } = useMutationCreateAttribute();
     const { handleMessage, contextHolder } = useMessage();
-
-    const [inputFields, setInputFields] = useState([{ id: Date.now(), value: '' }]);
-
-    const handleAddField = () => {
-        // Check if the first input field is filled
-        if (inputFields[0].value.trim() === '') {
-            handleMessage({ type: 'error', content: 'Please enter at least one value!' });
-            return;
-        }
-        setInputFields([...inputFields, { id: Date.now(), value: '' }]);
-    };
-
-    const handleRemoveField = (id: number) => {
-        setInputFields(inputFields.filter((field) => field.id !== id));
-    };
 
     const [typeSelected, setTypeSelected] = useState<string>('');
 
@@ -41,22 +17,13 @@ const CreateAttribute = () => {
     };
 
     const onFinish: FormProps<IAttributeFormData>['onFinish'] = (values) => {
-        const inputValues = inputFields.map((field) => field.value).filter((value) => value.trim() !== '');
-        const payload = { ...values, values: inputValues };
-
-        createAttribute(payload);
+        createAttribute(values);
     };
 
     useEffect(() => {
         if (isPending) {
             handleMessage({ type: 'loading', content: '...Creating!' });
         }
-
-        if (isSuccess) {
-            showMessage('Attribute created successfully!', 'success');
-            navigate('/admin/categories/create', { replace: true });
-        }
-
         if (isError) {
             showMessage('Attribute creation failed!', 'error');
         }
@@ -66,14 +33,14 @@ const CreateAttribute = () => {
     return (
         <>
             {contextHolder}
-            <div className='mx-6 rounded-lg bg-white px-4 py-6'>
+            <div className='rounded-lg bg-white'>
                 <div className='m-auto'>
                     <Form layout='vertical' onFinish={onFinish} initialValues={{ isRequired: false, isVariant: false }}>
                         <div>
-                            <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
+                            <div className='p-2 px-4'>
                                 <h3 className='my-2 text-xl font-medium text-primary'>Create a new attribute</h3>
 
-                                <div className='flex gap-1'>
+                                <div className='flex gap-4'>
                                     <Form.Item<IAttributeFormData>
                                         label='Name'
                                         name='name'

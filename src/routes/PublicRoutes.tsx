@@ -91,9 +91,9 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.CHECKOUT,
                 element: (
                     <Suspense>
-                        <AuthProtected>
+                        <ProtectedSelf>
                             <CheckoutPage />
-                        </AuthProtected>
+                        </ProtectedSelf>
                     </Suspense>
                 ),
             },

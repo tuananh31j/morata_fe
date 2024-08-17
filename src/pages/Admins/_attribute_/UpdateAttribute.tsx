@@ -1,64 +1,43 @@
-import {
-    DeleteOutlined,
-    MinusCircleOutlined,
-    PlusCircleOutlined,
-    PlusOutlined,
-    PlusSquareOutlined,
-    QuestionOutlined,
-} from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined, PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { AttributeType } from '~/constants/enum';
 import useMessage from '~/hooks/_common/useMessage';
-import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
+import useUpdateAttribute from '~/hooks/attributes/Mutations/useUpdateAttribute';
+import useGetDetailsAttribute from '~/hooks/attributes/Queries/useGetDetailsAttribute';
 import { IAttributeFormData } from '~/types/Category';
 import showMessage from '~/utils/ShowMessage';
 
 const CreateAttribute = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
-    // const {} = useGet;
-    const { mutate: createAttribute, isPending, isSuccess, isError } = useMutationCreateAttribute();
+    const [form] = Form.useForm<IAttributeFormData>();
+    const { data: attributeDetailsRes } = useGetDetailsAttribute(id as string);
+    const { mutate: updateAttribute, isPending, isSuccess, isError } = useUpdateAttribute();
     const { handleMessage, contextHolder } = useMessage();
 
-    const [inputFields, setInputFields] = useState([{ id: Date.now(), value: '' }]);
+    const [typeSelected, setTypeSelected] = useState<AttributeType>();
 
-    const handleAddField = () => {
-        // Check if the first input field is filled
-        if (inputFields[0].value.trim() === '') {
-            handleMessage({ type: 'error', content: 'Please enter at least one value!' });
-            return;
-        }
-        setInputFields([...inputFields, { id: Date.now(), value: '' }]);
-    };
-
-    const handleRemoveField = (id: number) => {
-        setInputFields(inputFields.filter((field) => field.id !== id));
-    };
-
-    const [typeSelected, setTypeSelected] = useState<string>('');
-
-    const handleChange = (value: string) => {
+    const handleChange = (value: AttributeType) => {
         setTypeSelected(value);
     };
 
     const onFinish: FormProps<IAttributeFormData>['onFinish'] = (values) => {
-        const inputValues = inputFields.map((field) => field.value).filter((value) => value.trim() !== '');
-        const payload = { ...values, values: inputValues };
-
-        createAttribute(payload);
+        if (id) {
+            updateAttribute({ _id: id, ...values });
+        }
     };
+    useEffect(() => {
+        if (attributeDetailsRes) {
+            form.setFieldsValue(attributeDetailsRes.data as IAttributeFormData);
+            setTypeSelected(attributeDetailsRes.data.type);
+        }
+    }, [attributeDetailsRes, id]);
 
     useEffect(() => {
         if (isPending) {
             handleMessage({ type: 'loading', content: '...Creating!' });
         }
-
-        if (isSuccess) {
-            showMessage('Attribute created successfully!', 'success');
-            navigate('/admin/categories/create', { replace: true });
-        }
-
         if (isError) {
             showMessage('Attribute creation failed!', 'error');
         }
@@ -68,13 +47,20 @@ const CreateAttribute = () => {
     return (
         <>
             {contextHolder}
-            <div className='mx-6 rounded-lg bg-white px-4 py-6'>
+            <div className='rounded-lg bg-white'>
                 <div className='m-auto'>
-                    <Form layout='vertical' onFinish={onFinish} initialValues={{ isRequired: false, isVariant: false }}>
+                    <Form
+                        form={form}
+                        layout='vertical'
+                        onFinish={onFinish}
+                        initialValues={{ isRequired: false, isVariant: false }}
+                    >
                         <div>
-                            <div className='mx-auto w-[70%] rounded-lg border border-opacity-90 p-2 px-4'>
+                            <div className='p-2 px-4'>
                                 <h3 className='my-2 text-xl font-medium text-primary'>Create a new attribute</h3>
-
+                                <Form.Item<IAttributeFormData> label='Name' name='_id' className='hidden'>
+                                    <Input />
+                                </Form.Item>
                                 <div className='flex gap-1'>
                                     <Form.Item<IAttributeFormData>
                                         label='Name'
@@ -96,9 +82,9 @@ const CreateAttribute = () => {
                                             placeholder='Select a type'
                                             onChange={handleChange}
                                             options={[
-                                                { value: 'manual', label: <span>Manual</span> },
+                                                { value: AttributeType.Manual, label: <span>Manual</span> },
                                                 {
-                                                    value: 'options',
+                                                    value: AttributeType.Options,
                                                     label: (
                                                         <span className='flex items-center justify-between'>
                                                             <span>Options</span>
@@ -150,123 +136,80 @@ const CreateAttribute = () => {
                                     </Checkbox>
                                 </Form.Item>
 
-                                {typeSelected === 'options' && (
-                                    // <>
-                                    //     {inputFields.map((field, index) => (
-                                    //         <Form.Item
-                                    //             key={field.id}
-                                    //             name='values'
-                                    //             label='Add New Value'
-                                    //             className='mb-3 font-medium text-[#08090F]'
-                                    //             rules={[
-                                    //                 { required: true, message: 'Please enter at least one value!' },
-                                    //             ]}
-                                    //         >
-                                    //             <div className='flex w-full justify-between'>
-                                    //                 <Input
-                                    //                     className='w-[93%]'
-                                    //                     placeholder='Enter value'
-                                    //                     value={field.value}
-                                    //                     onChange={(e) => {
-                                    //                         const newFields = [...inputFields];
-                                    //                         newFields[index].value = e.target.value;
-                                    //                         setInputFields(newFields);
-                                    //                     }}
-                                    //                 />
-                                    //                 <Button
-                                    //                     danger
-                                    //                     className='flex items-center'
-                                    //                     onClick={() => handleRemoveField(field.id)}
-                                    //                 >
-                                    //                     <DeleteOutlined />
-                                    //                 </Button>
-                                    //             </div>
-                                    //         </Form.Item>
-                                    //     ))}
+                                {typeSelected === AttributeType.Options && (
+                                    <Form.List
+                                        name='values'
+                                        rules={[
+                                            {
+                                                validator: async (_, names) => {
+                                                    if (!names || names.length < 1) {
+                                                        return Promise.reject(
+                                                            new Error(
+                                                                'Please input at least one value or switch type to manual!'
+                                                            )
+                                                        );
+                                                    }
 
-                                    //     <Button type='primary' icon={<PlusCircleOutlined />} onClick={handleAddField}>
-                                    //         Add value
-                                    //     </Button>
-                                    // </>
-
-                                    <>
-                                        <Form.List
-                                            name='values'
-                                            rules={[
-                                                {
-                                                    validator: async (_, names) => {
-                                                        if (!names || names.length < 1) {
-                                                            return Promise.reject(
-                                                                new Error(
-                                                                    'Please input at least one value or switch type to manual!'
-                                                                )
-                                                            );
-                                                        }
-
-                                                        return Promise.resolve();
-                                                    },
+                                                    return Promise.resolve();
                                                 },
-                                            ]}
-                                        >
-                                            {(fields, { add, remove }, { errors }) => (
-                                                <>
-                                                    {fields.map((field, index) => (
+                                            },
+                                        ]}
+                                    >
+                                        {(fields, { add, remove }, { errors }) => (
+                                            <>
+                                                {fields.map((field, index) => (
+                                                    <Form.Item
+                                                        label={
+                                                            index === 0 ? (
+                                                                <span className='text-sm font-semibold'>
+                                                                    Enter new value
+                                                                </span>
+                                                            ) : (
+                                                                ''
+                                                            )
+                                                        }
+                                                        key={field.key}
+                                                    >
                                                         <Form.Item
-                                                            label={
-                                                                index === 0 ? (
-                                                                    <span className='text-sm font-semibold'>
-                                                                        Enter new value
-                                                                    </span>
-                                                                ) : (
-                                                                    ''
-                                                                )
-                                                            }
-                                                            key={field.key}
+                                                            {...field}
+                                                            validateTrigger={['onChange', 'onBlur']}
+                                                            rules={[
+                                                                {
+                                                                    required: true,
+                                                                    whitespace: true,
+                                                                    message:
+                                                                        'Please input value name or delete this field.',
+                                                                },
+                                                            ]}
+                                                            noStyle
                                                         >
-                                                            <Form.Item
-                                                                {...field}
-                                                                validateTrigger={['onChange', 'onBlur']}
-                                                                rules={[
-                                                                    {
-                                                                        required: true,
-                                                                        whitespace: true,
-                                                                        message:
-                                                                            'Please input value name or delete this field.',
-                                                                    },
-                                                                ]}
-                                                                noStyle
-                                                            >
-                                                                <Input
-                                                                    placeholder='Enter value'
-                                                                    style={{ width: '50%' }}
-                                                                />
-                                                            </Form.Item>
-
-                                                            {fields.length > 0 ? (
-                                                                <MinusCircleOutlined
-                                                                    className='dynamic-delete-button ml-2'
-                                                                    onClick={() => remove(field.name)}
-                                                                />
-                                                            ) : null}
+                                                            <Input placeholder='Enter value' style={{ width: '50%' }} />
                                                         </Form.Item>
-                                                    ))}
 
-                                                    <Form.Item>
-                                                        <Button
-                                                            type='dashed'
-                                                            onClick={() => add()}
-                                                            // style={{ width: '50%' }}
-                                                            icon={<PlusOutlined />}
-                                                        >
-                                                            Add field
-                                                        </Button>
-
-                                                        <Form.ErrorList errors={errors} />
+                                                        {fields.length > 0 ? (
+                                                            <MinusCircleOutlined
+                                                                className='dynamic-delete-button ml-2'
+                                                                onClick={() => remove(field.name)}
+                                                            />
+                                                        ) : null}
                                                     </Form.Item>
-                                                </>
-                                            )}
-                                        </Form.List>
-                                    </>
+                                                ))}
+
+                                                <Form.Item>
+                                                    <Button
+                                                        type='dashed'
+                                                        onClick={() => add()}
+                                                        // style={{ width: '50%' }}
+                                                        icon={<PlusOutlined />}
+                                                    >
+                                                        Add field
+                                                    </Button>
+
+                                                    <Form.ErrorList errors={errors} />
+                                                </Form.Item>
+                                            </>
+                                        )}
+                                    </Form.List>
                                 )}
                                 <Form.Item className='flex justify-end'>
                                     <Button

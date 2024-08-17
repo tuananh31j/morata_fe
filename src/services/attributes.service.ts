@@ -26,7 +26,7 @@ export const attributesServices = {
     },
     async updateAttibute(payload: IAttributeFormData) {
         const id = payload._id;
-        const res = await instance.patch<IAxiosResponse<IAttributesValue>>(
+        const res = await instance.put<IAxiosResponse<IAttributesValue>>(
             `${ATTRIBUTES_ENDPOINT.UPDATE}/${id}`,
             payload
         );

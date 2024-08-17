@@ -66,7 +66,7 @@ const CategoryList = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size={'middle'}>
-                    <Tooltip title='Cập nhật danh mục'>
+                    <Tooltip title='Cập nhật thuộc tính'>
                         <Link to={`${ADMIN_ROUTES.ATTRIBUTES_EDIT}/${record._id}`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>

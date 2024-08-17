@@ -1,8 +1,8 @@
-import { EditOutlined, PlusOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Button, Space, Table, Tag, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
 import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
@@ -76,14 +76,6 @@ const CategoryList = () => {
         },
     ];
 
-    const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {},
-        getCheckboxProps: (record: DataType) => ({
-            disabled: record.name === 'Disabled User', // Column configuration not to be checked
-            name: record.name,
-        }),
-    };
-
     useEffect(() => {
         const searchId = setTimeout(() => {
             setSearch(inputSearchValue);
@@ -102,13 +94,13 @@ const CategoryList = () => {
                 <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Manage Categories</h1>
 
                 <Link to='create'>
-                    <Button size='large' icon={<PlusOutlined />} type='primary' className='mx-2'>
+                    <Button size='large' icon={<PlusOutlined />} type='primary' className=''>
                         Add category
                     </Button>
                 </Link>
             </div>
 
-            <div className='transi bg-gray-50 m-2 rounded-2xl p-4 px-5 transition-all duration-500 '>
+            <div className='transi bg-gray-50 rounded-2xl py-4 transition-all duration-500 '>
                 <div className='my-2 flex justify-between'>
                     <Search
                         placeholder='Search name...'
@@ -116,18 +108,11 @@ const CategoryList = () => {
                         className='w-[18.75rem]'
                         onChange={handleSearch}
                     />
-                    <Button type='primary' icon={<VerticalAlignBottomOutlined />} className='px-3' size='middle'>
-                        Export
-                    </Button>
                 </div>
 
                 {categoryListWithAttributes ? (
                     <Table
                         size='large'
-                        rowSelection={{
-                            type: 'checkbox',
-                            ...rowSelection,
-                        }}
                         columns={columns}
                         dataSource={categoryListWithAttributes}
                         pagination={{
