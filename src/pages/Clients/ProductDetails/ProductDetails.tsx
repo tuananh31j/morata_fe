@@ -108,7 +108,11 @@ const ProductDetails = () => {
                                     </div>
                                     <div className='price mt-[25px] flex items-end gap-2'>
                                         {variant && (
-                                            <span className='text-3xl font-bold'>{Currency.format(variant.price)}</span>
+                                            <span className='text-3xl font-bold'>
+                                                {variant.price
+                                                    ? Currency.format(variant.price)
+                                                    : Currency.format(product.variationIds[0].price)}
+                                            </span>
                                         )}
                                         {product.discount > 0 && (
                                             <del className='text-base font-bold text-[#777777]'>

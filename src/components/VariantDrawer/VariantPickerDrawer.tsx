@@ -116,12 +116,19 @@ export default function VariantPickerDrawer({
             <Drawer title={product.name} placement={'bottom'} height={'auto'} onClose={onClose} open={open}>
                 <Space>
                     <Space className='overflow-hidden rounded-[15px]'>
-                        <img className='h-[350px] max-w-[500px] ' src={variant?.image} alt='' />
+                        {variant?.image && <img className='h-[350px] max-w-[500px] ' src={variant?.image} alt='' />}
+                        {!variant?.image && (
+                            <img className='h-[350px] max-w-[500px] ' src={product?.thumbnail} alt='' />
+                        )}
                     </Space>
                     <div>
                         <h1 className='text-xl font-medium text-black'>{product.name}</h1>
                         <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
-                        <span className='text-xl font-medium text-black'>{Currency.format(variant?.price!)}</span>
+                        <span className='text-xl font-medium text-black'>
+                            {variant?.price
+                                ? Currency.format(variant?.price!)
+                                : Currency.format(product.variationIds[0].price)}
+                        </span>
                         <div className='mt-2 flex items-center gap-3'>
                             {product?.variationIds.map((item) => {
                                 return (
@@ -177,7 +184,7 @@ export default function VariantPickerDrawer({
                                         controls={false}
                                     />
                                     <Button
-                                        disabled={valueQuantity === variant?.stock}
+                                        disabled={valueQuantity === variant?.stock || !variant?.isActive}
                                         className='h-[48px] w-[48px]'
                                         onClick={handleIncrement}
                                     >
