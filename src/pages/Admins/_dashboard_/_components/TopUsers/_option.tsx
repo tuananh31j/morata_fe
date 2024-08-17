@@ -83,7 +83,7 @@ export const columns: TableProps<TopBuyer>['columns'] = [
             <div className='text-center'>
                 <div className='text-lg font-semibold text-[#3c50e0]'>{Currency.format(totalSpent)}</div>
                 <Progress
-                    percent={Math.round((totalSpent / 20000) * 100)}
+                    percent={Math.round((totalSpent / 100000000) * 100)}
                     showInfo={false}
                     strokeColor='#3c50e0'
                     trailColor='#e6f7ff'
@@ -118,3 +118,5 @@ export const columns: TableProps<TopBuyer>['columns'] = [
         ),
     },
 ];
+
+export const generateUniqueId = (prefix: string) => `${prefix}-${Math.random().toString(36).substr(2, 9)}`;

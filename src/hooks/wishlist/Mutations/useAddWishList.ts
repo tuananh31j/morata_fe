@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import wishlistService from '~/services/wishlist.service';
-import showMessage from '~/utils/ShowMessage';
 
 const useMutationAddWishList = () => {
     const queryClient = useQueryClient();
@@ -12,7 +11,7 @@ const useMutationAddWishList = () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.WISHLIST.LIST],
             });
-            showMessage('Product successfully added to wishlist!', 'success');
+            // showMessage('Product successfully added to wishlist!', 'success');
         },
     });
 };

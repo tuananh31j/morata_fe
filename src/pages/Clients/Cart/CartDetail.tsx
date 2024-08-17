@@ -23,7 +23,7 @@ const CartDetail = () => {
     const [isAgree, setIsAgree] = useState<boolean>(false);
     const { mutate: removeAllCart, isPending: isRemoveAllPending } = useMutationRemoveAll();
     const user = useTypedSelector((state) => state.authReducer.user?._id);
-    const { data: cartResponseData, isLoading } = useGetMyCart(user);
+    const { data: cartResponseData, isLoading, responsePayloadCheckout } = useGetMyCart(user);
     const products = cartResponseData?.data;
 
     const freeShippingThreshold = 1000;
@@ -34,14 +34,8 @@ const CartDetail = () => {
           )
         : 0;
 
-    const responsePayloadCheckout = products?.items?.map((product) => ({
-        name: product.productVariation.productId.name,
-        price: product.productVariation.price,
-        quantity: product.quantity,
-        image: product.productVariation.image,
-        productId: product.productVariation.productId._id,
-    }));
     const handlePayStripe = () => {
+        console.log({ items: responsePayloadCheckout });
         stripeCheckout({
             items: responsePayloadCheckout,
         });
