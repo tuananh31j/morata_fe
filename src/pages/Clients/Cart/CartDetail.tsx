@@ -33,11 +33,13 @@ const CartDetail = () => {
               0
           )
         : 0;
-
+    const taxAmount = Math.round(totalOrderAmount * 0.1);
+    const priceWithTax = totalOrderAmount + taxAmount;
     const handlePayStripe = () => {
         console.log({ items: responsePayloadCheckout });
         stripeCheckout({
             items: responsePayloadCheckout,
+            currency: 'VND',
         });
     };
     const [quantityProduct, setQuantityProduct] = useState<{ quantity: number; id: string }[]>([]);
@@ -235,24 +237,48 @@ const CartDetail = () => {
                         </div> */}
                     </Form>
 
-                    <div className='border-2 border-[#16bcdc] px-8 py-6 text-base text-black'>
+                    <div className='border-2 border-[#16bcdc] px-8 pb-6 pt-6 text-base text-black'>
                         <div className='mt-4 flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                            <span>Tạm tính:</span>
-                            <span className='text-lg text-green-500'>{Currency.format(totalOrderAmount)}</span>
+                            <span>Tổng tiền mặt hàng:</span>
+                            <span className='text-lg '>{Currency.format(totalOrderAmount)}</span>
                         </div>
-                        <p className='my-4 opacity-90'>Thuế và phí vận chuyển sẽ được tính khi thanh toán.</p>
+                        <div className=' flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
+                            <span>Thuế:</span>
+                            <span>10%</span>
+                        </div>
+                        <div className=' flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
+                            <span>Tổng tiền:</span>
+                            <span className='text-lg text-green-500'>{Currency.format(priceWithTax)}</span>
+                        </div>
+                        {totalOrderAmount < 5000000 && (
+                            <p className='my-4 opacity-90'>Phí vận chuyển sẽ được tính khi thanh toán.</p>
+                        )}
 
                         <div className='mt-4'>
-                            <Link to={MAIN_ROUTES.SHIPPING}>
-                                <Button
-                                    size='large'
-                                    disabled={totalOrderAmount > 50000000 || !products?.items.length}
-                                    className={`block w-full rounded-sm bg-black px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]`}
-                                >
-                                    Thanh Toán
-                                </Button>
-                            </Link>
-                            <div className='mt-6'>
+                            {totalOrderAmount > 50000000 && (
+                                <div className='flex h-[48px] items-center justify-center'>
+                                    <p className='text-center text-sm text-red'>
+                                        Tổng tiền mặt hàng trên 50 triệu COD không khả dụng
+                                    </p>
+                                </div>
+                            )}
+                            {totalOrderAmount < 50000000 && (
+                                <Link to={MAIN_ROUTES.SHIPPING}>
+                                    <Button
+                                        size='large'
+                                        disabled={totalOrderAmount > 50000000 || !products?.items.length}
+                                        className={`block h-[48px] w-full  rounded-[5px] bg-black px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]`}
+                                    >
+                                        Thanh Toán
+                                    </Button>
+                                </Link>
+                            )}
+                            <div className='mt-2'>
+                                <div className='mb-2 flex w-full justify-center'>
+                                    <span className='text-center text-sm text-[#777777]'>
+                                        Thanh toán online miễn phí phí vận chuyển
+                                    </span>
+                                </div>
                                 <button
                                     onClick={handlePayStripe}
                                     disabled={!products?.items.length}
