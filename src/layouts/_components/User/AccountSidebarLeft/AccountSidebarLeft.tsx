@@ -57,7 +57,7 @@ const AccountSidebarLeft = () => {
                     <Avatar alt='user avatar' size={120} src={profile?.avatar ?? StaticImages.userImageDf}></Avatar>
                     {profile && (
                         <div>
-                            <p className='text-center text-[16px] capitalize'>{profile?.username}</p>
+                            <p className='text-center text-[16px] capitalize'>{profile?.name}</p>
 
                             <div className='flex gap-4'>
                                 <p className='text-[16px]'>

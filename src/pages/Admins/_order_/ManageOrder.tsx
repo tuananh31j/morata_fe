@@ -1,36 +1,18 @@
-import { Fragment } from 'react/jsx-runtime';
-import HeaderManageOrder from './HeaderManageOrder';
-import OrderTable from './OrderTable';
 import useGetAllOrders from '~/hooks/orders/Queries/useGetAllOrders';
-import { useEffect, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import useTable from '~/hooks/_common/useTable';
+import OrderTable from './OrderTable';
+import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
 
 const ManageOrder = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const queryClient = useQueryClient();
-    const { data } = useGetAllOrders({ page: currentPage });
+    const { query } = useTable();
+    const { data } = useGetAllOrders(query);
     const ordersList = data?.data?.orders;
     const totalDocs = data?.data?.totalDocs;
-    const totalPages = data?.data?.totalPages;
-
-    useEffect(() => {
-        queryClient.invalidateQueries({
-            queryKey: ['orders'],
-        });
-    }, [currentPage]);
 
     return (
-        <Fragment>
-            <HeaderManageOrder />
-            <OrderTable
-                ordersList={ordersList}
-                totalDocs={totalDocs}
-                totalPages={totalPages}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
-        </Fragment>
+        <WrapperPageAdmin title='Quản lý đơn hàng'>
+            <OrderTable ordersList={ordersList} totalDocs={totalDocs} />
+        </WrapperPageAdmin>
     );
 };
 export default ManageOrder;

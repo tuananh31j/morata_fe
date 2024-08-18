@@ -37,8 +37,13 @@ const VariationItem = ({
     return (
         <>
             {attributesForVariant && (
-                <Space align='center' className='flex items-end'>
-                    <Form.Item className='capitalize' {...restField} name={[fieldName, '_id']} dependencies={['_id']}>
+                <div className='flex items-end gap-3'>
+                    <Form.Item
+                        className='hidden w-full capitalize'
+                        {...restField}
+                        name={[fieldName, '_id']}
+                        dependencies={['_id']}
+                    >
                         <InputNumber className='hidden' />
                     </Form.Item>
                     <Form.Item
@@ -65,7 +70,7 @@ const VariationItem = ({
                     </Form.Item>
                     {attributesForVariant.map((attribute) => (
                         <Form.Item
-                            className='capitalize'
+                            className='w-full capitalize'
                             key={attribute._id}
                             name={[fieldName, 'variantAttributes', attribute.attributeKey]}
                             label={attribute.name}
@@ -91,7 +96,7 @@ const VariationItem = ({
                     ))}
 
                     <Form.Item
-                        className='capitalize'
+                        className='w-full capitalize'
                         {...restField}
                         name={[fieldName, 'price']}
                         label='giá tiền (VNĐ)'
@@ -107,7 +112,7 @@ const VariationItem = ({
                         />
                     </Form.Item>
                     <Form.Item
-                        className='capitalize'
+                        className='w-full capitalize'
                         {...restField}
                         name={[fieldName, 'stock']}
                         label='Kho hàng'
@@ -116,7 +121,7 @@ const VariationItem = ({
                         <InputNumber min={1} placeholder='Nhập số lượng kho hàng...' className='w-full' />
                     </Form.Item>
                     <Form.Item
-                        className='capitalize'
+                        className='whitespace-nowrap capitalize'
                         {...restField}
                         valuePropName='checked'
                         name={[fieldName, 'isActive']}
@@ -136,7 +141,7 @@ const VariationItem = ({
                             />
                         )}
                     </div>
-                </Space>
+                </div>
             )}
         </>
     );

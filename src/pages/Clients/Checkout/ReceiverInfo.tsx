@@ -17,7 +17,7 @@ const ReceiverInfo: React.FC<ReceiverInfoProps> = ({ form }) => {
     React.useEffect(() => {
         if (customer) {
             form.setFieldsValue({
-                customerName: customer.data.username,
+                customerName: customer.data.name,
                 customerEmail: customer.data.email,
                 customerPhone: customer.data.phone,
             });

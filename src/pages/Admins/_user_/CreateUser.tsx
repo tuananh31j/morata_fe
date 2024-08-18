@@ -1,7 +1,7 @@
 import { Button, Form, FormProps, Input, InputNumber, Select } from 'antd';
 
 type FieldType = {
-    username: string;
+    name: string;
     email: string;
     phoneNumber: string;
     role: string;
@@ -27,7 +27,7 @@ const CreateProduct = () => {
                         <div className='grid grid-cols-2 gap-2'>
                             <Form.Item<FieldType>
                                 label='Username'
-                                name='username'
+                                name='name'
                                 className='font-medium text-[#08090F]'
                                 rules={[{ required: true, message: 'Please input your name!' }]}
                             >

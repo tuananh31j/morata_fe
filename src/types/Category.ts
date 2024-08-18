@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { IAttributesValue } from './Attributes';
 import { AttributeType } from '~/constants/enum';
+import { IBrand } from './Brand';
 
 export interface ICategoryPopular {
     totalProducts?: number;
@@ -12,6 +13,13 @@ export type ICategory = {
     _id: string;
     name: string;
     attributeIds: IAttributesValue[];
+};
+
+export type ICategoryResponse = {
+    categories: ICategory[];
+    page: number;
+    totalDocs: number;
+    totalPages: number;
 };
 
 export type ICategoryFormData = {
@@ -34,3 +42,5 @@ export interface IValueCheckbox {
     label: ReactNode;
     value: string;
 }
+
+export type IMenu = IBrand;

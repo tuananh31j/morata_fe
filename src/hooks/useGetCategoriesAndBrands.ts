@@ -11,8 +11,8 @@ const useGetCategoriesAndBrands = () => {
                 queryFn: () => brandService.getAll(),
             },
             {
-                queryKey: [QUERY_KEY.CATEGORIES],
-                queryFn: () => categoryService.getAll(),
+                queryKey: [QUERY_KEY.MENU, QUERY_KEY.CATEGORIES],
+                queryFn: () => categoryService.getAllForMenu(),
             },
         ],
     });

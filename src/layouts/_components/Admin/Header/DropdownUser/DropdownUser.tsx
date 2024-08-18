@@ -18,9 +18,7 @@ const DropdownUser = () => {
         <ClickOutside onClick={() => setDropdownOpen(false)} className='relative'>
             <Link onClick={() => setDropdownOpen(!dropdownOpen)} className='flex items-center gap-4' to='#'>
                 <span className='hidden text-right lg:block'>
-                    <span className='block text-sm font-medium text-black dark:text-white'>
-                        {user && user.username}
-                    </span>
+                    <span className='block text-sm font-medium text-black dark:text-white'>{user && user.name}</span>
                 </span>
 
                 <img

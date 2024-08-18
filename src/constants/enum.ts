@@ -28,3 +28,8 @@ export enum LOCATION_TYPES {
     SHIPPING_ADDRESS = 'shipping_address',
     DEFAULT = 'default',
 }
+
+export enum ROLE {
+    USER = 'user',
+    ADMIN = 'admin',
+}

@@ -13,8 +13,8 @@ import { setCategoryId, setFocusSearch, setSearchValue } from '~/store/slice/hea
 import { RootState, useAppDispatch } from '~/store/store';
 import Navbar from './Navbar';
 import UserToolbar from './UserToolbar';
-import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
 import { MAIN_ROUTES } from '~/constants/router';
+import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 // navbar-mobi
 interface SearchProductParams {
     search: string;
@@ -89,7 +89,7 @@ const Header = () => {
         setOpen(false);
     };
 
-    const { data } = useGetCategories();
+    const [__, { data }] = useGetCategoriesAndBrands();
     const categoryList = data?.data;
     const additionalCategories = [{ label: 'Tất cả danh mục', key: '' }];
     const items: MenuProps['items'] = categoryList

@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import CartDrawer from '~/components/CartDrawer';
-import WishListDrawer from '~/components/WishListDrawer';
 import UserToolBarSkeleton from '~/components/_common/skeleton/UserToolKit/UserToolBarSkeleton';
 import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { RootState } from '~/store/store';
@@ -44,7 +43,7 @@ const UserToolbar = () => {
                     {/* </WishListDrawer> */}
 
                     <Link className='cursor-pointer' to={MAIN_ROUTES.PROFILE}>
-                        <IconButton name={`${user.username}`} subName='Xin chào' icon='UserOutlined' />
+                        <IconButton name={`${user.name}`} subName='Xin chào' icon='UserOutlined' />
                     </Link>
 
                     {location.pathname !== '/checkout-details' ? (

@@ -32,7 +32,7 @@ const WrapperList: React.FC<IWrapperListProps> = ({
     const BoxClass =
         'm-0 rounded-sm border border-stroke bg-white p-10 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-5';
 
-    const lineButtonBoxClass = 'border border-transparent border-b-slate-500 border-opacity-20 py-10';
+    const lineButtonBoxClass = 'border border-transparent border-b-slate-500 border-opacity-20 py-5';
     return (
         <div
             className={cn(

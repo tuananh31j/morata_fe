@@ -3,6 +3,7 @@ export const QUERY_KEY = {
     PRODUCTS: 'products',
     PRODUCTS_LAZY: 'products_lazy',
     CATEGORIES: 'categories',
+    MENU: 'categories-menu',
     LATEST: 'latest',
     DEALS: 'deals',
     REVIEWS: 'review',
@@ -12,6 +13,7 @@ export const QUERY_KEY = {
     ATTRIBUTES: 'attributes',
     ATTRIBUTES_LAZY: 'attributes_lazy',
     USERS: 'users',
+    USERS_PROFILE: 'profile',
 
     ORDERS: 'orders',
     CHECKOUT: 'checkout',

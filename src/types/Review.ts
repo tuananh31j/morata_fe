@@ -2,7 +2,7 @@ export interface IReviewProductResponse {
     rating: number;
     content: string;
     userId: {
-        username: string;
+        name: string;
         avatar: string;
         _id: string;
     };

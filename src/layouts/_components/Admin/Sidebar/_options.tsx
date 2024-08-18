@@ -37,7 +37,7 @@ export const menuGroups: IMenuItem[] = [
     },
     {
         icon: <ShoppingOutlined />,
-        label: 'Quan lý sản phẩm',
+        label: 'Quản lý sản phẩm',
         children: [
             { label: 'Tất cả sản phẩm', route: ADMIN_ROUTES.PRODUCTS },
             { label: 'Tạo mới sản phẩm', route: ADMIN_ROUTES.PRODUCTS_CREATE },

@@ -1,6 +1,8 @@
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Button, Space, TableProps, Tag, Tooltip } from 'antd';
+import { ColumnType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
+import { Params } from '~/types/Api';
 import { IProductItemNew } from '~/types/Product';
 import { Currency } from '~/utils';
 
@@ -14,16 +16,29 @@ export interface DataType {
     brand: string;
     action: string;
 }
+interface IFilter {
+    text: string;
+    value: string;
+}
 
-export const ProductsListColumns = (
-    handleHiddenProduct: (id: string) => void
-): TableProps<IProductItemNew>['columns'] => {
+export const ProductsListColumns = ({
+    brandFilter,
+    categoryFilter,
+    query,
+    getColumnSearchProps,
+}: {
+    brandFilter?: IFilter[];
+    categoryFilter?: IFilter[];
+    query: Params;
+    getColumnSearchProps: (dataIndex: string) => ColumnType<any>;
+}): TableProps<IProductItemNew>['columns'] => {
     return [
         {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
-            key: 'name',
+            key: 'search',
             width: '34%',
+            ...getColumnSearchProps('name'),
             render: (text, record) => (
                 <>
                     <div className='flex items-center gap-2'>
@@ -136,14 +151,18 @@ export const ProductsListColumns = (
         },
         {
             title: 'Danh mục',
-            key: 'category',
+            key: 'categoryId',
+            filters: categoryFilter,
+            filteredValue: query.categoryId ? (query.categoryId as string).split(',') : undefined,
             render: (_, record) => {
                 return <h4>{record.categoryId.name}</h4>;
             },
         },
         {
             title: 'Thương hiệu',
-            key: 'brand',
+            key: 'brandId',
+            filteredValue: query.brandId ? (query.brandId as string).split(',') : undefined,
+            filters: brandFilter,
             render: (_, record) => {
                 return <h4>{record.brandId.name}</h4>;
             },

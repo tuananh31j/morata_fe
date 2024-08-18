@@ -1,19 +1,6 @@
-import {
-    Button,
-    Card,
-    Form,
-    FormProps,
-    Image,
-    Input,
-    InputNumber,
-    Select,
-    Upload,
-    UploadFile,
-    UploadProps,
-} from 'antd';
+import { Button, Card, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import StaticImages from '~/assets';
 import useGetDetail from '~/hooks/users/Queries/useGetailUser';
 import { IProductFiles, IThumbnailAntd } from '~/types/Product';
 import { errorMessage } from '~/validation/Products/Product';
@@ -23,7 +10,7 @@ import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import useUpdateUser from '~/hooks/users/Mutations/useUpdateUser';
 
 type FieldType = {
-    username: string;
+    name: string;
     email: string;
     phone: string;
     role: string;
@@ -47,12 +34,12 @@ const UpdateUser = () => {
         const formDataUpdateUser = new FormData();
 
         console.log(values.role);
-        formDataUpdateUser.append('username', values.username);
+        formDataUpdateUser.append('name', values.name);
         formDataUpdateUser.append('email', values.email);
         formDataUpdateUser.append('role', values.role);
         formDataUpdateUser.append('phone', values.phone);
         formDataUpdateUser.append('avatar', (values.avatar?.fileList?.[0] as IThumbnailAntd)?.originFileObj);
-        formDataUpdateUser.append('avatarRef', userData?.user.avatarRef as string);
+        formDataUpdateUser.append('avatarRef', userData?.avatarRef as string);
 
         updateUser(formDataUpdateUser);
     };
@@ -118,27 +105,17 @@ const UpdateUser = () => {
         </button>
     );
 
-    // useEffect(() => {
-    //     if (userData?.user) {
-    //         form.setFieldsValue({
-    //             username: userData?.user.username,
-    //             phone: userData?.user.phone,
-    //             email: userData?.user.email,
-    //         });
-    //     }
-    // }, [userData?.user, form]);
-
     useEffect(() => {
-        if (userData?.user) {
+        if (userData) {
             const thumbnailConvert = convertApiResponseToFileList({
-                url: userData?.user?.avatar,
-                urlRef: userData?.user?.avatarRef,
+                url: userData?.avatar,
+                urlRef: userData?.avatarRef,
                 isArr: true,
             }) as UploadFile<any>[];
 
             setThumbnailFile(thumbnailConvert);
         }
-    }, [userData?.user]);
+    }, [userData]);
 
     return (
         <div className='mx-6 rounded-lg bg-white px-4 py-6'>
@@ -186,9 +163,9 @@ const UpdateUser = () => {
                         <div className='grid grid-cols-2 gap-2'>
                             <Form.Item<FieldType>
                                 label='Username'
-                                name='username'
+                                name='name'
                                 className='font-medium text-[#08090F]'
-                                initialValue={userData?.user.username}
+                                initialValue={userData?.name}
                                 rules={[{ required: true, message: 'Please input your name!' }]}
                             >
                                 <Input size='large' />
@@ -196,7 +173,7 @@ const UpdateUser = () => {
                             <Form.Item<FieldType>
                                 label='Email'
                                 name='email'
-                                initialValue={userData?.user.email}
+                                initialValue={userData?.email}
                                 className='font-medium text-[#08090F]'
                                 rules={[{ required: true, message: 'Please input your email!' }]}
                             >
@@ -207,7 +184,7 @@ const UpdateUser = () => {
                             <Form.Item<FieldType>
                                 className='font-medium text-[#08090F]'
                                 label='Phone Number'
-                                initialValue={userData?.user.phone}
+                                initialValue={userData?.phone}
                                 name='phone'
                                 rules={[{ required: true, message: 'Please input your phone number!' }]}
                             >
@@ -217,7 +194,7 @@ const UpdateUser = () => {
                                 className='font-medium text-[#08090F]'
                                 label='Role'
                                 name='role'
-                                initialValue={userData?.user.role}
+                                initialValue={userData?.role}
                                 rules={[{ required: true, message: 'Please input your role!' }]}
                             >
                                 <Select

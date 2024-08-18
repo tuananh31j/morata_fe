@@ -110,7 +110,9 @@ const PublicRoutes = [
             {
                 element: (
                     <Suspense>
-                        <AccountLayout />
+                        <AuthProtected>
+                            <AccountLayout />
+                        </AuthProtected>
                     </Suspense>
                 ),
                 children: [
@@ -124,7 +126,9 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.VERIFY,
                 element: (
                     <Suspense>
-                        <VerifyPage />
+                        <AuthProtected>
+                            <VerifyPage />
+                        </AuthProtected>
                     </Suspense>
                 ),
             },

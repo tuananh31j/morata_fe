@@ -50,7 +50,7 @@ const Profile = () => {
     };
 
     type FieldType = {
-        username: string;
+        name: string;
         email: string;
         phone: string;
         avatar?: IProductFiles;
@@ -59,7 +59,7 @@ const Profile = () => {
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
         const formDataUpdateProfile = new FormData();
 
-        formDataUpdateProfile.append('username', values.username);
+        formDataUpdateProfile.append('name', values.name);
         formDataUpdateProfile.append('email', values.email);
         formDataUpdateProfile.append('phone', values.phone);
         formDataUpdateProfile.append('avatar', (values.avatar?.fileList[0] as IThumbnailAntd)?.originFileObj);
@@ -92,7 +92,7 @@ const Profile = () => {
     useEffect(() => {
         if (profile) {
             form.setFieldsValue({
-                username: profile.username,
+                name: profile.name,
                 phone: profile.phone,
                 email: profile.email,
             });
@@ -194,7 +194,7 @@ const Profile = () => {
                                 />
                             )}
 
-                            <Form.Item<FieldType> label='Họ và tên' className='mt-1' name='username'>
+                            <Form.Item<FieldType> label='Họ và tên' className='mt-1' name='name'>
                                 <Input placeholder='Họ và tên' className='py-3' />
                             </Form.Item>
 

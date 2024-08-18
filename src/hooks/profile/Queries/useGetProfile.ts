@@ -4,7 +4,7 @@ import userService from '~/services/user.service';
 
 const useGetProfile = () => {
     return useQuery({
-        queryKey: [QUERY_KEY.USERS],
+        queryKey: [QUERY_KEY.USERS_PROFILE, QUERY_KEY.USERS],
         queryFn: () => userService.getProfile(),
         refetchOnMount: true,
     });

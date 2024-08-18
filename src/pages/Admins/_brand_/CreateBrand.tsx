@@ -5,6 +5,9 @@ import useMessage from '~/hooks/_common/useMessage';
 import { useCreateBrand } from '~/hooks/brands/Mutations/useCreateBrand';
 import { IAttributeFormData } from '~/types/Category';
 import showMessage from '~/utils/ShowMessage';
+import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import { ADMIN_ROUTES } from '~/constants/router';
+import { Link } from 'react-router-dom';
 
 const CreateBrand = () => {
     const [form] = Form.useForm<{ name: string }>();
@@ -28,45 +31,49 @@ const CreateBrand = () => {
     return (
         <>
             {contextHolder}
-            <div className='rounded-lg bg-white'>
-                <div className='m-auto'>
-                    <Form
-                        form={form}
-                        layout='vertical'
-                        onFinish={onFinish}
-                        initialValues={{ isRequired: false, isVariant: false }}
-                    >
+            <WrapperPageAdmin
+                title='Thêm mới thương hiệu'
+                option={
+                    <Link to={ADMIN_ROUTES.BRANDS} className='underline'>
+                        Quay lại
+                    </Link>
+                }
+            >
+                <Form
+                    form={form}
+                    layout='vertical'
+                    onFinish={onFinish}
+                    initialValues={{ isRequired: false, isVariant: false }}
+                >
+                    <div>
                         <div>
-                            <div className='p-2 px-4'>
-                                <h3 className='my-2 text-xl font-medium text-primary'>Thêm mới thương hiệu</h3>
-                                <div className='flex gap-1'>
-                                    <Form.Item<IAttributeFormData>
-                                        label='Name'
-                                        name='name'
-                                        className='w-1/2 font-medium text-[#08090F]'
-                                        rules={[{ required: true, message: 'Please enter attribute name!' }]}
-                                    >
-                                        <Input size='large' />
-                                    </Form.Item>
-                                </div>
-                                <Form.Item className='flex justify-end'>
-                                    <Button
-                                        type='primary'
-                                        htmlType='submit'
-                                        icon={<PlusSquareOutlined />}
-                                        className='mr-3 px-5'
-                                        size='large'
-                                        loading={isPending}
-                                        disabled={isPending}
-                                    >
-                                        Thêm mới
-                                    </Button>
+                            <div className='flex gap-1'>
+                                <Form.Item<IAttributeFormData>
+                                    label='Tên thương hiệu'
+                                    name='name'
+                                    className='w-1/2 font-medium text-[#08090F]'
+                                    rules={[{ required: true, message: 'Please enter attribute name!' }]}
+                                >
+                                    <Input placeholder='Nhập tên thương hiệu sản phẩm...' size='large' />
                                 </Form.Item>
                             </div>
+                            <Form.Item className='flex justify-end'>
+                                <Button
+                                    type='primary'
+                                    htmlType='submit'
+                                    icon={<PlusSquareOutlined />}
+                                    className='mr-3 px-5'
+                                    size='large'
+                                    loading={isPending}
+                                    disabled={isPending}
+                                >
+                                    Thêm mới
+                                </Button>
+                            </Form.Item>
                         </div>
-                    </Form>
-                </div>
-            </div>
+                    </div>
+                </Form>
+            </WrapperPageAdmin>
         </>
     );
 };

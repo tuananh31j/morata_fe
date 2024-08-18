@@ -44,7 +44,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     const [initialReview, setInitialReview] = useState<IReviewProductResponse>({
         rating: 0,
         content: '',
-        userId: { _id: '', username: '', avatar: '' },
+        userId: { _id: '', name: '', avatar: '' },
         updatedAt: '',
         createdAt: '',
         productId: '',
@@ -195,7 +195,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                                                 alt='avatar'
                                                 icon={<UserOutlined className='text-yellow-500' />}
                                             />
-                                            <span className='text-[14px] text-yellow-500'>{item.userId.username}</span>
+                                            <span className='text-[14px] text-yellow-500'>{item.userId.name}</span>
                                             <Dropdown menu={{ items: dropdownItems(item, index) }} trigger={['click']}>
                                                 <MoreOutlined className='cursor-pointer' />
                                             </Dropdown>

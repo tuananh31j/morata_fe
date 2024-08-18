@@ -7,7 +7,7 @@ const AuthService = {
     login(body: LoginFormData) {
         return instance.post<IAxiosResponse<ILoginResponse>>(`${AUTH_ENDPOINT.LOGIN}`, body);
     },
-    register(body: { username: string; email: string; password: string }) {
+    register(body: { name: string; email: string; password: string }) {
         return instance.post<IAxiosResponse<IRegisterResponse>>(`${AUTH_ENDPOINT.REGISTER}`, body);
     },
     sendVerify(body: { email: string }) {

@@ -1,37 +1,31 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Pagination, Space, Table, Tag, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { AttributeType } from '~/constants/enum';
 import { ADMIN_ROUTES } from '~/constants/router';
-import useFilter from '~/hooks/_common/useFilter';
 import useGetAllAtributes from '~/hooks/attributes/Queries/useGetAllAttributes';
-import { IAttribute } from '~/types/Product';
+import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import { IAttributesValue } from '~/types/Attributes';
+import useTable from '~/hooks/_common/useTable';
 
-type DataType = IAttribute & {
-    key: string;
-};
 const CategoryList = () => {
-    const { query, updateQueryParam } = useFilter();
-    const limit = 10;
+    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable();
     const { data: attributeRes } = useGetAllAtributes(query);
     const attributesList = attributeRes?.data.attributes;
+    const totalDocs = attributeRes?.data.totalDocs;
 
-    const categoryListWithAttributes = attributesList?.map((att) => ({
-        ...att,
-        key: att._id,
-    })) as DataType[];
     // @event
-    const onChange: TableProps<DataType>['onChange'] = (paginations) => {
-        updateQueryParam({ ...query, page: String(paginations.current || 1) });
+    const onChange: TableProps<IAttributesValue>['onChange'] = (_, filter, sort) => {
+        onFilter(filter, sort);
     };
 
-    const columns: TableProps<DataType>['columns'] = [
+    const columns: TableProps<IAttributesValue>['columns'] = [
         {
-            title: 'Tên',
+            title: 'Tên thuộc tính',
             dataIndex: 'name',
-            key: 'name',
-            render: (text) => <h4>{text}</h4>,
+            key: 'search',
+            ...getColumnSearchProps('name'),
         },
         {
             title: 'Ràng buộc',
@@ -77,33 +71,26 @@ const CategoryList = () => {
     ];
 
     return (
-        <>
-            <div className='flex items-center justify-between'>
-                <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Quản lý thuộc tính</h1>
-
+        <WrapperPageAdmin
+            title='Quản lý thuộc tính'
+            option={
                 <Link to={ADMIN_ROUTES.ATTRIBUTES_CREATE}>
                     <Button size='large' icon={<PlusOutlined />} type='primary'>
                         Thêm mới thuộc tính
                     </Button>
                 </Link>
-            </div>
-
-            <div className='transi bg-gray-50 mt-5 rounded-2xl transition-all duration-500 '>
-                {attributesList && (
-                    <Table
-                        size='large'
-                        columns={columns}
-                        dataSource={categoryListWithAttributes}
-                        onChange={onChange}
-                        pagination={{
-                            current: Number(query.page || 1),
-                            pageSize: limit,
-                            total: attributeRes.data.totalDocs,
-                        }}
-                    />
-                )}
-            </div>
-        </>
+            }
+        >
+            <Table onChange={onChange} columns={columns} dataSource={attributesList} pagination={false} />
+            <Space className='m-5 flex w-full justify-end'>
+                <Pagination
+                    onChange={onSelectPaginateChange}
+                    pageSize={10}
+                    total={totalDocs}
+                    current={Number(query.page || 1)}
+                />
+            </Space>
+        </WrapperPageAdmin>
     );
 };
 

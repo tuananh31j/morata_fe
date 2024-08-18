@@ -3,7 +3,7 @@ export const getContentType = () => ({
 });
 export type IUser = {
     _id: string;
-    username: string;
+    name: string;
     email: string;
     role: string;
     phone: string;

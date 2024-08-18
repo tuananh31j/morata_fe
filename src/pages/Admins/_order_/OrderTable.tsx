@@ -1,13 +1,12 @@
-import { SearchOutlined } from '@ant-design/icons';
-import type { InputRef, TableColumnsType, TableColumnType } from 'antd';
-import { Button, Input, Pagination, Space, Table } from 'antd';
-import type { FilterDropdownProps } from 'antd/es/table/interface';
+/* eslint-disable no-nested-ternary */
+import type { TableColumnsType } from 'antd';
+import { Button, Pagination, Space, Table } from 'antd';
 import moment from 'moment';
-import { useRef, useState } from 'react';
-import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
 import { TableProps } from 'antd/lib';
 import { ORDER_STATUS } from '~/constants/order';
+import useTable from '~/hooks/_common/useTable';
+import { OrderStatus } from '~/constants/enum';
 
 interface Props {
     ordersList: {
@@ -18,9 +17,6 @@ interface Props {
         createdAt: string;
     }[];
     totalDocs: number;
-    totalPages: number;
-    currentPage: number;
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface DataType {
@@ -34,13 +30,8 @@ interface DataType {
     createdAt: string;
 }
 
-type DataIndex = keyof DataType;
-
-const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
-    const searchInput = useRef<InputRef>(null);
-
+const OrderTable = ({ ordersList, totalDocs }: Props) => {
+    const { getColumnSearchProps, query, onSelectPaginateChange, onFilter } = useTable();
     const dataSource =
         ordersList && ordersList.length
             ? ordersList.map((order: any, index) => {
@@ -57,119 +48,39 @@ const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
               })
             : [];
 
-    const handleSearch = (selectedKeys: string[], confirm: FilterDropdownProps['confirm'], dataIndex: DataIndex) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
-    };
-
-    const handleReset = (clearFilters: () => void) => {
-        clearFilters();
-        setSearchText('');
-    };
-
-    const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<DataType> => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
-                <Input
-                    ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
-                    style={{ marginBottom: 8, display: 'block' }}
-                />
-                <Space>
-                    <Button
-                        type='primary'
-                        onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size='small'
-                        style={{ width: 90 }}
-                    >
-                        Search
-                    </Button>
-                    <Button
-                        onClick={() => clearFilters && handleReset(clearFilters)}
-                        size='small'
-                        style={{ width: 90 }}
-                    >
-                        Reset
-                    </Button>
-                    <Button
-                        type='link'
-                        size='small'
-                        onClick={() => {
-                            confirm({ closeDropdown: false });
-                            setSearchText((selectedKeys as string[])[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Filter
-                    </Button>
-                    <Button
-                        type='link'
-                        size='small'
-                        onClick={() => {
-                            close();
-                        }}
-                    >
-                        Close
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered: boolean) => <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />,
-        onFilter: (value, record) =>
-            record[dataIndex]
-                .toString()
-                .toLowerCase()
-                .includes((value as string).toLowerCase()),
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
-            }
-        },
-        render: (text) =>
-            searchedColumn === dataIndex ? (
-                <Highlighter
-                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                    searchWords={[searchText]}
-                    autoEscape
-                    textToHighlight={text ? text.toString() : ''}
-                />
-            ) : (
-                text
-            ),
-    });
-
     const columns: TableColumnsType<DataType> = [
         {
-            key: 'Code',
+            key: 'search',
             dataIndex: 'code',
             title: 'Mã đơn hàng',
             ...getColumnSearchProps('code'),
-            ellipsis: true,
+            filteredValue: query._id,
         },
         {
-            key: 'customerName',
+            key: 'search',
             dataIndex: 'customerName',
             title: 'Tên khách hàng',
             ...getColumnSearchProps('customerName'),
             ellipsis: true,
         },
         {
-            key: 'total',
+            key: 'totalPrice',
             dataIndex: 'total',
             title: 'Tổng tiền',
             render: (text: number) => {
                 return <span>{text.toLocaleString()} đ</span>;
             },
+            sortOrder: query.sort
+                ? query.sort.includes('totalPrice')
+                    ? query.sort.includes('-')
+                        ? 'descend'
+                        : 'ascend'
+                    : undefined
+                : undefined,
             sorter: (a: any, b: any) => a.total - b.total,
-            sortDirections: ['descend'],
         },
         {
-            key: 'paymentStatus',
+            key: 'isPaid',
             dataIndex: 'paymentStatus',
             title: 'Trạng thái thanh toán',
             render: (text: string) => {
@@ -180,18 +91,19 @@ const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
                 return <span className='font-semibold text-green-500'>Đã thanh toán</span>;
             },
             filters: [
-                { text: 'Đã thanh toán', value: 'Paid' },
-                { text: 'Chưa thanh toán', value: 'Unpaid' },
+                { text: 'Đã thanh toán', value: true },
+                { text: 'Chưa thanh toán', value: false },
             ],
-            onFilter: (value: any, record: any) => record.paymentStatus?.indexOf(value) === 0,
         },
         {
             key: 'orderStatus',
             dataIndex: 'orderStatus',
             title: 'Trạng thái đơn hàng',
+            filteredValue: query.orderStatus ? (query.orderStatus as string).split(',') : undefined,
             render: (text: string) => {
                 if (text === ORDER_STATUS.CANCELLED) {
                     return <span className='font-semibold text-red'>Đã hủy</span>;
+                    // eslint-disable-next-line no-else-return
                 } else if (text === ORDER_STATUS.CONFIRMED) {
                     return <span className='font-semibold text-blue-500'>Đã xác nhận</span>;
                 } else if (text === ORDER_STATUS.SHIPPING) {
@@ -205,14 +117,13 @@ const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
                 return <span className='font-semibold text-yellow-500'>Chờ xác nhận</span>;
             },
             filters: [
-                { text: 'Chờ Xác nhận', value: 'pending' },
-                { text: 'Đã xác nhận', value: 'confirmed' },
-                { text: 'Đang giao', value: 'shipping' },
-                { text: 'Đã giao', value: 'delivered' },
-                { text: 'Hoàn thành', value: 'done' },
-                { text: 'Đã hủy', value: 'cancelled' },
+                { text: 'Chờ Xác nhận', value: OrderStatus.pending },
+                { text: 'Đã xác nhận', value: OrderStatus.confirmed },
+                { text: 'Đang giao', value: OrderStatus.shipping },
+                { text: 'Đã giao', value: OrderStatus.delivered },
+                { text: 'Hoàn thành', value: OrderStatus.done },
+                { text: 'Đã hủy', value: OrderStatus.cancelled },
             ],
-            onFilter: (value: any, record: any) => record.orderStatus?.indexOf(value) === 0,
         },
         {
             key: 'createdAt',
@@ -221,8 +132,14 @@ const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
             render: (text: string) => {
                 return moment(text).format('DD/MM/YYYY hh:mm:ss');
             },
+            sortOrder: query.sort
+                ? query.sort.includes('createdAt')
+                    ? query.sort.includes('-')
+                        ? 'descend'
+                        : 'ascend'
+                    : undefined
+                : undefined,
             sorter: (a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
-            sortDirections: ['descend', 'ascend'],
         },
         {
             key: 'action',
@@ -237,23 +154,20 @@ const OrderTable = ({ ordersList, totalDocs, setCurrentPage }: Props) => {
         },
     ];
 
-    const onSelectPaginateChange = (page: number) => {
-        setCurrentPage(page);
+    const onChange: TableProps<DataType>['onChange'] = (_, filters, sorter, extra) => {
+        onFilter(filters, sorter);
     };
-    const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-        console.log(pagination, 'pag', filters, 'fil', sorter, 'sort', extra);
-    };
+
     return (
         <>
-            <Table
-                onChange={onChange}
-                className='mt-5 w-full'
-                columns={columns}
-                dataSource={dataSource}
-                pagination={false}
-            />
-            <Space className='mt-5 flex w-full justify-end'>
-                <Pagination onChange={onSelectPaginateChange} pageSize={10} total={totalDocs} />
+            <Table onChange={onChange} columns={columns} dataSource={dataSource} pagination={false} />
+            <Space className='m-5 flex w-full justify-end'>
+                <Pagination
+                    onChange={onSelectPaginateChange}
+                    pageSize={10}
+                    total={totalDocs}
+                    current={Number(query.page || 1)}
+                />
             </Space>
         </>
     );

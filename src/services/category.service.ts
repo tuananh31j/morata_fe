@@ -1,11 +1,16 @@
+import { Params } from 'react-router-dom';
 import { CATEGORY_ENDPOINT } from '~/constants/endpoint';
 import { IAxiosResponse } from '~/types/AxiosResponse';
-import { ICategory, ICategoryFormData, ICategoryPopular } from '~/types/Category';
+import { ICategory, ICategoryFormData, ICategoryPopular, ICategoryResponse, IMenu } from '~/types/Category';
 import instance from '~/utils/api/axiosIntance';
 
 const categoryService = {
-    async getAll() {
-        const res = await instance.get<IAxiosResponse<ICategory[]>>(`${CATEGORY_ENDPOINT.ALL}`);
+    async getAll(params: Params) {
+        const res = await instance.get<IAxiosResponse<ICategoryResponse>>(`${CATEGORY_ENDPOINT.ALL}`, { params });
+        return res.data;
+    },
+    async getAllForMenu() {
+        const res = await instance.get<IAxiosResponse<IMenu[]>>(`${CATEGORY_ENDPOINT.MENU}`);
         return res.data;
     },
 

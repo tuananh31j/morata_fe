@@ -1,11 +1,12 @@
+import { Params } from 'react-router-dom';
 import { BRAND_ENDPOINT } from '~/constants/endpoint';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IBrand } from '~/types/Brand';
 import instance from '~/utils/api/axiosIntance';
 
 const brandService = {
-    async getAll() {
-        const res = await instance.get<IAxiosResponse<IBrand[]>>(`${BRAND_ENDPOINT.ALL}`);
+    async getAll(params?: Params) {
+        const res = await instance.get<IAxiosResponse<IBrand[]>>(`${BRAND_ENDPOINT.ALL}`, { params });
         return res.data;
     },
     async getBrand(id: string) {

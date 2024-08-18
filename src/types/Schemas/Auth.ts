@@ -29,7 +29,7 @@ export type RegisterFormData = z.infer<typeof registerSchema>;
 export type ILoginResponse = {
     user: {
         _id: string;
-        username: string;
+        name: string;
         email: string;
         phone: string;
         role: 'user' | 'admin';
@@ -40,7 +40,7 @@ export type ILoginResponse = {
 };
 
 export type IRegisterResponse = {
-    username: string;
+    name: string;
     email: string;
     role: string;
     _id: string;

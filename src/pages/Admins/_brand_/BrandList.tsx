@@ -1,35 +1,27 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Pagination, Space, Table, Tag, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
-import useFilter from '~/hooks/_common/useFilter';
 import useGetAllBrands from '~/hooks/brands/useGetAllBrands';
 import { IBrand } from '~/types/Brand';
+import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import useTable from '~/hooks/_common/useTable';
 
-type DataType = IBrand & {
-    key: string;
-};
 const BrandList = () => {
-    const { query, updateQueryParam } = useFilter();
-    const limit = 10;
-    const { data: brandsRes } = useGetAllBrands();
+    const { onFilter, getColumnSearchProps, query } = useTable();
+    const { data: brandsRes } = useGetAllBrands({ search: query.search });
     const brands = brandsRes?.data;
 
-    const brandsListWithAttributes = brands?.map((brand) => ({
-        ...brand,
-        key: brand._id,
-    })) as DataType[];
-    // @event
-    const onChange: TableProps<DataType>['onChange'] = (paginations) => {
-        updateQueryParam({ ...query, page: String(paginations.current || 1) });
+    const onChange: TableProps<IBrand>['onChange'] = (_, filter, sort) => {
+        onFilter(filter, sort);
     };
-
-    const columns: TableProps<DataType>['columns'] = [
+    const columns: TableProps<IBrand>['columns'] = [
         {
             title: 'Tên',
             dataIndex: 'name',
-            key: 'name',
+            key: 'search',
+            ...getColumnSearchProps('name'),
             render: (text) => <h4>{text}</h4>,
         },
         {
@@ -48,33 +40,21 @@ const BrandList = () => {
     ];
 
     return (
-        <>
-            <div className='flex items-center justify-between'>
-                <h1 className='text-3xl font-semibold dark:text-white dark:opacity-80'>Quản lý thương hiệu</h1>
-
+        <WrapperPageAdmin
+            title='Quản lý thương hiệu'
+            option={
                 <Link to={ADMIN_ROUTES.BRAND_CREATE}>
                     <Button size='large' icon={<PlusOutlined />} type='primary'>
                         Thêm mới thương hiệu
                     </Button>
                 </Link>
-            </div>
-
-            <div className='transi bg-gray-50 mt-5 rounded-2xl transition-all duration-500 '>
-                {brandsListWithAttributes && (
-                    <Table
-                        size='large'
-                        columns={columns}
-                        dataSource={brandsListWithAttributes}
-                        onChange={onChange}
-                        pagination={{
-                            current: Number(query.page || 1),
-                            pageSize: limit,
-                            total: brandsListWithAttributes.length,
-                        }}
-                    />
-                )}
-            </div>
-        </>
+            }
+        >
+            <Table onChange={onChange} columns={columns} dataSource={brands} pagination={false} />
+            <Space className='m-5 flex w-full justify-end'>
+                <Pagination pageSize={brands?.length} total={brands?.length} />
+            </Space>
+        </WrapperPageAdmin>
     );
 };
 

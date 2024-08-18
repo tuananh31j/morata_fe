@@ -1,6 +1,6 @@
 export type IUserLogin = {
     _id: string;
-    username: string;
+    name: string;
     email: string;
     role: string;
     createdAt: string;
@@ -9,7 +9,7 @@ export type IUserLogin = {
 
 export type IUserProfileResponse = {
     _id: string;
-    username: string;
+    name: string;
     isActive: boolean;
     email: string;
     avatar: string;
@@ -17,33 +17,23 @@ export type IUserProfileResponse = {
     address: string;
     role: string;
 };
+export type IUsers = {
+    _id: string;
+    name: string;
+    email: string;
+    wishlist: [];
+    isActive: boolean;
+    avatarRef: string;
+    avatar: string;
+    phone: string;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+};
 
 export type IAllUsersResponse = {
-    users: {
-        _id: string;
-        username: string;
-        email: string;
-        wishlist: [];
-        isActive: boolean;
-        avatarRef: string;
-        avatar: string;
-        phone: string;
-        role: string;
-        createdAt: string;
-        updatedAt: string;
-    }[];
-};
-export type IUsersResponse = {
-    user: {
-        _id: string;
-        username: string;
-        email: string;
-        isActive: boolean;
-        avatar: string;
-        avatarRef: string;
-        phone: string;
-        role: string;
-        createdAt: string;
-        updatedAt: string;
-    };
+    users: IUsers[];
+    page: number;
+    totalDocs: number;
+    totalPages: number;
 };

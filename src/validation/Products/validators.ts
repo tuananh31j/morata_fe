@@ -67,7 +67,7 @@ export const variationsValidator = async (_: any, variations: IProductVariation[
 };
 export const variationsThumbnailValidator = async (_: any, thumbnail: any) => {
     if (thumbnail?.fileList?.length < 1 || !thumbnail) {
-        return errorMessage('Please input your thumbnail!');
+        return errorMessage('Vui lòng chọn ảnh!');
     }
     if (
         thumbnail &&
@@ -76,10 +76,10 @@ export const variationsThumbnailValidator = async (_: any, thumbnail: any) => {
         (thumbnail.fileList[0] as any).originFileObj
     ) {
         if (thumbnail && thumbnail.file.size && thumbnail.file.size >= MAX_SIZE) {
-            return errorMessage('Image size must be smaller than 5MB!');
+            return errorMessage('File tải lên phải nhỏ hơn 5MB!');
         }
         if (thumbnail?.file.type && !ACCEPT_FILE_TYPE.includes(thumbnail?.file.type)) {
-            return errorMessage('Only accept png, jpg and jpeg type!');
+            return errorMessage('png, jpg and jpeg!');
         }
     }
     return Promise.resolve();

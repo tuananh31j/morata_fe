@@ -38,7 +38,7 @@ const Contact = () => {
                         <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                             <Form.Item<FieldType>
                                 name='name'
-                                rules={[{ required: true, message: 'Please input your username!' }]}
+                                rules={[{ required: true, message: 'Vui long nhập tên!' }]}
                             >
                                 <Input placeholder='Name *' size='large' className='rounded-sm py-3 pl-4' />
                             </Form.Item>

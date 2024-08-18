@@ -10,7 +10,7 @@ const useRegister = () => {
     const { mutate } = useSendVerify();
     return useMutation({
         mutationKey: ['register'],
-        mutationFn: (body: { username: string; email: string; password: string }) => AuthService.register(body),
+        mutationFn: (body: { name: string; email: string; password: string }) => AuthService.register(body),
         onSuccess: (data) => {
             navigator(MAIN_ROUTES.CHECKEMAIL);
             mutate({ email: data.data.data.email });

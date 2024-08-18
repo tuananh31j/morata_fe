@@ -3,7 +3,7 @@ import { IUser } from '~/utils/api/apiHelper';
 
 // type IPayloadLogin = {
 //     _id: string;
-//     username: string;
+//     name: string;
 //     email: string;
 // };
 const userStoraged = localStorage.getItem('user');

@@ -16,6 +16,7 @@ export const PRODUCT_ENDPOINT = {
 };
 export const CATEGORY_ENDPOINT = {
     ALL: '/categories/all',
+    MENU: '/categories/menu',
     POPULAR: '/categories/popular',
     CREATE: '/categories',
     DETAIL: '/categories',

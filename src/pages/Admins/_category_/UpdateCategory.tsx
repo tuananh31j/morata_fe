@@ -6,10 +6,12 @@ import { IAttributesValue } from '~/types/Attributes';
 import { ICategoryFormData, IValueCheckbox } from '~/types/Category';
 import Annotaion from './_components/Annotaion';
 import LableCheckbox from './_components/LableCheckbox';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useGetDetailCategory from '~/hooks/categories/Queries/useGetDetailCategory';
 import { useMutationUpdateCategory } from '~/hooks/categories/Mutations/useUpdateCategory';
 import showMessage from '~/utils/ShowMessage';
+import WrapperPageAdmin from '../_common/WrapperPageAdmin';
+import { ADMIN_ROUTES } from '~/constants/router';
 
 const CreateCategory = () => {
     const { id } = useParams();
@@ -95,69 +97,71 @@ const CreateCategory = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category.data, form, id, attributesScroll]);
     return (
-        <>
-            <div className='rounded-lg bg-white py-6'>
-                <div className='col-span-9 m-auto'>
-                    <Form
-                        form={form}
-                        layout='vertical'
-                        className='grid grid-cols-12 '
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                    >
-                        <div className='col-span-8'>
-                            <div className='w-full rounded-lg p-2 px-4'>
-                                <h3 className='my-2 text-xl font-medium text-primary'>Cập nhật thông tin danh mục</h3>
-
+        <WrapperPageAdmin
+            title='Cập nhật thông tin danh mục'
+            option={
+                <Link to={ADMIN_ROUTES.CATEGORIES} className='underline'>
+                    Quay lại
+                </Link>
+            }
+        >
+            {' '}
+            <Form
+                form={form}
+                layout='vertical'
+                className='grid grid-cols-12 '
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+            >
+                <div className='col-span-8'>
+                    <div className='w-full rounded-lg p-2 px-4'>
+                        <Form.Item<ICategoryFormData>
+                            label='Tên danh mục'
+                            name='name'
+                            className='font-medium text-[#08090F]'
+                            rules={[{ required: true, message: 'Please enter category name!' }]}
+                        >
+                            <Input placeholder='Nhập tên cho danh mục...' />
+                        </Form.Item>
+                        {!attributesScroll && <Skeleton active />}
+                        {attributesScroll && (
+                            <>
                                 <Form.Item<ICategoryFormData>
-                                    label='Name'
-                                    name='name'
+                                    label='Thuộc tính'
+                                    name='attributeIds'
                                     className='font-medium text-[#08090F]'
-                                    rules={[{ required: true, message: 'Please enter category name!' }]}
+                                    rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
                                 >
-                                    <Input placeholder='Nhập tên cho danh mục...' />
+                                    <Checkbox.Group
+                                        value={attributeChecked.map((attr) => attr.value)}
+                                        onChange={handleCheckboxChange}
+                                        options={attributeOptions}
+                                        className='grid grid-cols-3 gap-2'
+                                    />
                                 </Form.Item>
-                                {!attributesScroll && <Skeleton active />}
-                                {attributesScroll && (
-                                    <>
-                                        <Form.Item<ICategoryFormData>
-                                            label='Attributes'
-                                            name='attributeIds'
-                                            className='font-medium text-[#08090F]'
-                                            rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
-                                        >
-                                            <Checkbox.Group
-                                                value={attributeChecked.map((attr) => attr.value)}
-                                                onChange={handleCheckboxChange}
-                                                options={attributeOptions}
-                                                className='grid grid-cols-3 gap-2'
-                                            />
-                                        </Form.Item>
-                                        <Observer />
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                        <div className='col-span-4 flex flex-col justify-between border-s border-black border-opacity-20 px-4'>
-                            <Annotaion attributeChecked={attributeChecked} />
-                            <div className='sticky bottom-0 right-0 my-2 flex justify-end border-t-2 border-black border-opacity-5 bg-white py-4'>
-                                <Button
-                                    type='primary'
-                                    htmlType='submit'
-                                    icon={<EditOutlined />}
-                                    className='px-5'
-                                    loading={isPending}
-                                    disabled={isPending}
-                                    size='large'
-                                >
-                                    Cập nhật
-                                </Button>
-                            </div>
-                        </div>
-                    </Form>
+                                <Observer />
+                            </>
+                        )}
+                    </div>
                 </div>
-            </div>
-        </>
+                <div className='col-span-4 flex flex-col justify-between border-s border-black border-opacity-20 px-4'>
+                    <Annotaion attributeChecked={attributeChecked} />
+                    <div className='sticky bottom-0 right-0 my-2 flex justify-end border-t-2 border-black border-opacity-5 py-4'>
+                        <Button
+                            type='primary'
+                            htmlType='submit'
+                            icon={<EditOutlined />}
+                            className='px-5'
+                            loading={isPending}
+                            disabled={isPending}
+                            size='large'
+                        >
+                            Cập nhật
+                        </Button>
+                    </div>
+                </div>
+            </Form>
+        </WrapperPageAdmin>
     );
 };
 
