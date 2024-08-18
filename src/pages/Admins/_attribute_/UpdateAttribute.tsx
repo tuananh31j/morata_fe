@@ -57,40 +57,40 @@ const CreateAttribute = () => {
                     >
                         <div>
                             <div className='p-2 px-4'>
-                                <h3 className='my-2 text-xl font-medium text-primary'>Create a new attribute</h3>
+                                <h3 className='my-2 text-xl font-medium text-primary'>Cập nhật thuộc tính</h3>
                                 <Form.Item<IAttributeFormData> label='Name' name='_id' className='hidden'>
                                     <Input />
                                 </Form.Item>
                                 <div className='flex gap-1'>
                                     <Form.Item<IAttributeFormData>
-                                        label='Name'
+                                        label='Tên thuôc tính'
                                         name='name'
                                         className='w-1/2 font-medium text-[#08090F]'
-                                        rules={[{ required: true, message: 'Please enter attribute name!' }]}
+                                        rules={[{ required: true, message: 'Yêu cầu bắt buộc!' }]}
                                     >
-                                        <Input size='large' />
+                                        <Input placeholder='Nhập tên thuộc tính...' size='large' />
                                     </Form.Item>
 
                                     <Form.Item<IAttributeFormData>
-                                        label='Type'
+                                        label='Loại thuộc tính'
                                         name='type'
                                         className='w-1/2 font-medium text-[#08090F]'
-                                        rules={[{ required: true, message: 'Please choose a type!' }]}
+                                        rules={[{ required: true, message: 'Vui lòng chọn kiểu cho thuộc tính!' }]}
                                     >
                                         <Select
                                             className='h-[39.6px]'
-                                            placeholder='Select a type'
+                                            placeholder='chọn loại thuộc tính'
                                             onChange={handleChange}
                                             options={[
-                                                { value: AttributeType.Manual, label: <span>Manual</span> },
+                                                { value: AttributeType.Manual, label: <span>Kiểu nhập tay</span> },
                                                 {
                                                     value: AttributeType.Options,
                                                     label: (
                                                         <span className='flex items-center justify-between'>
-                                                            <span>Options</span>
+                                                            <span>Kiểu lựa chọn</span>
                                                             <Popover
-                                                                content='Create options for attributes. Streamlines the addition of new items with precision and ease, while enhancing the customer experience by simplifying product selection.'
-                                                                title='Recommended'
+                                                                content='Loại thuộc tính này sẽ yêu cầu nhập giá trị dưới dạng lựa chọn khi tạo mới sản phẩm'
+                                                                title='Khuyên dùng'
                                                             >
                                                                 <Button
                                                                     icon={<QuestionOutlined />}
@@ -111,10 +111,10 @@ const CreateAttribute = () => {
                                     className='w-1/2 font-medium text-[#08090F]'
                                 >
                                     <Checkbox>
-                                        Is this an attribute for the variant
+                                        Thuộc tính này là dành cho biến thể sản phẩm
                                         <Popover
-                                            content='This question asks if the given attribute is specific to a product variant.'
-                                            title='Explanation of the Question'
+                                            content='Khi tạo mới biến thể của sản phẩm sẽ yêu cầu nhập giá trị cho thuộc tính này'
+                                            title='Giải thích câu hỏi'
                                         >
                                             <Button icon={<QuestionOutlined />} size='small' type='text' />
                                         </Popover>
@@ -126,10 +126,10 @@ const CreateAttribute = () => {
                                     className='w-1/2 font-medium text-[#08090F]'
                                 >
                                     <Checkbox>
-                                        Require
+                                        Bắt buộc
                                         <Popover
-                                            content='This question is asking whether the attribute in question is mandatory'
-                                            title='Explanation of the Question'
+                                            content='Khi tạo mới sản phẩm sẽ yêu cầu nhập giá trị cho thuộc tính này'
+                                            title='Giải thích câu hỏi'
                                         >
                                             <Button icon={<QuestionOutlined />} size='small' type='text' />
                                         </Popover>
@@ -143,11 +143,7 @@ const CreateAttribute = () => {
                                             {
                                                 validator: async (_, names) => {
                                                     if (!names || names.length < 1) {
-                                                        return Promise.reject(
-                                                            new Error(
-                                                                'Please input at least one value or switch type to manual!'
-                                                            )
-                                                        );
+                                                        return Promise.reject(new Error('Yêu cầu nhập giá trị!'));
                                                     }
 
                                                     return Promise.resolve();
@@ -159,11 +155,10 @@ const CreateAttribute = () => {
                                             <>
                                                 {fields.map((field, index) => (
                                                     <Form.Item
+                                                        required
                                                         label={
                                                             index === 0 ? (
-                                                                <span className='text-sm font-semibold'>
-                                                                    Enter new value
-                                                                </span>
+                                                                <span className='text-sm font-semibold'>Giá trị</span>
                                                             ) : (
                                                                 ''
                                                             )
@@ -177,13 +172,15 @@ const CreateAttribute = () => {
                                                                 {
                                                                     required: true,
                                                                     whitespace: true,
-                                                                    message:
-                                                                        'Please input value name or delete this field.',
+                                                                    message: 'Yêu cầu nhập giá trị!',
                                                                 },
                                                             ]}
                                                             noStyle
                                                         >
-                                                            <Input placeholder='Enter value' style={{ width: '50%' }} />
+                                                            <Input
+                                                                placeholder='Nhập giá trị thuộc tính'
+                                                                style={{ width: '50%' }}
+                                                            />
                                                         </Form.Item>
 
                                                         {fields.length > 0 ? (
@@ -202,7 +199,7 @@ const CreateAttribute = () => {
                                                         // style={{ width: '50%' }}
                                                         icon={<PlusOutlined />}
                                                     >
-                                                        Add field
+                                                        Thêm giá trị
                                                     </Button>
 
                                                     <Form.ErrorList errors={errors} />
@@ -221,7 +218,7 @@ const CreateAttribute = () => {
                                         loading={isPending}
                                         disabled={isPending}
                                     >
-                                        Add Attribute
+                                        Cập nhật
                                     </Button>
                                 </Form.Item>
                             </div>

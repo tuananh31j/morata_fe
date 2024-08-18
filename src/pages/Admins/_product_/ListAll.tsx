@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import useDeleteProduct from '~/hooks/products/Mutations/useDeleteProduct';
 import showMessage from '~/utils/ShowMessage';
 import { ProductsListColumns } from './Helper/tableList';
+import { ColumnsType } from 'antd/es/table';
 
 const ListAll = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -53,7 +54,7 @@ const ListAll = () => {
         setConfirmLoading(true);
         mutate(productId.current);
     };
-    const columns = ProductsListColumns(handleOpenModal);
+    const columns = ProductsListColumns(handleOpenModal) as ColumnsType<IProductItem>;
 
     const onChange: TableProps<IProductItem>['onChange'] = (paginations) => {
         updateQueryParam({ ...query, page: String(paginations.current || 1) });
@@ -119,6 +120,7 @@ const ListAll = () => {
                     </Form>
                 )}
                 <Table
+                    bordered
                     size='large'
                     rowKey={(record) => record._id}
                     columns={columns}

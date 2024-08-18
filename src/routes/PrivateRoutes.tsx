@@ -1,6 +1,5 @@
 import AdminLayout from '~/layouts/AdminLayout';
 import {
-    AdminProductDetail,
     CreateProduct,
     CreateUser,
     DashboardPage,
@@ -22,7 +21,6 @@ import {
     UpdateAttribute,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
-import RedirectToOrderList from '~/components/_common/RedirectToOrderList/RedirectToOrderList';
 import { Outlet } from 'react-router-dom';
 import ProtectedRoute from '~/layouts/Protected/ProtectedRoute';
 
@@ -85,14 +83,6 @@ const PrivateRoutes = [
                             </Suspense>
                         ),
                     },
-                    {
-                        path: ':id/detail',
-                        element: (
-                            <Suspense>
-                                <AdminProductDetail />
-                            </Suspense>
-                        ),
-                    },
                 ],
             },
             {
@@ -125,10 +115,6 @@ const PrivateRoutes = [
                 ],
             },
             {
-                path: `${ADMIN_ROUTES.ORDERS}`,
-                element: <RedirectToOrderList />,
-            },
-            {
                 path: `${ADMIN_ROUTES.ORDERS}/:id/detail`,
                 element: (
                     <Suspense>
@@ -137,7 +123,7 @@ const PrivateRoutes = [
                 ),
             },
             {
-                path: ADMIN_ROUTES.ORDERS_LIST,
+                path: ADMIN_ROUTES.ORDERS,
                 element: (
                     <Suspense>
                         <ManageOrders />

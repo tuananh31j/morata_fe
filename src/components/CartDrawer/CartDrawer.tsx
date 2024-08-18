@@ -38,6 +38,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
         [totalOrderAmount]: `$${totalOrderAmount}`,
         [freeShippingThreshold]: `$${freeShippingThreshold}`,
     };
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const responsePayloadCheckout = products?.map((item) => ({
         name: item?.productVariation?.productId?.name,
         price: item?.productVariation?.price,
@@ -301,6 +302,18 @@ const CartDrawer = ({ children, item }: PropsType) => {
                             </div>
                             <div className='mt-6'>
                                 {totalOrderAmount < 50000000 && (
+                                    <Link to={MAIN_ROUTES.SHIPPING}>
+                                        <Button
+                                            onClick={onClose}
+                                            className='h-[50px] bg-[#222222] text-sm font-semibold uppercase text-white'
+                                            type='default'
+                                            block
+                                        >
+                                            Thanh toán
+                                        </Button>
+                                    </Link>
+                                )}
+                                {totalOrderAmount > 50000000 && (
                                     <button
                                         onClick={handlePayStripe}
                                         disabled={!products.length}
@@ -326,8 +339,8 @@ const CartDrawer = ({ children, item }: PropsType) => {
                             </div>
                             {totalOrderAmount > 50000000 && (
                                 <div className='mt-2 h-[30px]'>
-                                    <p className='px-2 text-yellow-500'>
-                                        Đơn hàng của bạn đã trên 50 triệu theo chính sách bạn sẽ chỉ thanh toán online
+                                    <p className='px-2 text-center text-sm text-yellow-500'>
+                                        Trên 50 triệu chỉ được thanh toán online
                                     </p>
                                 </div>
                             )}

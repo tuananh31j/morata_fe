@@ -66,15 +66,15 @@ export const variationsValidator = async (_: any, variations: IProductVariation[
     return Promise.resolve();
 };
 export const variationsThumbnailValidator = async (_: any, thumbnail: any) => {
+    if (thumbnail?.fileList?.length < 1 || !thumbnail) {
+        return errorMessage('Please input your thumbnail!');
+    }
     if (
         thumbnail &&
         thumbnail.fileList &&
         thumbnail.fileList.length > 0 &&
         (thumbnail.fileList[0] as any).originFileObj
     ) {
-        if (thumbnail?.fileList?.length < 1 || !thumbnail) {
-            return errorMessage('Please input your thumbnail!');
-        }
         if (thumbnail && thumbnail.file.size && thumbnail.file.size >= MAX_SIZE) {
             return errorMessage('Image size must be smaller than 5MB!');
         }

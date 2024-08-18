@@ -7,29 +7,33 @@ import { useTypedSelector } from '~/store/store';
 
 const ProtectedSelf = ({ children }: { children: ReactNode }) => {
     const [isValid, setIsValid] = useState(true);
+    const shippingAddress = useTypedSelector((state) => state.order.shippingAddress);
     const checkCart = useGetMyCart();
     const location = useLocation();
-    const shippingAddress = useTypedSelector((state) => state.order.shippingAddress);
+    const priceValid = 50000000;
     const currentPath = location.pathname;
     const shippingPath = MAIN_ROUTES.SHIPPING;
     const checkoutPath = MAIN_ROUTES.CHECKOUT;
-
-    const listCart = checkCart.data?.data.items;
-    const isFormShippingFilled = Object.values(shippingAddress).every((val) => val !== '');
-
+    const totalOrderAmount = checkCart.data?.data.items
+        ? checkCart.data?.data.items?.reduce(
+              (total: number, product) => total + product.productVariation.price * product.quantity,
+              0
+          )
+        : 0;
+    const isValidPrice = totalOrderAmount > 0 && totalOrderAmount < priceValid;
+    const isFormShippingNotFilled = Object.values(shippingAddress).some((val) => val === '');
     useLayoutEffect(() => {
-        if (currentPath === shippingPath && listCart && !checkCart.isLoading && listCart.length === 0) {
+        if (currentPath === shippingPath && !isValidPrice) {
             setIsValid(false);
         }
-        if (currentPath === checkoutPath && listCart && !checkCart.isLoading && listCart.length === 0) {
-            if (!isFormShippingFilled) {
-                setIsValid(false);
-            }
+        if (currentPath === checkoutPath) {
+            if (isFormShippingNotFilled || !isValidPrice) setIsValid(false);
         }
-    }, [currentPath, shippingPath, checkoutPath, listCart, checkCart.isLoading, isFormShippingFilled]);
+    }, [currentPath, shippingPath, checkoutPath, isFormShippingNotFilled, isValidPrice, checkCart, totalOrderAmount]);
+    console.log(isFormShippingNotFilled, !isValidPrice, 'isFormShippingNotFilled, !isValidPrice');
     return (
         <>
-            {isValid && !checkCart.isLoading ? <AuthProtected>{children}</AuthProtected> : <Navigate to='/' replace />}
+            {isValid ? <AuthProtected>{children}</AuthProtected> : <Navigate to='/' replace />}
             {checkCart.isLoading && <div>Loading...</div>}
         </>
     );

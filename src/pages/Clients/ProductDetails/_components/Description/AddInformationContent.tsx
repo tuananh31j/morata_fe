@@ -10,7 +10,7 @@ const AddInformationContent = ({ attributes }: { attributes: IAttributesProduct 
                             {attributes.map((item, index) => (
                                 <tr key={index} className='odd:bg-gray-100   even:bg-white'>
                                     <td className='label pl-5  text-base font-semibold'>
-                                        <h3 className='py-2'>{item.key.toUpperCase()}</h3>
+                                        <h3 className='py-2'>{item.name.toUpperCase()}</h3>
                                     </td>
                                     <td className='value text-sm'>
                                         <p className='text-[#777777]'>{item.value}</p>

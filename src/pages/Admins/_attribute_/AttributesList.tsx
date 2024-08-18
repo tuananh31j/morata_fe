@@ -37,8 +37,8 @@ const CategoryList = () => {
             title: 'Ràng buộc',
             render: (_, record) => (
                 <>
-                    {record.isVariant && <Tag color={'geekblue'}>Variant & Require</Tag>}{' '}
-                    {record.isRequired && !record.isVariant && <Tag color={'red'}>Require</Tag>}
+                    {record.isVariant && <Tag color={'geekblue'}>Biến thể & Bắt buộc</Tag>}{' '}
+                    {record.isRequired && !record.isVariant && <Tag color={'red'}>Bắt buộc</Tag>}
                     {!record.isRequired && !record.isVariant && <Tag color={'#7a7d86'}>Không bắt buộc</Tag>}
                 </>
             ),
@@ -62,7 +62,7 @@ const CategoryList = () => {
             ),
         },
         {
-            title: 'Action',
+            title: 'Thao tác',
             key: 'action',
             render: (_, record) => (
                 <Space size={'middle'}>

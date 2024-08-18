@@ -1,14 +1,12 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetAllAtributes } from '~/hooks/attributes/Queries/useGetAttributesByCate';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import { IAttributesValue } from '~/types/Attributes';
 import { IProductForm } from '~/types/Product';
-import showMessage from '~/utils/ShowMessage';
 import {
     brandValidator,
     categoryValidator,
@@ -30,10 +28,11 @@ import CustomItemRender from './_component/CustomItemRender';
 import convertApiResponseToFileList from './Helper/convertImageUrlToFileList';
 import convertData from './Helper/convertData';
 import { DataTypeConvert } from '~/constants/enum';
+import WrapperCard from './_component/WrapperCard';
+import { ADMIN_ROUTES } from '~/constants/router';
 
 const UpdateProduct = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
     // @initial form values
     const [initialValues, setInitialValues] = useState<any>();
 
@@ -66,9 +65,9 @@ const UpdateProduct = () => {
     const brands = brandsRes.data?.data;
 
     // Mutation
-    const { mutate: updateProduct, isSuccess: isSuccessProduct, isPending } = useUpdateProduct();
-    const { mutate: updateProductVariant, isSuccess: isSuccessVariantUpdate } = useUpdateProductVariant();
-    const { mutate: createProductVariant, isSuccess: isSuccessVariantCreate } = useCreateProductVariant();
+    const { mutate: updateProduct, isPending } = useUpdateProduct();
+    const { mutate: updateProductVariant } = useUpdateProductVariant();
+    const { mutate: createProductVariant } = useCreateProductVariant();
 
     // @Form
     const [form] = Form.useForm<IProductForm>();
@@ -88,16 +87,17 @@ const UpdateProduct = () => {
     };
 
     const handleChangeCat = (value: string) => {
-        const dataSource = initialValues;
+        const dataSource = JSON.parse(JSON.stringify(initialValues));
         if (productDetails && value !== productDetails.categoryId._id) {
-            dataSource.variations = '';
-            dataSource.attributes = '';
-            dataSource.categoryId = categoryIdNew;
+            dataSource.initialValue.variations = '';
+            dataSource.initialValue.attributes = '';
+            dataSource.initialValue.categoryId = value;
             setVariantFile([]);
         } else {
             setVariantFile(initialValues.initialVariantFile);
+            dataSource.initialValue.categoryId = productDetails?.categoryId._id;
         }
-        form.setFieldsValue(dataSource);
+        form.setFieldsValue(dataSource.initialValue);
         setImagesFileList(initialValues.initialImages);
         setThumbnailFile(initialValues.initialThumbnail);
         setCategoryIdNew(value);
@@ -110,7 +110,6 @@ const UpdateProduct = () => {
 
     const handleChangeAttributeThumbnail = (index: number): UploadProps['onChange'] => {
         return ({ fileList: newFileList }) => {
-            console.log(newFileList, 'newFileList');
             const newVariantFile = [...variantFile];
             newVariantFile[index] = newFileList;
             setVariantFile(newVariantFile);
@@ -141,11 +140,7 @@ const UpdateProduct = () => {
         setThumbnailFile(initialValues.initialThumbnail);
         setVariantFile(initialValues.initialVariantFile);
     };
-    useEffect(() => {
-        if (productDetails) {
-            setCategoryIdNew(productDetails.categoryId._id);
-        }
-    }, [productDetails]);
+
     useEffect(() => {
         if (productDetails) {
             const {
@@ -181,10 +176,9 @@ const UpdateProduct = () => {
                     urlRef: varia.imageUrlRef,
                     isArr: true,
                 }) as UploadFile<any>[];
-                newVariantFile = [...variantFile];
+                newVariantFile = [...newVariantFile];
                 newVariantFile[i] = image;
                 setVariantFile((prev) => [...prev, image]);
-                console.log(varia, 'varia');
                 const newVaria = { ...varia, variantAttributes, thumbnail: image };
                 delete newVaria.image;
                 return newVaria;
@@ -199,7 +193,6 @@ const UpdateProduct = () => {
                 brandId: brandId._id,
                 ...rest,
             };
-            console.log(variaConverts, 'variaConverts');
             setImagesFileList(imagesConvert);
             setThumbnailFile(thumbnailConvert);
             setInitialValues({
@@ -212,259 +205,210 @@ const UpdateProduct = () => {
             form.setFieldsValue(initial as any);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productDetails]);
-
-    useEffect(() => {
-        if (isSuccessProduct || isSuccessVariantUpdate || isSuccessVariantCreate) {
-            showMessage('Update product is successfully', 'success');
-            navigate('/admin/products');
-        }
-    }, [isSuccessProduct, isSuccessVariantUpdate, isSuccessVariantCreate, navigate]);
+    }, [productDetails, id]);
     return (
-        <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-            <div className='m-auto mb-10'>
+        <div className='mx-6 rounded-md px-4 py-6 capitalize'>
+            <div className='m-auto'>
                 {productDetails && (
                     <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off' className='capitalize'>
                         <div className='flex justify-end'>
-                            <Link to='/admin/products' className='mr-3 p-4 underline'>
-                                Back to list
+                            <Link to={ADMIN_ROUTES.PRODUCTS} className='mr-3 p-4 underline'>
+                                Quay lại
                             </Link>
                         </div>
 
                         <div className='grid grid-cols-1 gap-4'>
-                            <Card title='Tags'>
-                                <div>
-                                    <Form.Item<IProductForm>
-                                        label='Product Category'
-                                        name='categoryId'
-                                        required
-                                        className='font-medium text-[#08090F]'
-                                        rules={[categoryValidator()]}
-                                        validateTrigger={['onChange', 'onBlur']}
+                            <WrapperCard title='Thông tin cơ bản'>
+                                <Form.Item<IProductForm>
+                                    label='Danh mục'
+                                    name='categoryId'
+                                    required
+                                    className='font-medium text-[#08090F]'
+                                    rules={[categoryValidator()]}
+                                    validateTrigger={['onChange', 'onBlur']}
+                                >
+                                    <Select
+                                        size='large'
+                                        onChange={handleChangeCat}
+                                        placeholder='Chọn danh mục cho sản phẩm...'
+                                        className='w-full'
+                                        options={categories?.map((category) => ({
+                                            label: category.name,
+                                            value: category._id,
+                                        }))}
+                                    />
+                                </Form.Item>
+                                <Form.Item<IProductForm>
+                                    label='Thương hiệu'
+                                    name='brandId'
+                                    required
+                                    className='font-medium text-[#08090F]'
+                                    rules={[brandValidator()]}
+                                >
+                                    <Select
+                                        size='large'
+                                        className='w-full normal-case'
+                                        placeholder='Chọn thương hiệu cho sản phẩm...'
+                                        options={brands?.map((brand) => ({
+                                            label: brand.name,
+                                            value: brand._id,
+                                        }))}
+                                    />
+                                </Form.Item>
+                                <Form.Item<IProductForm>
+                                    label='Hình ảnh sản phẩm'
+                                    name='images'
+                                    required
+                                    className='font-medium text-[#08090F]'
+                                    dependencies={['images']}
+                                    rules={[
+                                        {
+                                            validator: imagesValidator,
+                                        },
+                                    ]}
+                                >
+                                    <Upload
+                                        beforeUpload={() => false}
+                                        listType='picture-card'
+                                        onRemove={() => setImagesFileList([])}
+                                        fileList={imagesfileList}
+                                        itemRender={CustomItemRender}
+                                        onPreview={(files) => handlePreview(files, true)}
+                                        onChange={handleChangeImages}
+                                        maxCount={5}
+                                        multiple
                                     >
-                                        <Select
-                                            onChange={handleChangeCat}
-                                            size='large'
-                                            placeholder='Choose category'
-                                            className='w-full'
-                                            options={categories?.map((category) => ({
-                                                label: category.name,
-                                                value: category._id,
-                                            }))}
-                                        />
-                                    </Form.Item>
-                                    <Form.Item<IProductForm>
-                                        label='Product Brand'
-                                        name='brandId'
-                                        className='font-medium text-[#08090F]'
-                                        rules={[brandValidator()]}
+                                        {imagesfileList.length >= 5 ? null : UploadButton}
+                                    </Upload>
+                                </Form.Item>
+                                {previewImages && (
+                                    <Image
+                                        wrapperStyle={{ display: 'none' }}
+                                        preview={{
+                                            visible: previewImagesOpen,
+                                            onVisibleChange: (visible) => setPreviewImagesOpen(visible),
+                                            afterOpenChange: (visible) => !visible && setPreviewImages(''),
+                                        }}
+                                        src={previewImages}
+                                    />
+                                )}
+                                <Form.Item<IProductForm>
+                                    label='Ảnh bìa'
+                                    required
+                                    name='thumbnail'
+                                    className='font-medium text-[#08090F]'
+                                    dependencies={['thumbnail']}
+                                    rules={[
+                                        {
+                                            validator: thumbnailValidator,
+                                        },
+                                    ]}
+                                >
+                                    <Upload
+                                        beforeUpload={() => false}
+                                        listType='picture-card'
+                                        itemRender={CustomItemRender}
+                                        fileList={thumbnailFile}
+                                        onPreview={(file) => handlePreview(file, false)}
+                                        onChange={handleChangeThumbnail}
+                                        maxCount={1}
                                     >
-                                        <Select
-                                            size='large'
-                                            className='w-full'
-                                            placeholder='Choose brand'
-                                            options={brands?.map((brand) => ({
-                                                label: brand.name,
-                                                value: brand._id,
-                                            }))}
-                                        />
-                                    </Form.Item>
-                                </div>
-                            </Card>
-                            <Card title='Product Media'>
-                                <div>
-                                    <h3 className='my-2 text-lg font-medium text-[#08090F]'>Product Media</h3>
-                                    <Form.Item<IProductForm>
-                                        label='Product Images'
-                                        name='images'
-                                        // valuePropName='fileList'
-                                        // getValueFromEvent={normFile}
-                                        required
-                                        className='font-medium text-[#08090F]'
-                                        dependencies={['images']}
-                                        rules={[
-                                            {
-                                                validator: imagesValidator,
-                                            },
-                                        ]}
-                                    >
-                                        <Upload
-                                            beforeUpload={() => false}
-                                            listType='picture-card'
-                                            onRemove={() => setImagesFileList([])}
-                                            fileList={imagesfileList}
-                                            itemRender={CustomItemRender}
-                                            onPreview={(files) => handlePreview(files, true)}
-                                            onChange={handleChangeImages}
-                                            maxCount={5}
-                                            multiple
-                                        >
-                                            {imagesfileList.length >= 5 ? null : UploadButton}
-                                        </Upload>
-                                    </Form.Item>
-                                    {previewImages && (
-                                        <Image
-                                            wrapperStyle={{ display: 'none' }}
-                                            preview={{
-                                                visible: previewImagesOpen,
-                                                onVisibleChange: (visible) => setPreviewImagesOpen(visible),
-                                                afterOpenChange: (visible) => !visible && setPreviewImages(''),
-                                            }}
-                                            src={previewImages}
-                                        />
-                                    )}
-                                    <Form.Item<IProductForm>
-                                        label='Product Thumbnail'
-                                        name='thumbnail'
-                                        required
-                                        className='font-medium text-[#08090F]'
-                                        dependencies={['thumbnail']}
-                                        rules={[
-                                            {
-                                                validator: thumbnailValidator,
-                                            },
-                                        ]}
-                                    >
-                                        <Upload
-                                            beforeUpload={() => false}
-                                            listType='picture-card'
-                                            itemRender={CustomItemRender}
-                                            fileList={thumbnailFile}
-                                            onPreview={(file) => handlePreview(file, false)}
-                                            onChange={handleChangeThumbnail}
-                                            maxCount={1}
-                                        >
-                                            {thumbnailFile.length >= 1 ? null : UploadButton}
-                                        </Upload>
-                                    </Form.Item>
-                                    {previewThumbnail && (
-                                        <Image
-                                            wrapperStyle={{ display: 'none' }}
-                                            preview={{
-                                                visible: previewThumbnailOpen,
-                                                onVisibleChange: (visible) => setPreviewThumbnailOpen(visible),
-                                                afterOpenChange: (visible) => !visible && setPreviewThumbnail(''),
-                                            }}
-                                            src={previewThumbnail}
-                                        />
-                                    )}
-                                </div>
-                            </Card>
-                            <Card title='General information'>
-                                <div>
-                                    <Form.Item<IProductForm>
-                                        label='Product Name'
-                                        name='name'
-                                        required
-                                        className='font-medium text-[#08090F]'
-                                        rules={[
-                                            {
-                                                validator: nameValidator,
-                                                required: true,
-                                            },
-                                        ]}
-                                    >
-                                        <Input size='large' />
-                                    </Form.Item>
-                                    <Form.Item<IProductForm>
-                                        label='Product Description'
-                                        name='description'
-                                        className='font-medium text-[#08090F]'
-                                    >
-                                        <TextArea rows={4} className='w-full' />
-                                    </Form.Item>
-                                </div>
-                            </Card>
+                                        {thumbnailFile.length >= 1 ? null : UploadButton}
+                                    </Upload>
+                                </Form.Item>
+                                {previewThumbnail && (
+                                    <Image
+                                        wrapperStyle={{ display: 'none' }}
+                                        preview={{
+                                            visible: previewThumbnailOpen,
+                                            onVisibleChange: (visible) => setPreviewThumbnailOpen(visible),
+                                            afterOpenChange: (visible) => !visible && setPreviewThumbnail(''),
+                                        }}
+                                        src={previewThumbnail}
+                                    />
+                                )}
+                                <Form.Item<IProductForm>
+                                    label='Tên sản phẩm'
+                                    name='name'
+                                    required
+                                    className='font-medium text-[#08090F]'
+                                    rules={[
+                                        {
+                                            validator: nameValidator,
+                                        },
+                                    ]}
+                                >
+                                    <Input size='large' />
+                                </Form.Item>
+                                <Form.Item<IProductForm>
+                                    label='Mô tả'
+                                    name='description'
+                                    className='font-medium text-[#08090F]'
+                                >
+                                    <TextArea placeholder='Nhập mô tả sản phẩm...' rows={4} className='w-full' />
+                                </Form.Item>
+                            </WrapperCard>
 
                             {attributesForProduct && (
                                 <>
-                                    <Card title='Attributes'>
-                                        <div>
-                                            <span className='mb-4 inline-block'>
-                                                Can be selected when selecting a category
-                                            </span>
-                                            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                                                {attributesForProduct?.map(
-                                                    (attribute: IAttributesValue, index: number) => (
-                                                        <AttributesItem attribute={attribute} key={index} />
-                                                    )
-                                                )}
-                                            </div>
+                                    <WrapperCard title='Thông tin chi tiết'>
+                                        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                                            {attributesForProduct?.map((attribute: IAttributesValue, index: number) => (
+                                                <AttributesItem attribute={attribute} key={index} />
+                                            ))}
                                         </div>
-                                    </Card>
-                                    <Card title='Variations'>
-                                        <div
-                                            className={clsx(
-                                                form.getFieldValue('categoryId') ||
-                                                    (categoryIdNew && 'pointer-events-none opacity-60')
-                                            )}
+                                    </WrapperCard>
+                                    <WrapperCard title='Thông tin bán hàng'>
+                                        <Form.List
+                                            name='variations'
+                                            rules={[
+                                                {
+                                                    validator: variationsValidator,
+                                                },
+                                            ]}
                                         >
-                                            <Form.List
-                                                name='variations'
-                                                rules={[
-                                                    {
-                                                        validator: variationsValidator,
-                                                    },
-                                                ]}
-                                            >
-                                                {(fields, { add, remove }, { errors }) => (
-                                                    <>
-                                                        {fields.map(({ key, name, ...restField }, index) => {
-                                                            const idProductVariant = form.getFieldValue([
-                                                                'variations',
-                                                                name,
-                                                                '_id',
-                                                            ]);
-                                                            return (
-                                                                <VariationItem
-                                                                    key={key}
-                                                                    index={index}
-                                                                    attributesForVariant={attributesForVariant}
-                                                                    fieldName={name}
-                                                                    restField={restField}
-                                                                    variantFile={variantFile}
-                                                                    handleChangeThumbnail={
-                                                                        handleChangeAttributeThumbnail
-                                                                    }
-                                                                    handleRemoveThumbnail={
-                                                                        handleRemoveAttributeThumbnail
-                                                                    }
-                                                                    removeVariation={remove}
-                                                                    id={idProductVariant}
-                                                                />
-                                                            );
-                                                        })}
-                                                        <Form.Item>
-                                                            <Button
-                                                                htmlType='button'
-                                                                type='dashed'
-                                                                onClick={() => add()}
-                                                                block
-                                                                icon={<PlusOutlined />}
-                                                            >
-                                                                Add variation
-                                                            </Button>
-                                                        </Form.Item>
-                                                    </>
-                                                )}
-                                            </Form.List>
-                                        </div>
-                                    </Card>
+                                            {(fields, { add, remove }, { errors }) => (
+                                                <>
+                                                    {fields.map(({ key, name, ...restField }, index) => {
+                                                        const idProductVariant = form.getFieldValue([
+                                                            'variations',
+                                                            name,
+                                                            '_id',
+                                                        ]);
+                                                        return (
+                                                            <VariationItem
+                                                                key={key}
+                                                                index={index}
+                                                                attributesForVariant={attributesForVariant}
+                                                                fieldName={name}
+                                                                restField={restField}
+                                                                variantFile={variantFile}
+                                                                handleChangeThumbnail={handleChangeAttributeThumbnail}
+                                                                handleRemoveThumbnail={handleRemoveAttributeThumbnail}
+                                                                removeVariation={remove}
+                                                                id={idProductVariant}
+                                                            />
+                                                        );
+                                                    })}
+                                                    <Form.Item>
+                                                        <Button
+                                                            htmlType='button'
+                                                            type='dashed'
+                                                            onClick={() => add()}
+                                                            block
+                                                            icon={<PlusOutlined />}
+                                                        >
+                                                            Thêm biến thể
+                                                        </Button>
+                                                    </Form.Item>
+                                                </>
+                                            )}
+                                        </Form.List>
+                                    </WrapperCard>
                                 </>
                             )}
                         </div>
-                        <div className='sticky bottom-0 right-0 my-2 flex justify-end border-t-2 border-black border-opacity-5 bg-white p-4'>
-                            <Button
-                                type='primary'
-                                htmlType='submit'
-                                icon={<EditOutlined />}
-                                className='mr-3 px-5'
-                                loading={isPending}
-                                disabled={isPending}
-                                size='large'
-                            >
-                                Edit product
-                            </Button>
+                        <div className='sticky bottom-0 right-0 my-2 flex justify-end rounded-md border-t-2 border-black border-opacity-5 bg-white p-4'>
                             <Button
                                 type='dashed'
                                 htmlType='button'
@@ -472,7 +416,18 @@ const UpdateProduct = () => {
                                 className='mr-3 px-5'
                                 size='large'
                             >
-                                Reset
+                                Đặt lại
+                            </Button>
+                            <Button
+                                type='primary'
+                                htmlType='submit'
+                                icon={<EditOutlined />}
+                                className='px-5'
+                                loading={isPending}
+                                disabled={isPending}
+                                size='large'
+                            >
+                                Cập nhật
                             </Button>
                         </div>
                     </Form>

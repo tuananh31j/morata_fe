@@ -27,7 +27,6 @@ export const ManageProducts = lazy(() => import('~/pages/Admins/_product_/index'
 export const ProductsListAll = lazy(() => import('~/pages/Admins/_product_/ListAll'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/_product_/CreateProduct'));
 export const UpdateProduct = lazy(() => import('~/pages/Admins/_product_/UpdateProduct'));
-export const AdminProductDetail = lazy(() => import('~/pages/Admins/_product_/ProductDetail'));
 export const ManageUsers = lazy(() => import('~/pages/Admins/_user_/index'));
 export const CreateUser = lazy(() => import('~/pages/Admins/_user_/CreateUser'));
 export const UpdateUser = lazy(() => import('~/pages/Admins/_user_/UpdateUser'));

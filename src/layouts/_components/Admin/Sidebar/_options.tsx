@@ -16,40 +16,42 @@ export type IChildrenItem = {
 export type IMenuItem = {
     icon: JSX.Element;
     label: string;
-    children: IChildrenItem[];
+    route?: string;
+    children?: IChildrenItem[];
 };
 
 export const menuGroups: IMenuItem[] = [
     {
         icon: <LineChartOutlined />,
-        label: 'Data',
-        children: [{ label: 'Business Insights', route: '/admin' }],
+        label: 'Thống kê',
+        route: ADMIN_ROUTES.DASHBOARD,
     },
     {
         icon: <ProfileOutlined />,
-        label: 'Order',
-        children: [
-            { label: 'All', route: ADMIN_ROUTES.ORDERS },
-            { label: 'Cancellation', route: ADMIN_ROUTES.ORDERS_CANCELLATION },
-        ],
+        label: 'Quản lý đơn hàng',
+        route: ADMIN_ROUTES.ORDERS,
+        // children: [
+        //     { label: 'All', route: ADMIN_ROUTES.ORDERS },
+        //     // { label: 'Cancellation', route: ADMIN_ROUTES.ORDERS_CANCELLATION },
+        // ],
     },
     {
         icon: <ShoppingOutlined />,
-        label: 'Product',
+        label: 'Quan lý sản phẩm',
         children: [
-            { label: 'All', route: ADMIN_ROUTES.PRODUCTS },
-            { label: 'Create new product', route: ADMIN_ROUTES.PRODUCTS_CREATE },
+            { label: 'Tất cả sản phẩm', route: ADMIN_ROUTES.PRODUCTS },
+            { label: 'Tạo mới sản phẩm', route: ADMIN_ROUTES.PRODUCTS_CREATE },
         ],
     },
     {
         icon: <CommentOutlined />,
-        label: 'Customer service',
+        label: 'Quản lý người dùng',
         children: [
-            { label: 'All users', route: ADMIN_ROUTES.USERS },
-            { label: 'Create new user', route: ADMIN_ROUTES.USERS_CREATE },
+            { label: 'Tất cả người dùng', route: ADMIN_ROUTES.USERS },
+            { label: 'Tạo mới người dùng', route: ADMIN_ROUTES.USERS_CREATE },
 
-            { label: 'Chat management', route: 'orders/test' },
-            { label: 'Review management', route: ADMIN_ROUTES.PRODUCTS_CREATE },
+            // { label: 'Chat management', route: 'orders/test' },
+            // { label: 'Review management', route: ADMIN_ROUTES.PRODUCTS_CREATE },
         ],
     },
     // {

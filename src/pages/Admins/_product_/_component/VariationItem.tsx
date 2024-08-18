@@ -1,5 +1,5 @@
 import { MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
+import { Checkbox, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
 import { IAttributesValue } from '~/types/Attributes';
 import {
     variationsPriceValidator,
@@ -73,7 +73,7 @@ const VariationItem = ({
                             rules={[
                                 {
                                     required: attribute.isRequired || attribute.isVariant,
-                                    message: 'Please input your attribute!',
+                                    message: 'Yêu cầu bắt buộc!',
                                 },
                             ]}
                         >
@@ -94,12 +94,13 @@ const VariationItem = ({
                         className='capitalize'
                         {...restField}
                         name={[fieldName, 'price']}
-                        label='Price'
+                        label='giá tiền (VNĐ)'
                         dependencies={['price']}
                         rules={[variationsPriceValidator()]}
                     >
                         <InputNumber<number>
                             min={1}
+                            placeholder='Nhập giá tiền...'
                             formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             parser={(value) => value?.replace(/VNĐ\s?|(,*)/g, '') as unknown as number}
                             className='w-full'
@@ -109,10 +110,10 @@ const VariationItem = ({
                         className='capitalize'
                         {...restField}
                         name={[fieldName, 'stock']}
-                        label='stock'
+                        label='Kho hàng'
                         rules={[variationsStockValidator()]}
                     >
-                        <InputNumber min={1} placeholder='Stock' className='w-full' />
+                        <InputNumber min={1} placeholder='Nhập số lượng kho hàng...' className='w-full' />
                     </Form.Item>
                     <Form.Item
                         className='capitalize'
@@ -120,6 +121,7 @@ const VariationItem = ({
                         valuePropName='checked'
                         name={[fieldName, 'isActive']}
                         dependencies={['isActive']}
+                        initialValue={true}
                     >
                         <Checkbox>Công khai</Checkbox>
                     </Form.Item>
