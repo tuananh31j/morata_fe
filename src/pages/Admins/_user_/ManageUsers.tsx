@@ -55,12 +55,12 @@ const ManageUsers = () => {
             key: 'role',
             filteredValue: [query.role],
             filters: [
-                { text: 'Quản trị', value: ROLE.ADMIN },
+                { text: 'Quản trị viên', value: ROLE.ADMIN },
                 { text: 'Người dùng', value: ROLE.USER },
             ],
             render: (role) => (
                 <span className={cn({ ['text-red']: role === ROLE.ADMIN, ['text-green-500']: role === ROLE.USER })}>
-                    {role === ROLE.ADMIN && 'Quản trị'} {role === ROLE.USER && 'Người dùng'}
+                    {role === ROLE.ADMIN && 'Quản trị viên'} {role === ROLE.USER && 'Người dùng'}
                 </span>
             ),
         },

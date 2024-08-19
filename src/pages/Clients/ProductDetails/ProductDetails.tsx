@@ -202,7 +202,7 @@ const ProductDetails = () => {
                                                     defaultBorderColor: 'none',
                                                     defaultHoverBorderColor: 'none',
                                                 },
-                                            },
+                                            },  
                                         }}
                                     >
                                         <Button className='flex items-center text-base '>
