@@ -70,7 +70,7 @@ const ManageUsers = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size={'middle'}>
-                    <Tooltip title='Update'>
+                    <Tooltip title='Cập nhật'>
                         <Link to={`${ADMIN_ROUTES.USERS_EDIT}/${record._id}`} className='text-blue-500'>
                             <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
                         </Link>

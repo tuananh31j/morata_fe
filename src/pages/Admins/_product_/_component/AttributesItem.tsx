@@ -23,7 +23,7 @@ const AttributesItem = ({
             rules={[
                 {
                     required: attribute.isRequired,
-                    message: 'Please input your attribute!',
+                    message: `Thuộc tính bắt buộc, vui lòng nhập giá trị của ${attribute.name}!`,
                 },
             ]}
         >
@@ -36,7 +36,7 @@ const AttributesItem = ({
                     ))}
                 </Select>
             )}
-            {attribute.type === 'manual' && <Input placeholder='Please input' />}
+            {attribute.type === 'manual' && <Input placeholder={`Hãy nhập ${attribute.name}`} />}
         </Form.Item>
     );
 };

@@ -17,11 +17,11 @@ const BarChartRangePicker: React.FC = () => {
 
     const series = [
         {
-            name: 'Orders',
+            name: 'Đơn hàng',
             data: orders || [0],
         },
         {
-            name: 'Revenue',
+            name: 'Doanh thu',
             data: revenue || [0],
         },
     ];
@@ -40,7 +40,7 @@ const BarChartRangePicker: React.FC = () => {
     }, []);
     return (
         <WrapperList
-            title='Order Statistics'
+            title='Đơn hàng và doanh thu'
             option={<DateRangePickerComponent onDateRangeChange={handleDateRangeChange} value={dateRange} />}
             lineButtonBox
         >

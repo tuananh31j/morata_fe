@@ -146,7 +146,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                     <div>
                         <DropDownItem
                             labelId={generateUniqueId(DAY_FIELD)}
-                            title='Today'
+                            title='Hôm nay'
                             handleClick={() => {
                                 const todayDate: DateInput = { type: 'single', date: today };
                                 setPicked(todayDate);
@@ -158,7 +158,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                         />
                         <DropDownItem
                             labelId={generateUniqueId(YTD_FIELD)}
-                            title='Yesterday'
+                            title='Hôm qua'
                             handleClick={() => {
                                 const yesterdayDate: DateInput = { type: 'single', date: yesterday };
                                 setPicked(yesterdayDate);
@@ -170,7 +170,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                         />
                         <DropDownItem
                             labelId={generateUniqueId(WEEK_FIELD)}
-                            title='Past 7 Days'
+                            title='7 ngày trước'
                             handleClick={() => {
                                 const sevenDaysRange: DateInput = { type: 'range', start: dateSevenDayAgo, end: today };
                                 setPicked(sevenDaysRange);
@@ -182,7 +182,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                         />
                         <DropDownItem
                             labelId={generateUniqueId(DAY30_FIELD)}
-                            title='Past 30 Days'
+                            title='30 ngày trước'
                             handleClick={() => {
                                 const thirtyDaysRange: DateInput = {
                                     type: 'range',
@@ -201,7 +201,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                     <div>
                         <DropDownItem
                             labelId={generateUniqueId(DATE_FIELD)}
-                            title='By Date Range'
+                            title='Khoảng thời gian theo ngày'
                             handleClick={() => {
                                 handlePickerType(Picker.Date);
                                 setOpenDropdown(false);
@@ -209,7 +209,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                         />
                         <DropDownItem
                             labelId={generateUniqueId(MONTH_FIELD)}
-                            title='By Month'
+                            title='Không thời gian theo tháng'
                             handleClick={() => {
                                 handlePickerType(Picker.Month);
                                 setOpenDropdown(false);
@@ -217,7 +217,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                         />
                         <DropDownItem
                             labelId={generateUniqueId(YEAR_FIELD)}
-                            title='By Year'
+                            title='Khoảng thời gian theo năm'
                             handleClick={() => {
                                 handlePickerType(Picker.Year);
                                 setOpenDropdown(false);
@@ -241,9 +241,9 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
                         onClick={() => setOpenDropdown(!openDropdown)}
                         className='cursor-pointer border-e pe-2 capitalize text-body hover:underline'
                     >
-                        Data Period
+                        Khoảng thời gian
                     </span>
-                    <span className='cursor-default text-body'>From:</span>
+                    <span className='cursor-default text-body'>Từ:</span>
                     <Tooltip title={hoveredDate || renderDateRange(picked)}>
                         <span className='w-40 cursor-default truncate text-body'>
                             {hoveredDate || renderDateRange(picked)}

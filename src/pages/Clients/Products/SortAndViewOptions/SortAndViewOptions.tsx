@@ -68,7 +68,7 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
             </div>
             <Select
                 style={{ width: 200 }}
-                placeholder='Sort'
+                placeholder='Lọc sản phẩm'
                 optionFilterProp='children'
                 onChange={handleSelectChange}
                 defaultValue={query.sort || query.rawsort}
@@ -86,12 +86,12 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
                     {
                         value: '-price',
                         title: 'price',
-                        label: 'Price desc',
+                        label: 'Giá giảm dần',
                     },
                     {
                         value: 'price',
                         title: 'price',
-                        label: 'Price asc',
+                        label: 'Giá tăng dần',
                     },
                 ]}
             />

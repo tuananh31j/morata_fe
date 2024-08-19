@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import WrapperList from '~/components/_common/WrapperList';
+import VariantPickerDrawer from '~/components/VariantDrawer/VariantPickerDrawer';
 import { MAIN_ROUTES } from '~/constants/router';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useFilter from '~/hooks/_common/useFilter';
@@ -44,18 +45,20 @@ const Wishlist = () => {
         }
     };
     return (
-        <WrapperList classic title='My Wish List' className='mt-0'>
+        <WrapperList classic title='Danh sách sản phẩm yêu thích' className='mt-4'>
             {!wishList?.data.wishList.length && (
                 <Flex vertical={true}>
                     <Card className='w-full rounded-lg'>
                         <Space className='flex flex-col'>
                             <div className='text-lg font-semibold'>
                                 <Space>
-                                    YOUR WISH LIST HAS NO ITEMS <FrownTwoTone />
+                                    Danh sách của bạn hiện không có sản phẩm nào <FrownTwoTone />
                                 </Space>
                             </div>
 
-                            <div className='text-base'>Press the heart mark to add items on your wish list.</div>
+                            <div className='text-base'>
+                                Nhấn vào nút trái tim để thêm sản phẩm vào danh sách yêu thích.
+                            </div>
                         </Space>
                     </Card>
                 </Flex>
@@ -90,17 +93,21 @@ const Wishlist = () => {
                                         <div className='mt-3'>
                                             <Space>
                                                 <Rate allowHalf disabled value={item.rating} />{' '}
-                                                <span>({item.reviewCount} reviews)</span>
+                                                <span>({item.reviewCount} đánh giá)</span>
                                             </Space>
                                         </div>
 
                                         <div className='my-2 text-base'>
                                             <Space>
-                                                <span className='font-semibold'>Avaiability: </span>
-                                                {item.isAvailable ? (
-                                                    <span className='font-semibold text-[#22c55e]'>in stock</span>
+                                                <span className='font-semibold'>Trạng thái: </span>
+                                                {item.variationIds.some((a) => {
+                                                    console.log(a.stock > 0 && a.isActive);
+
+                                                    return a.stock > 0 && a.isActive;
+                                                }) ? (
+                                                    <span className='font-semibold text-[#22c55e]'>Còn hàng</span>
                                                 ) : (
-                                                    <span className='font-semibold text-red'>out of stock</span>
+                                                    <span className='font-semibold text-red'>Hết hàng</span>
                                                 )}
                                             </Space>
                                         </div>
@@ -139,16 +146,19 @@ const Wishlist = () => {
                                                 className='w-1/2'
                                                 onClick={() => navigate(`/products/${item._id}`)}
                                             >
-                                                View Details
+                                                Xem chi tiết
                                             </Button>
-                                            <Button
-                                                shape='round'
-                                                size='large'
-                                                className='w-1/2'
-                                                onClick={() => handleOnSubmit({ _id: item.variationIds[0]._id })}
-                                            >
-                                                Add to cart
-                                            </Button>
+
+                                            <VariantPickerDrawer product={item}>
+                                                <Button
+                                                    shape='round'
+                                                    size='large'
+                                                    className='w-1/2'
+                                                    // onClick={() => handleOnSubmit({ _id: item.variationIds[0]._id })}
+                                                >
+                                                    Thêm vào giỏ hàng
+                                                </Button>
+                                            </VariantPickerDrawer>
                                         </div>
                                     </div>
                                 </Flex>

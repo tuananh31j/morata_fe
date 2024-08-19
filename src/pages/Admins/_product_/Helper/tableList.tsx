@@ -64,12 +64,12 @@ export const ProductsListColumns = ({
                                 <div className='ms-2'>
                                     {item.isActive && (
                                         <Tag className='text-[10px]' color='blue'>
-                                            Đã công khai
+                                            Đang bán
                                         </Tag>
                                     )}
                                     {!item.isActive && (
                                         <Tag className='text-[10px]' color='gray'>
-                                            Đã ẩn
+                                            Đang không bán
                                         </Tag>
                                     )}
                                 </div>
@@ -173,7 +173,7 @@ export const ProductsListColumns = ({
             key: 'action',
             render: (_, record) => (
                 <Space key={record._id}>
-                    <Tooltip title='Update'>
+                    <Tooltip title='Cập nhật'>
                         <Link
                             to={`/admin/products/${record._id}/edit`}
                             className='text-blue-500 transition-colors duration-500 hover:text-blue-400'

@@ -1,3 +1,5 @@
+import { IProductItemNew } from '~/types/Product';
+
 export type IAddWishListResponse = {
     productId: string;
 };
@@ -35,5 +37,5 @@ export type WishListItem = {
 };
 export type IAllWishListResponse = {
     _id: string;
-    wishList: WishListItem[];
+    wishList: IProductItemNew[];
 };

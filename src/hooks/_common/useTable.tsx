@@ -25,7 +25,6 @@ const useTable = () => {
         setSearchedColumn('');
         reset();
     };
-    console.log(searchedColumn, searchText, 'searchedColumn, searchText');
 
     const handleResetSearch = (clearFilters: () => void) => {
         clearFilters();
@@ -69,14 +68,14 @@ const useTable = () => {
                         size='small'
                         style={{ width: 90 }}
                     >
-                        Search
+                        Tìm kiếm
                     </Button>
                     <Button
                         onClick={() => clearFilters && handleResetSearch(clearFilters)}
                         size='small'
                         style={{ width: 90 }}
                     >
-                        Reset
+                        Đặt lại
                     </Button>
                     <Button
                         type='link'
@@ -87,10 +86,10 @@ const useTable = () => {
                             setSearchedColumn(dataIndex);
                         }}
                     >
-                        Filter
+                        Lọc
                     </Button>
                     <Button type='link' size='small' onClick={() => close()}>
-                        Close
+                        Đóng
                     </Button>
                 </Space>
             </div>

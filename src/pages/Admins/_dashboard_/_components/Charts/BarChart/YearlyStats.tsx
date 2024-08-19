@@ -19,11 +19,11 @@ const YearlyStats: React.FC = () => {
 
     const series = [
         {
-            name: 'Orders',
+            name: 'Đơn hàng',
             data: [totalOrders],
         },
         {
-            name: 'Revenue',
+            name: 'Doanh thu',
             data: [totalRevenue],
         },
     ];
@@ -43,7 +43,7 @@ const YearlyStats: React.FC = () => {
 
     return (
         <WrapperList
-            title='Yearly Statistics'
+            title='Theo năm'
             option={
                 <DatePicker
                     onChange={onYearChange}

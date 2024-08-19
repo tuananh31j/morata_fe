@@ -18,27 +18,27 @@ export interface DataType {
 
 const filterStatusItems = [
     {
-        text: 'Pending',
+        text: 'Chờ xác nhận',
         value: OrderStatus.pending,
     },
     {
-        text: 'Cancelled',
+        text: 'Đã hủy',
         value: OrderStatus.cancelled,
     },
     {
-        text: 'Confirmed',
+        text: 'Đã xác nhận',
         value: OrderStatus.confirmed,
     },
     {
-        text: 'Shipping',
+        text: 'Đang giao',
         value: OrderStatus.shipping,
     },
     {
-        text: 'Delivered',
+        text: 'Đã giao',
         value: OrderStatus.delivered,
     },
     {
-        text: 'Done',
+        text: 'Hoàn thành',
         value: OrderStatus.done,
     },
 ];

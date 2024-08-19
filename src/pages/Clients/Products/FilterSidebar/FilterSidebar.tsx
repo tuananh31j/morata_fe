@@ -38,6 +38,7 @@ const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
                     <RatingFilter filterName='Đánh Giá' />
                     <PriceFilterItem />
                 </div>
+
                 <button
                     onClick={reset}
                     className='sticky my-4 w-full rounded-md border border-[#1e3a8a] bg-white p-3 text-black hover:bg-[#1e3a8a] hover:text-white'

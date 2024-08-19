@@ -59,7 +59,7 @@ const PriceFilterItem = () => {
                 </div>
                 <Form.Item>
                     <Button className='w-full' htmlType='submit'>
-                        Submit
+                        Áp dụng
                     </Button>
                 </Form.Item>
             </Form>

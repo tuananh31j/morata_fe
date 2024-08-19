@@ -122,14 +122,14 @@ const CartDrawer = ({ children, item }: PropsType) => {
                     <>
                         <div className='h-[4px] w-full'>{isPending && <LoadingBar />}</div>
                         <div className='flex items-center justify-between'>
-                            <div className='font-bold uppercase text-[#222222]'>Shopping cart</div>
+                            <div className='font-bold uppercase text-[#222222]'>Giỏ Hàng</div>
                             <Button type='text' onClick={onClose}>
                                 <CloseOutlined className='transform text-xl transition duration-500 hover:rotate-180' />
                             </Button>
                         </div>
                     </>
                 }
-                width={450}
+                width={'42vw'}
                 placement='right'
                 closable={false}
                 onClose={onClose}
@@ -139,18 +139,18 @@ const CartDrawer = ({ children, item }: PropsType) => {
                 {!products && (
                     <div className='flex flex-col items-center'>
                         <Empty description={false} />
-                        <p className='text-center text-xl font-medium leading-6'>Your cart is empty.</p>
+                        <p className='text-center text-xl font-medium leading-6'>Giỏ hàng hiện không có sản phẩm.</p>
                         <button onClick={onClose} className='mt-12 h-[48px] bg-[#222222] px-12 font-bold text-white'>
-                            RETURN TO SHOP
+                            Tiếp tục mua hàng
                         </button>
                     </div>
                 )}
                 {products && products.length < 1 && (
                     <div className='flex flex-col items-center'>
                         <Empty description={false} />
-                        <p className='text-center text-xl font-medium leading-6'>Your cart is empty.</p>
+                        <p className='text-center text-xl font-medium leading-6'>Giỏ hàng hiện không có sản phẩm.</p>
                         <button onClick={onClose} className='mt-12 h-[48px] bg-[#222222] px-12 font-bold text-white'>
-                            RETURN TO SHOP
+                            Tiếp tục mua hàng
                         </button>
                     </div>
                 )}
@@ -284,7 +284,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                         )} */}
                         <div className='border-gray-200 border-t px-4 py-6'>
                             <div className='text-gray-900 flex justify-between text-base font-bold'>
-                                <p className='text-xs uppercase '>Subtotal:</p>
+                                <p className='text-xs uppercase '>Tổng đơn hàng:</p>
                                 <p className='text-base text-[#cc1414]'>{Currency.format(totalOrderAmount)}</p>
                             </div>
 
@@ -346,13 +346,13 @@ const CartDrawer = ({ children, item }: PropsType) => {
                             )}
                             <div className='text-gray-500 mt-6 flex justify-center text-center text-sm'>
                                 <p>
-                                    or{' '}
+                                    Hoặc{' '}
                                     <Button
                                         type='text'
                                         className='font-medium text-indigo-600 hover:text-indigo-500'
                                         onClick={onClose}
                                     >
-                                        Continue Shopping
+                                        Tiếp tục mua hàng
                                     </Button>
                                 </p>
                             </div>
