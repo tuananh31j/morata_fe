@@ -1,20 +1,22 @@
 import { Button, Result, Watermark } from 'antd';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationRemoveAll } from '~/hooks/cart/Mutations/useRemoveAll';
+import { clearCheckoutInfo } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
 
 export default function Success() {
     const navigate = useNavigate();
-    const params = new URLSearchParams(window.location.search);
-    console.log(params);
+    // const params = new URLSearchParams(window.location.search);
     const user = useSelector((state: RootState) => state.authReducer.user);
+    const dispatch = useDispatch();
 
     const { mutate } = useMutationRemoveAll();
     useEffect(() => {
         mutate({ userId: user ? user._id : '' });
+        dispatch(clearCheckoutInfo());
     }, []);
     return (
         <Watermark content={['Morata', 'Thank you!']}>

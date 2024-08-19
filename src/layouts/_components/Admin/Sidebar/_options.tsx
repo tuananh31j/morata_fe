@@ -48,7 +48,7 @@ export const menuGroups: IMenuItem[] = [
         label: 'Quản lý người dùng',
         children: [
             { label: 'Tất cả người dùng', route: ADMIN_ROUTES.USERS },
-            { label: 'Tạo mới người dùng', route: ADMIN_ROUTES.USERS_CREATE },
+            // { label: 'Tạo mới người dùng', route: ADMIN_ROUTES.USERS_CREATE },
 
             // { label: 'Chat management', route: 'orders/test' },
             // { label: 'Review management', route: ADMIN_ROUTES.PRODUCTS_CREATE },

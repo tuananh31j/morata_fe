@@ -20,7 +20,11 @@ const userService = {
         return res.data;
     },
     async getDetail(id: string) {
-        const res = await instance.get<IAxiosResponse<IUsers>>(`${USER_ENDPOINT.DETAIL}/${id}`);
+        const res = await instance.get<
+            IAxiosResponse<{
+                user: IUsers;
+            }>
+        >(`${USER_ENDPOINT.DETAIL}/${id}`);
         return res.data;
     },
     async updateUser(data: FormData, id: string) {

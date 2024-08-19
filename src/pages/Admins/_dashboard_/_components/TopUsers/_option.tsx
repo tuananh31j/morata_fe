@@ -33,7 +33,7 @@ export const columns: TableProps<TopBuyer>['columns'] = [
         render: (_, __, index) => <div className='text-center font-semibold text-[#0068c9]'>{index + 1}</div>,
     },
     {
-        title: <span className='text-base font-semibold'>Customer</span>,
+        title: <span className='text-base font-semibold'>Khách hàng</span>,
         dataIndex: 'name',
         key: 'name',
         width: '30%',
@@ -50,9 +50,9 @@ export const columns: TableProps<TopBuyer>['columns'] = [
     },
     {
         title: (
-            <Tooltip title='Amount of successful orders made by the customer' color='blue'>
+            <Tooltip title='Số lượng đơn hàng mà khách hàng đã mua' color='blue'>
                 <span className='text-base font-semibold'>
-                    Orders <QuestionCircleOutlined />
+                    Đơn hàng <QuestionCircleOutlined />
                 </span>
             </Tooltip>
         ),
@@ -63,15 +63,15 @@ export const columns: TableProps<TopBuyer>['columns'] = [
         render: (totalOrders) => (
             <div className='text-center'>
                 <div className='text-lg font-semibold text-[#0068c9]'>{totalOrders}</div>
-                <div className='text-xs text-[#64748b]'>orders</div>
+                <div className='text-xs text-[#64748b]'>đơn</div>
             </div>
         ),
     },
     {
         title: (
-            <Tooltip title='Amount of money the customer has spent' color='blue'>
+            <Tooltip title='Tổng số tiền khách hàng đã bỏ ra' color='blue'>
                 <span className='text-base font-semibold'>
-                    Spent <QuestionCircleOutlined />
+                    Đã chi <QuestionCircleOutlined />
                 </span>
             </Tooltip>
         ),
@@ -92,7 +92,14 @@ export const columns: TableProps<TopBuyer>['columns'] = [
         ),
     },
     {
-        title: <span className='text-base font-semibold'>Items</span>,
+        title: (
+            <Tooltip title='Tổng số sản phẩm khách hàng đã mua' color='blue'>
+                <span className='text-base font-semibold'>
+                    Sản phẩm <QuestionCircleOutlined />
+                </span>
+                ,
+            </Tooltip>
+        ),
         dataIndex: 'totalItems',
         key: 'totalItems',
         align: 'center',
@@ -100,12 +107,12 @@ export const columns: TableProps<TopBuyer>['columns'] = [
         render: (totalItems) => (
             <div className='text-center'>
                 <div className='text-lg font-semibold text-[#722ed1]'>{totalItems}</div>
-                <div className='text-xs text-[#64748b]'>items</div>
+                <div className='text-xs text-[#64748b]'>sản phẩm</div>
             </div>
         ),
     },
     {
-        title: <span className='text-base font-semibold'>Last Order</span>,
+        title: <span className='text-base font-semibold'>Đặt lần cuối</span>,
         dataIndex: 'lastOrderDate',
         key: 'lastOrderDate',
         align: 'center',

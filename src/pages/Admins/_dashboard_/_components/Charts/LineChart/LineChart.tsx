@@ -27,11 +27,11 @@ const LineChart = () => {
 
     const series = [
         {
-            name: 'Revenue',
+            name: 'Doanh thu',
             data: totalRevenue,
         },
         {
-            name: 'Orders',
+            name: 'Đơn hàng',
             data: totalOrders,
         },
     ];
@@ -55,7 +55,7 @@ const LineChart = () => {
 
     return (
         <WrapperList
-            title='Monthly Stats'
+            title='Đơn hàng và doanh thu theo từng tháng'
             className='xl:col-span-12'
             option={
                 <DatePicker

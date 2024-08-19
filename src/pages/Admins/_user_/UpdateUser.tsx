@@ -23,7 +23,8 @@ const handleChange = (value: string) => {
 const UpdateUser = () => {
     const { id } = useParams();
     const { data, isLoading } = useGetDetail(id as string);
-    const userData = data?.data;
+    const userData = data?.data?.user;
+
     const [form] = Form.useForm<FieldType>();
     const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
     const { mutate: updateUser, isPending } = useUpdateUser(id as string);
@@ -202,9 +203,9 @@ const UpdateUser = () => {
                                     onChange={handleChange}
                                     className='w-full'
                                     options={[
-                                        { value: 'user', label: 'User' },
-                                        { value: 'admin', label: 'Admin' },
-                                        { value: 'super_admin', label: 'Super Admin' },
+                                        { value: 'user', label: 'Người dùng' },
+                                        { value: 'admin', label: 'Quản trị viên' },
+                                        // { value: 'super_admin', label: 'Super Admin' },
                                     ]}
                                 ></Select>
                             </Form.Item>

@@ -83,7 +83,7 @@ const VariationItem = ({
                             ]}
                         >
                             {attribute.type === 'options' && (
-                                <Select placeholder='Please select'>
+                                <Select placeholder='Vui lòng chọn!'>
                                     {attribute.values.map((value, i) => (
                                         <Select.Option value={value} key={i}>
                                             {value}
@@ -91,7 +91,7 @@ const VariationItem = ({
                                     ))}
                                 </Select>
                             )}
-                            {attribute.type === 'manual' && <Input placeholder='Please input' />}
+                            {attribute.type === 'manual' && <Input placeholder='Vui lòng nhập!' />}
                         </Form.Item>
                     ))}
 
@@ -118,7 +118,7 @@ const VariationItem = ({
                         label='Kho hàng'
                         rules={[variationsStockValidator()]}
                     >
-                        <InputNumber min={1} placeholder='Nhập số lượng kho hàng...' className='w-full' />
+                        <InputNumber min={1} placeholder='Nhập số lượng sản phẩm...' className='w-full' />
                     </Form.Item>
                     <Form.Item
                         className='whitespace-nowrap capitalize'
@@ -128,7 +128,7 @@ const VariationItem = ({
                         dependencies={['isActive']}
                         initialValue={true}
                     >
-                        <Checkbox>Công khai</Checkbox>
+                        <Checkbox>Đăng bán</Checkbox>
                     </Form.Item>
                     <div className='h-14 w-14'>
                         {!id && (

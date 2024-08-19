@@ -61,7 +61,6 @@ const ProductItemsCheckout: React.FC = () => {
             },
             {
                 onSuccess: () => {
-                    dispatch(clearCheckoutInfo());
                     navigate('/success');
                 },
                 onError: () => {

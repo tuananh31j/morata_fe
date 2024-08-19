@@ -81,7 +81,7 @@ export const TopProducts: React.FC = () => {
                 },
             },
             {
-                title: <span className='text-base'>Product details</span>,
+                title: <span className='text-base'>Chi tiết</span>,
                 dataIndex: 'details',
                 key: 'details',
                 width: '40%',
@@ -113,8 +113,8 @@ export const TopProducts: React.FC = () => {
             },
             {
                 title: (
-                    <Tooltip title='Number of products sold' color='blue' className='text-base'>
-                        Sold <QuestionCircleOutlined />
+                    <Tooltip title='Số lượng sản phẩm đã bán' color='blue' className='text-base'>
+                        Đã bán <QuestionCircleOutlined />
                     </Tooltip>
                 ),
                 dataIndex: 'totalQuantity',
@@ -125,8 +125,8 @@ export const TopProducts: React.FC = () => {
             },
             {
                 title: (
-                    <Tooltip title='Amount of money made based on product sales' color='blue' className='text-base'>
-                        Revenue <QuestionCircleOutlined />
+                    <Tooltip title='Số tiền kiếm được' color='blue' className='text-base'>
+                        Doanh thu <QuestionCircleOutlined />
                     </Tooltip>
                 ),
                 dataIndex: 'totalRevenue',
@@ -138,11 +138,11 @@ export const TopProducts: React.FC = () => {
             {
                 title: (
                     <Tooltip
-                        title='Percentage of amount sold for this product divided by its total stock'
+                        title='Số lượng bán ra chia cho tổng số lượng sản phẩm tồn kho'
                         color='blue'
                         className='text-base'
                     >
-                        % of Stock Sold <QuestionCircleOutlined />
+                        % Biến thể <QuestionCircleOutlined />
                     </Tooltip>
                 ),
                 dataIndex: 'percentageOfTotal',
@@ -161,11 +161,11 @@ export const TopProducts: React.FC = () => {
             {
                 title: (
                     <Tooltip
-                        title='Percentage of this products stock compared to all products'
+                        title='Số lưong bán ra chia cho toàn bộ số lượng sản phẩm còn tồn kho'
                         color='blue'
                         className='text-base'
                     >
-                        % of Total Stock <QuestionCircleOutlined />
+                        % Tồn kho <QuestionCircleOutlined />
                     </Tooltip>
                 ),
 
@@ -196,7 +196,7 @@ export const TopProducts: React.FC = () => {
             key: 'top products',
             label: (
                 <Space>
-                    Top Sales <RiseOutlined />
+                    Sản phẩm bán được nhiều nhất <RiseOutlined />
                 </Space>
             ),
             children: dataTable(),
@@ -205,7 +205,7 @@ export const TopProducts: React.FC = () => {
             key: 'worst products',
             label: (
                 <Space>
-                    Least Sales <FallOutlined />
+                    Sản phẩm bán được ít nhất <FallOutlined />
                 </Space>
             ),
             children: dataTable(),
@@ -234,7 +234,7 @@ export const TopProducts: React.FC = () => {
 
     return (
         <WrapperList
-            title='Products Statistics'
+            title='Thống kê sản phẩm'
             option={<DateRangePickerComponent onDateRangeChange={handleDateRangeChange} value={dateRange} />}
             lineButtonBox
         >

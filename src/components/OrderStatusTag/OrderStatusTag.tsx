@@ -13,39 +13,39 @@ const OrderStatusTag = ({ status }: { status: OrderStatus }) => {
         case OrderStatus.pending:
             return (
                 <Tag icon={<ClockCircleOutlined />} color='default'>
-                    {status}
+                    Chờ xác nhận
                 </Tag>
             );
         case OrderStatus.confirmed:
-            return <Tag color='processing'>{status}</Tag>;
+            return <Tag color='processing'>Đã xác nhận</Tag>;
         case OrderStatus.cancelled:
             return (
                 <Tag icon={<CloseCircleOutlined />} color='error'>
-                    {status}
+                    Đã hủy
                 </Tag>
             );
         case OrderStatus.shipping:
             return (
                 <Tag icon={<ExclamationCircleOutlined />} color='warning'>
-                    {status}
+                    Đang giao
                 </Tag>
             );
         case OrderStatus.delivered:
             return (
                 <Tag icon={<ExclamationCircleOutlined />} color='purple'>
-                    {status}
+                    Đã giao
                 </Tag>
             );
         case OrderStatus.done:
             return (
                 <Tag icon={<CheckCircleOutlined />} color='success'>
-                    {status}
+                    Hoàn thành
                 </Tag>
             );
         default:
             return (
                 <Tag icon={<MinusCircleOutlined />} color='default'>
-                    Oops!!
+                    Có lỗi!!!
                 </Tag>
             );
     }

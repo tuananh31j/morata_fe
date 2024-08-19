@@ -5,7 +5,7 @@ import { useGetAllAttributesScroll } from '~/hooks/attributes/Queries/useGetAllA
 import { useMutationCreateCategory } from '~/hooks/categories/Mutations/useCreateCategory';
 import { IAttributesValue } from '~/types/Attributes';
 import { ICategoryFormData, IValueCheckbox } from '~/types/Category';
-import Annotaion from './_components/Annotaion';
+import Annotation from './_components/Annotation';
 import LableCheckbox from './_components/LableCheckbox';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import { Link } from 'react-router-dom';
@@ -108,7 +108,7 @@ const CreateCategory = () => {
                     </div>
                 </div>
                 <div className='col-span-4 flex flex-col justify-between border-s border-black border-opacity-20 px-4'>
-                    <Annotaion attributeChecked={attributeChecked} />
+                    <Annotation attributeChecked={attributeChecked} />
                     <div className='sticky bottom-0 right-0 my-2 flex justify-end border-t-2 border-black border-opacity-5 p-4'>
                         <Button
                             type='primary'
