@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Button, Space, Tag, Tooltip } from 'antd';
@@ -34,7 +35,11 @@ const CategoryList = () => {
                 <>
                     {record.attributeIds?.map((att) => {
                         return (
-                            <Tag color={'geekblue'} className='my-2' key={att._id}>
+                            <Tag
+                                color={att.isVariant ? 'geekblue' : att.isRequired ? 'red' : ''}
+                                className='my-2'
+                                key={att._id}
+                            >
                                 {att.name.toUpperCase()}
                             </Tag>
                         );
