@@ -12,7 +12,7 @@ import useGetAllUsers from '~/hooks/users/Queries/useGetAllUsers';
 import { IUser } from '~/utils/api/apiHelper';
 import { cn } from '~/utils';
 import useTable from '~/hooks/_common/useTable';
-import TableAdmin from '../_common/TableAdmin';
+import TableDisplay from '../../../components/_common/TableDisplay';
 
 const ManageUsers = () => {
     const { query, onSelectPaginateChange, onFilter, getColumnSearchProps } = useTable<IUser>();
@@ -82,7 +82,7 @@ const ManageUsers = () => {
 
     return (
         <WrapperPageAdmin title='Quản lý người dùng'>
-            <TableAdmin<IUser>
+            <TableDisplay<IUser>
                 onFilter={onFilter}
                 columns={columns}
                 currentPage={currentPage}

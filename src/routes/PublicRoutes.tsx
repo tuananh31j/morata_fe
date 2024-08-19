@@ -182,7 +182,14 @@ const PublicRoutes = [
         ],
     },
     { path: '*', element: <Navigate to={MAIN_ROUTES.NOT_FOUND} /> },
-    { path: MAIN_ROUTES.SUCCESS_ORDER, element: <Success /> },
+    {
+        path: MAIN_ROUTES.SUCCESS_ORDER,
+        element: (
+            <AuthProtected>
+                <Success />
+            </AuthProtected>
+        ),
+    },
     { path: MAIN_ROUTES.NOT_FOUND, element: <NotFoundPage /> },
 ];
 

@@ -11,7 +11,7 @@ import { ColumnsType } from 'antd/es/table';
 import { ADMIN_ROUTES } from '~/constants/router';
 import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
 import useTable from '~/hooks/_common/useTable';
-import TableAdmin from '../_common/TableAdmin';
+import TableDisplay from '../../../components/_common/TableDisplay';
 
 const ListAll = () => {
     const { onSelectPaginateChange, query, onFilter, getColumnSearchProps } = useTable<IProductItem>();
@@ -49,7 +49,7 @@ const ListAll = () => {
                 </Link>
             }
         >
-            <TableAdmin<IProductItem>
+            <TableDisplay<IProductItem>
                 onFilter={onFilter}
                 columns={columns}
                 currentPage={currentPage}

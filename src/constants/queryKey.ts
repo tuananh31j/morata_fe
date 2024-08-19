@@ -16,6 +16,7 @@ export const QUERY_KEY = {
     USERS_PROFILE: 'profile',
 
     ORDERS: 'orders',
+    MY_ORDERS: 'my-orders',
     CHECKOUT: 'checkout',
 
     SHIPPING_SERVICES: 'shippingServices',

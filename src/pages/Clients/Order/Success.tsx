@@ -23,8 +23,8 @@ export default function Success() {
             <div className='h-[100vh]' />
             <Result
                 status='success'
-                title='Your electronic item has been successfully ordered!'
-                subTitle='You will receive a confirmation email with the shipping details shortly.'
+                title='Đơn đặt hàng của bạn đa gửi thành công!'
+                subTitle='Bạn sẽ nhận được thông báo xác nhận qua email của chúng tôi.'
                 className='fixed left-[50%] top-[50%] z-99999 -translate-x-[50%] -translate-y-[50%] rounded-md border border-transparent bg-gray-3 bg-opacity-65 p-10'
                 extra={[
                     <Button
@@ -35,7 +35,7 @@ export default function Success() {
                         type='primary'
                         key='home'
                     >
-                        Check Status
+                        Kiểm tra trạng thái
                     </Button>,
                     <Button
                         key='my-order'
@@ -44,7 +44,7 @@ export default function Success() {
                             navigate('/', { replace: true });
                         }}
                     >
-                        Back To Home
+                        Trang chủ
                     </Button>,
                 ]}
             />

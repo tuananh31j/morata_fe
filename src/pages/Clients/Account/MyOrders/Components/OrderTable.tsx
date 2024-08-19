@@ -1,43 +1,26 @@
-import { Input, Table, TableProps } from 'antd';
-import { columns, DataType } from './_helper';
+import { orderColumns, DataType } from './_helper';
 import useGetMyOrders from '~/hooks/orders/Queries/useGetMyOrders';
-import useFilter from '~/hooks/_common/useFilter';
-import { useState } from 'react';
+import TableDisplay from '~/components/_common/TableDisplay';
+import useTable from '~/hooks/_common/useTable';
+import { ColumnsType } from 'antd/es/table';
 
 const OrderTable: React.FC = () => {
-    const { query, updateQueryParam } = useFilter();
-    const { data, isLoading } = useGetMyOrders(query);
-    const [filteredData, setFilteredData] = useState<DataType[] | null>(null);
-
-    const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-        updateQueryParam({ ...query, page: pagination.current || 1 });
-    };
-
-    const handleSearch = (value: string) => {
-        if (value.trim() === '') {
-            setFilteredData(null);
-        } else {
-            const searchResults = data?.data.data.orders.filter((order) => order._id === value);
-            setFilteredData(searchResults || null);
-        }
-    };
+    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<DataType>();
+    const { data } = useGetMyOrders(query);
+    const myOrders = data?.data.data.orders;
+    const totalDocs = data?.data.data.totalDocs;
+    const columns: ColumnsType<DataType> = orderColumns({ getColumnSearchProps, query }) || [];
 
     return (
         <>
-            <Input.Search className='mb-5 w-1/4' placeholder='Tìm kiếm theo ID đơn hàng' onSearch={handleSearch} />
-            {!isLoading && data && (
-                <Table
-                    rowKey={(record) => record._id}
-                    columns={columns}
-                    dataSource={filteredData || data.data?.data?.orders}
-                    pagination={{
-                        pageSize: 8,
-                        current: +query.page || 1,
-                    }}
-                    onChange={onChange}
-                    showSorterTooltip={{ target: 'full-header' }}
-                />
-            )}
+            <TableDisplay
+                onFilter={onFilter}
+                onSelectPaginateChange={onSelectPaginateChange}
+                columns={columns}
+                totalDocs={totalDocs}
+                dataSource={myOrders}
+                currentPage={Number(query.page || 1)}
+            ></TableDisplay>
         </>
     );
 };

@@ -5,10 +5,8 @@ import { useState } from 'react';
 import useGetAllLocationByUser from '~/hooks/location/Query/useGetAllLocationByUser';
 import { LOCATION_TYPES } from '~/constants/enum';
 import { FormProps } from 'antd/lib';
-import { FieldNamesType } from 'antd/es/cascader';
 import useAddLocation from '~/hooks/location/Mutation/useAddLocation';
 import useUpdateLocation from '~/hooks/location/Mutation/useUpdateLocation';
-import useDeleteLocation from '~/hooks/location/Mutation/useDeleteLocation';
 import { ILocation } from '~/types/Location';
 
 const MyAddress = () => {
@@ -18,7 +16,6 @@ const MyAddress = () => {
     const [isEdit, setIsEdit] = useState(false);
     const { mutate: createLocation } = useAddLocation();
     const { mutate: updateLocation } = useUpdateLocation();
-    const { mutate: removeLocation } = useDeleteLocation();
     const handleAddAddress = () => {
         form.resetFields();
         setIsEdit(false);

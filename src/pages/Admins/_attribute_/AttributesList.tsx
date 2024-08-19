@@ -8,7 +8,7 @@ import useGetAllAtributes from '~/hooks/attributes/Queries/useGetAllAttributes';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import { IAttributesValue } from '~/types/Attributes';
 import useTable from '~/hooks/_common/useTable';
-import TableAdmin from '../_common/TableAdmin';
+import TableDisplay from '../../../components/_common/TableDisplay';
 
 const CategoryList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<IAttributesValue>();
@@ -78,7 +78,7 @@ const CategoryList = () => {
                 </Link>
             }
         >
-            <TableAdmin<IAttributesValue>
+            <TableDisplay<IAttributesValue>
                 onFilter={onFilter}
                 columns={columns}
                 currentPage={currentPage}

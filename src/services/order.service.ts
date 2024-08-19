@@ -3,11 +3,11 @@ import { IAxiosResponse } from '~/types/AxiosResponse';
 import { ORDER_ENDPOINT } from '~/constants/endpoint';
 import { IOrderResponse, IOrderDetails } from '~/types/Order';
 import { OrderStatus } from '~/constants/enum';
-import { IReviewResponse } from '~/types/Review';
+import { Params } from '~/types/Api';
 
 const orderService = {
-    myOrder() {
-        return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
+    myOrder(params: Params) {
+        return instance.get<IAxiosResponse<IOrderResponse>>(`${ORDER_ENDPOINT.MY_ORDERS}`, { params });
     },
 
     /* eslint-disable */
@@ -60,9 +60,9 @@ const orderService = {
         return instance.get<IAxiosResponse<OrderStatus[]>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
     /* eslint-disable */
-    vnpayReturnStatusOrder(params: URLSearchParams) {
-        return instance.get<{ code: string; message: string; data?: any }>(`${ORDER_ENDPOINT.VNPAY_RETURN}?${params}`);
-    },
+    // vnpayReturnStatusOrder(params: URLSearchParams) {
+    //     return instance.get<{ code: string; message: string; data?: any }>(`${ORDER_ENDPOINT.VNPAY_RETURN}?${params}`);
+    // },
     /* eslint-enable */
 };
 

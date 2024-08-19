@@ -8,7 +8,7 @@ import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import useTable from '~/hooks/_common/useTable';
 import { ICategory } from '~/types/Category';
-import TableAdmin from '../_common/TableAdmin';
+import TableDisplay from '../../../components/_common/TableDisplay';
 
 const CategoryList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<ICategory>();
@@ -73,7 +73,7 @@ const CategoryList = () => {
                 </Link>
             }
         >
-            <TableAdmin<ICategory>
+            <TableDisplay<ICategory>
                 onFilter={onFilter}
                 columns={columns}
                 currentPage={currentPage}

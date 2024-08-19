@@ -22,7 +22,6 @@ const BrandList = () => {
             dataIndex: 'name',
             key: 'search',
             ...getColumnSearchProps('name'),
-            render: (text) => <h4>{text}</h4>,
         },
         {
             title: 'Thao tác',

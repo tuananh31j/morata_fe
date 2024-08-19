@@ -4,7 +4,7 @@ import { Pagination, Space, Table } from 'antd';
 import { TableProps } from 'antd/lib';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
 
-interface ITableAdminProps<T> {
+interface ITableDisplayProps<T> {
     dataSource?: T[];
     columns: TableColumnsType<T>;
     totalDocs?: number;
@@ -13,14 +13,14 @@ interface ITableAdminProps<T> {
     currentPage: number;
 }
 
-const TableAdmin = <T extends object>({
+const TableDisplay = <T extends object>({
     dataSource,
     columns,
     totalDocs,
     onFilter,
     onSelectPaginateChange,
     currentPage,
-}: ITableAdminProps<T>) => {
+}: ITableDisplayProps<T>) => {
     const onChange: TableProps<T>['onChange'] = (_, filters, sorter) => {
         onFilter(filters, sorter);
     };
@@ -41,4 +41,4 @@ const TableAdmin = <T extends object>({
         </>
     );
 };
-export default TableAdmin;
+export default TableDisplay;

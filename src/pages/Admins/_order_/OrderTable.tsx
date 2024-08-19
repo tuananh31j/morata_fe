@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ORDER_STATUS } from '~/constants/order';
 import useTable from '~/hooks/_common/useTable';
 import { OrderStatus } from '~/constants/enum';
-import TableAdmin from '../_common/TableAdmin';
+import TableDisplay from '../../../components/_common/TableDisplay';
 
 interface Props {
     ordersList: {
@@ -55,7 +55,6 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
             dataIndex: 'code',
             title: 'Mã đơn hàng',
             ...getColumnSearchProps('code'),
-            filteredValue: query._id,
         },
         {
             key: 'rawsearch',
@@ -156,7 +155,7 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
     ];
 
     return (
-        <TableAdmin<DataType>
+        <TableDisplay<DataType>
             onFilter={onFilter}
             columns={columns}
             currentPage={currentPage}
