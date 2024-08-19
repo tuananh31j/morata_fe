@@ -24,7 +24,7 @@ export const DashboardPage = lazy(() => import('~/pages/Admins/_dashboard_'));
 export const NotFoundPage = lazy(() => import('~/pages/404'));
 export const ErrorPage = lazy(() => import('~/pages/Error'));
 export const ManageProducts = lazy(() => import('~/pages/Admins/_product_/index'));
-export const ProductsListAll = lazy(() => import('~/pages/Admins/_product_/ListAll'));
+export const ProductsListAll = lazy(() => import('~/pages/Admins/_product_'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/_product_/CreateProduct'));
 export const UpdateProduct = lazy(() => import('~/pages/Admins/_product_/UpdateProduct'));
 export const ManageUsers = lazy(() => import('~/pages/Admins/_user_/index'));

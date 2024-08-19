@@ -58,7 +58,7 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
             filteredValue: query._id,
         },
         {
-            key: 'search',
+            key: 'rawsearch',
             dataIndex: 'customerName',
             title: 'Tên khách hàng',
             ...getColumnSearchProps('customerName'),

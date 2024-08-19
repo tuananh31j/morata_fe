@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useRef } from 'react';
 import { FilterDropdownProps, FilterValue } from 'antd/es/table/interface';
 import { Input, Button, Space, InputRef, TableColumnType } from 'antd';
@@ -27,11 +28,12 @@ const useTable = <T extends object>() => {
     const handleResetSearch = (clearFilters: () => void) => {
         clearFilters();
         setSearchText('');
-        updateQueryParam({ ...query, page: '1', search: '' });
+        updateQueryParam({ ...query, page: '1', search: '', rawsearch: '' });
     };
     const onSelectPaginateChange = (page: number) => {
         updateQueryParam({ ...query, page: String(page) });
     };
+
     const onFilter = (filters: Record<string, FilterValue | null>, sorter: SorterResult<T> | SorterResult<T>[]) => {
         const filterParams = convertObject(filters);
         const sortColumKey = Array.isArray(sorter) ? sorter[0]?.columnKey : sorter?.columnKey;
