@@ -71,6 +71,7 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
                 placeholder='Sort'
                 optionFilterProp='children'
                 onChange={handleSelectChange}
+                defaultValue={query.sort || query.rawsort}
                 options={[
                     {
                         value: 'name',

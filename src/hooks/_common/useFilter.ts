@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { setQuery, updateGrid } from '~/store/slice/filterSlice';
 import { useTypedSelector } from '~/store/store';
-import { IParams, Params } from '~/types/Api';
+import { Params } from '~/types/Api';
 
 const useFilter = () => {
     const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const useFilter = () => {
         dispatch(updateGrid(gridClass));
     };
 
-    const updateQueryParam = (params: IParams) => {
+    const updateQueryParam = (params: Params) => {
         const newParams = new URLSearchParams(searchParams?.toString());
         const checkedParams = _.omitBy(params, (value) => value === undefined || value === '' || value === null);
 

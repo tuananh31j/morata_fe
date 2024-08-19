@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ICategory } from '~/types/Category';
+import { IMenu } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
 import RatingFilter from '../_components/FilterItem/RatingItem';
 import PriceFilterItem from '../_components/FilterItem/PriceItem';
@@ -10,7 +10,7 @@ import useGetFilterByCategory from '~/hooks/products/Queries/useGetFilterByCateg
 import FilterBoxForVariant from '../_components/FilterItem/FilterBoxForVariant';
 
 type IFilterProps = {
-    categories: ICategory[];
+    categories: IMenu[];
     brands: IBrand[];
 };
 

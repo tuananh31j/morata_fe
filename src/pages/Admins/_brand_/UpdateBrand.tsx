@@ -55,7 +55,7 @@ const UpdateBrand = () => {
                                 </Form.Item>
                                 <div className='flex gap-1'>
                                     <Form.Item<IAttributeFormData>
-                                        label='Name'
+                                        label='Tên thương hiệu'
                                         name='name'
                                         className='w-1/2 font-medium text-[#08090F]'
                                         rules={[{ required: true, message: 'Please enter attribute name!' }]}

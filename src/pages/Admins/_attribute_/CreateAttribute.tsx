@@ -75,7 +75,8 @@ const CreateAttribute = () => {
                                                     <span className='flex items-center justify-between'>
                                                         <span>Kiểu lựa chọn</span>
                                                         <Popover
-                                                            content='Loại thuộc tính này sẽ yêu cầu nhập giá trị dưới dạng lựa chọn khi tạo mới sản phẩm'
+                                                            zIndex={999999}
+                                                            content='Loại thuộc tính này sẽ yêu cầu nhập giá trị dưới dạng lựa chọn cho sản phẩm của bạn'
                                                             title='Khuyên dùng'
                                                         >
                                                             <Button

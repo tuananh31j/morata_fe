@@ -1,6 +1,5 @@
 import FilterWrap from './FilterWrap';
 import { Checkbox } from 'antd';
-import { IParams } from '~/types/Api';
 import { ICategory } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
 import useFilter from '~/hooks/_common/useFilter';
@@ -13,7 +12,7 @@ const FilterBox = ({
     data,
 }: {
     filterName: string;
-    filterParams: keyof Omit<IParams, 'page' | 'sort'>;
+    filterParams: string;
     data: ICategory[] | IBrand[];
 }) => {
     const { query, updateQueryParam } = useFilter();

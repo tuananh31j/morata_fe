@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { EditOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Image, Pagination, Space, Table, Tooltip } from 'antd';
+import { Image, Space, Tooltip } from 'antd';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import StaticImages from '~/assets';
@@ -12,12 +12,14 @@ import useGetAllUsers from '~/hooks/users/Queries/useGetAllUsers';
 import { IUser } from '~/utils/api/apiHelper';
 import { cn } from '~/utils';
 import useTable from '~/hooks/_common/useTable';
+import TableAdmin from '../_common/TableAdmin';
 
 const ManageUsers = () => {
     const { query, onSelectPaginateChange, onFilter, getColumnSearchProps } = useTable();
     const { data } = useGetAllUsers(query);
     const users = data?.data?.users;
     const totalDocs = data?.data?.totalDocs;
+    const currentPage = Number(query.page || 1);
 
     const columns: TableProps<IUser>['columns'] = [
         {
@@ -78,21 +80,16 @@ const ManageUsers = () => {
         },
     ];
 
-    const onChange: TableProps<IUser>['onChange'] = (_, filters, sort) => {
-        onFilter(filters, sort);
-    };
-
     return (
         <WrapperPageAdmin title='Quản lý người dùng'>
-            <Table onChange={onChange} columns={columns} dataSource={users} pagination={false} />
-            <Space className='m-5 flex w-full justify-end'>
-                <Pagination
-                    onChange={onSelectPaginateChange}
-                    pageSize={10}
-                    total={totalDocs}
-                    current={Number(query.page || 1)}
-                />
-            </Space>
+            <TableAdmin<IUser>
+                onFilter={onFilter}
+                columns={columns}
+                currentPage={currentPage}
+                dataSource={users}
+                onSelectPaginateChange={onSelectPaginateChange}
+                totalDocs={totalDocs}
+            />
         </WrapperPageAdmin>
     );
 };

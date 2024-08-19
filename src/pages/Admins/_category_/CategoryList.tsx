@@ -1,30 +1,32 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Pagination, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Space, Tag, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
 import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import useTable from '~/hooks/_common/useTable';
 import { ICategory } from '~/types/Category';
+import TableAdmin from '../_common/TableAdmin';
 
 const CategoryList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable();
     const { data: categories } = useGetCategories(query);
     const categoryList = categories?.data.categories;
     const totalDocs = categories?.data.totalDocs;
+    const currentPage = Number(query.page || 1);
 
     const columns: TableProps<ICategory>['columns'] = [
         {
-            title: 'Name',
+            title: 'Tên danh mục',
             dataIndex: 'name',
             key: 'search',
             render: (text) => <h4>{text}</h4>,
             ...getColumnSearchProps('name'),
-            width: '30%',
+            width: '20%',
         },
         {
-            title: 'Attributes',
+            title: 'Thuộc tính',
             dataIndex: 'attributeNames',
             key: 'attributeNames',
             width: '70%',
@@ -41,7 +43,7 @@ const CategoryList = () => {
             ),
         },
         {
-            title: 'Action',
+            title: 'Thao tác',
             key: 'action',
             render: (_, record) => (
                 <Space size={'middle'}>
@@ -54,30 +56,26 @@ const CategoryList = () => {
             ),
         },
     ];
-    const onChange: TableProps<ICategory>['onChange'] = (_, filters, sort) => {
-        onFilter(filters, sort);
-    };
 
     return (
         <WrapperPageAdmin
             title='Quản lý danh mục'
             option={
                 <Link to={ADMIN_ROUTES.CATEGORIES_CREATE}>
-                    <Button size='large' icon={<PlusOutlined />} type='primary'>
+                    <Button icon={<PlusOutlined />} type='primary'>
                         Thêm mới danh mục
                     </Button>
                 </Link>
             }
         >
-            <Table onChange={onChange} columns={columns} dataSource={categoryList} pagination={false} />
-            <Space className='m-5 flex w-full justify-end'>
-                <Pagination
-                    onChange={onSelectPaginateChange}
-                    pageSize={10}
-                    total={totalDocs}
-                    current={Number(query.page || 1)}
-                />
-            </Space>
+            <TableAdmin<ICategory>
+                onFilter={onFilter}
+                columns={columns}
+                currentPage={currentPage}
+                dataSource={categoryList}
+                onSelectPaginateChange={onSelectPaginateChange}
+                totalDocs={totalDocs}
+            />
         </WrapperPageAdmin>
     );
 };

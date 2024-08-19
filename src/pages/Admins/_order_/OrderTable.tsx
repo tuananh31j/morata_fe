@@ -1,12 +1,12 @@
 /* eslint-disable no-nested-ternary */
 import type { TableColumnsType } from 'antd';
-import { Button, Pagination, Space, Table } from 'antd';
+import { Button } from 'antd';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { TableProps } from 'antd/lib';
 import { ORDER_STATUS } from '~/constants/order';
 import useTable from '~/hooks/_common/useTable';
 import { OrderStatus } from '~/constants/enum';
+import TableAdmin from '../_common/TableAdmin';
 
 interface Props {
     ordersList: {
@@ -32,6 +32,7 @@ interface DataType {
 
 const OrderTable = ({ ordersList, totalDocs }: Props) => {
     const { getColumnSearchProps, query, onSelectPaginateChange, onFilter } = useTable();
+    const currentPage = Number(query.page || 1);
     const dataSource =
         ordersList && ordersList.length
             ? ordersList.map((order: any, index) => {
@@ -154,22 +155,15 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
         },
     ];
 
-    const onChange: TableProps<DataType>['onChange'] = (_, filters, sorter, extra) => {
-        onFilter(filters, sorter);
-    };
-
     return (
-        <>
-            <Table onChange={onChange} columns={columns} dataSource={dataSource} pagination={false} />
-            <Space className='m-5 flex w-full justify-end'>
-                <Pagination
-                    onChange={onSelectPaginateChange}
-                    pageSize={10}
-                    total={totalDocs}
-                    current={Number(query.page || 1)}
-                />
-            </Space>
-        </>
+        <TableAdmin<DataType>
+            onFilter={onFilter}
+            columns={columns}
+            currentPage={currentPage}
+            dataSource={dataSource}
+            onSelectPaginateChange={onSelectPaginateChange}
+            totalDocs={totalDocs}
+        />
     );
 };
 export default OrderTable;

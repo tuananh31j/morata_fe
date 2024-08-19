@@ -6,7 +6,7 @@ import {
     IProductDetailsAdmin,
     IFilterResponse,
 } from '~/types/Product';
-import { IParams, Params } from '~/types/Api';
+import { Params } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import instance from '~/utils/api/axiosIntance';
 import { PRODUCT_ENDPOINT } from '~/constants/endpoint';
@@ -34,7 +34,7 @@ const productService = {
         return res.data;
     },
     /* eslint-enable */
-    async getProductsByCategory(id: string, params: IParams) {
+    async getProductsByCategory(id: string, params: Params) {
         const res = await instance.get<IAxiosResponse<IProduct[]>>(`${PRODUCT_ENDPOINT.BYCATE}/${id}`, {
             params,
         });

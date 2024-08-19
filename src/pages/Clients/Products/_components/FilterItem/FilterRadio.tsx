@@ -1,7 +1,6 @@
 import FilterWrap from './FilterWrap';
 import { Radio, RadioChangeEvent, Space } from 'antd';
-import { IParams } from '~/types/Api';
-import { ICategory } from '~/types/Category';
+import { IMenu } from '~/types/Category';
 import { IBrand } from '~/types/Brand';
 import useFilter from '~/hooks/_common/useFilter';
 
@@ -11,12 +10,12 @@ const FilterRadio = ({
     data,
 }: {
     filterName: string;
-    filterParams: keyof Pick<IParams, 'limit' | 'price' | 'brandId' | 'categoryId' | 'rating' | 'page' | 'sort'>;
-    data: ICategory[] | IBrand[];
+    filterParams: string;
+    data: IMenu[] | IBrand[];
 }) => {
     const { query, updateQueryParam } = useFilter();
     const onChange = (e: RadioChangeEvent) => {
-        updateQueryParam({ ...query, [filterParams]: e.target.value.toString(), page: 1 });
+        updateQueryParam({ ...query, [filterParams]: e.target.value.toString(), page: String(1) });
     };
     return (
         <FilterWrap filterName={filterName}>

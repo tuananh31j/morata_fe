@@ -21,7 +21,6 @@ interface IPickerData {
 const Wishlist = () => {
     useDocumentTitle('Wish List');
     const { query } = useFilter();
-    console.log('🚀 ~ Wishlist ~ query:', typeof query);
     const [valueQuantity, setQuantityValue] = useState(1);
     const { data: wishList } = useGetAllWishlist(query);
     const { handleRemoveWishList } = useMutationRemoveWishList();

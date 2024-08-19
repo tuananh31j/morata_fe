@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { getAccessToken, setAccessToken } from './apiHelper';
 import queryString from 'query-string';
-import { IParams } from '~/types/Api';
 import { AUTH_ENDPOINT } from '~/constants/endpoint';
 import { IAxiosResponse } from '~/types/AxiosResponse';
+import { Params } from '~/types/Api';
 
 const axiosOptions = {
     baseURL: import.meta.env.VITE_REACT_API_URL,
     // headers: getContentType(),
     withCredentials: true,
-    paramsSerializer: (params: IParams) => queryString.stringify(params),
+    paramsSerializer: (params: Params) => queryString.stringify(params),
 };
 const instance = axios.create(axiosOptions);
 

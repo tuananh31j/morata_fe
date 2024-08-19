@@ -1,6 +1,6 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Pagination, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Space, Tag, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { AttributeType } from '~/constants/enum';
 import { ADMIN_ROUTES } from '~/constants/router';
@@ -8,17 +8,14 @@ import useGetAllAtributes from '~/hooks/attributes/Queries/useGetAllAttributes';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import { IAttributesValue } from '~/types/Attributes';
 import useTable from '~/hooks/_common/useTable';
+import TableAdmin from '../_common/TableAdmin';
 
 const CategoryList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable();
     const { data: attributeRes } = useGetAllAtributes(query);
     const attributesList = attributeRes?.data.attributes;
     const totalDocs = attributeRes?.data.totalDocs;
-
-    // @event
-    const onChange: TableProps<IAttributesValue>['onChange'] = (_, filter, sort) => {
-        onFilter(filter, sort);
-    };
+    const currentPage = Number(query.page || 1);
 
     const columns: TableProps<IAttributesValue>['columns'] = [
         {
@@ -75,21 +72,20 @@ const CategoryList = () => {
             title='Quản lý thuộc tính'
             option={
                 <Link to={ADMIN_ROUTES.ATTRIBUTES_CREATE}>
-                    <Button size='large' icon={<PlusOutlined />} type='primary'>
+                    <Button icon={<PlusOutlined />} type='primary'>
                         Thêm mới thuộc tính
                     </Button>
                 </Link>
             }
         >
-            <Table onChange={onChange} columns={columns} dataSource={attributesList} pagination={false} />
-            <Space className='m-5 flex w-full justify-end'>
-                <Pagination
-                    onChange={onSelectPaginateChange}
-                    pageSize={10}
-                    total={totalDocs}
-                    current={Number(query.page || 1)}
-                />
-            </Space>
+            <TableAdmin<IAttributesValue>
+                onFilter={onFilter}
+                columns={columns}
+                currentPage={currentPage}
+                dataSource={attributesList}
+                onSelectPaginateChange={onSelectPaginateChange}
+                totalDocs={totalDocs}
+            />
         </WrapperPageAdmin>
     );
 };

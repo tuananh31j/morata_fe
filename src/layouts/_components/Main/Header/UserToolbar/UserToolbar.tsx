@@ -26,7 +26,7 @@ const UserToolbar = () => {
         : 0;
 
     return (
-        <div className='justify-between gap-2 lg:flex'>
+        <div className='justify-between lg:flex'>
             {isLoading && !data && (
                 <>
                     <UserToolBarSkeleton />

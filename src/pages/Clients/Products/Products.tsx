@@ -18,7 +18,7 @@ const Products = () => {
     const { data: products, isLoading: isProductsLoading } = useGetAllProducts(query);
 
     const onPageChange = (page: number) => {
-        updateQueryParam({ ...query, page: page.toString(), limit });
+        updateQueryParam({ ...query, page: page.toString(), limit: String(limit) });
     };
     return (
         <>

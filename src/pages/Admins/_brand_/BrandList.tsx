@@ -1,6 +1,6 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
-import { Button, Pagination, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Pagination, Space, Table, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '~/constants/router';
 import useGetAllBrands from '~/hooks/brands/useGetAllBrands';
@@ -44,13 +44,13 @@ const BrandList = () => {
             title='Quản lý thương hiệu'
             option={
                 <Link to={ADMIN_ROUTES.BRAND_CREATE}>
-                    <Button size='large' icon={<PlusOutlined />} type='primary'>
+                    <Button icon={<PlusOutlined />} type='primary'>
                         Thêm mới thương hiệu
                     </Button>
                 </Link>
             }
         >
-            <Table onChange={onChange} columns={columns} dataSource={brands} pagination={false} />
+            <Table bordered onChange={onChange} columns={columns} dataSource={brands} pagination={false} />
             <Space className='m-5 flex w-full justify-end'>
                 <Pagination pageSize={brands?.length} total={brands?.length} />
             </Space>
