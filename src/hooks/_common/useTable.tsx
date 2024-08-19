@@ -7,15 +7,13 @@ import useFilter from './useFilter';
 import { SorterResult } from 'antd/lib/table/interface';
 import { convertObject } from '~/utils/convertToQueryParams';
 
-type DataIndex = string;
-
-const useTable = () => {
+const useTable = <T extends object>() => {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const { query, updateQueryParam, reset } = useFilter();
     const searchInput = useRef<InputRef>(null);
 
-    const handleSearch = (selectedKeys: string[], confirm: FilterDropdownProps['confirm'], dataIndex: DataIndex) => {
+    const handleSearch = (selectedKeys: string[], confirm: FilterDropdownProps['confirm'], dataIndex: string) => {
         confirm();
         setSearchText(selectedKeys[0]);
         setSearchedColumn(dataIndex);
@@ -35,7 +33,7 @@ const useTable = () => {
     const onSelectPaginateChange = (page: number) => {
         updateQueryParam({ ...query, page: String(page) });
     };
-    const onFilter = (filters: Record<string, FilterValue | null>, sorter: SorterResult<any> | SorterResult<any>[]) => {
+    const onFilter = (filters: Record<string, FilterValue | null>, sorter: SorterResult<T> | SorterResult<T>[]) => {
         const filterParams = convertObject(filters);
         const sortColumKey = Array.isArray(sorter) ? sorter[0]?.columnKey : sorter?.columnKey;
         const sortOrder = Array.isArray(sorter) ? sorter[0]?.order : sorter?.order;
@@ -50,7 +48,7 @@ const useTable = () => {
         updateQueryParam({ ...query, ...filterParams, sort: sortParams, page: String(1) });
     };
 
-    const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<any> => ({
+    const getColumnSearchProps = (dataIndex: string): TableColumnType<T> => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
                 <Input

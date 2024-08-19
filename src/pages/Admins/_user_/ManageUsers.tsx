@@ -15,7 +15,7 @@ import useTable from '~/hooks/_common/useTable';
 import TableAdmin from '../_common/TableAdmin';
 
 const ManageUsers = () => {
-    const { query, onSelectPaginateChange, onFilter, getColumnSearchProps } = useTable();
+    const { query, onSelectPaginateChange, onFilter, getColumnSearchProps } = useTable<IUser>();
     const { data } = useGetAllUsers(query);
     const users = data?.data?.users;
     const totalDocs = data?.data?.totalDocs;

@@ -11,7 +11,7 @@ import { ICategory } from '~/types/Category';
 import TableAdmin from '../_common/TableAdmin';
 
 const CategoryList = () => {
-    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable();
+    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<ICategory>();
     const { data: categories } = useGetCategories(query);
     const categoryList = categories?.data.categories;
     const totalDocs = categories?.data.totalDocs;

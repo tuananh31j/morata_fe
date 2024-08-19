@@ -11,7 +11,7 @@ import useTable from '~/hooks/_common/useTable';
 import TableAdmin from '../_common/TableAdmin';
 
 const CategoryList = () => {
-    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable();
+    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<IAttributesValue>();
     const { data: attributeRes } = useGetAllAtributes(query);
     const attributesList = attributeRes?.data.attributes;
     const totalDocs = attributeRes?.data.totalDocs;

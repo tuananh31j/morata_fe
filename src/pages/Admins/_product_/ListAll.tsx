@@ -14,7 +14,7 @@ import useTable from '~/hooks/_common/useTable';
 import TableAdmin from '../_common/TableAdmin';
 
 const ListAll = () => {
-    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps } = useTable();
+    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps } = useTable<IProductItem>();
     const [brands, categories] = useGetCategoriesAndBrands();
     const { data } = useGetProducts(query);
     const currentPage = Number(query.page || 1);

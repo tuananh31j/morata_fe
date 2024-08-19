@@ -9,7 +9,7 @@ import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import useTable from '~/hooks/_common/useTable';
 
 const BrandList = () => {
-    const { onFilter, getColumnSearchProps, query } = useTable();
+    const { onFilter, getColumnSearchProps, query } = useTable<IBrand>();
     const { data: brandsRes } = useGetAllBrands({ search: query.search });
     const brands = brandsRes?.data;
 

@@ -11,7 +11,7 @@ export default function AdminLayout() {
             <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
                 <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-                <div className='mt-5 p-4'>
+                <div className='mt-5 px-4'>
                     <Outlet />
                 </div>
             </div>

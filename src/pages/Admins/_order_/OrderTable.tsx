@@ -31,7 +31,7 @@ interface DataType {
 }
 
 const OrderTable = ({ ordersList, totalDocs }: Props) => {
-    const { getColumnSearchProps, query, onSelectPaginateChange, onFilter } = useTable();
+    const { getColumnSearchProps, query, onSelectPaginateChange, onFilter } = useTable<any>();
     const currentPage = Number(query.page || 1);
     const dataSource =
         ordersList && ordersList.length
