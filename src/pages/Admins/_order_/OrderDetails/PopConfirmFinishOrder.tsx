@@ -21,11 +21,13 @@ const PopConfirmFinishOrder = ({ orderId }: Props) => {
 
     const handleConfirm = () => {
         if (!finishOrder.isPending) {
+            setOpen(false);
+
             finishOrder.mutate(orderId, {
                 onSuccess: () => {
                     toast.success('Người nhận đã xác nhận đã nhận hàng');
                     navigate(`/admin/orders/${orderId}/detail`);
-                    setOpen(false);
+                    // setOpen(false);
                 },
                 onError: (error) => {
                     toast.error(error.message);

@@ -1,5 +1,5 @@
 import { Button, Popconfirm } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDeliveredOrder } from '~/hooks/orders/Mutations/useDeliveredOrder';
@@ -20,11 +20,13 @@ const PopConfirmDeliveredOrder = ({ orderId }: Props) => {
 
     const handleConfirm = () => {
         if (!deliveredOrder.isPending) {
+            setOpen(false);
+
             deliveredOrder.mutate(orderId, {
                 onSuccess: () => {
                     toast.success('Đơn hàng đã được giao thành công');
                     navigate(`/admin/orders/${orderId}/detail`);
-                    setOpen(false);
+                    // setOpen(false);
                 },
                 onError: (error) => {
                     toast.error(error.message);
@@ -36,6 +38,7 @@ const PopConfirmDeliveredOrder = ({ orderId }: Props) => {
     const handleCancel = () => {
         setOpen(false);
     };
+
     return (
         <Popconfirm
             title='Xác nhận đã giao hàng'
