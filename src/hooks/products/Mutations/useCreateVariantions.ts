@@ -8,7 +8,7 @@ const useCreateVariantions = () => {
         mutationFn: (data: FormData) => productService.createVariationsToProduct(data),
         onSuccess() {
             queryClient.resetQueries({
-                predicate: (query) => (query.queryKey[0] as string) === QUERY_KEY.PRODUCTS,
+                predicate: (query) => query.queryKey.includes(QUERY_KEY.PRODUCTS),
             });
         },
         onError(error) {

@@ -47,6 +47,7 @@ const CancelOrderModal = ({ orderId }: Props) => {
             <Button danger onClick={() => setOpen(true)}>
                 Hủy đơn
             </Button>
+
             <Modal
                 maskClosable={false}
                 forceRender

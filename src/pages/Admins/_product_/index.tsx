@@ -12,10 +12,14 @@ import { ADMIN_ROUTES } from '~/constants/router';
 import WrapperPageAdmin from '~/pages/Admins/_common/WrapperPageAdmin';
 import useTable from '~/hooks/_common/useTable';
 import TableDisplay from '../../../components/_common/TableDisplay';
+import useHideProduct from '~/hooks/products/Mutations/useHideProduct';
+import useShowProduct from '~/hooks/products/Mutations/useShowProduct';
 
 const ListAll = () => {
     const { onSelectPaginateChange, query, onFilter, getColumnSearchProps } = useTable<IProductItem>();
     const [brands, categories] = useGetCategoriesAndBrands();
+    const { mutate: mutateHideProduct } = useHideProduct();
+    const { mutate: mutateShowProduct } = useShowProduct();
     const { data } = useGetProducts(query);
     const currentPage = Number(query.page || 1);
 
@@ -36,6 +40,8 @@ const ListAll = () => {
         categoryFilter,
         query,
         getColumnSearchProps,
+        mutateShowProduct,
+        mutateHideProduct,
     }) as ColumnsType<IProductItem>;
 
     return (

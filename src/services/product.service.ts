@@ -33,13 +33,6 @@ const productService = {
         });
         return res.data;
     },
-    /* eslint-enable */
-    async getProductsByCategory(id: string, params: Params) {
-        const res = await instance.get<IAxiosResponse<IProduct[]>>(`${PRODUCT_ENDPOINT.BYCATE}/${id}`, {
-            params,
-        });
-        return res.data;
-    },
     async getLatest() {
         const res = await instance.get<IAxiosResponse<IProductItemNew[]>>(`${PRODUCT_ENDPOINT.LATEST}`);
         return res.data;
@@ -89,12 +82,16 @@ const productService = {
         const res = await instance.post<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.CREATE_VARIATIONS}`, data);
         return res.data;
     },
-    async deleteProduct(id: string) {
-        const res = await instance.delete<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.DELETE}/${id}`);
-        return res.data;
-    },
     async getFilterByCategory(id: string) {
         const res = await instance.get<IAxiosResponse<IFilterResponse[]>>(`${PRODUCT_ENDPOINT.FILTER}/${id}`);
+        return res.data;
+    },
+    async hideProduct(id: string) {
+        const res = await instance.patch<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.HIDE}/${id}`);
+        return res.data;
+    },
+    async showProduct(id: string) {
+        const res = await instance.patch<IAxiosResponse<null>>(`${PRODUCT_ENDPOINT.SHOW}/${id}`);
         return res.data;
     },
 };

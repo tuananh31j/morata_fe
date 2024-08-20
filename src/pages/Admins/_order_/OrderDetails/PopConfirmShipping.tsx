@@ -20,11 +20,13 @@ const PopConfirmShipping = ({ orderId }: Props) => {
 
     const handleConfirm = () => {
         if (!shippingOrder.isPending) {
+            setOpen(false);
+
             shippingOrder.mutate(orderId, {
                 onSuccess: () => {
                     toast.success('Đơn hàng đang trong quá trình vận chuyển');
                     navigate(`/admin/orders/${orderId}/detail`);
-                    setOpen(false);
+                    // setOpen(false);
                 },
                 onError: (error) => {
                     toast.error(error.message);
