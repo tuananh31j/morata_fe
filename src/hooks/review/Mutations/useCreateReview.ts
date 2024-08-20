@@ -4,6 +4,7 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import reviewService from '~/services/reviews.service';
 import { setReviewData } from '~/store/slice/rateProductSlice';
 import { ReviewData } from '~/types/Review';
+import showMessage from '~/utils/ShowMessage';
 
 const useCreateReview = () => {
     const queryClient = useQueryClient();
@@ -11,7 +12,7 @@ const useCreateReview = () => {
 
     return useMutation({
         mutationFn: (data: ReviewData) => reviewService.createReview(data),
-        onSuccess() {
+        onSuccess(res) {
             // setTimeout(() => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
@@ -21,6 +22,8 @@ const useCreateReview = () => {
             dispatch(setReviewData({ orderId: '', isOpen: false, productId: '' }));
             window.localStorage.removeItem('orderId');
             document.body.classList.remove('noscroll');
+            showMessage('Review successfully', 'success');
+
         },
         onError(error) {
             console.log(error.message);

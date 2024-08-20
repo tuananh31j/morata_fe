@@ -41,6 +41,9 @@ export const UpdateAttribute = lazy(() => import('~/pages/Admins/_attribute_/Upd
 export const BrandList = lazy(() => import('~/pages/Admins/_brand_'));
 export const CreateBrand = lazy(() => import('~/pages/Admins/_brand_/CreateBrand'));
 export const UpdateBrand = lazy(() => import('~/pages/Admins/_brand_/UpdateBrand'));
+export const ManageReviews = lazy(() => import('~/pages/Admins/_review_/ReviewsList'));
+export const ManageReviewsReport = lazy(() => import('~/pages/Admins/_review_/ReviewsReport'));
+
 
 // @suspense
 export const Suspense = ({ children }: { children: React.ReactNode }) => {

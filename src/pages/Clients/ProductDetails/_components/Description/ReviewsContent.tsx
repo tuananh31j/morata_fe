@@ -1,16 +1,17 @@
 import { MoreOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, MenuProps, Rate } from 'antd';
-import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 import useCreateReview from '~/hooks/review/Mutations/useCreateReview';
 import useUpdateReview from '~/hooks/review/Mutations/useUpdateReview';
 import useGetReviewOfProduct from '~/hooks/review/Queries/useGetReviewOfProduct';
 import { useTypedSelector } from '~/store/store';
-import { IReviewProductResponse } from '~/types/Review';
-import showMessage from '~/utils/ShowMessage';
+import { IReviewProductResponse, ReportData } from '~/types/Review';
 import ReviewModal from '../ReviewModal/ReviewModal';
-import dayjs from 'dayjs';
+import ReportModal from '../ReportModal/ReportModal';
+import useCreateReport from '~/hooks/review/Mutations/useCreateReport';
 
 type ReviewData = {
     content: string;
@@ -18,9 +19,12 @@ type ReviewData = {
     reviewId?: string;
 };
 
+type userReviewData = { reviewId: string; userId: string; content: string };
+
 export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     const { id } = useParams();
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isReportModalVisible, setIsReportModalVisible] = useState(false);
     const [contentSee, setContentSee] = useState<{ [index: number]: boolean }>({});
     const { data } = useGetReviewOfProduct(id as string);
     const { data: userInfo } = useGetProfile();
@@ -28,12 +32,17 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     const orderIdStorage = window.localStorage.getItem('orderId') || '';
     const orderId = useTypedSelector((state) => state.rateProductSlice.orderId) || orderIdStorage;
     const isOpen = useTypedSelector((state) => state.rateProductSlice.isOpen);
-
+    const userReviewData = useRef<userReviewData>({ reviewId: '', userId: '', content: '' });
     const {
         mutate: createReview,
         isSuccess: isCreateReviewSuccess,
         isPending: isCreateReviewPending,
     } = useCreateReview();
+    const {
+        mutate: createReport,
+        isSuccess: isCreateReportSuccess,
+        isPending: isCreateReportPending,
+    } = useCreateReport();
     const {
         mutate: updateReview,
         isSuccess: isUpdateReviewSuccess,
@@ -57,32 +66,50 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     const twoRatingCount = reviewContent?.filter((item) => item.rating < 3 && item.rating > 1);
     const oneRatingCount = reviewContent?.filter((item) => item.rating < 2 && item.rating > 0);
 
-    const handleEditReview = (reviewData: IReviewProductResponse) => {
-        setInitialReview(reviewData);
-        setIsModalVisible(true);
-    };
-
+    // Dropdown review Items
     const dropdownItems = (reviewData: IReviewProductResponse, index: number): MenuProps['items'] => {
         return [
             {
                 key: index,
                 label:
                     reviewData.userId._id === userInfoData?._id ? (
-                        <span onClick={() => handleEditReview(reviewData)}>Chỉnh sửa</span>
+                        <span className='p-2' onClick={() => handleEditReview(reviewData)}>
+                            Chỉnh sửa
+                        </span>
                     ) : (
-                        <span></span>
+                        <span
+                            className='p-2'
+                            onClick={() =>
+                                handleAddReport({
+                                    userId: reviewData.userId._id,
+                                    reviewId: reviewData._id,
+                                    content: reviewData.content,
+                                })
+                            }
+                        >
+                            Báo cáo
+                        </span>
                     ),
             },
         ];
     };
 
-    const handleAddreview = () => {
+    // @handle modal
+
+    // review
+    const handleEditReview = (reviewData: IReviewProductResponse) => {
+        setInitialReview(reviewData);
+        setIsModalVisible(true);
+    };
+
+    const handleAddReview = () => {
         setIsModalVisible(true);
     };
     const handleCancel = () => {
         setIsModalVisible(false);
         document.body.classList.remove('noscroll');
     };
+
     const handleSubmit = (Reviewdata: ReviewData) => {
         if (Reviewdata.reviewId) {
             updateReview({
@@ -101,20 +128,41 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
         }
     };
 
+    // report
+    const handleAddReport = (reviewData: userReviewData) => {
+        setIsReportModalVisible(true);
+        userReviewData.current = reviewData;
+    };
+
+    const handleCancelReport = () => {
+        setIsReportModalVisible(false);
+    };
+    const handleReport = (reportData: ReportData) => {
+        const reasonContent = reportData.reason === 'other' ? (reportData.content as string) : reportData.reason;
+        createReport({
+            reason: reasonContent,
+            reporterId: userInfoData?._id as string,
+            reviewId: userReviewData.current.reviewId,
+            userId: userReviewData.current.userId,
+            content: userReviewData.current.content,
+        });
+    };
+
     const toggleSeeMore = (index: number) => {
         setContentSee({ ...contentSee, [index]: !contentSee[index] });
     };
 
     useEffect(() => {
         if (isCreateReviewSuccess) {
-            showMessage('Review successfully', 'success');
             setIsModalVisible(false);
         }
         if (isUpdateReviewSuccess) {
-            showMessage('Edit review successfully', 'success');
             setIsModalVisible(false);
         }
-    }, [isCreateReviewSuccess, isUpdateReviewSuccess]);
+        if (isCreateReportSuccess) {
+            setIsReportModalVisible(false);
+        }
+    }, [isCreateReviewSuccess, isUpdateReviewSuccess, isCreateReportSuccess]);
 
     useEffect(() => {
         if (isOpen) {
@@ -172,7 +220,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                     </div>
                     <div>
                         <button
-                            onClick={handleAddreview}
+                            onClick={handleAddReview}
                             disabled={orderId ? false : true}
                             className='flex h-[40px] w-[340px] items-center justify-center bg-[#ffb800] font-bold text-white'
                         >
@@ -201,10 +249,10 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                                             </Dropdown>
                                         </div>
                                         <div className='mx-3 text-xs opacity-80'>
-                                            <span>{dayjs(item.createdAt).format('DD/MM/YYYY')}</span>
+                                            <span className=''>{dayjs(item.createdAt).format('DD/MM/YYYY')}</span>
                                         </div>
                                     </div>
-                                    <div className='no-scrollbar mt-2  overflow-y-scroll'>
+                                    <div className='no-scrollbar mt-2 overflow-y-scroll'>
                                         <p
                                             className={`text-[16px]  text-[#777777] ${contentSee[index] ? '' : 'line-clamp-2'}`}
                                         >
@@ -233,9 +281,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                     {!reviewContent?.length && (
                         <>
                             <div className='flex h-[264px] items-center justify-center'>
-                                <h3 className='text-center text-[#777777]'>
-                                    The product has not received any reviews yet.
-                                </h3>
+                                <h3 className='text-center text-[#777777]'>Sản phẩm chưa nhận được đánh giá nào.</h3>
                             </div>
                         </>
                     )}
@@ -248,6 +294,13 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                 handleCancel={handleCancel}
                 handleSubmit={handleSubmit}
             ></ReviewModal>
+
+            <ReportModal
+                isModalVisible={isReportModalVisible}
+                isSuccessful={isCreateReportPending}
+                handleCancel={handleCancelReport}
+                handleSubmit={handleReport}
+            ></ReportModal>
         </>
     );
 }

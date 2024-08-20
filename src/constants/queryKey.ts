@@ -7,6 +7,7 @@ export const QUERY_KEY = {
     LATEST: 'latest',
     DEALS: 'deals',
     REVIEWS: 'review',
+    REPORT_REVIEWS: 'report-review',
     RELATED: 'related',
     POPULARCATEGORIES: 'poularCategories',
     BRANDS: 'brands',

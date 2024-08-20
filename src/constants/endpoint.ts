@@ -91,7 +91,12 @@ export const USER_ENDPOINT = {
 export const REVIEW_ENDPOINT = {
     GETOFPRODUCT: '/reviews',
     GET_DETAIL: '/reviews',
+    GET_ALL: '/reviews/all',
+    GET_ALL_REPORT: '/reviews/report/all',
+    CREATE_REPORT: 'reviews/report',
     CREATE: '/reviews',
+    DELETE_REVIEW: '/reviews/',
+    DELETE_REPORT: '/reviews/report',
     CHECK_PURCHASED: '/reviews/purchased',
     UPDATE_ISREVIEWED: '/reviews/',
 };
