@@ -1,13 +1,23 @@
 import { BellFilled, FacebookFilled, PinterestOutlined, TikTokOutlined, TwitterOutlined } from '@ant-design/icons';
-import { Collapse, ConfigProvider } from 'antd';
+import { Collapse, ConfigProvider, Divider } from 'antd';
+import { Link } from 'react-router-dom';
+import useTable from '~/hooks/_common/useTable';
+import useGetCategories from '~/hooks/categories/Queries/useGetCategories';
+import { ICategory } from '~/types/Category';
 
 const { Panel } = Collapse;
 
 const Footer = () => {
+    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<ICategory>();
+    const { data } = useGetCategories(query);
+    const categories = data?.data?.categories;
+
+    console.log(categories);
+
     return (
         <footer className='mt-5 bg-[#1f2024]'>
             <div className='mx-3 lg:mx-4'>
-                <div className='flex flex-col gap-2 border-y-[1px] border-[#777777] py-10 lg:flex-row lg:gap-[20px] '>
+                {/* <div className='flex flex-col gap-2 border-y-[1px] border-[#777777] py-10 lg:flex-row lg:gap-[20px] '>
                     <ConfigProvider
                         theme={{
                             token: {
@@ -209,37 +219,43 @@ const Footer = () => {
                             </Panel>
                         </Collapse>
                     </ConfigProvider>
-                </div>
-                <div className='mt-[50px] flex justify-center pb-[50px]'>
+                </div> */}
+
+                <div className='mt-[50px] flex justify-center py-[40px]'>
                     <div className='flex flex-col'>
                         <ul className='flex flex-wrap justify-center gap-[15px] text-[12px] text-[#999999]'>
-                            <li>
-                                <a href='/'>ABOUT US</a>
-                            </li>
-                            <div className='h-[5px w-[1px] bg-[#999999]'></div>
+                            {/* <div className='h-[5px w-[1px] bg-[#999999]'></div>
                             <li>
                                 <a href='/'>CUSTOMER SERVICE</a>
                             </li>
                             <div className='h-[5px w-[1px] bg-[#999999]'></div>
                             <li>
                                 <a href='/'>PRIVACY POLICY</a>
-                            </li>
-                            <div className='h-[5px w-[1px] bg-[#999999]'></div>
-                            <li>
-                                <a href='/'>SITE MAP</a>
-                            </li>
-                            <div className='h-[5px w-[1px] bg-[#999999]'></div>
-                            <li>
-                                <a href='/'>CONTACT US</a>
-                            </li>
+                            </li> */}
+
+                            {categories?.map((category) => (
+                                <>
+                                    <Link key={category._id} to={`/products?categoryId=${category._id}`}>
+                                        <span className='text-sm capitalize hover:text-white'>{category.name}</span>
+                                    </Link>
+
+                                    <Divider type='vertical' />
+                                </>
+                            ))}
+
+                            <Link to='/contact'>
+                                <span className='text-sm capitalize hover:text-white'>Contact us</span>
+                            </Link>
                         </ul>
-                        <div className='flex justify-center py-[35px] '>
-                            <img
+
+                        <div className='flex justify-center py-[15px] '>
+                            {/* <img
                                 loading='lazy'
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/payments.png?v=1698422597&width=2000'
                                 alt=''
-                            />
+                            /> */}
                         </div>
+
                         <p className='text-center text-[16px] text-[#999999]'>
                             Copyright @ <span className='font-semibold text-cyan-500'>Morata</span>. All Rights
                             Reserved.

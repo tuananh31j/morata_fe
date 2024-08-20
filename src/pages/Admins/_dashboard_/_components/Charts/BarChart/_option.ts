@@ -6,7 +6,8 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
         chart: {
             fontFamily: '"Inter", sans-serif',
             type: 'bar',
-            height: 450,
+            height: 400,
+            width: '100%',
             stacked: false,
             toolbar: {
                 show: true,
@@ -25,7 +26,8 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: '50%',
+                columnWidth: '60%',
+                barHeight: '70%',
                 borderRadius: 6,
                 dataLabels: {
                     position: 'top',
@@ -34,7 +36,7 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
         },
         dataLabels: {
             enabled: false,
-            formatter(val: number) {
+            formatter(val: any) {
                 return val != null ? val.toLocaleString() : '0';
             },
             style: {
@@ -76,7 +78,7 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
                     },
                 },
                 labels: {
-                    formatter(value: number) {
+                    formatter(value: any) {
                         return value != null ? value.toLocaleString() : '0';
                     },
                     style: {
@@ -95,7 +97,7 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
                     },
                 },
                 labels: {
-                    formatter(value: number) {
+                    formatter(value: any) {
                         return value != null ? `${value.toLocaleString()} đ` : '0 đ';
                     },
                     style: {
@@ -132,7 +134,7 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
             shared: true,
             intersect: false,
             y: {
-                formatter(val: number) {
+                formatter(val: any) {
                     return val != null ? `${val.toLocaleString()}` : '0';
                 },
             },
@@ -156,5 +158,20 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
                 shadeIntensity: 0.65,
             },
         },
+        responsive: [
+            {
+                breakpoint: 768,
+                options: {
+                    chart: {
+                        height: 350,
+                    },
+                    plotOptions: {
+                        bar: {
+                            columnWidth: '60%',
+                        },
+                    },
+                },
+            },
+        ],
     };
 };
