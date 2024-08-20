@@ -1,126 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 
-interface BarChartConfig {
-  timeline: string[];
-  colors?: string[];
-  height?: number;
-  stacked?: boolean;
-  fontFamily?: string;
-  animated?: boolean;
-}
 
-// export const BarChartOptions = ({
-//   timeline,
-//   colors = ['#3C50E0', '#80CAEE'],
-//   height = 350,
-//   stacked = true,
-//   fontFamily = 'Satoshi, sans-serif',
-//   animated = true,
-// }: BarChartConfig): ApexOptions => {
-//   return {
-//     colors,
-//     chart: {
-//       fontFamily,
-//       type: 'bar',
-//       height,
-//       stacked,
-//       toolbar: {
-//         show: false,
-//       },
-//       zoom: {
-//         enabled: false,
-//       },
-//       animations: {
-//         enabled: animated,
-//         easing: 'easeinout',
-//         speed: 800,
-//         animateGradually: {
-//           enabled: true,
-//           delay: 150,
-//         },
-//         dynamicAnimation: {
-//           enabled: true,
-//           speed: 350,
-//         },
-//       },
-//     },
-//     responsive: [
-//       {
-//         breakpoint: 1536,
-//         options: {
-//           plotOptions: {
-//             bar: {
-//               borderRadius: 0,
-//               columnWidth: '25%',
-//             },
-//           },
-//         },
-//       },
-//     ],
-//     plotOptions: {
-//       bar: {
-//         horizontal: false,
-//         borderRadius: 4,
-//         columnWidth: '25%',
-//         dataLabels: {
-//           position: 'top',
-//         },
-//       },
-//     },
-//     dataLabels: {
-//       enabled: false,
-//     },
-//     stroke: {
-//       show: true,
-//       width: 2,
-//       colors: ['transparent'],
-//     },
-//     xaxis: {
-//       categories: timeline,
-//       axisBorder: {
-//         show: false,
-//       },
-//       axisTicks: {
-//         show: false,
-//       },
-//     },
-//     yaxis: [
-//       {
-//         title: {
-//           text: 'Orders',
-//         },
-//       },
-//       {
-//         opposite: true,
-//         title: {
-//           text: 'Revenue',
-//         },
-//       },
-//     ],
-//     legend: {
-//       position: 'top',
-//       horizontalAlign: 'left',
-//       fontFamily,
-//       fontWeight: 500,
-//       fontSize: '14px',
-//       markers: {
-//         radius: 99,
-//       },
-//     },
-//     fill: {
-//       opacity: 1,
-//     },
-//     tooltip: {
-//       y: {
-//         formatter: (val) => `${val}`,
-//       },
-//     },
-//     grid: {
-//       borderColor: '#f1f1f1',
-//       strokeDashArray: 4,
-//     },
-//   };
-// };
+
 export const optionsBarChart = (timeline: string[]): ApexOptions => {
   return {
     colors: ['#6366F1', '#F59E0B'],
@@ -155,7 +36,7 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
     },
     dataLabels: {
       enabled: false,
-      formatter(val: number) {
+      formatter(val: any) {
         return val != null ? val.toLocaleString() : '0';
       },
       style: {
@@ -197,8 +78,8 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
           },
         },
         labels: {
-          formatter(value: number) {
-            return value != null ? Math.round(value).toLocaleString() : '0';
+          formatter(value: any) {
+            return value != null ? value.toLocaleString() : '0';
           },
           style: {
             colors: '#64748B',
@@ -216,15 +97,11 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
           },
         },
         labels: {
-          formatter(value: number) {
-            if (value == null) return '0';
-            if (value >= 1e9) {
-              return `${(value / 1e9).toFixed(1)} tỷ`;
-            }
-            if (value >= 1e6) {
-              return `${(value / 1e6).toFixed(1)} triệu`;
-            }
-            return `${value.toLocaleString()} đ`;
+          formatter(value: any) {
+            return value != null ? `${value.toLocaleString()} đ` : '0 đ';
+          },
+          style: {
+            colors: '#64748B',
           },
         },
       },
@@ -257,7 +134,7 @@ export const optionsBarChart = (timeline: string[]): ApexOptions => {
       shared: true,
       intersect: false,
       y: {
-        formatter(val: number) {
+        formatter(val: any) {
           return val != null ? `${val.toLocaleString()}` : '0';
         },
       },
