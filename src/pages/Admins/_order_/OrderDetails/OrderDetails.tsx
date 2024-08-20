@@ -38,12 +38,11 @@ const OrderDetail = () => {
                 <Space className='mt-5 flex w-full flex-col  items-center justify-center rounded-lg bg-[#fff] p-4 font-semibold'>
                     <Space align='center' direction='vertical'>
                         <h2 className='text-rose-500'>
-                            Order has been cancelled{' '}
-                            {data?.canceledBy === 'admin' ? <span>by Administrator</span> : <span>by customer</span>}
+                            Đơn hàng bị hủy bởi{' '}
+                            {data?.canceledBy === 'admin' ? <span>Quản trị viên</span> : <span>Khách hàng</span>}
                         </h2>
                         <p className='font-normal'>{data?.description}</p>
                     </Space>
-                    <Space></Space>
                 </Space>
             )}
             <CustomerInfo customerInfo={customerInfo} receiverInfo={receiverInfo} shippingAddress={shippingAddress} />

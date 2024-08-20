@@ -21,8 +21,18 @@ const OrderDetailNavbar = ({ orderStatus, id }: Props) => {
                     <CancelOrderModal orderId={id!} />
                 </Space>
             )}
-            {orderStatus === ORDER_STATUS.CONFIRMED && <PopConfirmShipping orderId={id} />}
-            {orderStatus === ORDER_STATUS.SHIPPING && <PopConfirmDeliveredOrder orderId={id} />}
+            {orderStatus === ORDER_STATUS.CONFIRMED && (
+                <Space>
+                    <PopConfirmShipping orderId={id} />
+                    <CancelOrderModal orderId={id!} />
+                </Space>
+            )}
+            {orderStatus === ORDER_STATUS.SHIPPING && (
+                <Space>
+                    <PopConfirmDeliveredOrder orderId={id} />
+                    <CancelOrderModal orderId={id!} />
+                </Space>
+            )}
             {orderStatus === ORDER_STATUS.DELIVERED && <PopConfirmFinishOrder orderId={id} />}
         </Space>
     );

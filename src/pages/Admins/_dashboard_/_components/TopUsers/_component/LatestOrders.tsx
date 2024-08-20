@@ -4,6 +4,8 @@ import { CreditCardOutlined, DollarOutlined, EyeOutlined } from '@ant-design/ico
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { Currency } from '~/utils';
+import OrderStatusTag from '~/components/OrderStatusTag';
+import { OrderStatus } from '~/constants/enum';
 
 const { Text } = Typography;
 
@@ -11,7 +13,7 @@ type LatestOrder = {
     _id: string;
     totalPrice: number;
     paymentMethod: 'cash' | 'card';
-    orderStatus: 'pending' | 'confirmed' | 'shipping' | 'delivered' | 'cancelled' | 'done';
+    orderStatus: OrderStatus;
     createdAt: string;
     customerName: string;
     customerAvatar: string;
@@ -43,27 +45,31 @@ const LatestOrders: React.FC<{ orders: LatestOrder[] }> = ({ orders }) => {
                     <Flex align='center' justify='space-between'>
                         <Flex align='center' className='w-2/5'>
                             <Avatar src={order.customerAvatar} size={48} className='mr-3' />
+
                             <Flex vertical>
                                 <Text strong className='text-lg'>
                                     {order.customerName}
                                 </Text>
+
                                 <Text type='secondary'>{dayjs(order.createdAt).format('DD/MM/YYYY HH:mm')}</Text>
                             </Flex>
                         </Flex>
+
                         <Flex align='center' className='w-3/5' justify='space-between'>
                             <Tooltip title={order.paymentMethod === 'cash' ? 'Thanh toán tiền mặt' : 'Thanh toán thẻ'}>
                                 {order.paymentMethod === 'cash' ? (
-                                    <DollarOutlined style={{ fontSize: 24, color: '#52c41a' }} />
+                                    <DollarOutlined style={{ fontSize: 24, color: '#3c50e0' }} />
                                 ) : (
-                                    <CreditCardOutlined style={{ fontSize: 24, color: '#1890ff' }} />
+                                    <CreditCardOutlined style={{ fontSize: 24, color: '#3c50e0' }} />
                                 )}
                             </Tooltip>
-                            <Text strong className='text-lg' style={{ color: '#f5222d' }}>
+
+                            <Text strong className='text-lg'>
                                 {Currency.format(order.totalPrice)}
                             </Text>
-                            <Tag color={getStatusColor(order.orderStatus)} className='px-3 py-1 text-base'>
-                                {order.orderStatus.toUpperCase()}
-                            </Tag>
+
+                            <OrderStatusTag status={order.orderStatus} />
+
                             <Tooltip title='Xem chi tiết'>
                                 <Button
                                     type='primary'
