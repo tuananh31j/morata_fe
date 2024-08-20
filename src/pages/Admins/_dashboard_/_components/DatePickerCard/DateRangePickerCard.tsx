@@ -40,8 +40,6 @@ const DateRangePickerCard: React.FC<DateRangePickerCardProps> = ({ onDateChange,
 
     const generateUniqueId = (prefix: string) => `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
 
-    console.log('idRandom', generateUniqueId('date-range-ee'));
-
     const dateRangeId = generateUniqueId('date-range-ee');
     const monthId = generateUniqueId('monthhhh');
     const yearId = generateUniqueId('yearhhh');

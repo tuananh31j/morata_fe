@@ -1,12 +1,14 @@
-import { CreditCardTwoTone, DollarCircleTwoTone, EllipsisOutlined } from '@ant-design/icons';
-import { Alert, Button, Card, ConfigProvider, Flex, Table, Tooltip } from 'antd';
+import { Button, Card, ConfigProvider, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import WrapperList from '~/components/_common/WrapperList';
 import { useTopBuyers } from '~/hooks/stats/useTopBuyers';
 import DateRangePickerCard from '~/pages/Admins/_dashboard_/_components/DatePickerCard/DateRangePickerCard';
+import LatestOrders from '~/pages/Admins/_dashboard_/_components/TopUsers/_component/LatestOrders';
 import { columns } from '~/pages/Admins/_dashboard_/_components/TopUsers/_option';
-import { Currency } from '~/utils';
+
+const { Title } = Typography;
 
 type DateInput =
     | { type: 'range'; start: string; end: string }
@@ -25,109 +27,52 @@ const TopUsers: React.FC = () => {
     const handleDateChange = (newDateInput: DateInput) => {
         setDateInput(newDateInput);
     };
-    console.log(topBuyersData);
 
     const tableData = topBuyersData?.data?.topBuyers?.map((buyer: any, index: number) => ({
         ...buyer,
         key: buyer._id,
         index: index + 1,
     }));
+
     return (
-        <>
-            <WrapperList
-                title='Thống kê khách hàng'
-                lineButtonBox
-                option={<DateRangePickerCard onDateChange={handleDateChange} initialDate={dateInput} />}
+        <WrapperList
+            title='Thống kê khách hàng'
+            lineButtonBox
+            option={<DateRangePickerCard onDateChange={handleDateChange} initialDate={dateInput} />}
+        >
+            <Card
+                title={<Typography.Title level={4}>Đơn hàng gần đây</Typography.Title>}
+                extra={
+                    <Button type='link'>
+                        <Link to={'/admin/orders'}>Xem tất cả</Link>
+                    </Button>
+                }
+                className='mb-8'
             >
-                {/* <h1 className='font-bold text-[#3c50e0]'>Recent Orders</h1>
+                {topBuyersData?.data?.latestOrders && <LatestOrders orders={topBuyersData.data.latestOrders} />}
+            </Card>
 
-                <Flex className='my-3 items-center' gap={16}>
-                    <Card className='w-1/2 px-5'>
-                        <Flex>
-                            <div className='w-[25%]'>
-                                <div className='text-base'>Customer name</div>
-
-                                <div className='text-sm'>order date</div>
-                            </div>
-
-                            <div className='flex w-[20%] items-center justify-center text-base hover:text-[#3c50e0]'>
-                                <CreditCardTwoTone className='text-2xl' />
-                            </div>
-
-                            <div className='flex w-[20%] items-center justify-center text-base font-semibold'>
-                                {Currency.format(4000)}
-                            </div>
-
-                            <div className='flex w-[25%] items-center justify-center text-base'>
-                                <Alert message='done' type='success' />
-                            </div>
-
-                            <div className='flex w-[10%] items-center justify-center'>
-                                <Tooltip title='View details' color='blue'>
-                                    <Button shape='circle' icon={<EllipsisOutlined className='text-xl' />} />
-                                </Tooltip>
-                            </div>
-                        </Flex>
-                    </Card>
-
-                    <Card className='w-1/2'>
-                        <Flex className='p-0'>
-                            <div className='w-[25%]'>
-                                <div className='text-base'>Customer name</div>
-
-                                <div className='text-sm'>order date</div>
-                            </div>
-
-                            <div className='flex w-[20%] items-center justify-center text-base'>
-                                <DollarCircleTwoTone className='text-2xl' />
-                            </div>
-
-                            <div className='flex w-[20%] items-center justify-center text-base font-semibold'>
-                                {Currency.format(4000)}
-                            </div>
-
-                            <div className='flex w-[25%] items-center justify-center text-base'>
-                                <Alert message='pending' type='info' />
-                            </div>
-
-                            <div className='flex w-[10%] items-center justify-center'>
-                                <Tooltip title='View details' color='blue'>
-                                    <Button shape='circle' icon={<EllipsisOutlined className='text-xl' />} />
-                                </Tooltip>
-                            </div>
-                        </Flex>
-                    </Card>
-                    
-                </Flex> */}
-
-                <ConfigProvider
-                    theme={{
-                        components: {
-                            Tabs: {
-                                itemHoverColor: '#1890ff',
-                                itemSelectedColor: '#1890ff',
-                                itemColor: '#595959',
-                                titleFontSize: 16,
-                            },
+            <ConfigProvider
+                theme={{
+                    components: {
+                        Tabs: {
+                            itemHoverColor: '#1890ff',
+                            itemSelectedColor: '#1890ff',
+                            itemColor: '#595959',
+                            titleFontSize: 16,
                         },
-                        token: {
-                            colorPrimary: '#1890ff',
-                            borderRadius: 4,
-                        },
-                    }}
-                >
-                    <h1 className='font-bold text-[#3c50e0]'>Top 5 khách hàng</h1>
-
-                    <Table
-                        className='my-3'
-                        columns={columns}
-                        dataSource={tableData}
-                        pagination={false}
-                        loading={isLoading}
-                    />
-                </ConfigProvider>
-            </WrapperList>
-        </>
+                    },
+                    token: {
+                        colorPrimary: '#1890ff',
+                        borderRadius: 4,
+                    },
+                }}
+            >
+                <Card title={<Title level={4}>Top 5 khách hàng</Title>}>
+                    <Table columns={columns} dataSource={tableData} pagination={false} loading={isLoading} />
+                </Card>
+            </ConfigProvider>
+        </WrapperList>
     );
 };
 
