@@ -55,7 +55,6 @@ export const TopProducts: React.FC = () => {
     const { data } = useGetProductStatsByRange(dateRange[0], dateRange[1]);
     const topSellingProducts = data?.data?.data?.topSellingProducts;
     const leastSellingProducts = data?.data?.data?.leastSellingProducts;
-    console.log(data);
 
     const [tableData, setTableData] = useState<DataType[]>(topSellingProducts);
     const [currentTab, setCurrentTab] = useState('top products');

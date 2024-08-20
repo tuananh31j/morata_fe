@@ -1,32 +1,18 @@
 import { DatePicker, DatePickerProps } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import WrapperList from '~/components/_common/WrapperList';
 import { useYearlyStats } from '~/hooks/stats/useYearly';
-import { optionsBarChart } from './_option';
+import { ApexOptions } from 'apexcharts';
 
 const YearlyStats: React.FC = () => {
     const [selectedYear, setSelectedYear] = useState<number>(dayjs().year());
-    const { data: yearlyStats, refetch } = useYearlyStats(selectedYear);
+    const { data: yearlyStats, isLoading, refetch } = useYearlyStats(selectedYear);
 
     useEffect(() => {
         refetch();
     }, [selectedYear, refetch]);
-
-    const yearData = yearlyStats?.data || { year: selectedYear, totalOrders: 0, totalRevenue: 0 };
-    const { year, totalOrders, totalRevenue } = yearData;
-
-    const series = [
-        {
-            name: 'Đơn hàng',
-            data: [totalOrders],
-        },
-        {
-            name: 'Doanh thu',
-            data: [totalRevenue],
-        },
-    ];
 
     const onYearChange: DatePickerProps['onChange'] = (date: Dayjs | null) => {
         if (date) {
@@ -40,6 +26,99 @@ const YearlyStats: React.FC = () => {
     const disabledDate = (current: Dayjs) => {
         return current.year() > dayjs().year();
     };
+
+    const chartData = useMemo(() => {
+        const yearData = yearlyStats?.data || { year: selectedYear, totalOrders: 0, totalRevenue: 0 };
+        const { year, totalOrders, totalRevenue } = yearData;
+
+        const options: ApexOptions = {
+            chart: {
+                type: 'bar',
+                height: 450,
+                stacked: false,
+                toolbar: {
+                    show: true,
+                },
+            },
+            colors: ['#6366F1', '#F59E0B'],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent'],
+            },
+            xaxis: {
+                categories: ['Đơn hàng và Doanh thu'],
+            },
+            yaxis: [
+                {
+                    title: {
+                        text: 'Đơn hàng',
+                        style: {
+                            color: '#6366F1',
+                        },
+                    },
+                    labels: {
+                        formatter: function (value) {
+                            return value.toFixed(0);
+                        },
+                    },
+                },
+                {
+                    opposite: true,
+                    title: {
+                        text: 'Doanh thu',
+                        style: {
+                            color: '#F59E0B',
+                        },
+                    },
+                    labels: {
+                        formatter: function (value) {
+                            if (value >= 1e9) return (value / 1e9).toFixed(1) + ' tỷ';
+                            if (value >= 1e6) return (value / 1e6).toFixed(1) + ' triệu';
+                            return value.toLocaleString() + ' đ';
+                        },
+                    },
+                },
+            ],
+            title: {
+                text: `Thống kê năm ${year}`,
+                align: 'center',
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'left',
+            },
+        };
+
+        return {
+            options,
+            series: [
+                {
+                    name: 'Đơn hàng',
+                    type: 'column',
+                    data: [totalOrders],
+                },
+                {
+                    name: 'Doanh thu',
+                    type: 'column',
+                    data: [totalRevenue],
+                },
+            ],
+        };
+    }, [yearlyStats, selectedYear]);
+
+    if (isLoading) {
+        return <div>Đang tải dữ liệu...</div>;
+    }
 
     return (
         <WrapperList
@@ -55,15 +134,13 @@ const YearlyStats: React.FC = () => {
             lineButtonBox
         >
             <div>
-                <div id='barChart'>
-                    <ReactApexChart
-                        options={optionsBarChart([String(year)])}
-                        series={series}
-                        type='bar'
-                        height={350}
-                        width={'100%'}
-                    />
-                </div>
+                {chartData.series[0].data[0] === 0 && chartData.series[1].data[0] === 0 ? (
+                    <div>Không có dữ liệu cho năm này</div>
+                ) : (
+                    <div id='chart'>
+                        <ReactApexChart options={chartData.options} series={chartData.series} type='bar' height={450} />
+                    </div>
+                )}
             </div>
         </WrapperList>
     );
