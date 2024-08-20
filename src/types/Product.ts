@@ -70,6 +70,7 @@ export type IProductItemNew = {
     discount: number;
     images: string[];
     isAvailable: boolean;
+    isHide: boolean;
     rating: number;
     reviewCount: number;
     description: string;

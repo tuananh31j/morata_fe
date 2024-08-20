@@ -3,7 +3,6 @@ export const PRODUCT_ENDPOINT = {
     ALL: '/products/all',
     ALL_ADMIN: '/products/portal/all',
     LATEST: '/products/latest',
-    BYCATE: '/products/bycate',
     DEALS: '/products/deals',
     REVIEWS: '/products/reviews',
     RELATED: '/products/related',
@@ -13,6 +12,8 @@ export const PRODUCT_ENDPOINT = {
     UPDATE_VARIATIONS: '/products/variation/',
     CREATE_VARIATIONS: '/products/variation/',
     FILTER: '/products/filter',
+    HIDE: '/products/hide', // @productId
+    SHOW: '/products/show', // @productId
 };
 export const CATEGORY_ENDPOINT = {
     ALL: '/categories/all',

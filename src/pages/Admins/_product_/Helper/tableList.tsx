@@ -1,5 +1,5 @@
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Button, Space, TableProps, Tag, Tooltip } from 'antd';
+import { Button, Popconfirm, Space, TableProps, Tag, Tooltip } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 import { Params } from '~/types/Api';
@@ -26,18 +26,22 @@ export const ProductsListColumns = ({
     categoryFilter,
     query,
     getColumnSearchProps,
+    mutateHideProduct,
+    mutateShowProduct,
 }: {
     brandFilter?: IFilter[];
     categoryFilter?: IFilter[];
     query: Params;
     getColumnSearchProps: (dataIndex: string) => ColumnType<any>;
+    mutateHideProduct: (id: string) => void;
+    mutateShowProduct: (id: string) => void;
 }): TableProps<IProductItemNew>['columns'] => {
     return [
         {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'search',
-            width: '34%',
+            width: '30%',
             ...getColumnSearchProps('name'),
             render: (text, record) => (
                 <>
@@ -167,20 +171,67 @@ export const ProductsListColumns = ({
                 return <h4>{record.brandId.name}</h4>;
             },
         },
+        {
+            title: 'Trạng thái',
+            key: 'isHide',
+            filteredValue: query.isHide ? (query.isHide as string).split(',') : undefined,
+            filters: [
+                { text: 'Ẩn', value: 'true' },
+                { text: 'Hiện', value: 'false' },
+            ],
+            render: (_, record) => {
+                return (
+                    <>
+                        <p className=''>{record.isHide && 'Đã ẩn'}</p>
+                        <p className='text-green-400'>{!record.isHide && 'Đang hiển thị'}</p>
+                    </>
+                );
+            },
+        },
 
         {
             title: 'Thao tác',
             key: 'action',
             render: (_, record) => (
-                <Space key={record._id}>
+                <Space key={record._id} className='flex flex-col items-start justify-start'>
                     <Tooltip title='Cập nhật'>
                         <Link
                             to={`/admin/products/${record._id}/edit`}
                             className='text-blue-500 transition-colors duration-500 hover:text-blue-400'
                         >
-                            <EditOutlined className='rounded-full bg-blue-100 p-2' style={{ fontSize: '1rem' }} />
+                            Cập nhật
                         </Link>
                     </Tooltip>
+                    {!record.isHide && (
+                        <Tooltip title='Ẩn sản phẩm này'>
+                            <Popconfirm
+                                title='Ấn sản phẩm khỏi người dùng?'
+                                description='Người dùng sẽ không thể thấy sản phẩm này của bạn.'
+                                onConfirm={() => mutateHideProduct(record._id)}
+                                okText='Đồng ý'
+                                cancelText='Đóng'
+                            >
+                                <p className='text-blue-500 transition-colors duration-500 hover:text-blue-400'>
+                                    Ẩn đi
+                                </p>
+                            </Popconfirm>
+                        </Tooltip>
+                    )}
+                    {record.isHide && (
+                        <Tooltip title='Hiện thị sản phẩm này'>
+                            <Popconfirm
+                                title='Hiện thị sản phẩm này?'
+                                description='Người dùng sẽ thầy sản phẩm này của bạn.'
+                                onConfirm={() => mutateShowProduct(record._id)}
+                                okText='Đồng ý'
+                                cancelText='Đóng'
+                            >
+                                <p className='text-blue-500 transition-colors duration-500 hover:text-blue-400'>
+                                    Hiển thị
+                                </p>
+                            </Popconfirm>
+                        </Tooltip>
+                    )}
                 </Space>
             ),
         },

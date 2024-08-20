@@ -13,7 +13,7 @@ const useCreateProduct = () => {
         mutationFn: (data: FormData) => productService.createProduct(data),
         onSuccess: (res) => {
             queryClient.resetQueries({
-                predicate: (query) => (query.queryKey[0] as string) === QUERY_KEY.PRODUCTS,
+                predicate: (query) => query.queryKey.includes(QUERY_KEY.PRODUCTS),
             });
             showMessage('Thêm mới sản phẩm thành công!', 'success');
             navigate(ADMIN_ROUTES.PRODUCTS);
