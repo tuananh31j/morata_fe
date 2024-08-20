@@ -1,4 +1,4 @@
-import { Button, Form, Modal, Radio } from 'antd';
+import { Button, Form, Input, Modal, Radio, Space } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -21,17 +21,17 @@ const CancelOrderModal = ({ orderId }: Props) => {
 
     const handleOnTerminate = (values: Values) => {
         if (!values.reason) {
-            return toast.error('Please select a reason to terminate the order');
+            return toast.error('Hãy chọn lí do hủy đơn hàng');
         }
         cancelOrder.mutate(values.reason, {
             onSuccess: () => {
                 form.resetFields();
                 navigate(`/admin/orders/${orderId}/detail`);
                 setOpen(false);
-                return toast.success('Order terminated successfully');
+                return toast.success('Hủy đơn hàng thành công!');
             },
             onError: (error) => {
-                return toast.error('Failed to terminate order');
+                return toast.error('Hủy đơn hàng thất bại!');
             },
         });
         return null;
@@ -52,7 +52,7 @@ const CancelOrderModal = ({ orderId }: Props) => {
                 maskClosable={false}
                 forceRender
                 open={open}
-                title='Bạn muốn hủy đơn hàng này?'
+                title='Tại sao bạn muốn hủy đơn hàng này?'
                 okText='Hủy đơn'
                 okType='danger'
                 cancelText='Cancel'
@@ -73,14 +73,18 @@ const CancelOrderModal = ({ orderId }: Props) => {
                 )}
             >
                 <Form.Item name='reason' className='collection-create-form_last-form-item'>
-                    <Radio.Group className='flex flex-col'>
-                        <Radio value='Đơn hang bị hoãn'>Đơn hang bị hoãn</Radio>
-                        <Radio value='Hết hàng'>Hết hàng</Radio>
-                        <Radio value='Sai thông tin sản phẩm'>Sai thông tin sản phẩm</Radio>
-                        <Radio value='Khách hàng yêu cầu hủy đơn'>Khách hàng yêu cầu hủy đơn</Radio>
-                        <Radio value='Lỗi thanh toán'>Lỗi thanh toán</Radio>
-                        <Radio value='Khác'>Khác</Radio>
-                    </Radio.Group>
+                    <Space direction='vertical' className='w-full'>
+                        <Radio.Group className='flex flex-col'>
+                            <Radio value='Đơn hàng bị hoãn'>Đơn hàng bị hoãn</Radio>
+                            <Radio value='Hết hàng'>Hết hàng</Radio>
+                            <Radio value='Sai thông tin sản phẩm'>Sai thông tin sản phẩm</Radio>
+                            <Radio value='Khách hàng yêu cầu hủy đơn'>Khách hàng yêu cầu hủy đơn</Radio>
+                            <Radio value='Lỗi thanh toán'>Lỗi thanh toán</Radio>
+                            {/* <Radio value='Khác'>Khác</Radio> */}
+                        </Radio.Group>
+
+                        <Input placeholder='Lí do khác' />
+                    </Space>
                 </Form.Item>
             </Modal>
         </>

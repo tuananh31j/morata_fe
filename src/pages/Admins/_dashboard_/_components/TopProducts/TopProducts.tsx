@@ -83,7 +83,7 @@ export const TopProducts: React.FC = () => {
                 title: <span className='text-base'>Chi tiết</span>,
                 dataIndex: 'details',
                 key: 'details',
-                width: '40%',
+                width: '35%',
                 render: (_, product: ProductDataType) => (
                     <>
                         <Flex>
@@ -119,7 +119,7 @@ export const TopProducts: React.FC = () => {
                 dataIndex: 'totalQuantity',
                 key: 'totalQuantity',
                 align: 'center',
-                width: '10%',
+                width: '15%',
                 render: (text) => <div className='text-center font-normal'>{text}</div>,
             },
             {

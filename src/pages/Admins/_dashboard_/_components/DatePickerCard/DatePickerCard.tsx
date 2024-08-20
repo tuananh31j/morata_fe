@@ -112,7 +112,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({ onDateChange, initialDa
     const renderDateRange = (date: DateInput): string => {
         switch (date.type) {
             case 'single':
-                return date.date === today ? 'Today' : date.date;
+                return date.date === today ? 'Hôm nay' : date.date;
             case 'range':
                 return `${date.start} - ${date.end}`;
             case 'monthly':

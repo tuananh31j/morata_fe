@@ -71,7 +71,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                 Hủy Đơn Hàng
             </Button>
             <Modal open={isModalOpen} footer='' onCancel={handleCancel}>
-                <WrapperList classic className='m-0' title='Tell us why you are cancelling this order'>
+                <WrapperList classic className='m-0' title='Tại sao bạn muốn hủy đơn hàng này?'>
                     <Form
                         onFinish={handleSubmit(onSubmit)}
                         className='w-full'
@@ -81,7 +81,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                         <Form.Item
                             validateStatus={errors.reason ? 'error' : ''}
                             help={errors.reason?.message}
-                            label='Reason'
+                            label='Lí do'
                             name='horizontal'
                             required
                         >
@@ -90,12 +90,16 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                                 control={control}
                                 render={({ field }) => (
                                     <Radio.Group {...field} className='flex flex-col'>
-                                        <Radio value={'Product did not meet expectations'}>
-                                            Product did not meet expectations
+                                        <Radio value={'Sản phẩm không giống như kì vọng'}>
+                                            Sản phẩm không giống như kì vọng
                                         </Radio>
-                                        <Radio value={'Delayed delivery time'}>Delayed delivery time</Radio>
-                                        <Radio value={'Price and shipping fees'}>Price and shipping fees</Radio>
-                                        <Radio value={'Change of mind or needs'}>Change of mind or needs</Radio>
+                                        <Radio value={'Không đủ tài chính để thanh toán đơn hàng'}>
+                                            Không đủ tài chính để thanh toán đơn hàng
+                                        </Radio>
+                                        <Radio value={'Đổi ý không muốn mua sản phẩm này nữa'}>
+                                            Đổi ý không muốn mua sản phẩm này nữa
+                                        </Radio>
+                                        <Radio value={'Không muốn tiết lộ'}>Không muốn tiết lộ</Radio>
                                     </Radio.Group>
                                 )}
                             />
@@ -103,20 +107,22 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                         <Form.Item
                             validateStatus={errors.description ? 'error' : ''}
                             help={errors.description?.message}
-                            label='Description'
+                            label='Lí do khác'
                         >
                             <Controller
                                 name='description'
                                 control={control}
-                                render={({ field }) => <TextArea {...field} rows={5} />}
+                                render={({ field }) => (
+                                    <TextArea {...field} rows={5} placeholder='Điền lí do khác tại đấy ...' />
+                                )}
                             />
                         </Form.Item>
                         <Flex align='end' justify='end' gap='small'>
                             <Button onClick={handleCancel} type='text'>
-                                Cancel
+                                Thoát
                             </Button>
                             <Button htmlType='submit' loading={isPending} type='primary'>
-                                Send
+                                Hủy Đơn Hàng
                             </Button>
                         </Flex>
                     </Form>
