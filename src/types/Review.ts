@@ -12,6 +12,39 @@ export interface IReviewProductResponse {
     _id: string;
 }
 
+export interface IAdminReviewResponse {
+    reviewList: IReviewProductResponse[];
+    page: number;
+    totalDocs: number;
+    totalPages: number;
+}
+export interface IAdminReportResponse {
+    reportList: IReportReviewResponse[];
+    page: number;
+    totalDocs: number;
+    totalPages: number;
+}
+
+export type ReportData = {
+    reason: string;
+    content?: string;
+    reporterId: string;
+    userId: string;
+    reviewId: string;
+};
+export interface IReportReviewResponse {
+    reason: string;
+    content: string;
+    reporterId: string;
+    userId: {
+        name: string;
+        _id: string;
+    };
+    reviewId: string;
+    _id: string;
+    createdAt: string;
+}
+
 export interface IReviewResponse {
     rating: number;
     content: string;

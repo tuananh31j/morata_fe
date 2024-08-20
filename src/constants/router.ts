@@ -51,6 +51,9 @@ export const ADMIN_ROUTES = {
     BRAND_EDIT: '/admin/brands/edit', // @id
     BRAND_CREATE: '/admin/brands/create',
 
+    REVIEWS: '/admin/reviews',
+    REVIEWS_REPORT: '/admin/reviews/report',
+
     // SHOP
     SHOP: '/admin/shop',
     SHOP_SETTINGS: '/admin/shop',

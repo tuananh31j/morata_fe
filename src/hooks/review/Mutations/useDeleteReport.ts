@@ -1,17 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import reviewService from '~/services/reviews.service';
-import { ReviewData } from '~/types/Review';
 import showMessage from '~/utils/ShowMessage';
 
-const useUpdateReview = () => {
+const useDeleteReport = (reportId: string) => {
     const queryClient = useQueryClient();
-
     return useMutation({
-        mutationFn: (data: ReviewData) => reviewService.updateReview(data),
-        onSuccess(res) {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
-            showMessage('Edit review successfully', 'success');
+        mutationFn: () => reviewService.deleteReport(reportId),
+        onSuccess() {
+            showMessage('Xóa báo cáo đánh giá thành công', 'success');
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REPORT_REVIEWS] });
         },
         onError(error) {
             console.log(error.message);
@@ -19,4 +17,4 @@ const useUpdateReview = () => {
     });
 };
 
-export default useUpdateReview;
+export default useDeleteReport;

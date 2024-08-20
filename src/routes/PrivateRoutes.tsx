@@ -19,6 +19,8 @@ import {
     AttributesList,
     CreateAttribute,
     UpdateAttribute,
+    ManageReviews,
+    ManageReviewsReport,
 } from './LazyRoutes';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { Outlet } from 'react-router-dom';
@@ -218,6 +220,28 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <UpdateBrand />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+            // @Review
+            {
+                path: ADMIN_ROUTES.REVIEWS,
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <ManageReviews />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: `${ADMIN_ROUTES.REVIEWS_REPORT}`,
+                        element: (
+                            <Suspense>
+                                <ManageReviewsReport />
                             </Suspense>
                         ),
                     },

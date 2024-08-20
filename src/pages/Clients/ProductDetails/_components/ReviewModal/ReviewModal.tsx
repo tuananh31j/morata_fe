@@ -18,13 +18,13 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
     /* eslint-disable */
     const ratingValidator = async (_: any, rating: number) => {
         if (!rating) {
-            return errorMessage('Please input your rating!');
+            return errorMessage('Vui lòng chọn đánh giá!');
         }
         return Promise.resolve();
     };
     const contentValidator = async (_: any, content: string) => {
         if (!content) {
-            return errorMessage('Please input your rating!');
+            return errorMessage('Vui lòng điền nội dung đánh giá!');
         }
         if (content.length > 255) {
             return errorMessage('Reviews are limited to 255 words!');
@@ -50,7 +50,7 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
     }, [initialValue, form]);
 
     return (
-        <Modal title='Write a review' open={isModalVisible} footer={null} onCancel={handleCancel}>
+        <Modal title='Viết đánh giá' centered open={isModalVisible} footer={null} onCancel={handleCancel}>
             {form && (
                 <Form
                     layout='vertical'
@@ -87,7 +87,7 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
                             loading={isSuccessful}
                             className='w-full'
                         >
-                            Submit
+                            Đánh giá
                         </Button>
                     </Form.Item>
                 </Form>

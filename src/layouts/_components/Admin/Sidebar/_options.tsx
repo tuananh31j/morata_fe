@@ -6,6 +6,7 @@ import {
     ProductOutlined,
     ProfileOutlined,
     ShoppingOutlined,
+    StarOutlined,
 } from '@ant-design/icons';
 import { ADMIN_ROUTES } from '~/constants/router';
 
@@ -84,6 +85,14 @@ export const menuGroups: IMenuItem[] = [
         children: [
             { label: 'Tất cả thương hiệu', route: ADMIN_ROUTES.BRANDS },
             { label: 'Thêm mới thương hiệu', route: ADMIN_ROUTES.BRAND_CREATE },
+        ],
+    },
+    {
+        icon: <StarOutlined />,
+        label: 'Quản lý đánh giá',
+        children: [
+            { label: 'Tất cả đánh giá', route: ADMIN_ROUTES.REVIEWS },
+            { label: 'Tất cả báo cáo', route: ADMIN_ROUTES.REVIEWS_REPORT },
         ],
     },
 ];
