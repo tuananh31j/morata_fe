@@ -1,14 +1,10 @@
 import { RightOutlined } from '@ant-design/icons';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
-import CategoryPoPularSkeleton from '~/components/_common/skeleton/CategorySkeleton/CategoryPopular';
 import MediumSkeleton from '~/components/_common/skeleton/MediumSkeleton';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
 import WrapperList from '~/components/_common/WrapperList';
 import Banner from '~/components/Banner';
-import CategoryCard from '~/components/CategoryCard';
-import PopupProductList from '~/components/PopupProductList';
 import MediumCard from '~/components/ProductCard/MediumCard';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import ShopBenefits from '~/components/ShopBenefits';
@@ -21,7 +17,6 @@ import useQueriesHomepage from '~/hooks/useQueriesHomepage';
 const Home = () => {
     useDocumentTitle('Home');
     const { Observer, data: ProductScroll, hasNextPage, isLoading } = useGetAllProductsScroll();
-    console.log({ Observer, data: ProductScroll, hasNextPage, isLoading });
     const [
         { data: ProductsList, isLoading: isLoadingProductsAll },
         { data: TopDeals, isLoading: isLoadingTopDeals },

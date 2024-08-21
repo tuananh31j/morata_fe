@@ -26,18 +26,18 @@ const ReviewModal = ({ isSuccessful, isModalVisible, handleSubmit, handleCancel 
     ];
 
     /* eslint-disable */
-    const ratingValidator = async (_: any, rating: number) => {
+    const reasonValidator = async (_: any, rating: number) => {
         if (!rating) {
-            return errorMessage('Vui lòng chọn đánh giá!');
+            return errorMessage('Vui lòng chọn lý do!');
         }
         return Promise.resolve();
     };
     const contentValidator = async (_: any, content: string) => {
         if (!content) {
-            return errorMessage('Vui lòng điền nội dung đánh giá!');
+            return errorMessage('Vui lòng điền lý do!');
         }
         if (content.length > 255) {
-            return errorMessage('Reviews are limited to 255 words!');
+            return errorMessage('Lý do chỉ giới hạn ở 255 từ!');
         }
 
         return Promise.resolve();
@@ -55,20 +55,21 @@ const ReviewModal = ({ isSuccessful, isModalVisible, handleSubmit, handleCancel 
     };
 
     useEffect(() => {
-        if (!isSuccessful) {
+        if (!isSuccessful && isModalVisible) {
             form.resetFields();
+            setIsOtherOpen(false);
         }
     }, [isSuccessful]);
     return (
-        <Modal title='Báo cáo' centered open={isModalVisible} footer={null} onCancel={handleCancel}>
+        <Modal title='Chọn một lý do' centered open={isModalVisible} footer={null} onCancel={handleCancel}>
             {form && (
                 <Form layout='vertical' form={form} onFinish={(reportData) => handleSubmit({ ...reportData })}>
                     <Form.Item
                         name='reason'
-                        dependencies={['rating']}
+                        dependencies={['reason']}
                         rules={[
                             {
-                                validator: ratingValidator,
+                                validator: reasonValidator,
                             },
                         ]}
                     >

@@ -26,8 +26,8 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
         if (!content) {
             return errorMessage('Vui lòng điền nội dung đánh giá!');
         }
-        if (content.length > 255) {
-            return errorMessage('Reviews are limited to 255 words!');
+        if (content.length > 1000) {
+            return errorMessage('Đánh giá chỉ giới hạn ở 255 từ!');
         }
 
         return Promise.resolve();
@@ -77,7 +77,7 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
                         dependencies={['content']}
                         rules={content}
                     >
-                        <TextArea placeholder='Write your review' rows={4} />
+                        <TextArea placeholder='Viết đánh giá' rows={4} />
                     </Form.Item>
                     <Form.Item className='mt-2'>
                         <Button

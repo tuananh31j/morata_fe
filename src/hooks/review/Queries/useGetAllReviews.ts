@@ -3,10 +3,10 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import reviewService from '~/services/reviews.service';
 import { Params } from '~/types/Api';
 
-const useGetAllReviews = (query: Params) => {
+const useGetAllReviews = (params: Params) => {
     return useQuery({
-        queryKey: [QUERY_KEY.REVIEWS, ...Object.values(query)],
-        queryFn: () => reviewService.getAllReviews(query),
+        queryKey: [QUERY_KEY.REVIEWS, ...Object.values(params)],
+        queryFn: () => reviewService.getAllReviews(params),
     });
 };
 

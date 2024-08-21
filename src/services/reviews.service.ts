@@ -4,18 +4,21 @@ import { IAxiosResponse } from '~/types/AxiosResponse';
 import {
     IAdminReportResponse,
     IAdminReviewResponse,
-    IReportReviewResponse,
     IReviewProductResponse,
     IReviewResponse,
+    IStarsReviewResponse,
     ReportData,
     ReviewData,
 } from '~/types/Review';
 import instance from '~/utils/api/axiosIntance';
 
 const reviewService = {
-    async getReviewOfProduct(id: string) {
-        const res = await instance.get<IAxiosResponse<IReviewProductResponse[]>>(
-            `${REVIEW_ENDPOINT.GETOFPRODUCT}?productId=${id}`
+    async getReviewOfProduct(id: string, query: { rating?: string }) {
+        const res = await instance.get<IAxiosResponse<IReviewResponse>>(
+            `${REVIEW_ENDPOINT.GETOFPRODUCT}?productId=${id}`,
+            {
+                params: query,
+            }
         );
         return res.data;
     },
@@ -27,6 +30,10 @@ const reviewService = {
         const res = await instance.get<IAxiosResponse<IAdminReviewResponse>>(`${REVIEW_ENDPOINT.GET_ALL}`, {
             params,
         });
+        return res.data;
+    },
+    async getStarsReview(productId: string) {
+        const res = await instance.get<IAxiosResponse<IStarsReviewResponse>>(`${REVIEW_ENDPOINT.STARS_REVIEW}/${productId}`);
         return res.data;
     },
     async getAllReportReviews(params: Params) {

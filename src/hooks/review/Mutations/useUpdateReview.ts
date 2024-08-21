@@ -11,7 +11,7 @@ const useUpdateReview = () => {
         mutationFn: (data: ReviewData) => reviewService.updateReview(data),
         onSuccess(res) {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
-            showMessage('Edit review successfully', 'success');
+            showMessage('Sửa đánh giá thành công', 'success');
         },
         onError(error) {
             console.log(error.message);
