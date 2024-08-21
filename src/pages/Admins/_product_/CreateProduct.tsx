@@ -89,6 +89,7 @@ const CreateProduct = () => {
     };
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
+        console.log(values, 'values');
         handleCreateProduct(values, createProduct);
     };
     const handleSaveAndShow = () => {
@@ -328,33 +329,31 @@ const CreateProduct = () => {
                         </Form.List>
                     </WrapperCard>
                 </div>
-                <Form.Item>
-                    <div className='sticky bottom-0 right-0 my-2 flex justify-end rounded-md border-t-2 border-black border-opacity-5 bg-white p-4'>
-                        <Button
-                            type='default'
-                            htmlType='submit'
-                            className='mr-3 px-5'
-                            loading={isPending && isHide}
-                            disabled={isPending}
-                            onClick={handleSaveAndHide}
-                            size='large'
-                        >
-                            Lưu và ẩn
-                        </Button>
-                        <Button
-                            type='primary'
-                            htmlType='submit'
-                            icon={<PlusSquareOutlined />}
-                            className='mr-3 px-5'
-                            loading={isPending && !isHide}
-                            disabled={isPending}
-                            size='large'
-                            onClick={handleSaveAndShow}
-                        >
-                            Lưu và hiển thị
-                        </Button>
-                    </div>
-                </Form.Item>
+                <div className='sticky bottom-0 right-0 my-2 flex justify-end rounded-md border-t-2 border-black border-opacity-5 bg-white p-4'>
+                    <Button
+                        type='default'
+                        htmlType='submit'
+                        className='mr-3 px-5'
+                        loading={isPending && isHide}
+                        disabled={isPending}
+                        onClick={handleSaveAndHide}
+                        size='large'
+                    >
+                        Lưu và ẩn
+                    </Button>
+                    <Button
+                        type='primary'
+                        htmlType='submit'
+                        icon={<PlusSquareOutlined />}
+                        className='mr-3 px-5'
+                        loading={isPending && !isHide}
+                        disabled={isPending}
+                        size='large'
+                        onClick={handleSaveAndShow}
+                    >
+                        Lưu và hiển thị
+                    </Button>
+                </div>
             </Form>
         </WrapperPageAdmin>
     );

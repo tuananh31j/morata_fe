@@ -12,14 +12,14 @@ const useCreateProduct = () => {
     return useMutation({
         mutationFn: (data: FormData) => productService.createProduct(data),
         onSuccess: (res) => {
-            queryClient.resetQueries({
+            queryClient.refetchQueries({
                 predicate: (query) => query.queryKey.includes(QUERY_KEY.PRODUCTS),
             });
             showMessage('Thêm mới sản phẩm thành công!', 'success');
             navigate(ADMIN_ROUTES.PRODUCTS);
         },
-        onError(error) {
-            showMessage(error.message, 'error');
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
         },
     });
 };

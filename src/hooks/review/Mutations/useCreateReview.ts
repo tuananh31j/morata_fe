@@ -23,10 +23,9 @@ const useCreateReview = () => {
             window.localStorage.removeItem('orderId');
             document.body.classList.remove('noscroll');
             showMessage('Review successfully', 'success');
-
         },
-        onError(error) {
-            console.log(error.message);
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
         },
     });
 };

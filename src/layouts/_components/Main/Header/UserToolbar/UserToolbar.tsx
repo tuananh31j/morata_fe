@@ -8,10 +8,12 @@ import IconButton from './IconButton';
 import { MAIN_ROUTES } from '~/constants/router';
 import useGetAllWishlist from '~/hooks/wishlist/Queries/useGetAllWishlist';
 import { Currency } from '~/utils';
+import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 
 const UserToolbar = () => {
     const location = useLocation();
     const user = useSelector((state: RootState) => state.authReducer.user);
+    const me = useGetProfile();
     const { data, isLoading } = useGetMyCart(user?._id);
     const { data: wishListData } = useGetAllWishlist({ userId: user?._id });
     const wishListAllItems = wishListData?.data?.wishList.length;
@@ -34,7 +36,7 @@ const UserToolbar = () => {
                     <UserToolBarSkeleton />
                 </>
             )}
-            {user && !isLoading && (
+            {user && !isLoading && me.data && (
                 <>
                     {/* <WishListDrawer> */}
                     <Link className='cursor-pointer' to={MAIN_ROUTES.WISH_LIST}>
@@ -43,7 +45,7 @@ const UserToolbar = () => {
                     {/* </WishListDrawer> */}
 
                     <Link className='cursor-pointer' to={MAIN_ROUTES.PROFILE}>
-                        <IconButton name={`${user.name}`} subName='Xin chào' icon='UserOutlined' />
+                        <IconButton name={`${me.data.data.name}`} subName='Xin chào' icon='UserOutlined' />
                     </Link>
 
                     {location.pathname !== '/checkout-details' ? (

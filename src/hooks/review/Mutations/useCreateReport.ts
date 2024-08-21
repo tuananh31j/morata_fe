@@ -9,8 +9,8 @@ const useCreateReport = () => {
         onSuccess(res) {
             showMessage('Báo cáo thành công', 'success');
         },
-        onError(error) {
-            console.log(error.message);
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
         },
     });
 };

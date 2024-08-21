@@ -20,5 +20,8 @@ export const useMutationCreateCategory = () => {
             showMessage('Category created successfully!', 'success');
             navigate(ADMIN_ROUTES.CATEGORIES, { replace: true });
         },
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
+        },
     });
 };

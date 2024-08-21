@@ -13,14 +13,14 @@ const useUpdateProduct = () => {
         mutationFn: ({ data, productId }: { data: FormData; productId: string }) =>
             productService.updateProduct(data, productId),
         onSuccess: (res) => {
-            queryClient.resetQueries({
+            queryClient.refetchQueries({
                 predicate: (query) => query.queryKey.includes(QUERY_KEY.PRODUCTS),
             });
             showMessage('Cập nhật sản phẩm thành công!', 'success');
             navigate(ADMIN_ROUTES.PRODUCTS);
         },
-        onError(error) {
-            console.log('Update product error', error);
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
         },
     });
 };
