@@ -9,6 +9,9 @@ interface DataType {
     quantity: number;
     productId: string;
     total?: number;
+    variant: {
+        variantAttributes: { name: string; key: string; value: string }[];
+    };
 }
 
 interface Props {
@@ -33,6 +36,24 @@ const TableOrderItems = ({ orderItems }: Props) => {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
+        },
+        {
+            title: 'Loại sản phẩm',
+            dataIndex: 'variant',
+            key: 'variant',
+            render: (variant) => {
+                return (
+                    <>
+                        <div className='flex gap-2'>
+                            {variant.variantAttributes.map((item: any, i: number) => (
+                                <span key={i} className='text-xs'>
+                                    {item.value}
+                                </span>
+                            ))}
+                        </div>
+                    </>
+                );
+            },
         },
         {
             title: 'Giá',
@@ -69,6 +90,7 @@ const TableOrderItems = ({ orderItems }: Props) => {
         price: item.price,
         quantity: item.quantity,
         productId: item.productId,
+        variant: item.variant,
     }));
 
     return <Table className='mt-5 w-full' columns={columns} dataSource={data} pagination={false} />;
