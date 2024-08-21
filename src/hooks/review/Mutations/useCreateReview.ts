@@ -12,8 +12,7 @@ const useCreateReview = () => {
 
     return useMutation({
         mutationFn: (data: ReviewData) => reviewService.createReview(data),
-        onSuccess(res) {
-            // setTimeout(() => {
+        onSuccess() {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.RELATED] });
@@ -22,7 +21,7 @@ const useCreateReview = () => {
             dispatch(setReviewData({ orderId: '', isOpen: false, productId: '' }));
             window.localStorage.removeItem('orderId');
             document.body.classList.remove('noscroll');
-            showMessage('Review successfully', 'success');
+            showMessage('Đánh giá thành công', 'success');
         },
         onError: (error: any) => {
             showMessage(error.response.data.message, 'error');

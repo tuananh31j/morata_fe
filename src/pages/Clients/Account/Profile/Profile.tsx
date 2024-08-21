@@ -31,7 +31,7 @@ const Profile = () => {
     const windowSize = useWindowSize();
 
     const { data } = useGetProfile();
-    const profile = data?.data;
+    const profile = data?.data.data;
 
     const showModal = () => {
         setOpen(true);

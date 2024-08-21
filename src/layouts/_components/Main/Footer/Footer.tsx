@@ -12,8 +12,6 @@ const Footer = () => {
     const { data } = useGetCategories(query);
     const categories = data?.data?.categories;
 
-    console.log(categories);
-
     return (
         <footer className='mt-5 bg-[#1f2024]'>
             <div className='mx-3 lg:mx-4'>
@@ -234,13 +232,13 @@ const Footer = () => {
                             </li> */}
 
                             {categories?.map((category) => (
-                                <>
-                                    <Link key={category._id} to={`/products?categoryId=${category._id}`}>
+                                <div key={category._id}>
+                                    <Link to={`/products?categoryId=${category._id}`}>
                                         <span className='text-sm capitalize hover:text-white'>{category.name}</span>
                                     </Link>
 
                                     <Divider type='vertical' />
-                                </>
+                                </div>
                             ))}
 
                             <Link to='/contact'>

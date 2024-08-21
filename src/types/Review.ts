@@ -11,12 +11,21 @@ export interface IReviewProductResponse {
     updatedAt: string;
     _id: string;
 }
+export interface IReviewResponse {
+    reviewList: IReviewProductResponse[];
+    totalDocs: number;
+    limit: number;
+}
 
 export interface IAdminReviewResponse {
     reviewList: IReviewProductResponse[];
     page: number;
     totalDocs: number;
     totalPages: number;
+}
+export interface IStarsReviewResponse {
+    countReview: number;
+    starsReview: { count: number; star: number }[];
 }
 export interface IAdminReportResponse {
     reportList: IReportReviewResponse[];
@@ -28,7 +37,7 @@ export interface IAdminReportResponse {
 export type ReportData = {
     reason: string;
     content?: string;
-    reporterId: string;
+    reporterId?: string;
     userId: string;
     reviewId: string;
 };

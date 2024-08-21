@@ -20,3 +20,22 @@
 .noscroll {
     overflow: hidden;
 }
+
+.review__scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.review__scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.review__scrollbar::-webkit-scrollbar-thumb {
+    background: #d3cece;
+    border-radius: 6px;
+}
+
+.review__scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

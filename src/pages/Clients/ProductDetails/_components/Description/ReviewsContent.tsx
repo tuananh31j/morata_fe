@@ -1,17 +1,20 @@
 import { MoreOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, MenuProps, Rate } from 'antd';
+import { Avatar, Dropdown, MenuProps, Rate, Select, Skeleton } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import StaticImages from '~/assets';
+import { ReportReason } from '~/constants/enum';
 import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
+import useCreateReport from '~/hooks/review/Mutations/useCreateReport';
 import useCreateReview from '~/hooks/review/Mutations/useCreateReview';
 import useUpdateReview from '~/hooks/review/Mutations/useUpdateReview';
 import useGetReviewOfProduct from '~/hooks/review/Queries/useGetReviewOfProduct';
+import useGetStarsReview from '~/hooks/review/Queries/useGetStarsReview';
 import { useTypedSelector } from '~/store/store';
 import { IReviewProductResponse, ReportData } from '~/types/Review';
-import ReviewModal from '../ReviewModal/ReviewModal';
 import ReportModal from '../ReportModal/ReportModal';
-import useCreateReport from '~/hooks/review/Mutations/useCreateReport';
+import ReviewModal from '../ReviewModal/ReviewModal';
 
 type ReviewData = {
     content: string;
@@ -23,10 +26,14 @@ type userReviewData = { reviewId: string; userId: string; content: string };
 
 export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     const { id } = useParams();
+    const [query, setQuery] = useState<{ rating: string; limit: number }>({ rating: '', limit: 1 });
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isReportModalVisible, setIsReportModalVisible] = useState(false);
     const [contentSee, setContentSee] = useState<{ [index: number]: boolean }>({});
-    const { data } = useGetReviewOfProduct(id as string);
+    const { data, isLoading } = useGetReviewOfProduct(id as string, query);
+    const reviewContent = data?.data;
+    const { data: reviewContentRes } = useGetStarsReview(id as string);
+    const reviewCount = reviewContentRes?.data;
     const { data: userInfo } = useGetProfile();
     const userInfoData = userInfo?.data;
     const orderIdStorage = window.localStorage.getItem('orderId') || '';
@@ -49,7 +56,6 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
         isPending: isUpdateReviewPending,
     } = useUpdateReview();
 
-    const reviewContent = data?.data;
     const [initialReview, setInitialReview] = useState<IReviewProductResponse>({
         rating: 0,
         content: '',
@@ -59,12 +65,12 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
         productId: '',
         _id: '',
     });
-
-    const fiveRatingCount = reviewContent?.filter((item) => item.rating > 4);
-    const fourRatingCount = reviewContent?.filter((item) => item.rating < 5 && item.rating > 3);
-    const threeRatingCount = reviewContent?.filter((item) => item.rating < 4 && item.rating > 2);
-    const twoRatingCount = reviewContent?.filter((item) => item.rating < 3 && item.rating > 1);
-    const oneRatingCount = reviewContent?.filter((item) => item.rating < 2 && item.rating > 0);
+    const sortOptions = [
+        { value: '-createdAt', label: 'Mới nhất' },
+        { value: 'createdAt', label: 'Cũ nhất' },
+        { value: '-rating', label: 'Cao nhất' },
+        { value: 'rating', label: 'Thấp nhất' },
+    ];
 
     // Dropdown review Items
     const dropdownItems = (reviewData: IReviewProductResponse, index: number): MenuProps['items'] => {
@@ -72,7 +78,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
             {
                 key: index,
                 label:
-                    reviewData.userId._id === userInfoData?._id ? (
+                    reviewData.userId._id === userInfoData?.data._id ? (
                         <span className='p-2' onClick={() => handleEditReview(reviewData)}>
                             Chỉnh sửa
                         </span>
@@ -121,7 +127,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
             createReview({
                 rating: Reviewdata.rating,
                 content: Reviewdata.content,
-                userId: userInfo?.data._id as string,
+                userId: userInfo?.data.data._id as string,
                 productId: id as string,
                 orderId: orderId as string,
             });
@@ -138,10 +144,10 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
         setIsReportModalVisible(false);
     };
     const handleReport = (reportData: ReportData) => {
-        const reasonContent = reportData.reason === 'other' ? (reportData.content as string) : reportData.reason;
+        const reasonContent =
+            reportData.reason === ReportReason.Other ? (reportData.content as string) : reportData.reason;
         createReport({
             reason: reasonContent,
-            reporterId: userInfoData?._id as string,
             reviewId: userReviewData.current.reviewId,
             userId: userReviewData.current.userId,
             content: userReviewData.current.content,
@@ -150,6 +156,14 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
 
     const toggleSeeMore = (index: number) => {
         setContentSee({ ...contentSee, [index]: !contentSee[index] });
+    };
+
+    const handleFilter = (params: any) => {
+        if (params.rating === query.rating && query.rating !== '') return;
+        setQuery({ ...query, ...params });
+    };
+    const handleChange = (value: string) => {
+        handleFilter({ sort: value });
     };
 
     useEffect(() => {
@@ -183,40 +197,41 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                             <span className='text-base font-medium  text-[#777777]'>{TopReviews.toFixed(1)}</span>
                         </div>
                         <p className='text-center text-base font-medium text-[#777777] lg:text-start'>
-                            Dựa trên {reviewContent?.length} đánh giá
+                            Dựa trên {reviewCount?.countReview} đánh giá
                         </p>
                     </div>
                     <div>
-                        <div className='flex items-center gap-2'>
-                            <Rate allowHalf className='text-[14px]' defaultValue={5} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>
-                                ( {fiveRatingCount?.length} Reviews)
+                        {reviewCount?.starsReview.map((item, index) => (
+                            <div key={index}>
+                                <div className='flex cursor-pointer items-center gap-2'>
+                                    <span className='cursor-pointer'>
+                                        <Rate
+                                            allowHalf
+                                            className='text-[14px]'
+                                            defaultValue={item.star}
+                                            disabled={true}
+                                        />
+                                    </span>
+                                    <div
+                                        className='flex items-center gap-2 transition-opacity duration-300 hover:opacity-60'
+                                        onClick={() => handleFilter({ rating: `${item.star}`, limit: 1 })}
+                                    >
+                                        <span className='inline-block h-[0.625rem] w-34 bg-yellow-400'></span>
+                                        <span className='text-[14px] font-medium  text-[#777777]'>
+                                            ( {item.count} Đánh giá )
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                        {query.rating && (
+                            <span
+                                onClick={() => handleFilter({ rating: '', limit: 1, sort: '-1createdAt' })}
+                                className='mt-2 block cursor-pointer p-2 text-center text-sm text-yellow-400 transition duration-300 hover:underline'
+                            >
+                                Xem tất cả đánh giá
                             </span>
-                        </div>
-                        <div className='flex items-center gap-2'>
-                            <Rate allowHalf className='text-[14px]' defaultValue={4} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>
-                                ( {fourRatingCount?.length} Reviews)
-                            </span>
-                        </div>
-                        <div className='flex items-center gap-2'>
-                            <Rate allowHalf className='text-[14px]' defaultValue={3} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>
-                                ( {threeRatingCount?.length} Reviews)
-                            </span>
-                        </div>
-                        <div className='flex items-center gap-2'>
-                            <Rate allowHalf className='text-[14px]' defaultValue={2} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>
-                                ( {twoRatingCount?.length} Reviews)
-                            </span>
-                        </div>
-                        <div className='flex items-center gap-2'>
-                            <Rate allowHalf className='text-[14px]' defaultValue={1} disabled={true} />
-                            <span className='text-[14px] font-medium  text-[#777777]'>
-                                ( {oneRatingCount?.length} Reviews)
-                            </span>
-                        </div>
+                        )}
                     </div>
                     <div>
                         <button
@@ -228,18 +243,28 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                         </button>
                     </div>
                 </div>
-                <div className='mx-4 mt-6 max-h-[70vh] overflow-y-scroll py-6 '>
+
+                {/* Sort options */}
+                <div className='mt-4'>
+                    <Select
+                        defaultValue={sortOptions?.[0].value}
+                        onChange={handleChange}
+                        options={sortOptions}
+                        className='w-[160px]'
+                    />
+                </div>
+                <div className='review__scrollbar mx-4 mt-6 max-h-[70vh] overflow-y-scroll py-6 pr-4 '>
                     {reviewContent &&
-                        reviewContent.map((item, index) => (
+                        reviewContent.reviewList?.map((item, index) => (
                             <div key={index} className='mb-6 flex flex-col gap-2 py-2'>
-                                <Rate value={item.rating} disabled className='text-[16px]' />
+                                <Rate value={item.rating} disabled className='text-base' />
                                 <div>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='flex items-center gap-2'>
                                             <Avatar
                                                 shape='square'
                                                 size={32}
-                                                src={item?.userId.avatar}
+                                                src={item?.userId.avatar || StaticImages.userImageDf}
                                                 alt='avatar'
                                                 icon={<UserOutlined className='text-yellow-500' />}
                                             />
@@ -254,7 +279,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                                     </div>
                                     <div className='no-scrollbar mt-2 overflow-y-scroll'>
                                         <p
-                                            className={`text-[16px]  text-[#777777] ${contentSee[index] ? '' : 'line-clamp-2'}`}
+                                            className={`mr-4 rounded-sm bg-slate-50 p-2 text-base font-medium text-black ${contentSee[index] ? '' : 'line-clamp-2'}`}
                                         >
                                             {item.content}
                                         </p>
@@ -278,7 +303,9 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                                 </div>
                             </div>
                         ))}
-                    {!reviewContent?.length && (
+
+                    {isLoading && <Skeleton avatar active paragraph={{ rows: 3 }} />}
+                    {!reviewContent?.reviewList.length && !isLoading && (
                         <>
                             <div className='flex h-[264px] items-center justify-center'>
                                 <h3 className='text-center text-[#777777]'>Sản phẩm chưa nhận được đánh giá nào.</h3>
@@ -286,6 +313,24 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                         </>
                     )}
                 </div>
+
+                {/* View more */}
+                {query.limit < (reviewContent?.totalDocs as number) && (
+                    <span
+                        onClick={() =>
+                            handleFilter({
+                                limit:
+                                    query.limit + (reviewContent?.limit as number) >=
+                                    (reviewContent?.totalDocs as number)
+                                        ? reviewContent?.totalDocs.toString()
+                                        : (query.limit + (reviewContent?.limit as number)).toString(),
+                            })
+                        }
+                        className='my-2 block cursor-pointer text-center text-sm font-semibold text-yellow-400 transition duration-300 hover:underline'
+                    >
+                        Xem thêm
+                    </span>
+                )}
             </div>
             <ReviewModal
                 initialValue={initialReview}

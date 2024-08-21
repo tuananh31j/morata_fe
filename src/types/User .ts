@@ -8,14 +8,16 @@ export type IUserLogin = {
 };
 
 export type IUserProfileResponse = {
-    _id: string;
-    name: string;
-    isActive: boolean;
-    email: string;
-    avatar: string;
-    phone: string;
-    address: string;
-    role: string;
+    data: {
+        _id: string;
+        name: string;
+        isActive: boolean;
+        email: string;
+        avatar: string;
+        phone: string;
+        address: string;
+        role: string;
+    };
 };
 export type IUsers = {
     _id: string;
