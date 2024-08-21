@@ -14,7 +14,7 @@ interface Props {
 const OrderDetailNavbar = ({ orderStatus, id }: Props) => {
     return (
         <Space className='flex w-full items-center justify-between rounded-lg bg-[#fff] p-4 font-semibold'>
-            <span>Thông tin đơn hàng </span>
+            <span>Thông tin đơn hàng #{id}</span>
             {orderStatus === ORDER_STATUS.PENDING && (
                 <Space>
                     <PopConFirmOrder orderId={id} />
