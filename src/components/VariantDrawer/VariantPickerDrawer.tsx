@@ -1,4 +1,4 @@
-import { HeartFilled, HeartOutlined } from '@ant-design/icons';
+import { CloseOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { Button, ConfigProvider, Drawer, InputNumber, Space } from 'antd';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
@@ -53,13 +53,14 @@ export default function VariantPickerDrawer({
     const onClose = () => {
         setOpen(false);
     };
-    const handleOnclickVariant = (item: IStateVariant) => {
-        setVariant(item);
-    };
     const handleChangeVariant = (item: IStateVariant) => {
-        handleOnclickVariant(item);
+        setVariant(item);
         setActive(item._id);
+        if (valueQuantity > item.stock) {
+            setQuantityValue(item.stock);
+        }
     };
+
     const handleIncrement = () => {
         if (valueQuantity < (variant ? variant.stock : 0)) setQuantityValue(valueQuantity + 1);
     };
@@ -113,8 +114,27 @@ export default function VariantPickerDrawer({
             <div className='w-full' onClick={showDrawer}>
                 {children}
             </div>
-            <Drawer title={product.name} placement={'bottom'} height={'auto'} onClose={onClose} open={open}>
-                <Space>
+            <Drawer
+                title={
+                    <>
+                        <div className='flex items-center justify-between'>
+                            <div className='flex items-center gap-10'>
+                                <h3 className='font-bold uppercase text-[#222222]'>{product.name}</h3>
+                                <span className='text-[#777777]'>Chọn dạng sản phẩm </span>
+                            </div>
+                            <Button type='text' onClick={onClose}>
+                                <CloseOutlined className='transform text-xl transition duration-500 hover:rotate-180' />
+                            </Button>
+                        </div>
+                    </>
+                }
+                placement={'bottom'}
+                height={'auto'}
+                closeIcon={false}
+                onClose={onClose}
+                open={open}
+            >
+                <Space className='flex flex-col lg:flex lg:flex-row'>
                     <Space className='overflow-hidden rounded-[15px]'>
                         {variant?.image && <img className='h-[350px] max-w-[500px] ' src={variant?.image} alt='' />}
                         {!variant?.image && (
@@ -129,7 +149,7 @@ export default function VariantPickerDrawer({
                                 ? Currency.format(variant?.price!)
                                 : Currency.format(product.variationIds[0].price)}
                         </span>
-                        <div className='mt-2 flex items-center gap-3'>
+                        <div className='mt-2 flex flex-wrap items-center gap-3'>
                             {product?.variationIds.map((item) => {
                                 return (
                                     <div

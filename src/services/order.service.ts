@@ -18,7 +18,10 @@ const orderService = {
     },
     /* eslint-enable */
 
-    cancelOrder(body: { orderId?: string; reason?: string }) {
+    cancelOrderByUser(body: { orderId?: string; reason?: string }) {
+        return instance.patch<void, { orderId: string; reason?: string }>(`${ORDER_ENDPOINT.CANCEL_ORDER}`, body);
+    },
+    cancelOrderByAdmin(body: { orderId?: string; reason?: string }) {
         return instance.patch<void, { orderId: string; reason?: string }>(`${ORDER_ENDPOINT.CANCEL_ORDER}`, body);
     },
     confirmOrder({ orderId, reason }: { orderId?: string; reason?: string }) {

@@ -1,91 +1,153 @@
-import { Button, Form, Input, Modal, Radio, Space } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Flex, Form, Modal, Radio } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
+import { useEffect, useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import WrapperList from '~/components/_common/WrapperList';
+import { ORDER_STATUS } from '~/constants/order';
 import useCancelOrder from '~/hooks/orders/Mutations/useCancelOrder';
+import showMessage from '~/utils/ShowMessage';
 
-interface Values {
-    reason: string;
-}
+const schemaFormCancelOrder = z.object({
+    reason: z.string({ message: 'You need to tell us the reason!' }),
+    description: z.string().optional(),
+});
 
-interface Props {
-    orderId: string;
-}
+type IFormCancelOrder = z.infer<typeof schemaFormCancelOrder>;
 
-const CancelOrderModal = ({ orderId }: Props) => {
-    const [form] = Form.useForm();
-    const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
+const CancelOrderModal = ({ orderId, status }: { orderId: string; status: string }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [visible, setVisible] = useState(false);
+    const { mutateAsync, isSuccess, isPending } = useCancelOrder(orderId);
+    const {
+        control,
+        handleSubmit,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm<IFormCancelOrder>({
+        resolver: zodResolver(schemaFormCancelOrder),
+    });
 
-    const cancelOrder = useCancelOrder(orderId);
+    const reason = watch('reason');
 
-    const handleOnTerminate = (values: Values) => {
-        if (!values.reason) {
-            return toast.error('Hãy chọn lí do hủy đơn hàng');
+    useEffect(() => {
+        setVisible(reason === 'orther');
+    }, [reason]);
+
+    const onSubmit: SubmitHandler<IFormCancelOrder> = async (data) => {
+        try {
+            if (data.reason === 'orther') {
+                const reasonCombined = data.description || '';
+                await mutateAsync(reasonCombined);
+            } else {
+                await mutateAsync(data.reason);
+            }
+
+            showMessage('Hủy đơn hàng thành công!', 'success');
+            setIsModalOpen(false);
+            reset();
+        } catch (error) {
+            showMessage('Hủy đơn thất bại!', 'error');
         }
-        cancelOrder.mutate(values.reason, {
-            onSuccess: () => {
-                form.resetFields();
-                navigate(`/admin/orders/${orderId}/detail`);
-                setOpen(false);
-                return toast.success('Hủy đơn hàng thành công!');
-            },
-            onError: (error) => {
-                return toast.error('Hủy đơn hàng thất bại!');
-            },
-        });
-        return null;
+    };
+
+    const showModal = () => {
+        setIsModalOpen(true);
+        reset();
     };
 
     const handleCancel = () => {
-        form.resetFields();
-        setOpen(false);
+        setIsModalOpen(false);
+        reset();
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            showMessage('Cancel order successfully!', 'success');
+            setIsModalOpen(false);
+            reset();
+        }
+    }, [isSuccess, reset]);
 
     return (
         <>
-            <Button danger onClick={() => setOpen(true)}>
-                Hủy đơn
+            <Button onClick={showModal} type='primary' danger>
+                Hủy Đơn Hàng
             </Button>
-
-            <Modal
-                maskClosable={false}
-                forceRender
-                open={open}
-                title='Tại sao bạn muốn hủy đơn hàng này?'
-                okText='Hủy đơn'
-                okType='danger'
-                cancelText='Cancel'
-                okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
-                onCancel={handleCancel}
-                destroyOnClose
-                confirmLoading={cancelOrder.isPending}
-                modalRender={(dom) => (
+            <Modal open={isModalOpen} footer='' onCancel={handleCancel}>
+                <WrapperList classic className='m-0' title='Tại sao bạn muốn hủy đơn hàng này?'>
                     <Form
+                        onFinish={handleSubmit(onSubmit)}
+                        className='w-full'
+                        name='layout-multiple-horizontal'
                         layout='vertical'
-                        form={form}
-                        name='form_in_modal'
-                        initialValues={{ modifier: 'public' }}
-                        onFinish={(values) => handleOnTerminate(values)}
                     >
-                        {dom}
-                    </Form>
-                )}
-            >
-                <Form.Item name='reason' className='collection-create-form_last-form-item'>
-                    <Space direction='vertical' className='w-full'>
-                        <Radio.Group className='flex flex-col'>
-                            <Radio value='Đơn hàng bị hoãn'>Đơn hàng bị hoãn</Radio>
-                            <Radio value='Hết hàng'>Hết hàng</Radio>
-                            <Radio value='Sai thông tin sản phẩm'>Sai thông tin sản phẩm</Radio>
-                            <Radio value='Khách hàng yêu cầu hủy đơn'>Khách hàng yêu cầu hủy đơn</Radio>
-                            <Radio value='Lỗi thanh toán'>Lỗi thanh toán</Radio>
-                            {/* <Radio value='Khác'>Khác</Radio> */}
-                        </Radio.Group>
+                        <Form.Item
+                            validateStatus={errors.reason ? 'error' : ''}
+                            help={errors.reason?.message}
+                            label='Lí do'
+                            name='horizontal'
+                            required
+                        >
+                            <Controller
+                                name='reason'
+                                control={control}
+                                render={({ field }) => (
+                                    <Radio.Group {...field} className='flex flex-col'>
+                                        {status !== ORDER_STATUS.SHIPPING && (
+                                            <>
+                                                <Radio value='Đơn hàng bị hoãn'>Đơn hàng bị hoãn</Radio>
+                                                <Radio value='Hết hàng'>Hết hàng</Radio>
+                                                <Radio value='Sai thông tin sản phẩm'>Sai thông tin sản phẩm</Radio>
+                                                <Radio value='Khách hàng yêu cầu hủy đơn'>
+                                                    Khách hàng yêu cầu hủy đơn
+                                                </Radio>
+                                                <Radio value='Lỗi thanh toán'>Lỗi thanh toán</Radio>
+                                            </>
+                                        )}
+                                        {status === ORDER_STATUS.SHIPPING && (
+                                            <>
+                                                <Radio value='Quá trình vận chuyển xảy ra vấn đề'>
+                                                    Quá trình vận chuyển xảy ra vấn đề
+                                                </Radio>
+                                                <Radio value='Không liên lạc được người nhận'>
+                                                    Không liên lạc được người nhận
+                                                </Radio>
+                                            </>
+                                        )}
 
-                        <Input placeholder='Lí do khác' />
-                    </Space>
-                </Form.Item>
+                                        <Radio value='orther'>Khác:</Radio>
+                                    </Radio.Group>
+                                )}
+                            />
+                        </Form.Item>
+                        {visible && (
+                            <Form.Item
+                                validateStatus={errors.description ? 'error' : ''}
+                                help={errors.description?.message}
+                                label='Lí do khác'
+                            >
+                                <Controller
+                                    name='description'
+                                    control={control}
+                                    render={({ field }) => (
+                                        <TextArea {...field} rows={5} placeholder='Điền lí do khác tại đây ...' />
+                                    )}
+                                />
+                            </Form.Item>
+                        )}
+                        <Flex align='end' justify='end' gap='small'>
+                            <Button onClick={handleCancel} type='text'>
+                                Thoát
+                            </Button>
+                            <Button htmlType='submit' loading={isPending} type='primary'>
+                                Hủy Đơn Hàng
+                            </Button>
+                        </Flex>
+                    </Form>
+                </WrapperList>
             </Modal>
         </>
     );
