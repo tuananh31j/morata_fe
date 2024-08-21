@@ -12,7 +12,8 @@ import dayjs from 'dayjs';
 import moment from 'moment';
 
 const ReviewsList = () => {
-    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<IReviewProductResponse>();
+    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps, getSortedInfo } =
+        useTable<IReviewProductResponse>();
     const { data: reviewRes } = useGetAllReviews(query);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const totalDocs = reviewRes?.data.totalDocs;
@@ -88,13 +89,7 @@ const ReviewsList = () => {
                     <span>{dayjs(record.createdAt).format('DD/MM/YYYY')}</span>
                 </>
             ),
-            sortOrder: query.sort
-                ? query.sort.includes('createdAt')
-                    ? query.sort.includes('-')
-                        ? 'descend'
-                        : 'ascend'
-                    : undefined
-                : undefined,
+            sortOrder: getSortedInfo('createdAt'),
             sorter: (a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
         },
         {

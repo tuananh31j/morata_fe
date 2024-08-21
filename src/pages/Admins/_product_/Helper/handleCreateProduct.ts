@@ -10,6 +10,7 @@ export const handleCreateProduct = (data: IProductForm, createProduct: (product:
         description,
         variations,
         attributes,
+        isHide,
         brandId: brandIdData,
         categoryId: categoryIdData,
     } = data;
@@ -52,6 +53,7 @@ export const handleCreateProduct = (data: IProductForm, createProduct: (product:
     }
     /* eslint-enable */
     formData.append('name', name);
+    formData.append('isHide', String(isHide));
     formData.append('attributes', JSON.stringify(attributesData));
     formData.append('variationsString', JSON.stringify(newVariations));
 

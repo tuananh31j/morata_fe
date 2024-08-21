@@ -7,6 +7,7 @@ import { ORDER_STATUS } from '~/constants/order';
 import useTable from '~/hooks/_common/useTable';
 import { OrderStatus } from '~/constants/enum';
 import TableDisplay from '../../../components/_common/TableDisplay';
+import { get } from 'lodash';
 
 interface Props {
     ordersList: {
@@ -31,7 +32,8 @@ interface DataType {
 }
 
 const OrderTable = ({ ordersList, totalDocs }: Props) => {
-    const { getColumnSearchProps, query, onSelectPaginateChange, onFilter } = useTable<any>();
+    const { getColumnSearchProps, query, onSelectPaginateChange, onFilter, getSortedInfo, getFilteredValue } =
+        useTable<any>();
     const currentPage = Number(query.page || 1);
     const dataSource =
         ordersList && ordersList.length
@@ -70,19 +72,14 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
             render: (text: number) => {
                 return <span>{text.toLocaleString()} đ</span>;
             },
-            sortOrder: query.sort
-                ? query.sort.includes('totalPrice')
-                    ? query.sort.includes('-')
-                        ? 'descend'
-                        : 'ascend'
-                    : undefined
-                : undefined,
+            sortOrder: getSortedInfo('totalPrice'),
             sorter: (a: any, b: any) => a.total - b.total,
         },
         {
             key: 'isPaid',
             dataIndex: 'paymentStatus',
             title: 'Trạng thái thanh toán',
+            filteredValue: getFilteredValue('isPaid'),
             render: (text: string) => {
                 if (text === 'Unpaid') {
                     return <span className='font-semibold text-red'>Chưa thanh toán</span>;
@@ -99,7 +96,7 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
             key: 'orderStatus',
             dataIndex: 'orderStatus',
             title: 'Trạng thái đơn hàng',
-            filteredValue: query.orderStatus ? (query.orderStatus as string).split(',') : undefined,
+            filteredValue: getFilteredValue('orderStatus'),
             render: (text: string) => {
                 if (text === ORDER_STATUS.CANCELLED) {
                     return <span className='font-semibold text-red'>Đã hủy</span>;
@@ -132,13 +129,7 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
             render: (text: string) => {
                 return moment(text).format('DD/MM/YYYY hh:mm:ss');
             },
-            sortOrder: query.sort
-                ? query.sort.includes('createdAt')
-                    ? query.sort.includes('-')
-                        ? 'descend'
-                        : 'ascend'
-                    : undefined
-                : undefined,
+            sortOrder: getSortedInfo('createdAt'),
             sorter: (a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
         },
         {

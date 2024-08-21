@@ -37,7 +37,7 @@ const CategoryList = () => {
                         return (
                             <Tag
                                 color={att.isVariant ? 'geekblue' : att.isRequired ? 'red' : ''}
-                                className='my-2'
+                                className='my-1'
                                 key={att._id}
                             >
                                 {att.name.toUpperCase()}

@@ -11,7 +11,8 @@ import useTable from '~/hooks/_common/useTable';
 import TableDisplay from '../../../components/_common/TableDisplay';
 
 const CategoryList = () => {
-    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<IAttributesValue>();
+    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps, getFilteredValue } =
+        useTable<IAttributesValue>();
     const { data: attributeRes } = useGetAllAtributes(query);
     const attributesList = attributeRes?.data.attributes;
     const totalDocs = attributeRes?.data.totalDocs;
@@ -37,7 +38,12 @@ const CategoryList = () => {
         {
             title: 'Giá trị',
             dataIndex: 'type',
-            key: 'value',
+            key: 'type',
+            filteredValue: getFilteredValue('type'),
+            filters: [
+                { text: 'Kiểu lựa chọn', value: AttributeType.Options },
+                { text: 'Kiểu nhập tay', value: AttributeType.Manual },
+            ],
             render: (_, record) => (
                 <>
                     {record.type === AttributeType.Options &&

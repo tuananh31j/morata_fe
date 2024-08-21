@@ -28,6 +28,7 @@ export const ProductsListColumns = ({
     getColumnSearchProps,
     mutateHideProduct,
     mutateShowProduct,
+    getFilteredValue,
 }: {
     brandFilter?: IFilter[];
     categoryFilter?: IFilter[];
@@ -35,6 +36,7 @@ export const ProductsListColumns = ({
     getColumnSearchProps: (dataIndex: string) => ColumnType<any>;
     mutateHideProduct: (id: string) => void;
     mutateShowProduct: (id: string) => void;
+    getFilteredValue: (key: string) => string[] | undefined;
 }): TableProps<IProductItemNew>['columns'] => {
     return [
         {
@@ -71,11 +73,7 @@ export const ProductsListColumns = ({
                                             Đang bán
                                         </Tag>
                                     )}
-                                    {!item.isActive && (
-                                        <Tag className='text-[10px]' color='gray'>
-                                            Đang không bán
-                                        </Tag>
-                                    )}
+                                    {!item.isActive && <Tag className='text-[10px]'>Đang không bán</Tag>}
                                 </div>
                             </div>
                         ))}
@@ -157,7 +155,7 @@ export const ProductsListColumns = ({
             title: 'Danh mục',
             key: 'categoryId',
             filters: categoryFilter,
-            filteredValue: query.categoryId ? (query.categoryId as string).split(',') : undefined,
+            filteredValue: getFilteredValue('categoryId'),
             render: (_, record) => {
                 return <h4>{record.categoryId.name}</h4>;
             },
@@ -165,7 +163,7 @@ export const ProductsListColumns = ({
         {
             title: 'Thương hiệu',
             key: 'brandId',
-            filteredValue: query.brandId ? (query.brandId as string).split(',') : undefined,
+            filteredValue: getFilteredValue('brandId'),
             filters: brandFilter,
             render: (_, record) => {
                 return <h4>{record.brandId.name}</h4>;
@@ -174,7 +172,7 @@ export const ProductsListColumns = ({
         {
             title: 'Trạng thái',
             key: 'isHide',
-            filteredValue: query.isHide ? (query.isHide as string).split(',') : undefined,
+            filteredValue: getFilteredValue('isHide'),
             filters: [
                 { text: 'Ẩn', value: 'true' },
                 { text: 'Hiện', value: 'false' },
@@ -182,7 +180,7 @@ export const ProductsListColumns = ({
             render: (_, record) => {
                 return (
                     <>
-                        <p className=''>{record.isHide && 'Đã ẩn'}</p>
+                        <p className='text-graydark'>{record.isHide && 'Đã ẩn'}</p>
                         <p className='text-green-400'>{!record.isHide && 'Đang hiển thị'}</p>
                     </>
                 );

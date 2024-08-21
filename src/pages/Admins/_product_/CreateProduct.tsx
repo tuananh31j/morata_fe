@@ -28,6 +28,7 @@ import { ADMIN_ROUTES } from '~/constants/router';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 
 const CreateProduct = () => {
+    const [isHide, setIsHide] = useState<boolean>(false);
     const [previewImagesOpen, setPreviewImagesOpen] = useState<boolean>(false);
     const [previewImages, setPreviewImages] = useState<string>('');
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
@@ -88,10 +89,17 @@ const CreateProduct = () => {
     };
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
-        console.log(values);
         handleCreateProduct(values, createProduct);
     };
+    const handleSaveAndShow = () => {
+        setIsHide(false);
+        form.setFieldsValue({ isHide: false });
+    };
 
+    const handleSaveAndHide = () => {
+        setIsHide(true);
+        form.setFieldsValue({ isHide: true });
+    };
     const handleChangeCat = (value: string) => {
         setCategoryId(value);
         setIsChooseCategory(true);
@@ -128,9 +136,12 @@ const CreateProduct = () => {
                 </Link>
             }
         >
-            <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off'>
+            <Form layout='vertical' form={form} onFinish={onFinish}>
                 <div className='grid grid-cols-1 gap-4'>
                     <WrapperCard title='Thông tin cơ bản'>
+                        <Form.Item name='isHide' className='hidden' hidden>
+                            <Input type='hidden' />
+                        </Form.Item>
                         <Form.Item<IProductForm>
                             label='Danh mục'
                             name='categoryId'
@@ -317,19 +328,33 @@ const CreateProduct = () => {
                         </Form.List>
                     </WrapperCard>
                 </div>
-                <div className='sticky bottom-0 right-0 my-2 flex justify-end rounded-md border-t-2 border-black border-opacity-5 bg-white p-4'>
-                    <Button
-                        type='primary'
-                        htmlType='submit'
-                        icon={<PlusSquareOutlined />}
-                        className='mr-3 px-5'
-                        loading={isPending}
-                        disabled={isPending}
-                        size='large'
-                    >
-                        Thêm mới sản phẩm
-                    </Button>
-                </div>
+                <Form.Item>
+                    <div className='sticky bottom-0 right-0 my-2 flex justify-end rounded-md border-t-2 border-black border-opacity-5 bg-white p-4'>
+                        <Button
+                            type='default'
+                            htmlType='submit'
+                            className='mr-3 px-5'
+                            loading={isPending && isHide}
+                            disabled={isPending}
+                            onClick={handleSaveAndHide}
+                            size='large'
+                        >
+                            Lưu và ẩn
+                        </Button>
+                        <Button
+                            type='primary'
+                            htmlType='submit'
+                            icon={<PlusSquareOutlined />}
+                            className='mr-3 px-5'
+                            loading={isPending && !isHide}
+                            disabled={isPending}
+                            size='large'
+                            onClick={handleSaveAndShow}
+                        >
+                            Lưu và hiển thị
+                        </Button>
+                    </div>
+                </Form.Item>
             </Form>
         </WrapperPageAdmin>
     );

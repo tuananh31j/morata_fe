@@ -16,7 +16,8 @@ import useHideProduct from '~/hooks/products/Mutations/useHideProduct';
 import useShowProduct from '~/hooks/products/Mutations/useShowProduct';
 
 const ListAll = () => {
-    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps } = useTable<IProductItem>();
+    const { onSelectPaginateChange, query, onFilter, getColumnSearchProps, getFilteredValue } =
+        useTable<IProductItem>();
     const [brands, categories] = useGetCategoriesAndBrands();
     const { mutate: mutateHideProduct } = useHideProduct();
     const { mutate: mutateShowProduct } = useShowProduct();
@@ -42,6 +43,7 @@ const ListAll = () => {
         getColumnSearchProps,
         mutateShowProduct,
         mutateHideProduct,
+        getFilteredValue,
     }) as ColumnsType<IProductItem>;
 
     return (

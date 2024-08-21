@@ -200,6 +200,7 @@ export type IVariationDetailResponse = {
 };
 export type IProductForm = {
     name: string;
+    isHide: boolean;
     thumbnail: IProductFiles | null;
     images: IProductFiles | null;
     categoryId: string;

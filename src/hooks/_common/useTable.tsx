@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useRef } from 'react';
 import { FilterDropdownProps, FilterValue } from 'antd/es/table/interface';
@@ -23,6 +24,20 @@ const useTable = <T extends object>() => {
         setSearchText('');
         setSearchedColumn('');
         reset();
+    };
+
+    const getSortedInfo = (key: string) => {
+        return query.sort
+            ? query.sort.includes(key)
+                ? query.sort.includes('-')
+                    ? 'descend'
+                    : 'ascend'
+                : undefined
+            : undefined;
+    };
+
+    const getFilteredValue = (key: string) => {
+        return query[key] ? (query[key] as string).split(',') : undefined;
     };
 
     const handleResetSearch = (clearFilters: () => void) => {
@@ -115,6 +130,8 @@ const useTable = <T extends object>() => {
 
     return {
         query,
+        getSortedInfo,
+        getFilteredValue,
         onFilter,
         resetFilter,
         getColumnSearchProps,

@@ -32,6 +32,7 @@ export const handleEditProduct = async ({
         description,
         variations,
         attributes,
+        isHide,
         brandId: brandIdData,
         categoryId: categoryIdData,
     } = data;
@@ -85,6 +86,7 @@ export const handleEditProduct = async ({
         });
 
         formDataUpdateProduct.append('name', name);
+        formDataUpdateProduct.append('isHide', String(isHide));
         formDataUpdateProduct.append('attributes', JSON.stringify(attributesData));
 
         // Update product

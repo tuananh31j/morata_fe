@@ -10,9 +10,11 @@ import TableDisplay from '../../../components/_common/TableDisplay';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import dayjs from 'dayjs';
 import moment from 'moment';
+import { get } from 'lodash';
 
 const ReviewReportList = () => {
-    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps } = useTable<IReportReviewResponse>();
+    const { query, onFilter, onSelectPaginateChange, getColumnSearchProps, getSortedInfo } =
+        useTable<IReportReviewResponse>();
     const { data: reportReviewsRes } = useGetAllReportReviews(query);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const reportReviewsList = reportReviewsRes?.data.reportList;
@@ -88,13 +90,7 @@ const ReviewReportList = () => {
                     <span>{dayjs(record.createdAt).format('DD/MM/YYYY')}</span>
                 </>
             ),
-            sortOrder: query.sort
-                ? query.sort.includes('createdAt')
-                    ? query.sort.includes('-')
-                        ? 'descend'
-                        : 'ascend'
-                    : undefined
-                : undefined,
+            sortOrder: getSortedInfo('createdAt'),
             sorter: (a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
         },
         {

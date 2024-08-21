@@ -34,8 +34,11 @@ import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 
 const UpdateProduct = () => {
     const { id } = useParams();
+    // @Form
+    const [form] = Form.useForm<IProductForm>();
     // @initial form values
     const [initialValues, setInitialValues] = useState<any>();
+    const [isHide, setIsHide] = useState<boolean>(false);
 
     // @preview images
     const [previewImagesOpen, setPreviewImagesOpen] = useState<boolean>(false);
@@ -69,9 +72,6 @@ const UpdateProduct = () => {
     const { mutate: updateProduct, isPending } = useUpdateProduct();
     const { mutate: updateProductVariant } = useUpdateProductVariant();
     const { mutate: createProductVariant } = useCreateProductVariant();
-
-    // @Form
-    const [form] = Form.useForm<IProductForm>();
 
     // @Handle
     const handlePreview = async (file: UploadFile, multiple: boolean) => {
@@ -123,7 +123,6 @@ const UpdateProduct = () => {
     };
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
-        console.log(values, 'values');
         if (productDetails) {
             handleEditProduct({
                 productId: id as string,
@@ -134,6 +133,11 @@ const UpdateProduct = () => {
                 createProductVariant,
             });
         }
+    };
+
+    const handleSaveAndHide = () => {
+        setIsHide(true);
+        form.setFieldsValue({ isHide: true });
     };
     const onReset = () => {
         form.setFieldsValue(initialValues.initialValue);
@@ -220,6 +224,9 @@ const UpdateProduct = () => {
                 <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off' className='capitalize'>
                     <div className='grid grid-cols-1 gap-4'>
                         <WrapperCard title='Thông tin cơ bản'>
+                            <Form.Item name='isHide' className='hidden' hidden>
+                                <Input type='hidden' />
+                            </Form.Item>
                             <Form.Item<IProductForm>
                                 label='Danh mục'
                                 name='categoryId'
@@ -414,11 +421,22 @@ const UpdateProduct = () => {
                             Đặt lại
                         </Button>
                         <Button
+                            type='default'
+                            htmlType='submit'
+                            className='mr-3 px-5'
+                            loading={isPending && isHide}
+                            disabled={isPending}
+                            onClick={handleSaveAndHide}
+                            size='large'
+                        >
+                            Lưu và ẩn
+                        </Button>
+                        <Button
                             type='primary'
                             htmlType='submit'
                             icon={<EditOutlined />}
                             className='px-5'
-                            loading={isPending}
+                            loading={isPending && !isHide}
                             disabled={isPending}
                             size='large'
                         >

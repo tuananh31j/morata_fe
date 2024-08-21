@@ -15,7 +15,7 @@ import useTable from '~/hooks/_common/useTable';
 import TableDisplay from '../../../components/_common/TableDisplay';
 
 const ManageUsers = () => {
-    const { query, onSelectPaginateChange, onFilter, getColumnSearchProps } = useTable<IUser>();
+    const { query, onSelectPaginateChange, onFilter, getColumnSearchProps, getFilteredValue } = useTable<IUser>();
     const { data } = useGetAllUsers(query);
     const users = data?.data?.users;
     const totalDocs = data?.data?.totalDocs;
@@ -53,7 +53,7 @@ const ManageUsers = () => {
             title: 'Vai trò',
             dataIndex: 'role',
             key: 'role',
-            filteredValue: [query.role],
+            filteredValue: getFilteredValue('role'),
             filters: [
                 { text: 'Quản trị viên', value: ROLE.ADMIN },
                 { text: 'Người dùng', value: ROLE.USER },
