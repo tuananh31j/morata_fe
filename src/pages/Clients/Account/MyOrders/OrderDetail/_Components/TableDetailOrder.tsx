@@ -1,7 +1,7 @@
-import { Button, Table } from 'antd';
+import { Button, Flex, Table, Tooltip } from 'antd';
 import { TableProps } from 'antd/lib';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import RateBtn from '~/pages/Clients/Account/MyOrders/Components/RateBtn';
 import { setReviewData } from '~/store/slice/rateProductSlice';
@@ -49,6 +49,17 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
             title: 'Tên Sản Phẩm',
             dataIndex: 'name',
             key: 'name',
+            render: (_, record) => (
+                <>
+                    <Flex justify='center' align='center'>
+                        <Tooltip title='Xem chi tiết sản phẩm'>
+                            <Link to={`/products/${record.productId}`}>
+                                <h3>{record.name}</h3>
+                            </Link>
+                        </Tooltip>
+                    </Flex>
+                </>
+            ),
         },
         {
             title: 'Giá Tiền',
