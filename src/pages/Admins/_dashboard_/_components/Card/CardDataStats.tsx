@@ -51,7 +51,8 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
                 <div className='mt-auto'>
                     <Statistic
                         value={total}
-                        valueStyle={{ fontSize: '28px', fontWeight: 'bold', color: '#1890ff' }}
+                        className='text-2xl'
+                        valueStyle={{fontWeight: 'bold', color: '#1890ff' }}
                         suffix={
                             rate && (
                                 <Tooltip title={rateTooltip || 'Rate information'}>

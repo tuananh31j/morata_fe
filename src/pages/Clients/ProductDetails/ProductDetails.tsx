@@ -131,33 +131,7 @@ const ProductDetails = () => {
                                         </>
                                     )}
                                 </div>
-                                {/* information product */}
-                                {/* <div className='information-product mt-[25px]'>
-                                    <ul className='list-inside list-disc text-sm leading-6 text-[#777777]'>
-                                        <li>Bass and Stereo Sound</li>
-                                        <li>Display with 3088 x 1440 pixels resolution.</li>
-                                        <li>Memory, Storage & SIM: 12GB RAM, 256GB.</li>
-                                    </ul>
-                                </div> */}
-                                {/* viewer now */}
-                                {/* <div className='mt-[29px] flex items-center gap-2'>
-                                    <span className='flex items-center justify-center rounded-[50%] bg-black px-2 py-2'>
-                                        <EyeOutlined style={{ color: 'white', fontSize: '12px' }} />
-                                    </span>
-                                    <span className='text-sm '>17 people are viewing this right now</span>
-                                </div> */}
-                                {/* Progress  stock product*/}
-                                {/* {product.stock < 100 && (
-                                    <>
-                                        <div className='Progress-stock mt-[25px]'>
-                                            <p className='text-base font-normal'>
-                                                Hurry Up! Only <span className='text-cyan-500'>{product.stock}</span>{' '}
-                                                left in stock
-                                            </p>
-                                            <ProgressBar stock={product.stock} />
-                                        </div>
-                                    </>
-                                )} */}
+
                                 {/* Produt action  */}
                                 <ActionDetail product={product} />
                                 <div className='mt-[15px] flex gap-5 text-sm'>
@@ -195,20 +169,7 @@ const ProductDetails = () => {
                                 </div>
                                 {/* Roles for COD */}
                                 <div className='mt-[35px]'>
-                                    {/* <ConfigProvider
-                                        theme={{
-                                            components: {
-                                                Button: {
-                                                    defaultBorderColor: 'none',
-                                                    defaultHoverBorderColor: 'none',
-                                                },
-                                            },  
-                                        }}
-                                    >
-                                        <Button className='flex items-center text-base '>
-                                            <FileProtectOutlined /> Shipping and Returns
-                                        </Button>
-                                    </ConfigProvider> */}
+
                                     <div className='ml-[15px] mt-[25px]'>
                                         <p>
                                             <DockerOutlined />{' '}

@@ -96,6 +96,7 @@ export const REVIEW_ENDPOINT = {
     GET_ALL_REPORT: '/reviews/report/all',
     CREATE_REPORT: 'reviews/report',
     CREATE: '/reviews',
+    STARS_REVIEW:'/reviews/stars-review',
     DELETE_REVIEW: '/reviews/',
     DELETE_REPORT: '/reviews/report',
     CHECK_PURCHASED: '/reviews/purchased',

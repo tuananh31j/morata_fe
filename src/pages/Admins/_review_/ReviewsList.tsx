@@ -10,6 +10,8 @@ import TableDisplay from '../../../components/_common/TableDisplay';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import dayjs from 'dayjs';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { MAIN_ROUTES } from '~/constants/router';
 
 const ReviewsList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps, getSortedInfo } =
@@ -48,27 +50,27 @@ const ReviewsList = () => {
             key: 'search',
             ...getColumnSearchProps('_id'),
             width: '15%',
+            render: (_, record) => (
+                <>
+                    <span>{record._id}</span>
+                </>
+            ),
         },
         {
             title: 'Người đánh giá',
             render: (_, record) => (
-                <>
-                    <span>{record.userId.name}</span>
-                </>
+                <div>
+                    <span className='block'>{record.userId.name}</span>
+                    <span className='mt-2 inline-block text-sm'>
+                        Mã sản phẩm: <span className='text-xs'>{record.productId}</span>
+                    </span>
+
+                    <Link to={`${MAIN_ROUTES.PRODUCTS}/${record.productId}`} className='block text-blue-400 underline'>Link sản phẩm</Link>
+                    <Rate value={record.rating} disabled className='mt-1 text-nowrap text-sm'></Rate>
+                </div>
             ),
             key: 'username',
-            width: '20%',
-        },
-        {
-            title: 'Đánh giá',
-            dataIndex: 'rating',
-            key: 'rating',
-            render: (_, record) => (
-                <>
-                    <Rate value={record.rating} disabled className='text-nowrap'></Rate>
-                </>
-            ),
-            width: '15%',
+            width: '30%',
         },
         {
             title: 'Nội dung đánh giá',
@@ -91,6 +93,7 @@ const ReviewsList = () => {
             ),
             sortOrder: getSortedInfo('createdAt'),
             sorter: (a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
+            width: '10%',
         },
         {
             title: 'Thao tác',

@@ -8,7 +8,7 @@ import { Avatar } from 'antd';
 const AccountSidebarLeft = () => {
     const { data } = useGetProfile();
 
-    const profile = data?.data;
+    const profile = data?.data.data;
 
     const { mutate } = useSendVerify();
     const getInitialCountdown = () => {
