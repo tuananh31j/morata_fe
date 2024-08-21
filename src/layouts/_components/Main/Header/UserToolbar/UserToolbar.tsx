@@ -45,7 +45,7 @@ const UserToolbar = () => {
                     {/* </WishListDrawer> */}
 
                     <Link className='cursor-pointer' to={MAIN_ROUTES.PROFILE}>
-                        <IconButton name={`${me.data.data.name}`} subName='Xin chào' icon='UserOutlined' />
+                        <IconButton name={`${me.data.data.data.name}`} subName='Xin chào' icon='UserOutlined' />
                     </Link>
 
                     {location.pathname !== '/checkout-details' ? (

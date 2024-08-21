@@ -14,7 +14,8 @@ const useUpdateProduct = () => {
             productService.updateProduct(data, productId),
         onSuccess: (res) => {
             queryClient.refetchQueries({
-                predicate: (query) => query.queryKey.includes(QUERY_KEY.PRODUCTS),
+                predicate: (query) =>
+                    query.queryKey.includes(QUERY_KEY.PRODUCTS) || query.queryKey.includes(QUERY_KEY.CART),
             });
             showMessage('Cập nhật sản phẩm thành công!', 'success');
             navigate(ADMIN_ROUTES.PRODUCTS);

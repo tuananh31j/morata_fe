@@ -9,7 +9,8 @@ const useUpdateProductVariant = () => {
             productService.updateProductVariant(data, variantId),
         onSuccess: () => {
             queryClient.refetchQueries({
-                predicate: (query) => query.queryKey.includes(QUERY_KEY.PRODUCTS),
+                predicate: (query) =>
+                    query.queryKey.includes(QUERY_KEY.PRODUCTS) || query.queryKey.includes(QUERY_KEY.CART),
             });
         },
     });
