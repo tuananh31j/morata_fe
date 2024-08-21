@@ -180,7 +180,7 @@ export const ProductsListColumns = ({
             render: (_, record) => {
                 return (
                     <>
-                        <p className='text-graydark'>{record.isHide && 'Đã ẩn'}</p>
+                        <p className='text-red'>{record.isHide && 'Đã ẩn'}</p>
                         <p className='text-green-400'>{!record.isHide && 'Đang hiển thị'}</p>
                     </>
                 );

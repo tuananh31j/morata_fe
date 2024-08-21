@@ -3,17 +3,23 @@ import { CarouselRef } from 'antd/es/carousel';
 import { useRef, useState } from 'react';
 import { IProductItemNew } from '~/types/Product';
 import SliderControls from '../SliderControls';
+import SlideItem from '~/components/Banner/SlideItem';
 
 // interface ICardItemProps {
 //     [key: string]: any; // có api thì sẽ định nghĩa lại
 // }
 
 interface ISlideshowProps {
-    ItemCard: React.ElementType;
+    ItemCard?: React.ElementType;
+    banners?: {
+        image: string;
+        title: string;
+        description: string;
+    }[];
     Products?: IProductItemNew[];
 }
 
-const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, Products }) => {
+const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, banners, Products }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const ref = useRef<CarouselRef>(null);
     const handlePrev = () => {
@@ -27,7 +33,9 @@ const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, Products }) => {
             ref.current.next();
         }
     };
-    const data = [1, 1, 1, 1];
+
+    // const data = [1, 1, 1];
+
     return (
         <>
             <div className='relative'>
@@ -40,11 +48,20 @@ const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, Products }) => {
                         infinite
                         speed={300}
                     >
-                        {Products?.map((item, i) => {
-                            return <ItemCard key={i} product={item} />;
-                        })}
-                        {!Products && data?.map((item, i) => <ItemCard key={i} status={currentSlide === i} />)}
+                        {banners &&
+                            banners?.map((banner, i) => {
+                                return <SlideItem key={i} product={banner} />;
+                            })}
+
+                        {Products &&
+                            ItemCard &&
+                            Products?.map((item, i) => {
+                                return <ItemCard key={i} product={item} />;
+                            })}
+
+                        {/* {!Products && data?.map((item, i) => <SlideItem key={i} status={currentSlide === i} />)} */}
                     </Carousel>
+
                     <SliderControls isButtonHandle={false} handlePrev={handlePrev} handleNext={handleNext} />
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import { Breadcrumb, ConfigProvider } from 'antd';
 import { useLocation } from 'react-router-dom';
+import Contact from '~/pages/Clients/Contact';
 
 // Function to translate English words to Vietnamese
 const translateToVietnamese = (word: string) => {
@@ -9,6 +10,7 @@ const translateToVietnamese = (word: string) => {
         Wishlist: 'Danh sách yêu thích',
         Profile: 'Thông tin tài khoản',
         'My Orders': 'Đơn hàng của tôi',
+        Contact: 'Liên hệ',
 
         // Add more translations as needed
     };
