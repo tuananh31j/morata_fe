@@ -26,6 +26,11 @@ const productService = {
         );
         return res.data;
     },
+    // Get detail variant to show in order
+    async getDetailedVariant(id: string) {
+        const res = await instance.get(`${PRODUCT_ENDPOINT.DETAILED_VARIANT}/${id}`);
+        return res.data;
+    },
     // new model
     async getAllProducts(params?: Params) {
         const res = await instance.get<IAxiosResponse<IAllProductResponseNew>>(`${PRODUCT_ENDPOINT.ALL}`, {

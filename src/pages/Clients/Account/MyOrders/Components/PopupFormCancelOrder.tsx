@@ -17,32 +17,36 @@ type IFormCancelOrder = z.infer<typeof schemaFormCancelOrder>;
 
 const PopupFormCancelOrder = ({ id }: { id: string }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [visible, setVisible] = useState(false);
     const { mutateAsync, isSuccess, isPending } = useCancelOrder(id);
     const {
         control,
         handleSubmit,
         reset,
+        watch,
         formState: { errors },
     } = useForm<IFormCancelOrder>({
         resolver: zodResolver(schemaFormCancelOrder),
     });
 
+    const reason = watch('reason');
+
+    useEffect(() => {
+        setVisible(reason === 'orther');
+    }, [reason]);
+
     const onSubmit: SubmitHandler<IFormCancelOrder> = async (data) => {
         try {
-            const reasonCombined = data.reason.concat(data.description ? `, ${data.description}` : '');
+            if (data.reason === 'orther') {
+                const reasonCombined = data.description || '';
+                await mutateAsync(reasonCombined);
+            } else {
+                await mutateAsync(data.reason);
+            }
 
-            // const payload = {
-            //     orderId: id,
-            //     reason: reasonCombined,
-            // };
-
-            await mutateAsync(reasonCombined);
-
-            // if (isSuccess) {
-            //     showMessage('Cancel order successfully!', 'success');
-            //     setIsModalOpen(false);
-            //     reset();
-            // }
+            showMessage('Cancel order successfully!', 'success');
+            setIsModalOpen(false);
+            reset();
         } catch (error) {
             showMessage('Something wrong!', 'error');
         }
@@ -52,6 +56,7 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
         setIsModalOpen(true);
         reset();
     };
+
     const handleCancel = () => {
         setIsModalOpen(false);
         reset();
@@ -90,33 +95,36 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                                 control={control}
                                 render={({ field }) => (
                                     <Radio.Group {...field} className='flex flex-col'>
-                                        <Radio value={'Sản phẩm không giống như kì vọng'}>
+                                        <Radio value='Sản phẩm không giống như kì vọng'>
                                             Sản phẩm không giống như kì vọng
                                         </Radio>
-                                        <Radio value={'Không đủ tài chính để thanh toán đơn hàng'}>
+                                        <Radio value='Không đủ tài chính để thanh toán đơn hàng'>
                                             Không đủ tài chính để thanh toán đơn hàng
                                         </Radio>
-                                        <Radio value={'Đổi ý không muốn mua sản phẩm này nữa'}>
+                                        <Radio value='Đổi ý không muốn mua sản phẩm này nữa'>
                                             Đổi ý không muốn mua sản phẩm này nữa
                                         </Radio>
-                                        <Radio value={'Không muốn tiết lộ'}>Không muốn tiết lộ</Radio>
+                                        <Radio value='Không muốn tiết lộ'>Không muốn tiết lộ</Radio>
+                                        <Radio value='orther'>Khác:</Radio>
                                     </Radio.Group>
                                 )}
                             />
                         </Form.Item>
-                        <Form.Item
-                            validateStatus={errors.description ? 'error' : ''}
-                            help={errors.description?.message}
-                            label='Lí do khác'
-                        >
-                            <Controller
-                                name='description'
-                                control={control}
-                                render={({ field }) => (
-                                    <TextArea {...field} rows={5} placeholder='Điền lí do khác tại đấy ...' />
-                                )}
-                            />
-                        </Form.Item>
+                        {visible && (
+                            <Form.Item
+                                validateStatus={errors.description ? 'error' : ''}
+                                help={errors.description?.message}
+                                label='Lí do khác'
+                            >
+                                <Controller
+                                    name='description'
+                                    control={control}
+                                    render={({ field }) => (
+                                        <TextArea {...field} rows={5} placeholder='Điền lí do khác tại đây ...' />
+                                    )}
+                                />
+                            </Form.Item>
+                        )}
                         <Flex align='end' justify='end' gap='small'>
                             <Button onClick={handleCancel} type='text'>
                                 Thoát

@@ -1,5 +1,6 @@
 export const QUERY_KEY = {
     CART: 'CART',
+    VARIANT: 'variant',
     PRODUCTS: 'products',
     PRODUCTS_LAZY: 'products_lazy',
     CATEGORIES: 'categories',

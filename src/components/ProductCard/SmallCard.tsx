@@ -84,7 +84,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                         {/* Review */}
                         <div className='flex items-center justify-between'>
                             <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
-                            <span className='text-gray-400 text-sm'>Đã bán: {productSold ? productSold : 100}</span>
+                            {productSold !== 0 && <span className='text-gray-400 text-sm'>Đã bán: {productSold}</span>}
                         </div>
 
                         {/* Price */}

@@ -1,8 +1,9 @@
-import { Button, Table } from 'antd';
+import { Button, Flex, Table, Tooltip } from 'antd';
 import { TableProps } from 'antd/lib';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
+import { useGetVariantDetail } from '~/hooks/products/Queries/useGetVariantDetail';
 import RateBtn from '~/pages/Clients/Account/MyOrders/Components/RateBtn';
 import { setReviewData } from '~/store/slice/rateProductSlice';
 import { Currency } from '~/utils';
@@ -16,6 +17,9 @@ interface DataType {
     productId: string;
     total?: number;
     isReviewed: boolean;
+    variant: {
+        variantAttributes: { name: string; key: string; value: string }[];
+    };
 }
 
 interface Props {
@@ -49,6 +53,39 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
             title: 'Tên Sản Phẩm',
             dataIndex: 'name',
             key: 'name',
+            render: (_, record) => {
+                console.log(record);
+                // const { data } = useGetVariantDetail();
+                return (
+                    <>
+                        <Flex justify='center' align='center'>
+                            <Tooltip title='Xem chi tiết sản phẩm'>
+                                <Link to={`/products/${record.productId}`}>
+                                    <h3>{record.name}</h3>
+                                </Link>
+                            </Tooltip>
+                        </Flex>
+                    </>
+                );
+            },
+        },
+        {
+            title: 'Loại sản phẩm',
+            dataIndex: 'variant',
+            key: 'variant',
+            render: (variant) => {
+                return (
+                    <>
+                        <div className='flex gap-2'>
+                            {variant.variantAttributes.map((item: any, i: number) => (
+                                <span key={i} className='text-xs'>
+                                    {item.value}
+                                </span>
+                            ))}
+                        </div>
+                    </>
+                );
+            },
         },
         {
             title: 'Giá Tiền',
@@ -105,6 +142,7 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
         quantity: item.quantity,
         productId: item.productId,
         isReviewed: item.isReviewed,
+        variant: item.variant,
     }));
 
     return <Table className='mt-5 w-full' columns={columns} dataSource={data} pagination={false} />;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Flex, Typography, Tag, Avatar, Tooltip, Button } from 'antd';
-import { CreditCardOutlined, DollarOutlined, EyeOutlined } from '@ant-design/icons';
+import { CreditCardOutlined, DollarOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { Currency } from '~/utils';
@@ -44,7 +44,12 @@ const LatestOrders: React.FC<{ orders: LatestOrder[] }> = ({ orders }) => {
                 <Card key={order._id} className='w-1/2 shadow-md transition-shadow duration-300 hover:shadow-lg'>
                     <Flex align='center' justify='space-between'>
                         <Flex align='center' className='w-2/5'>
-                            <Avatar src={order.customerAvatar} size={48} className='mr-3' />
+                            <Avatar
+                                src={order.customerAvatar}
+                                icon={!order.customerAvatar && <UserOutlined />}
+                                size={48}
+                                className='mr-3'
+                            />
 
                             <Flex vertical>
                                 <Text strong className='text-lg'>
