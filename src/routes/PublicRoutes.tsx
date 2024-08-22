@@ -4,6 +4,7 @@ import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
 import AuthProtected from '~/layouts/Protected/AuthProtected';
 import ProtectedSelf from '~/layouts/Protected/ProtectedSelf';
+import WrapCartRemoveItem from '~/layouts/Protected/WrapCartRemoveItem';
 import OrderDetailPage from '~/pages/Clients/Account/MyOrders/OrderDetail/OrderDetailPage';
 import { CheckEmail } from '~/pages/Clients/AuthPage/Email/CheckEmail';
 import { VerifyPage } from '~/pages/Clients/AuthPage/Email/Verify';
@@ -34,7 +35,11 @@ import {
 const PublicRoutes = [
     {
         path: '/',
-        element: <MainLayout />,
+        element: (
+            <WrapCartRemoveItem>
+                <MainLayout />
+            </WrapCartRemoveItem>
+        ),
         errorElement: <ErrorPage />,
         children: [
             {

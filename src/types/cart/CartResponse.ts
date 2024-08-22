@@ -8,6 +8,7 @@ export interface ICartItem {
     _id: string;
     color: string;
     image: string;
+    isActive: boolean;
     price: number;
     productId: {
         _id: string;

@@ -20,8 +20,8 @@ const ProductItemsCheckout: React.FC = () => {
     const { description, receiverInfo, shippingAddress, tax, shippingFee } = useSelector(
         (state: RootState) => state.order
     );
-    const { data: cartItems } = useGetMyCart();
-    const items = cartItems?.data?.items?.map((item) => ({
+    const cartItems = useSelector((state: RootState) => state.cartReducer.items);
+    const items = cartItems?.map((item) => ({
         productId: item.productVariation.productId._id,
         productVariationId: item.productVariation._id,
         name: item?.productVariation?.productId?.name,
@@ -31,8 +31,7 @@ const ProductItemsCheckout: React.FC = () => {
         variants: item.productVariation.variantAttributes,
     }));
 
-    const subTotal =
-        cartItems?.data?.items?.reduce((acc, item) => acc + +item.productVariation.price * item.quantity, 0) || 0;
+    const subTotal = cartItems?.reduce((acc, item) => acc + +item.productVariation.price * item.quantity, 0) || 0;
 
     const taxAmount = tax * subTotal;
     const totalPrice = subTotal + taxAmount + shippingFee;
