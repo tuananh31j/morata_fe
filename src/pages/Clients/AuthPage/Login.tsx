@@ -9,7 +9,7 @@ import useMessage from '~/hooks/_common/useMessage';
 import useLogin from '~/hooks/auth/useLogin';
 
 const Login = () => {
-    useDocumentTitle('Sign In | MORATA');
+    useDocumentTitle('Đăng nhập | MORATA');
 
     const { handleMessage, contextHolder } = useMessage();
     const { mutate, isPending } = useLogin();

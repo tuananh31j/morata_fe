@@ -14,7 +14,7 @@ import { RootState } from '~/store/store';
 import { Currency } from '~/utils';
 import DescriptionProduct from './_components/Description/DescriptionProduct';
 import ThumnailProduct from './_components/Thumbnail/ThumnailProduct';
-import { Button, ConfigProvider } from 'antd';
+import { Button, ConfigProvider, Empty, Typography } from 'antd';
 import useMutationAddWishList from '~/hooks/wishlist/Mutations/useAddWishList';
 import showMessage from '~/utils/ShowMessage';
 import { MAIN_ROUTES } from '~/constants/router';
@@ -66,7 +66,7 @@ const ProductDetails = () => {
 
     /* eslint-enable */
     const isInitialMount = useRef(true);
-    useDocumentTitle(`${product?.name}`);
+    useDocumentTitle(`${product?.name || 'Sản phẩm đã bị ẩn!'}`);
     const variant = useSelector((state: RootState) => state.detailProductReducer.variant);
 
     /* eslint-disable */
@@ -86,7 +86,7 @@ const ProductDetails = () => {
     return (
         <>
             {/* BeadCrumb */}
-            {!isLoading && product && (
+            {!isLoading && product && id && (
                 <>
                     <BreadcrumbDisplay titleProduct={`${product.name}`} />
                     <div className='mt-[5px]'>
@@ -169,7 +169,6 @@ const ProductDetails = () => {
                                 </div>
                                 {/* Roles for COD */}
                                 <div className='mt-[35px]'>
-
                                     <div className='ml-[15px] mt-[25px]'>
                                         <p>
                                             <DockerOutlined />{' '}
@@ -230,6 +229,18 @@ const ProductDetails = () => {
                         )}
                     </div>
                 </>
+            )}
+            {!product && (
+                <div className='flex flex-col items-center justify-center '>
+                    <Empty
+                        image='https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg'
+                        description={<Typography.Text>Sản phẩm đã bị ẩn!</Typography.Text>}
+                    >
+                        <Button onClick={() => navigate('/')} type='primary'>
+                            Trang chủ
+                        </Button>
+                    </Empty>
+                </div>
             )}
         </>
     );

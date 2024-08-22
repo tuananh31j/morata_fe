@@ -72,34 +72,6 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
         { value: 'rating', label: 'Thấp nhất' },
     ];
 
-    // Dropdown review Items
-    const dropdownItems = (reviewData: IReviewProductResponse, index: number): MenuProps['items'] => {
-        return [
-            {
-                key: index,
-                label:
-                    reviewData.userId._id === userInfoData?.data._id ? (
-                        <span className='p-2' onClick={() => handleEditReview(reviewData)}>
-                            Chỉnh sửa
-                        </span>
-                    ) : (
-                        <span
-                            className='p-2'
-                            onClick={() =>
-                                handleAddReport({
-                                    userId: reviewData.userId._id,
-                                    reviewId: reviewData._id,
-                                    content: reviewData.content,
-                                })
-                            }
-                        >
-                            Báo cáo
-                        </span>
-                    ),
-            },
-        ];
-    };
-
     // @handle modal
 
     // review
@@ -185,6 +157,33 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
             }, 100);
         }
     }, [isOpen]);
+    // Dropdown review Items
+    const dropdownItems = (reviewData: IReviewProductResponse, index: number): MenuProps['items'] => {
+        return [
+            {
+                key: index,
+                label:
+                    reviewData.userId._id === userInfoData?.data._id ? (
+                        <span className='p-2' onClick={() => handleEditReview(reviewData)}>
+                            Chỉnh sửa
+                        </span>
+                    ) : (
+                        <span
+                            className='p-2'
+                            onClick={() =>
+                                handleAddReport({
+                                    userId: reviewData.userId._id,
+                                    reviewId: reviewData._id,
+                                    content: reviewData.content,
+                                })
+                            }
+                        >
+                            Báo cáo
+                        </span>
+                    ),
+            },
+        ];
+    };
 
     return (
         <>

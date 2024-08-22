@@ -3,11 +3,9 @@ import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd'
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { AttributeType } from '~/constants/enum';
-import useMessage from '~/hooks/_common/useMessage';
 import useUpdateAttribute from '~/hooks/attributes/Mutations/useUpdateAttribute';
 import useGetDetailsAttribute from '~/hooks/attributes/Queries/useGetDetailsAttribute';
 import { IAttributeFormData } from '~/types/Category';
-import showMessage from '~/utils/ShowMessage';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import { ADMIN_ROUTES } from '~/constants/router';
 
@@ -15,8 +13,7 @@ const CreateAttribute = () => {
     const { id } = useParams();
     const [form] = Form.useForm<IAttributeFormData>();
     const { data: attributeDetailsRes } = useGetDetailsAttribute(id as string);
-    const { mutate: updateAttribute, isPending, isSuccess, isError } = useUpdateAttribute();
-    const { handleMessage, contextHolder } = useMessage();
+    const { mutate: updateAttribute, isPending } = useUpdateAttribute();
 
     const [typeSelected, setTypeSelected] = useState<AttributeType>();
 
@@ -34,21 +31,11 @@ const CreateAttribute = () => {
             form.setFieldsValue(attributeDetailsRes.data as IAttributeFormData);
             setTypeSelected(attributeDetailsRes.data.type);
         }
-    }, [attributeDetailsRes, id]);
-
-    useEffect(() => {
-        if (isPending) {
-            handleMessage({ type: 'loading', content: '...Creating!' });
-        }
-        if (isError) {
-            showMessage('Attribute creation failed!', 'error');
-        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isPending, isSuccess, isError]);
+    }, [attributeDetailsRes, id]);
 
     return (
         <>
-            {contextHolder}
             <WrapperPageAdmin
                 title='Cập nhật thuộc tính'
                 option={
