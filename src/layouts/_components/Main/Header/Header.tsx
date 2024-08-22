@@ -138,9 +138,9 @@ const Header = () => {
     }, [location]);
     return (
         <header className='bg-blue-900 '>
-            <div className='mx-3 lg:mx-4'>
+            <div className='mx-3 p-1 lg:mx-4'>
                 {/* thongtin-header-laptop */}
-                <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex '>
+                {/* <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex '>
                     <div className='justify-between gap-5 lg:flex'>
                         <div className='lg: inline-block text-left'>
                             <div>
@@ -204,7 +204,7 @@ const Header = () => {
                             </h3>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className='flex grid-cols-[280px,0.9fr,420px] items-center justify-between gap-10 border-[#3b50a3]  bg-blue-900 pt-5 lg:grid lg:border-b lg:p-0 lg:py-5'>
                     {/* icon-menu-mobi */}
                     <div className='lg:hidden'>
@@ -440,12 +440,9 @@ const Header = () => {
                         )}
                     </div>
                 </div>
-                <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:flex'>
+                <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:block'>
                     {/* Header MENU bottom */}
-                    <div className='flex items-center'>
-                        {/* Header MENU bottom items */}
-                        <Navbar data={data ? data.data : []} />
-                    </div>
+                    <Navbar data={data ? data.data : []} />
                 </div>
             </div>
         </header>

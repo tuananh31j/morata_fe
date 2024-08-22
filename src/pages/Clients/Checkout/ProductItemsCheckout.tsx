@@ -8,6 +8,7 @@ import { useCreateOrder } from '~/hooks/orders/Mutations/useCreateOrder';
 import { clearCheckoutInfo } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
 import PolicyModal from '~/components/PolicyPopup/Policy';
+import showMessage from '~/utils/ShowMessage';
 
 const { Text, Title } = Typography;
 
@@ -62,8 +63,8 @@ const ProductItemsCheckout: React.FC = () => {
                 onSuccess: () => {
                     navigate('/success');
                 },
-                onError: () => {
-                    toast.error('Đặt hàng thất bại');
+                onError: (error: any) => {
+                    showMessage(error.response.data.message, 'error');
                 },
             }
         );

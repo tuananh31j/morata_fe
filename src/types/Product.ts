@@ -63,6 +63,10 @@ export type IAttributesProduct = Array<{
     _id: string;
     id: string;
 }>;
+export type ProductStatus = {
+    isDelete: boolean;
+    íHide: boolean;
+};
 export type IProductItemNew = {
     _id: string;
     name: string;

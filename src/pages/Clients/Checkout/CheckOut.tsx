@@ -8,11 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import useCalculateFee from '~/hooks/shipping/useCalculateFee';
 import { setShippingFee } from '~/store/slice/orderSlice';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 
 const { Content } = Layout;
 const { Title } = Typography;
 
 const Checkout: React.FC = () => {
+    useDocumentTitle('Thanh toán đơn hàng');
+
     const { shippingAddress } = useSelector((state: RootState) => state.order);
     const { serviceId, districtId, wardCode } = shippingAddress;
     const { data: shippingFee } = useCalculateFee({ serviceId, wardCode, districtId });

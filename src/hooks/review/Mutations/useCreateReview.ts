@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { QUERY_KEY } from '~/constants/queryKey';
 import reviewService from '~/services/reviews.service';
 import { setReviewData } from '~/store/slice/rateProductSlice';
+import { errorResponse } from '~/types/ErrorResponse';
 import { ReviewData } from '~/types/Review';
 import showMessage from '~/utils/ShowMessage';
 
@@ -23,7 +24,7 @@ const useCreateReview = () => {
             document.body.classList.remove('noscroll');
             showMessage('Đánh giá thành công', 'success');
         },
-        onError: (error: any) => {
+        onError: (error: errorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

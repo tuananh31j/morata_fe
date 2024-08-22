@@ -45,10 +45,15 @@ const ReviewReportList = () => {
     const columns: TableProps<IReportReviewResponse>['columns'] = [
         {
             title: 'Mã Đánh giá',
-            dataIndex: '_id',
-            key: 'search',
-            ...getColumnSearchProps('_id'),
+            dataIndex: 'reviewId',
+            key: 'rawsearch',
+            ...getColumnSearchProps('reviewId'),
             width: '15%',
+            render: (_, record) => (
+                <>
+                    <span>{record.reviewId}</span>
+                </>
+            ),
         },
         {
             title: 'Người đánh giá',

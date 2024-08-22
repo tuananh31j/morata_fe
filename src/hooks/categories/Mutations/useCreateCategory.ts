@@ -15,9 +15,9 @@ export const useMutationCreateCategory = () => {
 
         onSuccess: async () => {
             queryClient.refetchQueries({
-                queryKey: [QUERY_KEY.CATEGORIES],
+                predicate: (query) => query.queryKey.includes(QUERY_KEY.CATEGORIES),
             });
-            showMessage('Category created successfully!', 'success');
+            showMessage('Tạo mới danh mục thành công!', 'success');
             navigate(ADMIN_ROUTES.CATEGORIES, { replace: true });
         },
         onError: (error: any) => {

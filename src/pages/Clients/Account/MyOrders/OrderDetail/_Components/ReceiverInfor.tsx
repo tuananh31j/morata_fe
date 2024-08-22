@@ -18,7 +18,6 @@ interface Props {
 }
 
 export default function ReceiverInfor({ receiverInfo, shippingAddress, paymentMethod }: Props) {
-    console.log(paymentMethod);
     const receiverItems: DescriptionsProps['items'] = [
         {
             key: 'name',

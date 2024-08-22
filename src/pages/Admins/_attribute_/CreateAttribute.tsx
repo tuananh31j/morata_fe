@@ -1,17 +1,14 @@
 import { MinusCircleOutlined, PlusOutlined, PlusSquareOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, FormProps, Input, Popover, Select } from 'antd';
-import { useEffect, useState } from 'react';
-import useMessage from '~/hooks/_common/useMessage';
+import { useState } from 'react';
 import { useMutationCreateAttribute } from '~/hooks/attributes/Mutations/useCreateAttribute';
 import { IAttributeFormData } from '~/types/Category';
-import showMessage from '~/utils/ShowMessage';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { Link } from 'react-router-dom';
 
 const CreateAttribute = () => {
-    const { mutate: createAttribute, isPending, isSuccess, isError } = useMutationCreateAttribute();
-    const { handleMessage, contextHolder } = useMessage();
+    const { mutate: createAttribute, isPending } = useMutationCreateAttribute();
 
     const [typeSelected, setTypeSelected] = useState<string>('');
 
@@ -23,19 +20,8 @@ const CreateAttribute = () => {
         createAttribute(values);
     };
 
-    useEffect(() => {
-        if (isPending) {
-            handleMessage({ type: 'loading', content: '...Creating!' });
-        }
-        if (isError) {
-            showMessage('Attribute creation failed!', 'error');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isPending, isSuccess, isError]);
-
     return (
         <>
-            {contextHolder}
             <WrapperPageAdmin
                 title='Tạo mới thuộc tính'
                 option={

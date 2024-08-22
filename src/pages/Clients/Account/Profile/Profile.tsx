@@ -10,7 +10,6 @@ import useGetProfile from '~/hooks/profile/Queries/useGetProfile';
 import { ACCEPT_FILE_TYPE, FileType, getBase64, MAX_SIZE } from '~/pages/Admins/_product_/Helper/_helper_';
 import convertApiResponseToFileList from '~/pages/Admins/_product_/Helper/convertImageUrlToFileList';
 import { IProductFiles, IThumbnailAntd } from '~/types/Product';
-import showMessage from '~/utils/ShowMessage';
 import { errorMessage } from '~/validation/Products/Product';
 
 const Profile = () => {
@@ -32,10 +31,6 @@ const Profile = () => {
 
     const { data } = useGetProfile();
     const profile = data?.data.data;
-
-    const showModal = () => {
-        setOpen(true);
-    };
 
     const handleOk = () => {
         setConfirmLoading(true);
@@ -160,7 +155,7 @@ const Profile = () => {
                     <div className='w-[80%] rounded-2xl bg-white px-6 py-4'>
                         <Form form={form} layout='vertical' className='w-full' onFinish={onFinish}>
                             <Form.Item<FieldType>
-                                label='Avatar'
+                                label='Ảnh đại diện'
                                 name='avatar'
                                 className='font-medium text-[#08090F]'
                                 dependencies={['thumbnail']}
