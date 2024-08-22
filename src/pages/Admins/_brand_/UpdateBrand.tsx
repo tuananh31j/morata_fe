@@ -2,20 +2,16 @@ import { EditOutlined } from '@ant-design/icons';
 import { Button, Form, FormProps, Input } from 'antd';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useMessage from '~/hooks/_common/useMessage';
 import { useUpdateBrand } from '~/hooks/brands/Mutations/useUpdateBrand';
 import useGetBrand from '~/hooks/brands/useGetBrand';
 import { IBrand } from '~/types/Brand';
 import { IAttributeFormData } from '~/types/Category';
-import showMessage from '~/utils/ShowMessage';
 
 const UpdateBrand = () => {
     const { id } = useParams();
     const [form] = Form.useForm<IBrand>();
     const { data: brandDetailsRes } = useGetBrand(id as string);
-    const { mutate: updateBrandMutate, isPending, isSuccess, isError } = useUpdateBrand();
-    const { handleMessage, contextHolder } = useMessage();
-
+    const { mutate: updateBrandMutate, isPending } = useUpdateBrand();
     const onFinish: FormProps<IBrand>['onFinish'] = (values) => {
         updateBrandMutate(values);
     };
@@ -26,19 +22,8 @@ const UpdateBrand = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [brandDetailsRes, id]);
 
-    useEffect(() => {
-        if (isPending) {
-            handleMessage({ type: 'loading', content: '...Creating!' });
-        }
-        if (isError) {
-            showMessage('Brand creation failed!', 'error');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isPending, isSuccess, isError]);
-
     return (
         <>
-            {contextHolder}
             <div className='rounded-lg bg-white'>
                 <div className='m-auto'>
                     <Form

@@ -9,7 +9,7 @@ import useRegister from '~/hooks/auth/useRegister';
 import { RegisterFormData, registerSchema } from '~/types/Schemas/Auth';
 
 const Register = () => {
-    useDocumentTitle('Sign Up | MORATA');
+    useDocumentTitle('Đăng ký | MORATA');
 
     const { handleMessage, contextHolder } = useMessage();
     const { mutate, isPending } = useRegister();

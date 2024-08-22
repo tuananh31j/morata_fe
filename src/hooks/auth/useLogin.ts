@@ -29,6 +29,9 @@ const useLogin = () => {
                     queryKey: [QUERY_KEY.CART],
                 });
             }, 300);
+            queryClient.refetchQueries({
+                predicate: (query) => query.queryKey.includes(QUERY_KEY.USERS_PROFILE),
+            });
         },
         onError: (error: any) => {
             if (error.response.data.data) {

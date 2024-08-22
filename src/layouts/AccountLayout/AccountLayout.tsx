@@ -5,7 +5,7 @@ import AccountSidebarLeft from '~/layouts/_components/User/AccountSidebarLeft';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 
 const AccountLayout = () => {
-    useDocumentTitle('Account');
+    useDocumentTitle('Tài khoản');
     const { id } = useParams();
     const location = useLocation();
     const isOrderDetailPage = location.pathname === `/my-orders/${id}`;

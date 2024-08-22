@@ -14,8 +14,8 @@ const useHideProduct = () => {
             });
             showMessage('Đã ẩn sản phẩm!', 'info');
         },
-        onError(error) {
-            console.log('error', error);
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
         },
     });
 };

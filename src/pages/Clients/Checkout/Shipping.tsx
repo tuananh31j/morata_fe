@@ -6,10 +6,13 @@ import { setDescription, setReceiver } from '~/store/slice/orderSlice';
 import DeliveryMethod from './DeliveryMethod';
 import ReceiverInfo from './ReceiverInfo';
 import ShippingAddress from './ShippingAdress';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 
 const { Title, Text } = Typography;
 
 const Shipping: React.FC = () => {
+    useDocumentTitle('Thông tin giao hàng');
+
     const [form] = Form.useForm();
     const districtId = Form.useWatch('districtId', form);
     const navigate = useNavigate();

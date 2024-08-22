@@ -8,12 +8,10 @@ const useUpdateProductVariant = () => {
         mutationFn: ({ data, variantId }: { data: FormData; variantId: string }) =>
             productService.updateProductVariant(data, variantId),
         onSuccess: () => {
-            queryClient.resetQueries({
-                predicate: (query) => (query.queryKey[0] as string) === QUERY_KEY.PRODUCTS,
+            queryClient.refetchQueries({
+                predicate: (query) =>
+                    query.queryKey.includes(QUERY_KEY.PRODUCTS) || query.queryKey.includes(QUERY_KEY.CART),
             });
-        },
-        onError(error) {
-            console.log('Update product variant error', error);
         },
     });
 };

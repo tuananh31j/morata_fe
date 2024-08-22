@@ -6,6 +6,7 @@ import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import { useMutationRemoveAll } from '~/hooks/cart/Mutations/useRemoveAll';
 import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
 import { useUpdateQuantity } from '~/hooks/cart/Mutations/useUpdateQuantity';
@@ -17,6 +18,7 @@ import { ICartItemsResponse } from '~/types/cart/CartResponse';
 import { Currency } from '~/utils';
 
 const CartDetail = () => {
+    useDocumentTitle('Giỏ hàng');
     const { handleRemoveCart, isPending } = useMutationRemoveItem();
     const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
     const { mutate: updateQuantity } = useUpdateQuantity();

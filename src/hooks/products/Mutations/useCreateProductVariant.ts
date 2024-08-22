@@ -7,12 +7,9 @@ const useCreateProductVariant = () => {
     return useMutation({
         mutationFn: (data: FormData) => productService.createProductVariant(data),
         onSuccess: (res) => {
-            queryClient.resetQueries({
+            queryClient.refetchQueries({
                 predicate: (query) => query.queryKey.includes(QUERY_KEY.PRODUCTS),
             });
-        },
-        onError(error) {
-            console.log('Update product error', error);
         },
     });
 };

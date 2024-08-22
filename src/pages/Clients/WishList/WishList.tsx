@@ -20,7 +20,7 @@ interface IPickerData {
     _id: string;
 }
 const Wishlist = () => {
-    useDocumentTitle('Wish List');
+    useDocumentTitle('Danh sách yêu thích');
     const { query } = useFilter();
     const [valueQuantity, setQuantityValue] = useState(1);
     const { data: wishList } = useGetAllWishlist(query);

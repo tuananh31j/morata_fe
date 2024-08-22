@@ -10,7 +10,7 @@ import useGetAllProducts from '~/hooks/products/Queries/useGetAllProducts';
 import { cn } from '~/utils';
 
 const Products = () => {
-    useDocumentTitle('Products');
+    useDocumentTitle('Sản phẩm');
     const { query, grid, updateQueryParam } = useFilter();
     const limit = 8;
     // @Query

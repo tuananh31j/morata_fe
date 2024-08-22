@@ -151,6 +151,22 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
         handleFilter({ sort });
     };
 
+    const handleResetFilter = () => {
+        handleFilter({ rating: '', limit });
+    };
+
+    const handleViewMore = () => {
+        handleFilter({
+            limit:
+                (query?.limit as number) + limitRes >= totalDocsRes
+                    ? reviewContent?.totalDocs.toString()
+                    : ((query?.limit as number) + limitRes).toString(),
+        });
+    };
+    const handleSelectStar = (star: number) => {
+        handleFilter({ rating: star.toString(), limit });
+    };
+
     // Dropdown review Items
     const dropdownItems = (reviewData: IReviewProductResponse, index: number): MenuProps['items'] => {
         return [
@@ -177,22 +193,6 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                     ),
             },
         ];
-    };
-
-    const handleResetFilter = () => {
-        handleFilter({ rating: '', limit });
-    };
-
-    const handleViewMore = () => {
-        handleFilter({
-            limit:
-                (query?.limit as number) + limitRes >= totalDocsRes
-                    ? reviewContent?.totalDocs.toString()
-                    : ((query?.limit as number) + limitRes).toString(),
-        });
-    };
-    const handleSelectStar = (star: number) => {
-        handleFilter({ rating: star.toString(), limit });
     };
 
     useEffect(() => {

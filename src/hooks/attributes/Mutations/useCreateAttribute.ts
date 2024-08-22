@@ -17,8 +17,11 @@ export const useMutationCreateAttribute = () => {
             queryClient.resetQueries({
                 predicate: (query) => query.queryKey.includes(QUERY_KEY.ATTRIBUTES),
             });
-            showMessage('Attribute created successfully!', 'success');
+            showMessage('Thêm mới thuộc tính thành công!', 'success');
             navigate(ADMIN_ROUTES.ATTRIBUTES, { replace: true });
+        },
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
         },
     });
 };

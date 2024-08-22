@@ -16,10 +16,13 @@ export const useMutationUpdateCategory = () => {
             categoryService.updateCategory(id, payload),
         onSuccess: async () => {
             queryClient.refetchQueries({
-                queryKey: [QUERY_KEY.CATEGORIES],
+                predicate: (query) => query.queryKey.includes(QUERY_KEY.CATEGORIES),
             });
-            showMessage('Category created successfully!', 'success');
+            showMessage('Đã cập nhật thông tin danh mục!', 'success');
             navigate(ADMIN_ROUTES.CATEGORIES, { replace: true });
+        },
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
         },
     });
 };

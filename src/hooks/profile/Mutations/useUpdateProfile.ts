@@ -12,7 +12,10 @@ export const useMutationUpdateProfle = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS_PROFILE, QUERY_KEY.USERS] });
 
-            showMessage('Profile updated successfully', 'success');
+            showMessage('Cập nhật thông tin cá nhân thành công!', 'success');
+        },
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
         },
     });
 };

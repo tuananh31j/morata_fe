@@ -1,6 +1,7 @@
 import { BellFilled, FacebookFilled, PinterestOutlined, TikTokOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Button, Form, FormProps, Input, Tooltip } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 
 type FieldType = {
     name: string;
@@ -9,6 +10,8 @@ type FieldType = {
     message: string;
 };
 const Contact = () => {
+    useDocumentTitle('Liên hệ');
+
     const iconTitleList = {
         twitter: 'twitter',
         facebook: 'facebook',

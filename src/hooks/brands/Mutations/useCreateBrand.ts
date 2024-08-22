@@ -18,5 +18,8 @@ export const useCreateBrand = () => {
             showMessage('Brand created successfully!', 'success');
             navigate(ADMIN_ROUTES.BRANDS, { replace: true });
         },
+        onError: (error: any) => {
+            showMessage(error.response.data.message, 'error');
+        },
     });
 };

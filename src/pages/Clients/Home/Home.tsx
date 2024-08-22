@@ -15,7 +15,7 @@ import useGetAllProductsScroll from '~/hooks/products/Queries/useGetAllProductsS
 import useQueriesHomepage from '~/hooks/useQueriesHomepage';
 
 const Home = () => {
-    useDocumentTitle('Home');
+    useDocumentTitle('Trang chủ');
     const { Observer, data: ProductScroll, hasNextPage, isLoading } = useGetAllProductsScroll();
     const [
         { data: ProductsList, isLoading: isLoadingProductsAll },

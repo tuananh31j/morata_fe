@@ -1,17 +1,12 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { Button, Flex, Table, Tooltip } from 'antd';
 import { TableProps } from 'antd/lib';
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { QUERY_KEY } from '~/constants/queryKey';
 import { MAIN_ROUTES } from '~/constants/router';
 import useDisabledReview from '~/hooks/orders/Mutations/useDisableReview';
-import useGetDetailProductReview from '~/hooks/products/Queries/useGetDetailProductReview';
 import RateBtn from '~/pages/Clients/Account/MyOrders/Components/RateBtn';
 import { setReviewData } from '~/store/slice/rateProductSlice';
 import { Currency } from '~/utils';
-import showMessage from '~/utils/ShowMessage';
 
 interface DataType {
     key: number;
@@ -24,6 +19,9 @@ interface DataType {
     isReviewed: boolean;
     productVariationId: string;
     isReviewDisabled: boolean;
+    variant: {
+        variantAttributes: { name: string; key: string; value: string }[];
+    };
 }
 
 interface Props {
@@ -57,6 +55,7 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
         isReviewed: item.isReviewed,
         productVariationId: item.productVariationId,
         isReviewDisabled: item.isReviewDisabled,
+        variant: item.variant,
     }));
 
     const columns: TableProps<DataType>['columns'] = [
@@ -78,17 +77,39 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
             title: 'Tên Sản Phẩm',
             dataIndex: 'name',
             key: 'name',
-            render: (_, record) => (
-                <>
-                    <Flex justify='center' align='center'>
-                        <Tooltip title='Xem chi tiết sản phẩm'>
-                            <Link to={`/products/${record.productId}`}>
-                                <h3>{record.name}</h3>
-                            </Link>
-                        </Tooltip>
-                    </Flex>
-                </>
-            ),
+            render: (_, record) => {
+                console.log(record);
+                // const { data } = useGetVariantDetail();
+                return (
+                    <>
+                        <Flex justify='center' align='center'>
+                            <Tooltip title='Xem chi tiết sản phẩm'>
+                                <Link to={`/products/${record.productId}`}>
+                                    <h3>{record.name}</h3>
+                                </Link>
+                            </Tooltip>
+                        </Flex>
+                    </>
+                );
+            },
+        },
+        {
+            title: 'Loại sản phẩm',
+            dataIndex: 'variant',
+            key: 'variant',
+            render: (variant) => {
+                return (
+                    <>
+                        <div className='flex gap-2'>
+                            {variant.variantAttributes.map((item: any, i: number) => (
+                                <span key={i} className='text-xs'>
+                                    {item.value}
+                                </span>
+                            ))}
+                        </div>
+                    </>
+                );
+            },
         },
         {
             title: 'Giá Tiền',
