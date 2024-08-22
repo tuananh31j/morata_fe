@@ -5,6 +5,7 @@ import {
     IProductItemNew,
     IProductDetailsAdmin,
     IFilterResponse,
+    ProductStatus,
 } from '~/types/Product';
 import { Params } from '~/types/Api';
 import { IAxiosResponse } from '~/types/AxiosResponse';
@@ -41,8 +42,8 @@ const productService = {
         const res = await instance.get<IAxiosResponse<IProductItemNew[]>>(`${PRODUCT_ENDPOINT.DEALS}`);
         return res.data;
     },
-    async getDetail(id: string) {
-        const res = await instance.get<IAxiosResponse<IProductItemNew>>(`${PRODUCT_ENDPOINT.PRODUCT}/${id}`);
+    async getDetailProductReview(id: string) {
+        const res = await instance.get<IAxiosResponse<ProductStatus>>(`${PRODUCT_ENDPOINT.REVIEWS_DETAIL}/${id}`);
         return res.data;
     },
     async getTopReviews() {

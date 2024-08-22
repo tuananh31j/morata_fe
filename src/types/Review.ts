@@ -27,6 +27,18 @@ export interface IStarsReviewResponse {
     countReview: number;
     starsReview: { count: number; star: number }[];
 }
+export interface IReportReviewResponse {
+    reason: string;
+    content: string;
+    reporterId: string;
+    userId: {
+        name: string;
+        _id: string;
+    };
+    reviewId: string;
+    _id: string;
+    createdAt: string;
+}
 export interface IAdminReportResponse {
     reportList: IReportReviewResponse[];
     page: number;
@@ -41,28 +53,16 @@ export type ReportData = {
     userId: string;
     reviewId: string;
 };
-export interface IReportReviewResponse {
-    reason: string;
-    content: string;
-    reporterId: string;
-    userId: {
-        name: string;
-        _id: string;
-    };
-    reviewId: string;
-    _id: string;
-    createdAt: string;
-}
 
-export interface IReviewResponse {
-    rating: number;
-    content: string;
-    userId: string;
-    productId: string;
-    createdAt: string;
-    updatedAt: string;
-    orderId?: string;
-}
+// export interface IReviewResponse {
+//     rating: number;
+//     content: string;
+//     userId: string;
+//     productId: string;
+//     createdAt: string;
+//     updatedAt: string;
+//     orderId?: string;
+// }
 export type ReviewData = {
     userId?: string;
     productId?: string;

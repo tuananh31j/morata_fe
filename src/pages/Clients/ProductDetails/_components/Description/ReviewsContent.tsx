@@ -22,11 +22,22 @@ type ReviewData = {
     reviewId?: string;
 };
 
-type userReviewData = { reviewId: string; userId: string; content: string };
+export type ReviewParams = {
+    rating?: number | string;
+    limit?: number | string;
+    sort?: string;
+};
+
+type userReviewData = {
+    reviewId: string;
+    userId: string;
+    content: string;
+};
 
 export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     const { id } = useParams();
-    const [query, setQuery] = useState<{ rating: string; limit: number }>({ rating: '', limit: 1 });
+    const limit = 10;
+    const [query, setQuery] = useState<ReviewParams>({ rating: '', limit, sort: '-createdAt' });
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isReportModalVisible, setIsReportModalVisible] = useState(false);
     const [contentSee, setContentSee] = useState<{ [index: number]: boolean }>({});
@@ -71,34 +82,8 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
         { value: '-rating', label: 'Cao nhất' },
         { value: 'rating', label: 'Thấp nhất' },
     ];
-
-    // Dropdown review Items
-    const dropdownItems = (reviewData: IReviewProductResponse, index: number): MenuProps['items'] => {
-        return [
-            {
-                key: index,
-                label:
-                    reviewData.userId._id === userInfoData?.data._id ? (
-                        <span className='p-2' onClick={() => handleEditReview(reviewData)}>
-                            Chỉnh sửa
-                        </span>
-                    ) : (
-                        <span
-                            className='p-2'
-                            onClick={() =>
-                                handleAddReport({
-                                    userId: reviewData.userId._id,
-                                    reviewId: reviewData._id,
-                                    content: reviewData.content,
-                                })
-                            }
-                        >
-                            Báo cáo
-                        </span>
-                    ),
-            },
-        ];
-    };
+    const limitRes = reviewContent?.limit as number;
+    const totalDocsRes = reviewContent?.totalDocs as number;
 
     // @handle modal
 
@@ -158,12 +143,56 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
         setContentSee({ ...contentSee, [index]: !contentSee[index] });
     };
 
-    const handleFilter = (params: any) => {
-        if (params.rating === query.rating && query.rating !== '') return;
+    const handleFilter = (params: ReviewParams) => {
+        if (params.rating === query.rating && query.rating) return;
         setQuery({ ...query, ...params });
     };
-    const handleChange = (value: string) => {
-        handleFilter({ sort: value });
+    const handleChangeSort = (sort: string) => {
+        handleFilter({ sort });
+    };
+
+    // Dropdown review Items
+    const dropdownItems = (reviewData: IReviewProductResponse, index: number): MenuProps['items'] => {
+        return [
+            {
+                key: index,
+                label:
+                    reviewData.userId._id === userInfoData?.data._id ? (
+                        <span className='p-2' onClick={() => handleEditReview(reviewData)}>
+                            Chỉnh sửa
+                        </span>
+                    ) : (
+                        <span
+                            className='p-2'
+                            onClick={() =>
+                                handleAddReport({
+                                    userId: reviewData.userId._id,
+                                    reviewId: reviewData._id,
+                                    content: reviewData.content,
+                                })
+                            }
+                        >
+                            Báo cáo
+                        </span>
+                    ),
+            },
+        ];
+    };
+
+    const handleResetFilter = () => {
+        handleFilter({ rating: '', limit });
+    };
+
+    const handleViewMore = () => {
+        handleFilter({
+            limit:
+                (query?.limit as number) + limitRes >= totalDocsRes
+                    ? reviewContent?.totalDocs.toString()
+                    : ((query?.limit as number) + limitRes).toString(),
+        });
+    };
+    const handleSelectStar = (star: number) => {
+        handleFilter({ rating: star.toString(), limit });
     };
 
     useEffect(() => {
@@ -214,7 +243,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                                     </span>
                                     <div
                                         className='flex items-center gap-2 transition-opacity duration-300 hover:opacity-60'
-                                        onClick={() => handleFilter({ rating: `${item.star}`, limit: 1 })}
+                                        onClick={() => handleSelectStar(item.star)}
                                     >
                                         <span className='inline-block h-[0.625rem] w-34 bg-yellow-400'></span>
                                         <span className='text-[14px] font-medium  text-[#777777]'>
@@ -226,7 +255,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                         ))}
                         {query.rating && (
                             <span
-                                onClick={() => handleFilter({ rating: '', limit: 1, sort: '-1createdAt' })}
+                                onClick={handleResetFilter}
                                 className='mt-2 block cursor-pointer p-2 text-center text-sm text-yellow-400 transition duration-300 hover:underline'
                             >
                                 Xem tất cả đánh giá
@@ -248,7 +277,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                 <div className='mt-4'>
                     <Select
                         defaultValue={sortOptions?.[0].value}
-                        onChange={handleChange}
+                        onChange={handleChangeSort}
                         options={sortOptions}
                         className='w-[160px]'
                     />
@@ -279,7 +308,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                                     </div>
                                     <div className='no-scrollbar mt-2 overflow-y-scroll'>
                                         <p
-                                            className={`mr-4 rounded-sm bg-slate-50 p-2 text-base font-medium text-black ${contentSee[index] ? '' : 'line-clamp-2'}`}
+                                            className={`mr-4 rounded-sm bg-neutral-50 p-2 text-base font-medium text-black ${contentSee[index] ? '' : 'line-clamp-2'}`}
                                         >
                                             {item.content}
                                         </p>
@@ -315,18 +344,10 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                 </div>
 
                 {/* View more */}
-                {query.limit < (reviewContent?.totalDocs as number) && (
+                {totalDocsRes > (query?.limit as number) && (
                     <span
-                        onClick={() =>
-                            handleFilter({
-                                limit:
-                                    query.limit + (reviewContent?.limit as number) >=
-                                    (reviewContent?.totalDocs as number)
-                                        ? reviewContent?.totalDocs.toString()
-                                        : (query.limit + (reviewContent?.limit as number)).toString(),
-                            })
-                        }
-                        className='my-2 block cursor-pointer text-center text-sm font-semibold text-yellow-400 transition duration-300 hover:underline'
+                        onClick={handleViewMore}
+                        className='my-4 block cursor-pointer text-center text-sm font-semibold text-yellow-400 transition duration-300 hover:underline'
                     >
                         Xem thêm
                     </span>

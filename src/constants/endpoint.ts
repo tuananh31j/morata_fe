@@ -5,6 +5,7 @@ export const PRODUCT_ENDPOINT = {
     LATEST: '/products/latest',
     DEALS: '/products/deals',
     REVIEWS: '/products/reviews',
+    REVIEWS_DETAIL: '/products/reviews',
     RELATED: '/products/related',
     CREATE: '/products',
     DELETE: '/products',
@@ -62,6 +63,7 @@ export const ORDER_ENDPOINT = {
     DELIVERED_ORDER: '/orders/delivered',
     FINISH_ORDER: '/orders/done',
     CREATE_ORDER: '/orders',
+    DISABLED_REVIEW: '/orders/disabled-review',
 };
 
 export const ATTRIBUTES_ENDPOINT = {
@@ -96,7 +98,7 @@ export const REVIEW_ENDPOINT = {
     GET_ALL_REPORT: '/reviews/report/all',
     CREATE_REPORT: 'reviews/report',
     CREATE: '/reviews',
-    STARS_REVIEW:'/reviews/stars-review',
+    STARS_REVIEW: '/reviews/stars-review',
     DELETE_REVIEW: '/reviews/',
     DELETE_REPORT: '/reviews/report',
     CHECK_PURCHASED: '/reviews/purchased',

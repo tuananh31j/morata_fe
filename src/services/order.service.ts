@@ -62,6 +62,12 @@ const orderService = {
     orderStatus() {
         return instance.get<IAxiosResponse<OrderStatus[]>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
+    disabledReview(data: { orderId: string; productVariationId: string }) {
+        return instance.patch<IAxiosResponse<{ orderId: string; isReviewable: boolean }>>(
+            `${ORDER_ENDPOINT.DISABLED_REVIEW}`,
+            data
+        );
+    },
     /* eslint-disable */
     // vnpayReturnStatusOrder(params: URLSearchParams) {
     //     return instance.get<{ code: string; message: string; data?: any }>(`${ORDER_ENDPOINT.VNPAY_RETURN}?${params}`);

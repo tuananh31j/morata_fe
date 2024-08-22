@@ -4,7 +4,7 @@ import { Skeleton } from 'antd';
 
 const Navbar = ({ data }: { data: ICategory[] }) => {
     return (
-        <div className='flex items-center gap-5'>
+        <div className='flex flex-wrap items-center gap-5'>
             {data && data.map((item, i) => <MenuItem name={item.name} id={item._id} key={i} />)}
             {data.length === 0 && (
                 <>
