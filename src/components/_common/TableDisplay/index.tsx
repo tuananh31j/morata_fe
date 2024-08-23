@@ -28,7 +28,6 @@ const TableDisplay = <T extends object>({
     return (
         <>
             <Table<T>
-                rowKey="_id"
                 bordered={true}
                 loading={!dataSource}
                 onChange={onChange}

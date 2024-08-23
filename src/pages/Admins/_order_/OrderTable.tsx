@@ -37,9 +37,9 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
     const currentPage = Number(query.page || 1);
     const dataSource =
         ordersList && ordersList.length
-            ? ordersList.map((order: any, index) => {
+            ? ordersList.map((order: any) => {
                   return {
-                      key: index,
+                      key: order._id,
                       code: order._id,
                       customerName: order?.customerInfo?.name,
                       total: order.totalPrice,
@@ -137,7 +137,7 @@ const OrderTable = ({ ordersList, totalDocs }: Props) => {
             title: 'Thao tác',
             render: (text, record) => {
                 return (
-                    <Link to={`/admin/orders/${record.code}/detail`}>
+                    <Link to={`/admin/orders/${record.code}/detail`} key={`action-${record.code}`}>
                         <Button type='primary'>Xem chi tiết</Button>
                     </Link>
                 );
