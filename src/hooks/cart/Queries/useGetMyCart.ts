@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 import { QUERY_KEY } from '~/constants/queryKey';
 import { cartService } from '~/services/cart.service';
-import { useTypedSelector } from '~/store/store';
+import { RootState, useTypedSelector } from '~/store/store';
 
 const useGetMyCart = (id?: string) => {
     const user = useTypedSelector((state) => state.authReducer.user);
@@ -12,16 +13,16 @@ const useGetMyCart = (id?: string) => {
         refetchOnWindowFocus: true,
         enabled: !!user?._id,
     });
-
-    const responsePayloadCheckout = data?.data?.items.map((item) => ({
+    const cartItem = useTypedSelector((state) => state.cartReducer.items);
+    const responsePayloadCheckout = cartItem.map((item) => ({
+        productId: item.productVariation.productId._id,
+        productVariationId: item.productVariation._id,
         name: item?.productVariation?.productId?.name,
         price: item?.productVariation?.price,
-        quantity: item?.quantity,
         image: item?.productVariation?.image,
-        productId: item?.productVariation?.productId?._id,
-        productVariationId: item?.productVariation?._id,
+        quantity: item.quantity,
+        variants: item.productVariation.variantAttributes,
     }));
-
     return { data, ...rest, responsePayloadCheckout };
 };
 

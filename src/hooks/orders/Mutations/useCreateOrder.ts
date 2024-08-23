@@ -53,7 +53,7 @@ export const useCreateOrder = () => {
             queryClient.refetchQueries({
                 predicate: (query) =>
                     query.queryKey.some((element) =>
-                        [QUERY_KEY.ORDERS, QUERY_KEY.PRODUCTS].includes(element as string)
+                        [QUERY_KEY.ORDERS, QUERY_KEY.PRODUCTS, QUERY_KEY.CART].includes(element as string)
                     ),
             });
         },
