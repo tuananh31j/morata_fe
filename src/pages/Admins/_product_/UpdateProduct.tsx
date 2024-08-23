@@ -123,6 +123,7 @@ const UpdateProduct = () => {
     };
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
+        console.log(values, 'values');
         if (productDetails) {
             handleEditProduct({
                 productId: id as string,
@@ -131,6 +132,7 @@ const UpdateProduct = () => {
                 updateProduct,
                 updateProductVariant,
                 createProductVariant,
+                attributeSource: [...attributesForProduct!, ...attributesForVariant!],
             });
         }
     };
@@ -147,7 +149,7 @@ const UpdateProduct = () => {
     };
 
     useEffect(() => {
-        if (productDetails) {
+        if (productDetails && attributesForProduct && attributesForVariant) {
             const {
                 attributes,
                 variationIds,
@@ -169,12 +171,20 @@ const UpdateProduct = () => {
                 isArr: true,
             }) as UploadFile<any>[];
 
-            const attConvert = convertData({ data: attributes, to: DataTypeConvert.obj });
+            const attConvert = convertData({
+                data: attributes,
+                to: DataTypeConvert.obj,
+                attributeSource: [...attributesForProduct, ...attributesForVariant],
+            });
             let newVariantFile: UploadFile<any>[][] = [];
             const variaConverts = variationIds.map((varia, i) => {
                 let variantAttributes;
                 if (varia.variantAttributes) {
-                    variantAttributes = convertData({ data: varia.variantAttributes, to: DataTypeConvert.obj });
+                    variantAttributes = convertData({
+                        data: varia.variantAttributes,
+                        to: DataTypeConvert.obj,
+                        attributeSource: [...attributesForProduct, ...attributesForVariant],
+                    });
                 }
                 const image = convertApiResponseToFileList({
                     url: varia.image!,
@@ -210,7 +220,7 @@ const UpdateProduct = () => {
             form.setFieldsValue(initial as any);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productDetails, id]);
+    }, [productDetails, id, attributesForProduct, attributesForVariant]);
     return (
         <WrapperPageAdmin
             title='Cập nhật sản phẩm'

@@ -3,15 +3,22 @@ import MenuItem from './MenuItem';
 import { Menu, Skeleton } from 'antd';
 import { MenuProps } from 'antd/lib';
 import { CaretDownOutlined, MoreOutlined } from '@ant-design/icons';
+import { IBrand } from '~/types/Brand';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-const Navbar = ({ data }: { data: IMenu[] }) => {
-    const items: MenuItem[] = data.map((item) => ({
+const Navbar = ({ categories, brands }: { categories: IMenu[]; brands: IBrand[] }) => {
+    const cateItems: MenuItem[] = categories.map((item) => ({
         label: <MenuItem id={item._id} name={item.name} />,
         key: item._id,
         disabled: true,
     }));
+    const BrandItems: MenuItem[] = brands.map((item) => ({
+        label: <MenuItem id={item._id} name={item.name} isBrand />,
+        key: item._id,
+        disabled: true,
+    }));
+    const items: MenuItem[] = [...cateItems, ...BrandItems];
     return (
         <div>
             <Menu
@@ -21,7 +28,7 @@ const Navbar = ({ data }: { data: IMenu[] }) => {
                 items={items}
                 overflowedIndicator={<CaretDownOutlined />}
             />
-            {data.length === 0 && (
+            {categories.length === 0 && (
                 <>
                     <Skeleton.Button active={true} size={'large'} shape={'default'} />
                     <Skeleton.Button active={true} size={'large'} shape={'default'} />

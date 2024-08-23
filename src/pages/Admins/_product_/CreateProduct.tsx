@@ -90,7 +90,7 @@ const CreateProduct = () => {
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
         console.log(values, 'values');
-        handleCreateProduct(values, createProduct);
+        handleCreateProduct(values, createProduct, [...attributesForProduct!, ...attributesForVariant!]);
     };
     const handleSaveAndShow = () => {
         setIsHide(false);

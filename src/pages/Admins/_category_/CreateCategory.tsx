@@ -25,12 +25,6 @@ const CreateCategory = () => {
         const attributeTag = attributeOptions.filter((attr) => checkedValues.includes(attr.value));
         setAttributeChecked(attributeTag);
     };
-    // const handleCloseTag = (value: string) => {
-    //     // setSelectedAttributes(checkedValues);
-    //     console.log(value);
-    //     const attributeValues = attributeChecked.filter((attr) => attr.value !== value);
-    //     setAttributeChecked(attributeValues);
-    // };
 
     const onFinish: FormProps<ICategoryFormData>['onFinish'] = (values) => {
         createCategory(values);
@@ -93,7 +87,15 @@ const CreateCategory = () => {
                                     label='Thuộc tính'
                                     name='attributeIds'
                                     className='font-medium text-[#08090F]'
-                                    rules={[{ required: true, message: 'Please choose at least 1 attribute!' }]}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message:
+                                                attributes?.length === 0
+                                                    ? 'Chọn ít nhất là 1 thuộc tính cho danh mục!'
+                                                    : 'Bạn cần tạo thuộc tính trước!',
+                                        },
+                                    ]}
                                 >
                                     <Checkbox.Group
                                         value={attributeChecked.map((attr) => attr.value)}

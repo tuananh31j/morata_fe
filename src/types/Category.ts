@@ -34,6 +34,7 @@ export type IAttributeFormData = {
     values: string[];
     isVariant: boolean;
     isRequired: boolean;
+    isFilter: boolean;
     // inputValues?: string[];
 };
 

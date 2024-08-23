@@ -42,11 +42,20 @@ const CategoryList = () => {
             filteredValue: getFilteredValue('type'),
             filters: [
                 { text: 'Kiểu lựa chọn', value: AttributeType.Options },
+                { text: 'Kiểu nhiều lựa chọn', value: AttributeType.Multiple },
                 { text: 'Kiểu nhập tay', value: AttributeType.Manual },
             ],
             render: (_, record) => (
                 <>
                     {record.type === AttributeType.Options &&
+                        record?.values?.map((att, i) => {
+                            return (
+                                <Tag color={'geekblue'} key={i}>
+                                    {att}
+                                </Tag>
+                            );
+                        })}
+                    {record.type === AttributeType.Multiple &&
                         record?.values?.map((att, i) => {
                             return (
                                 <Tag color={'geekblue'} key={i}>

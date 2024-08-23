@@ -39,6 +39,11 @@ const productService = {
         });
         return res.data;
     },
+    async getDetail(id: string) {
+        const res = await instance.get<IAxiosResponse<IProductItemNew>>(`${PRODUCT_ENDPOINT.PRODUCT}/${id}`);
+        return res.data;
+    },
+
     async getLatest() {
         const res = await instance.get<IAxiosResponse<IProductItemNew[]>>(`${PRODUCT_ENDPOINT.LATEST}`);
         return res.data;

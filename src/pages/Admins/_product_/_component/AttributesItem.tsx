@@ -1,5 +1,8 @@
 import { Form, Input, Select } from 'antd';
+import { validators } from 'tailwind-merge';
+import { AttributeType } from '~/constants/enum';
 import { IAttributesValue } from '~/types/Attributes';
+import { validateNoComma } from '~/validation/Products/validators';
 
 const AttributesItem = ({
     attribute,
@@ -25,10 +28,23 @@ const AttributesItem = ({
                     required: attribute.isRequired,
                     message: `Thuộc tính bắt buộc, vui lòng nhập giá trị của ${attribute.name}!`,
                 },
+                {
+                    validator: validateNoComma,
+                },
             ]}
         >
-            {attribute.type === 'options' && (
+            {/* <Input placeholder={`Hãy nhập ${attribute.name}`} /> */}
+            {attribute.type === AttributeType.Options && (
                 <Select placeholder='Please select'>
+                    {attribute.values.map((value, index) => (
+                        <Select.Option value={value} key={index}>
+                            {value}
+                        </Select.Option>
+                    ))}
+                </Select>
+            )}
+            {attribute.type === AttributeType.Multiple && (
+                <Select mode='multiple' placeholder='Please select'>
                     {attribute.values.map((value, index) => (
                         <Select.Option value={value} key={index}>
                             {value}

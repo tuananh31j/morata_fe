@@ -16,6 +16,7 @@ export enum PaymentMethod {
 export enum AttributeType {
     Manual = 'manual',
     Options = 'options',
+    Multiple = 'multiple',
 }
 
 export const ORDER_STATUS_ARR = Object.values(OrderStatus);

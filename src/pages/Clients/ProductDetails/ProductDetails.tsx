@@ -230,7 +230,7 @@ const ProductDetails = () => {
                     </div>
                 </>
             )}
-            {!product && (
+            {!product && !isLoading && (
                 <div className='flex flex-col items-center justify-center '>
                     <Empty
                         image='https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg'

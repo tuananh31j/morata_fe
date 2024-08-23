@@ -5,6 +5,7 @@ export type IAttributesValue = {
     name: string;
     isVariant: boolean;
     isRequired: boolean;
+    isFilter: boolean;
     type: AttributeType;
     values: number[] | string[];
     attributeKey: string;

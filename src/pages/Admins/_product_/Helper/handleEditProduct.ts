@@ -2,9 +2,11 @@ import { UploadFile } from 'antd';
 import { IProductForm, IThumbnailAntd } from '~/types/Product';
 import convertData from './convertData';
 import { DataTypeConvert } from '~/constants/enum';
+import { IAttributesValue } from '~/types/Attributes';
 
 type IHandleEditProductProp = {
     imagesInit: UploadFile<any>[];
+    attributeSource: IAttributesValue[];
 
     productId: string;
     data: IProductForm;
@@ -17,6 +19,7 @@ export const handleEditProduct = async ({
     imagesInit,
     productId,
     data,
+    attributeSource,
     updateProduct,
     updateProductVariant,
     createProductVariant,
@@ -36,9 +39,8 @@ export const handleEditProduct = async ({
         brandId: brandIdData,
         categoryId: categoryIdData,
     } = data;
-    const attributesData = convertData({ data: attributes, to: DataTypeConvert.raw });
+    const attributesData = convertData({ data: attributes, to: DataTypeConvert.raw, attributeSource });
     const firstElement = 0;
-    console.log(attributes, 'attributes');
     if (variations) {
         variations.forEach((value) => {
             if (value._id) {
@@ -57,6 +59,7 @@ export const handleEditProduct = async ({
                     ? convertData({
                           data: variantAttributesObj.variantAttributes,
                           to: DataTypeConvert.raw,
+                          attributeSource,
                       })
                     : [];
                 const variantFinal = { imageUrlRef, price, stock, isActive, variantAttributes };
@@ -76,6 +79,7 @@ export const handleEditProduct = async ({
                 const variantAttributes = convertData({
                     data: variantAttributesObj.variantAttributes,
                     to: DataTypeConvert.raw,
+                    attributeSource,
                 });
 
                 const variantFinal = { imageUrlRef, price, isActive, stock, variantAttributes };

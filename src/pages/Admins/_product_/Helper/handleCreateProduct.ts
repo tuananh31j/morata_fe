@@ -1,6 +1,13 @@
 import { IProductForm, IThumbnailAntd } from '~/types/Product';
+import convertData from './convertData';
+import { DataTypeConvert } from '~/constants/enum';
+import { IAttributesValue } from '~/types/Attributes';
 
-export const handleCreateProduct = (data: IProductForm, createProduct: (product: FormData) => void) => {
+export const handleCreateProduct = (
+    data: IProductForm,
+    createProduct: (product: FormData) => void,
+    attributeSource: IAttributesValue[]
+) => {
     const dataTransfer = new DataTransfer();
     const formData = new FormData();
     const {
@@ -14,18 +21,12 @@ export const handleCreateProduct = (data: IProductForm, createProduct: (product:
         brandId: brandIdData,
         categoryId: categoryIdData,
     } = data;
-    const attributesData = [];
     const newVariations = [];
     const firstElement = 0;
 
     /* eslint-disable */
-    for (const [key, value] of Object.entries(attributes)) {
-        attributesData.push({
-            name: key.replace(/_/g, ' '),
-            key,
-            value,
-        });
-    }
+    const attributesData = convertData({ data: attributes, to: DataTypeConvert.raw, attributeSource });
+
     if (variations) {
         for (const [, value] of Object.entries(variations)) {
             if (value.thumbnail?.fileList?.[firstElement]?.originFileObj) {
@@ -36,16 +37,13 @@ export const handleCreateProduct = (data: IProductForm, createProduct: (product:
                 // Delete thumbnail
                 const { thumbnail, ...rest } = value;
                 const { imageUrlRef, price, stock, isActive, ...variantAttributesObj } = rest;
-                const variantAttributes = [];
-                if (variantAttributesObj.variantAttributes) {
-                    for (const [key, value] of Object.entries(variantAttributesObj.variantAttributes)) {
-                        variantAttributes.push({
-                            name: key.replace(/_/g, ' '),
-                            key,
-                            value,
-                        });
-                    }
-                }
+                const variantAttributes = variantAttributesObj.variantAttributes
+                    ? convertData({
+                          data: variantAttributesObj.variantAttributes,
+                          to: DataTypeConvert.raw,
+                          attributeSource,
+                      })
+                    : [];
                 const variantFinal = { imageUrlRef, price, stock, isActive, variantAttributes };
                 newVariations.push(variantFinal);
             }

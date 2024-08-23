@@ -6,6 +6,7 @@ import { IAttributeFormData } from '~/types/Category';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { Link } from 'react-router-dom';
+import { AttributeType } from '~/constants/enum';
 
 const CreateAttribute = () => {
     const { mutate: createAttribute, isPending } = useMutationCreateAttribute();
@@ -54,9 +55,10 @@ const CreateAttribute = () => {
                                         placeholder='Chọn loại thuộc tính'
                                         onChange={handleChange}
                                         options={[
-                                            { value: 'manual', label: <span>Kiểu nhập tay</span> },
+                                            { value: AttributeType.Manual, label: <span>Kiểu nhập tay</span> },
+                                            { value: AttributeType.Multiple, label: <span>Kiểu lựa chọn nhiều</span> },
                                             {
-                                                value: 'options',
+                                                value: AttributeType.Options,
                                                 label: (
                                                     <span className='flex items-center justify-between'>
                                                         <span>Kiểu lựa chọn</span>
@@ -79,21 +81,6 @@ const CreateAttribute = () => {
                                 </Form.Item>
                             </div>
                             <Form.Item<IAttributeFormData>
-                                name='isVariant'
-                                valuePropName='checked'
-                                className='w-1/2 font-medium text-[#08090F]'
-                            >
-                                <Checkbox>
-                                    Thuộc tính này là dành cho biến thể sản phẩm
-                                    <Popover
-                                        content='Khi tạo mới biến thể của sản phẩm sẽ yêu cầu nhập giá trị cho thuộc tính này'
-                                        title='Giải thích câu hỏi'
-                                    >
-                                        <Button icon={<QuestionOutlined />} size='small' type='text' />
-                                    </Popover>
-                                </Checkbox>
-                            </Form.Item>
-                            <Form.Item<IAttributeFormData>
                                 name='isRequired'
                                 valuePropName='checked'
                                 className='w-1/2 font-medium text-[#08090F]'
@@ -108,8 +95,42 @@ const CreateAttribute = () => {
                                     </Popover>
                                 </Checkbox>
                             </Form.Item>
+                            <Form.Item<IAttributeFormData>
+                                name='isVariant'
+                                valuePropName='checked'
+                                className='w-1/2 font-medium text-[#08090F]'
+                            >
+                                {typeSelected !== AttributeType.Multiple && (
+                                    <Checkbox>
+                                        Thuộc tính này là dành cho biến thể sản phẩm
+                                        <Popover
+                                            content='Khi tạo mới biến thể của sản phẩm sẽ yêu cầu nhập giá trị cho thuộc tính này'
+                                            title='Giải thích câu hỏi'
+                                        >
+                                            <Button icon={<QuestionOutlined />} size='small' type='text' />
+                                        </Popover>
+                                    </Checkbox>
+                                )}
+                            </Form.Item>
+                            <Form.Item<IAttributeFormData>
+                                name='isFilter'
+                                valuePropName='checked'
+                                className='w-1/2 font-medium text-[#08090F]'
+                            >
+                                {typeSelected === AttributeType.Options && (
+                                    <Checkbox>
+                                        Áp dụng cho bộ lọc
+                                        <Popover
+                                            content='Giúp người dùng lọc sản phẩm dễ dàng hơn nhưng với điều kiện là thuộc tính phải thuộc kiểu lựa chọn'
+                                            title='Giải thích câu hỏi'
+                                        >
+                                            <Button icon={<QuestionOutlined />} size='small' type='text' />
+                                        </Popover>
+                                    </Checkbox>
+                                )}
+                            </Form.Item>
 
-                            {typeSelected === 'options' && (
+                            {(typeSelected === AttributeType.Options || typeSelected === AttributeType.Multiple) && (
                                 // <>
                                 //     {inputFields.map((field, index) => (
                                 //         <Form.Item

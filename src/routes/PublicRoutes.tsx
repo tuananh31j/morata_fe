@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Form, Navigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
@@ -30,6 +30,56 @@ import {
     WishlistPage,
     CheckoutPage,
 } from '~/routes/LazyRoutes';
+
+import React from 'react';
+import { Select, Space } from 'antd';
+
+const handleChange = (value: string[]) => {
+    console.log(`selected ${value}`);
+};
+
+const options = [
+    {
+        label: 'China',
+        value: 'china',
+        emoji: '🇨🇳',
+        desc: 'China (中国)',
+    },
+    {
+        label: 'USA',
+        value: 'usa',
+        emoji: '🇺🇸',
+        desc: 'USA (美国)',
+    },
+    {
+        label: 'Japan',
+        value: 'japan',
+        emoji: '🇯🇵',
+        desc: 'Japan (日本)',
+    },
+    {
+        label: 'Korea',
+        value: 'korea',
+        emoji: '🇰🇷',
+        desc: 'Korea (韩国)',
+    },
+];
+
+const App: React.FC = () => (
+    <Form>
+        {/* <Form.Item label='Select' name='select'> */}
+        {/* <Select
+                mode='multiple'
+                allowClear
+                style={{ width: '100%' }}
+                placeholder='Please select'
+                defaultValue={['china']}
+                onChange={handleChange}
+                options={options}
+            />
+        </Form.Item> */}
+    </Form>
+);
 
 const PublicRoutes = [
     {
@@ -178,6 +228,14 @@ const PublicRoutes = [
                 element: (
                     <Suspense>
                         <CartDetail />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/test',
+                element: (
+                    <Suspense>
+                        <App />
                     </Suspense>
                 ),
             },

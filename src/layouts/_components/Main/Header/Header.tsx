@@ -89,8 +89,8 @@ const Header = () => {
         setOpen(false);
     };
 
-    const [__, { data }] = useGetCategoriesAndBrands();
-    const categoryList = data?.data;
+    const [{ data: brands }, { data: categories }] = useGetCategoriesAndBrands();
+    const categoryList = categories?.data;
     const additionalCategories = [{ label: 'Tất cả danh mục', key: '' }];
     const items: MenuProps['items'] = categoryList
         ? [
@@ -138,7 +138,7 @@ const Header = () => {
     }, [location]);
     return (
         <header className='bg-blue-900 '>
-            <div className='mx-3 p-1 lg:mx-4'>
+            <div className='mx-3 p-1 pt-4 lg:mx-4'>
                 {/* thongtin-header-laptop */}
                 {/* <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex '>
                     <div className='justify-between gap-5 lg:flex'>
@@ -442,7 +442,7 @@ const Header = () => {
                 </div>
                 <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:block'>
                     {/* Header MENU bottom */}
-                    <Navbar data={data ? data.data : []} />
+                    <Navbar categories={categories ? categories.data : []} brands={brands ? brands.data : []} />
                 </div>
             </div>
         </header>
