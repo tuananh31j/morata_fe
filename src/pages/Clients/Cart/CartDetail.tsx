@@ -1,9 +1,11 @@
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Image, InputNumber, Spin, Table } from 'antd';
+import { Button, Checkbox, Form, Image, InputNumber, Spin, Table } from 'antd';
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { TableProps } from 'antd/lib';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
@@ -12,7 +14,8 @@ import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
 import { useUpdateQuantity } from '~/hooks/cart/Mutations/useUpdateQuantity';
 import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
-import { useTypedSelector } from '~/store/store';
+import { addItems, removeAll, removeItems, setItemsCart } from '~/store/slice/cartSlice';
+import { RootState, useTypedSelector } from '~/store/store';
 import { IAddCartPayload } from '~/types/cart/CartPayload';
 import { ICartItemsResponse } from '~/types/cart/CartResponse';
 import { Currency } from '~/utils';
@@ -21,24 +24,20 @@ const CartDetail = () => {
     useDocumentTitle('Giỏ hàng');
     const { handleRemoveCart, isPending } = useMutationRemoveItem();
     const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
+    const dispatch = useDispatch();
     const { mutate: updateQuantity } = useUpdateQuantity();
-    const [isAgree, setIsAgree] = useState<boolean>(false);
     const { mutate: removeAllCart, isPending: isRemoveAllPending } = useMutationRemoveAll();
     const user = useTypedSelector((state) => state.authReducer.user?._id);
     const { data: cartResponseData, isLoading, responsePayloadCheckout } = useGetMyCart(user);
+    const cartItem = useTypedSelector((state) => state.cartReducer.items);
     const products = cartResponseData?.data;
-
-    const freeShippingThreshold = 1000;
-    const totalOrderAmount = products?.items
-        ? products?.items?.reduce(
-              (total: number, product) => total + product.productVariation.price * product.quantity,
-              0
-          )
+    const totalOrderAmount = cartItem
+        ? cartItem.reduce((total: number, product) => total + product.productVariation.price * product.quantity, 0)
         : 0;
     const taxAmount = Math.round(totalOrderAmount * 0.1);
     const priceWithTax = totalOrderAmount + taxAmount;
+
     const handlePayStripe = () => {
-        console.log({ items: responsePayloadCheckout });
         stripeCheckout({
             items: responsePayloadCheckout,
             currency: 'VND',
@@ -46,6 +45,7 @@ const CartDetail = () => {
     };
     const [quantityProduct, setQuantityProduct] = useState<{ quantity: number; id: string }[]>([]);
     const [pendingUpdates, setPendingUpdates] = useState<{ productVariation: string; quantity: number } | null>(null);
+    const findItemsActive = products?.items.filter((v) => v.productVariation.isActive);
     useEffect(() => {
         if (products) {
             const newArr = products?.items.map(({ quantity, productVariation }) => ({
@@ -54,7 +54,11 @@ const CartDetail = () => {
             }));
             setQuantityProduct(newArr);
         }
+        if (products) {
+            dispatch(setItemsCart(findItemsActive!));
+        }
     }, [products]);
+
     const handleChangeQuantity = (id: string, newQuantity: number) => {
         setQuantityProduct((prev) =>
             prev.map((itemCart) => (itemCart.id === id ? { ...itemCart, quantity: newQuantity } : itemCart))
@@ -105,8 +109,41 @@ const CartDetail = () => {
         }
     }, [pendingUpdates, debouncedUpdate]);
     /* eslint-enable */
+    const onchangeItemsChecked = (e: CheckboxChangeEvent, productVariation: ICartItemsResponse) => {
+        if (!e.target.checked) {
+            dispatch(removeItems(productVariation.productVariation._id));
+        } else if (e.target.checked) {
+            dispatch(addItems(productVariation));
+        }
+    };
+    const onChangeTargetAll = (type: 'REMOVE' | 'ADD') => {
+        switch (type) {
+            case 'ADD':
+                return dispatch(setItemsCart(findItemsActive!));
+            case 'REMOVE':
+                return dispatch(removeAll());
+
+            default:
+                return null;
+        }
+    };
 
     const columns: TableProps<ICartItemsResponse>['columns'] = [
+        {
+            key: '',
+            dataIndex: '',
+            title: 'Chọn',
+            render: (_, record) => {
+                const isChecked = cartItem.some((item) => item.productVariation._id === record.productVariation._id);
+                return (
+                    <Checkbox
+                        onChange={(e) => onchangeItemsChecked(e, record)}
+                        disabled={!record.productVariation.isActive}
+                        checked={isChecked}
+                    />
+                );
+            },
+        },
         {
             key: 'product',
             dataIndex: 'product',
@@ -118,34 +155,42 @@ const CartDetail = () => {
                             <Image className='h-[80px] w-[80px]' src={product.productVariation.image} />
                         </div>
                         <div>
-                            <div className='flex flex-wrap'>
-                                <Link
-                                    style={{ color: '#0068c9' }}
-                                    className='text[#0068c9] text-base font-semibold'
-                                    to={`${MAIN_ROUTES.PRODUCTS}/${product.productVariation.productId._id}`}
-                                >
-                                    {product.productVariation.productId.name}
-                                </Link>
-                            </div>
-                            <div className='flex flex-col'>
-                                {product.productVariation?.variantAttributes?.map((itemP, index) => (
-                                    <div key={index} className='flex gap-2'>
-                                        <span className='font-medium capitalize text-black'>{itemP.name}:</span>
-                                        <span>{itemP.value}</span>
-                                    </div>
-                                ))}
-                                <span
-                                    className={clsx(
-                                        'text-base font-semibold leading-5 text-[#222]'
-                                        // {
-                                        //     'text-red-600':
-                                        //         product.productId.discountPercentage > 0,
-                                        // }
-                                    )}
-                                >
-                                    {Currency.format(product.productVariation.price)}
-                                </span>
-                            </div>
+                            {product.productVariation.isActive ? (
+                                <div className='flex flex-wrap'>
+                                    <Link
+                                        style={{ color: '#0068c9' }}
+                                        className='text[#0068c9] text-base font-semibold'
+                                        to={`${MAIN_ROUTES.PRODUCTS}/${product.productVariation.productId._id}`}
+                                    >
+                                        {product.productVariation.productId.name}
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className='flex h-full items-center justify-center'>
+                                    <h3 className='ml-4 font-medium'>Sản Phẩm Hiện không Khả Dụng</h3>
+                                </div>
+                            )}
+                            {product.productVariation.isActive && (
+                                <div className='flex flex-col'>
+                                    {product.productVariation?.variantAttributes?.map((itemP, index) => (
+                                        <div key={index} className='flex gap-2'>
+                                            <span className='font-medium capitalize text-black'>{itemP.name}:</span>
+                                            <span>{itemP.value}</span>
+                                        </div>
+                                    ))}
+                                    <span
+                                        className={clsx(
+                                            'text-base font-semibold leading-5 text-[#222]'
+                                            // {
+                                            //     'text-red-600':
+                                            //         product.productId.discountPercentage > 0,
+                                            // }
+                                        )}
+                                    >
+                                        {Currency.format(product.productVariation.price)}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -158,7 +203,7 @@ const CartDetail = () => {
             title: <span className='flex items-center justify-center'>Số lượng</span>,
             render: (_, product) => {
                 const quantity = quantityProduct?.find((p) => p.id === product.productVariation._id)?.quantity || 0;
-                return (
+                return product.productVariation.isActive ? (
                     <div className='flex items-center justify-center'>
                         <Button
                             type='default'
@@ -173,6 +218,10 @@ const CartDetail = () => {
                             icon={<PlusOutlined className='transform transition duration-500 hover:rotate-180' />}
                             onClick={() => handleIncreaseQuantity(product.productVariation._id)}
                         />
+                    </div>
+                ) : (
+                    <div className='flex items-center justify-center'>
+                        <InputNumber min={1} value={quantity} />
                     </div>
                 );
             },
@@ -203,20 +252,39 @@ const CartDetail = () => {
                 <div className='grid grid-cols-1 gap-8 lg:grid-cols-[2.4fr,1fr] '>
                     <Form>
                         <div>
-                            <Table
-                                loading={isLoading}
-                                rowKey={(product) => product.productVariation._id}
-                                columns={columns}
-                                dataSource={products?.items}
-                            />
+                            {products?.items && (
+                                <Table
+                                    loading={isLoading}
+                                    rowKey={(product) => product.productVariation._id}
+                                    columns={columns}
+                                    dataSource={products.items}
+                                />
+                            )}
                             <div className='my-6 flex items-center justify-between'>
-                                <Link
-                                    to='/'
-                                    className='block rounded-sm bg-black px-6 py-[0.62rem] text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
-                                >
-                                    Tiếp tục mua hàng
-                                </Link>
-
+                                <div className='flex gap-2'>
+                                    <Link
+                                        to='/'
+                                        className='block rounded-sm bg-black px-6 py-[0.62rem] text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
+                                    >
+                                        Tiếp tục mua hàng
+                                    </Link>
+                                    <Button
+                                        size='large'
+                                        onClick={() => onChangeTargetAll('ADD')}
+                                        className='block rounded-sm bg-black px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
+                                    >
+                                        Chọn Tất Cả Sản Phẩm
+                                    </Button>
+                                    {cartItem.length > 0 && (
+                                        <Button
+                                            size='large'
+                                            onClick={() => onChangeTargetAll('REMOVE')}
+                                            className='block rounded-sm bg-black px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'
+                                        >
+                                            Bỏ Chọn Tất Cả Sản Phẩm
+                                        </Button>
+                                    )}
+                                </div>
                                 <Button
                                     size='large'
                                     disabled={isRemoveAllPending}
@@ -240,20 +308,26 @@ const CartDetail = () => {
                     </Form>
 
                     <div className='border-2 border-[#16bcdc] px-8 pb-6 pt-6 text-base text-black'>
-                        <div className='mt-4 flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                            <span>Tổng tiền mặt hàng:</span>
-                            <span className='text-lg '>{Currency.format(totalOrderAmount)}</span>
-                        </div>
-                        <div className=' flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                            <span>Thuế:</span>
-                            <span>10%</span>
-                        </div>
-                        <div className=' flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                            <span>Tổng tiền:</span>
-                            <span className='text-lg text-green-500'>{Currency.format(priceWithTax)}</span>
-                        </div>
-                        {totalOrderAmount < 5000000 && (
-                            <p className='my-4 opacity-90'>Phí vận chuyển sẽ được tính khi thanh toán.</p>
+                        {cartItem.length > 0 ? (
+                            <>
+                                <div className='mt-4 flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
+                                    <span>Tổng tiền mặt hàng:</span>
+                                    <span className='text-lg '>{Currency.format(totalOrderAmount)}</span>
+                                </div>
+                                <div className=' flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
+                                    <span>Thuế:</span>
+                                    <span>10%</span>
+                                </div>
+                                <div className=' flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
+                                    <span>Tổng tiền:</span>
+                                    <span className='text-lg text-green-500'>{Currency.format(priceWithTax)}</span>
+                                </div>
+                                <p className='my-4 opacity-90'>Phí vận chuyển sẽ được tính khi thanh toán.</p>
+                            </>
+                        ) : (
+                            <div className='flex min-h-[185px] items-center justify-center'>
+                                <h3 className='font-bold'>Vui Lòng Chọn Sản Phẩm Để Thanh Toán</h3>
+                            </div>
                         )}
 
                         <div className='mt-4'>
@@ -268,7 +342,7 @@ const CartDetail = () => {
                                 <Link to={MAIN_ROUTES.SHIPPING}>
                                     <Button
                                         size='large'
-                                        disabled={totalOrderAmount > 50000000 || !products?.items.length}
+                                        disabled={totalOrderAmount > 50000000 || !cartItem.length}
                                         className={`block h-[48px] w-full  rounded-[5px] bg-black px-10 py-2 text-center text-sm font-medium text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]`}
                                     >
                                         Thanh Toán
@@ -283,7 +357,7 @@ const CartDetail = () => {
                                 </div>
                                 <button
                                     onClick={handlePayStripe}
-                                    disabled={!products?.items.length}
+                                    disabled={!cartItem.length}
                                     className='
                                     flex
                                     h-[48px] w-full items-center justify-center gap-5 rounded-[5px] bg-blue-700 text-sm font-semibold text-white duration-500 hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-65'

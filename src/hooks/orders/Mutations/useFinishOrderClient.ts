@@ -3,17 +3,17 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import orderService from '~/services/order.service';
 
 export default function useFinishOrderClient() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationKey: ['FINISH_ORDER'],
-        mutationFn: (id: string) => orderService.finishOrder(id),
+  return useMutation({
+    mutationKey: ['FINISH_ORDER'],
+    mutationFn: (id: string) => orderService.finishOrder(id),
 
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
-            queryClient.resetQueries({
-                predicate: (query) => query.queryKey.includes(QUERY_KEY.ORDERS),
-            });
-        },
-    });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS, QUERY_KEY.TOTAL_STATS] });
+      queryClient.resetQueries({
+        predicate: (query) => query.queryKey.includes(QUERY_KEY.ORDERS),
+      });
+    },
+  });
 }

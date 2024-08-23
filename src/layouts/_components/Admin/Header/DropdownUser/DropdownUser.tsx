@@ -12,7 +12,7 @@ const DropdownUser = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const hangleLogout = useLogout();
     const { data: userRes } = useGetProfile();
-    const user = userRes?.data;
+    const user = userRes?.data?.data;
     return (
         <ClickOutside onClick={() => setDropdownOpen(false)} className='relative'>
             <Link onClick={() => setDropdownOpen(!dropdownOpen)} className='flex items-center gap-4' to='#'>

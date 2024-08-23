@@ -163,7 +163,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                             renderItem={(product) => {
                                 const quantity =
                                     quantityProduct?.find((p) => p.id === product.productVariation._id)?.quantity || 0;
-                                return (
+                                return product.productVariation.isActive ? (
                                     <List.Item key={product.productVariation._id}>
                                         <div className='flex w-full items-center justify-between'>
                                             <List.Item.Meta
@@ -260,6 +260,74 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                             </Button>
                                         </div>
                                     </List.Item>
+                                ) : (
+                                    <List.Item key={product.productVariation._id}>
+                                        <div className='relative flex min-h-[125px] w-full items-center'>
+                                            <div className='absolute z-50 flex h-full w-full items-center justify-end rounded-lg bg-[#7777]'>
+                                                <h3 className='mr-20 font-medium'>Sản phẩm hiển không khả dụng</h3>
+                                            </div>
+                                            <Image
+                                                className='h-[80px] w-[80px] opacity-40'
+                                                src={product.productVariation.image}
+                                            />
+                                            <div className='flex items-center opacity-40'>
+                                                <div>
+                                                    <span
+                                                        style={{ color: '#0068c9' }}
+                                                        className='text-[14px] font-bold text-[#0068c9]'
+                                                    >
+                                                        {product?.productVariation?.productId?.name}
+                                                    </span>
+                                                    <div className=' flex justify-between'>
+                                                        <div className='flex items-center gap-2'>
+                                                            <div className='flex flex-col  gap-2'>
+                                                                <div className='flex gap-2'>
+                                                                    {product.productVariation?.variantAttributes?.map(
+                                                                        (itemP, index) => (
+                                                                            <div key={index}>
+                                                                                <span className='capitalize text-black'>
+                                                                                    {itemP.name}
+                                                                                </span>
+                                                                                :<span>{itemP.value}</span>
+                                                                                {/* {product.productVariation.color.toUpperCase()} */}
+                                                                            </div>
+                                                                        )
+                                                                    )}
+                                                                </div>
+                                                                <span
+                                                                    className={clsx(
+                                                                        'text-base font-semibold leading-5 text-[#222]'
+                                                                        // {
+                                                                        //     'text-red-600':
+                                                                        //         product.productId.discountPercentage > 0,
+                                                                        // }
+                                                                    )}
+                                                                >
+                                                                    {Currency.format(product.productVariation.price)}
+                                                                </span>
+                                                            </div>
+                                                            {/* {product.productId.discountPercentage > 0 && (
+                                                            <del className='text-base font-semibold leading-5 text-gray-400 '>
+                                                                {Currency.format(
+                                                                    product.productId.price *
+                                                                        product.quantity *
+                                                                        (1 + product.productId.discountPercentage / 100)
+                                                                )}
+                                                            </del>
+                                                        )} */}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <span
+                                                onClickCapture={() => debouncedRemove(product.productVariation._id)}
+                                                className='absolute right-5 top-[50%] z-[55] -translate-y-[50%] cursor-pointer text-indigo-600 hover:text-indigo-500'
+                                            >
+                                                <DeleteOutlined />
+                                            </span>
+                                        </div>
+                                    </List.Item>
                                 );
                             }}
                         />
@@ -300,50 +368,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                     </Button>
                                 </Link>
                             </div>
-                            <div className='mt-6'>
-                                {totalOrderAmount < 50000000 && (
-                                    <Link to={MAIN_ROUTES.SHIPPING}>
-                                        <Button
-                                            onClick={onClose}
-                                            className='h-[50px] bg-[#222222] text-sm font-semibold uppercase text-white'
-                                            type='default'
-                                            block
-                                        >
-                                            Thanh toán
-                                        </Button>
-                                    </Link>
-                                )}
-                                {totalOrderAmount > 50000000 && (
-                                    <button
-                                        onClick={handlePayStripe}
-                                        disabled={!products.length}
-                                        className='
-                                    flex
-                                    h-[48px] w-full items-center justify-center gap-5 rounded-[5px] bg-blue-700 text-sm font-semibold text-white duration-500 hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-65'
-                                    >
-                                        {!PendingStripe && (
-                                            <>
-                                                <img
-                                                    src='https://asset.brandfetch.io/idxAg10C0L/idTHPdqoDR.jpeg'
-                                                    width={40}
-                                                    height={40}
-                                                    className='rounded-full'
-                                                    alt=''
-                                                />
-                                                <span>PAY WITH STRIPE</span>
-                                            </>
-                                        )}
-                                        {PendingStripe && <Spin />}
-                                    </button>
-                                )}
-                            </div>
-                            {totalOrderAmount > 50000000 && (
-                                <div className='mt-2 h-[30px]'>
-                                    <p className='px-2 text-center text-sm text-yellow-500'>
-                                        Trên 50 triệu chỉ được thanh toán online
-                                    </p>
-                                </div>
-                            )}
+
                             <div className='text-gray-500 mt-6 flex justify-center text-center text-sm'>
                                 <p>
                                     Hoặc{' '}
