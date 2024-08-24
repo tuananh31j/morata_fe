@@ -10,7 +10,7 @@ const MenuItem = ({ name, id, isBrand }: { name: string; id: string; isBrand?: b
                 <Link
                     onClick={() => updateQueryParam({ categoryId: id })}
                     to={`${MAIN_ROUTES.PRODUCTS}?categoryId=${id}`}
-                    className='p-1 text-[16px] font-semibold uppercase hover:bg-black'
+                    className='border-cyan-500 p-1 text-[16px] font-semibold uppercase hover:border-b-2'
                 >
                     <span className='pe-4 text-white'>{name}</span>
                 </Link>
@@ -19,7 +19,7 @@ const MenuItem = ({ name, id, isBrand }: { name: string; id: string; isBrand?: b
                 <Link
                     onClick={() => updateQueryParam({ brandId: id })}
                     to={`${MAIN_ROUTES.PRODUCTS}?brandId=${id}`}
-                    className='p-1 text-[16px] font-semibold uppercase hover:bg-black'
+                    className='border-cyan-500 p-1 text-[16px] font-semibold uppercase  hover:border-b-2'
                 >
                     <span className='pe-4 text-white'>{name}</span>
                 </Link>

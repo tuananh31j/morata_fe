@@ -24,7 +24,7 @@ const Navbar = ({ categories, brands }: { categories: IMenu[]; brands: IBrand[] 
             <Menu
                 theme='dark'
                 mode='horizontal'
-                className='bg-transparent text-white'
+                className='bg-transparent text-white '
                 items={items}
                 overflowedIndicator={<CaretDownOutlined />}
             />

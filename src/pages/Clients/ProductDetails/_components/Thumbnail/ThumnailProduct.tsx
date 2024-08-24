@@ -7,8 +7,8 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
     const [currentSlide, setCurrentSlide] = useState(0);
     const ref = useRef<CarouselRef>(null);
     const onclickImage = (e: number) => {
-        setCurrentSlide(e);
         ref.current?.goTo(e, false);
+        setCurrentSlide(e);
     };
     const onChange = (slide: number) => {
         setCurrentSlide(slide);
@@ -19,24 +19,12 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
     const handleNext = () => {
         ref.current?.next();
     };
-    return (
-        <div className='product-thumbnail flex w-full gap-4'>
-            {items.length > 0 && (
-                <div className='product-thumbnail-gallery hidden flex-col gap-2 lg:flex '>
-                    {items?.map((item, index: number) => (
-                        <div
-                            key={index}
-                            onClick={() => onclickImage(index)}
-                            className={`cursor-pointer overflow-hidden rounded-[5px] border-[1px] ${currentSlide === index ? 'border-[#777777]' : ''} duration-75`}
-                        >
-                            <img loading='lazy' className='w-[68px]' src={item} alt='' />
-                        </div>
-                    ))}
-                </div>
-            )}
+    const images = [thumbnail, ...items];
 
+    return (
+        <div className='product-thumbnail w-full flex-col gap-4'>
             {items.length > 0 && (
-                <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[500px]'>
+                <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[825px]'>
                     <div className='group relative'>
                         <Carousel
                             dots={false}
@@ -47,9 +35,9 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
                             afterChange={onChange}
                             infinite
                         >
-                            {items?.map((item, index: number) => (
+                            {images?.map((item, index: number) => (
                                 <Image
-                                    className='lg:h-[475px] lg:w-[475px] 2xl:h-[525px] 2xl:w-[625px]'
+                                    className='object-fill duration-75 lg:h-[475px] lg:w-[475px] 2xl:h-[625px] 2xl:w-[825px]'
                                     key={index}
                                     preview={true}
                                     src={item}
@@ -58,6 +46,19 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
                         </Carousel>
                         <SliderControls isButtonHandle={false} handlePrev={handlePrev} handleNext={handleNext} />
                     </div>
+                </div>
+            )}
+            {images.length > 0 && (
+                <div className='product-thumbnail-gallery mt-6 hidden gap-2 lg:flex '>
+                    {images?.map((item, index: number) => (
+                        <div
+                            key={index}
+                            onClick={() => onclickImage(index)}
+                            className={`flex cursor-pointer items-center overflow-hidden rounded-[5px]  ${currentSlide === index ? 'border-[1px] border-black' : 'border-[1px] border-[#7777]'} duration-75`}
+                        >
+                            <img loading='lazy' className='w-[68px]' src={item} alt='' />
+                        </div>
+                    ))}
                 </div>
             )}
             {/* {items.length < 1 && (

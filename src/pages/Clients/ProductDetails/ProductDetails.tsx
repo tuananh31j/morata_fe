@@ -82,6 +82,7 @@ const ProductDetails = () => {
             };
         }
     }, []);
+
     /* eslint-enable */
     return (
         <>

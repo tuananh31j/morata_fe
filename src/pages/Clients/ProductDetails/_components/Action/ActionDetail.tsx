@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
 import { IVariantItem } from '~/pages/Clients/ProductDetails/ProductDetails';
-import { updateVariant } from '~/store/slice/DetailProduct';
+import { setImages, updateVariant } from '~/store/slice/DetailProduct';
 import { RootState, useAppDispatch } from '~/store/store';
 import { variationAttribute } from '~/types/cart/CartResponse';
 import { IProductItemNew } from '~/types/Product';
@@ -55,9 +55,6 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
     const dispatch = useAppDispatch();
     useEffect(() => {
         setQuantityValue(1);
-        if (product.variationIds) {
-            dispatch(updateVariant(product?.variationIds[0]));
-        }
     }, [product._id]);
     /* eslint-enable */
     const handleOnclickVariant = (item: IVariantItem) => {
@@ -87,7 +84,7 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
             )
         );
         setActive(initialVariant?._id || '');
-    }, []);
+    }, [product]);
     /* eslint-enable */
 
     return (
@@ -97,7 +94,7 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                 <Form onFinish={handleOnSubmit} layout='vertical'>
                     <div className='my-4'>
                         <Form.Item name={'variant'}>
-                            <div className='flex items-center flex-wrap gap-3'>
+                            <div className='flex flex-wrap items-center gap-3'>
                                 {product?.variationIds.map((item) => {
                                     return (
                                         <div

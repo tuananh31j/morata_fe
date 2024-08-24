@@ -1,9 +1,9 @@
 import { Typography } from 'antd';
 import Slideshow from '~/components/_common/Slideshow';
-import SlideItem from '~/components/Banner/SlideItem';
+import { ICategoryPopular } from '~/types/Category';
 
 const { Title, Paragraph } = Typography;
-const Banner = () => {
+const Banner = ({ Category }: { Category: ICategoryPopular[] | undefined }) => {
     const banners = [
         {
             image: 'https://demo-morata.myshopify.com/cdn/shop/files/banner_1_1.png?v=1697475450&width=3840',
