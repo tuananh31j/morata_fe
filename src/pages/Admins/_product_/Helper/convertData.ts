@@ -20,11 +20,8 @@ const convertData = ({ data, to, attributeSource }: IConverDataProps) => {
     if (to === DataTypeConvert.obj && Array.isArray(data)) {
         const dataSource = data.map((item) => _.mapValues(item, (value) => (_.isUndefined(value) ? '' : value)));
         return dataSource.reduce((acc: { [key: string]: any }, { key, value }: any) => {
-            if (key === 'value') {
-                acc[key] = value.includes(',') ? value.split(', ') : value;
-            } else {
-                acc[key] = value;
-            }
+            acc[key] = value.includes('_+') ? value.split('_+') : value;
+
             return acc;
         }, {});
     }
@@ -32,7 +29,7 @@ const convertData = ({ data, to, attributeSource }: IConverDataProps) => {
     const attributesData = Object.entries(data).map(([key, value]) => ({
         name: attributeSource.find((attr) => attr.attributeKey === key)?.name || key.replace(/_/g, ' '),
         key,
-        value: value ? (Array.isArray(value) ? value.join(',') : value) : '',
+        value: value ? (Array.isArray(value) ? value.join('_+') : value) : '',
     }));
     console.log(attributesData, 'attributesData');
     // console.log(object.entries(data), 'object.entries(data)');

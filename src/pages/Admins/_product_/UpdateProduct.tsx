@@ -186,6 +186,7 @@ const UpdateProduct = () => {
                         attributeSource: [...attributesForProduct, ...attributesForVariant],
                     });
                 }
+                console.log(attConvert, 'variantAttributes--------------');
                 const image = convertApiResponseToFileList({
                     url: varia.image!,
                     urlRef: varia.imageUrlRef,

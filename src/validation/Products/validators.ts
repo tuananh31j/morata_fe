@@ -94,9 +94,9 @@ export const variationsPriceValidator = () => {
 export const variationsStockValidator = () => {
     return { required: true, message: 'Hãy nhập số lượng!' };
 };
-export const validateNoComma = (rule: any, value: string) => {
-    if (value && value.includes(',')) {
-        return Promise.reject('Không được nhập dấu ","');
+export const validateNoUnderscore = (rule: any, value: string) => {
+    if (value && value.includes('_')) {
+        return Promise.reject('Không được nhập dấu "_"');
     }
     return Promise.resolve();
 };
