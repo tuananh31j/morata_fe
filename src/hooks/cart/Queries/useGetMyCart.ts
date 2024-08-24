@@ -14,7 +14,7 @@ const useGetMyCart = (id?: string) => {
         enabled: !!user?._id,
     });
     const cartItem = useTypedSelector((state) => state.cartReducer.items);
-    const responsePayloadCheckout = cartItem.map((item) => ({
+    const responsePayloadCheckout = cartItem?.map((item) => ({
         productId: item.productVariation.productId._id,
         productVariationId: item.productVariation._id,
         name: item?.productVariation?.productId?.name,
