@@ -34,7 +34,7 @@ const AttributesItem = ({
         >
             {/* <Input placeholder={`Hãy nhập ${attribute.name}`} /> */}
             {attribute.type === AttributeType.Options && (
-                <Select placeholder='Please select'>
+                <Select placeholder={`Hãy chọn giá trị cho ${attribute.name}`}>
                     {attribute.values.map((value, index) => (
                         <Select.Option value={value} key={index}>
                             {value}
@@ -43,7 +43,7 @@ const AttributesItem = ({
                 </Select>
             )}
             {attribute.type === AttributeType.Multiple && (
-                <Select mode='multiple' placeholder='Please select'>
+                <Select mode='multiple' placeholder={`Hãy chọn những giá trị cho ${attribute.name}`}>
                     {attribute.values.map((value, index) => (
                         <Select.Option value={value} key={index}>
                             {value}

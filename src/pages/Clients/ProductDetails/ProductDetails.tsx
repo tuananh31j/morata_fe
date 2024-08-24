@@ -1,7 +1,7 @@
 import { DockerOutlined, HeartFilled, HeartOutlined, RedoOutlined } from '@ant-design/icons';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, Navigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import BreadcrumbDisplay from '~/components/_common/BreadcrumbDisplay';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
@@ -169,20 +169,21 @@ const ProductDetails = () => {
                                 </div>
                                 {/* Roles for COD */}
                                 <div className='mt-[35px]'>
-                                    <div className='ml-[15px] mt-[25px]'>
+                                    <div className='ml-[15px] mt-[25px] flex flex-col gap-[14px]'>
                                         <p>
                                             <DockerOutlined />{' '}
                                             <span className='text-[#777777]'>
                                                 Thời gian giao hàng: <b className='text-black'>2 - 5 ngày</b>
                                             </span>
                                         </p>
-                                        <p className='mt-[15px]'>
+                                        <p>
                                             <RedoOutlined />{' '}
                                             <span className='text-[#777777]'>
                                                 Trả hàng trong vòng <b className='text-black'>7 ngày</b> sau khi đã mua.
                                                 Thuế không được hoàn trả.
                                             </span>
                                         </p>
+                                        <p>{productDetail.data?.description}</p>
                                     </div>
                                 </div>
                                 {/* Availability product */}
@@ -219,7 +220,6 @@ const ProductDetails = () => {
                             </div>
                         </div>
                         <DescriptionProduct review={product.rating} product={product} />
-                        {!isLoading && productDetail && <ProductRelated relatedProduct={productDetail} />}
                         {isLoading && (
                             <div className='flex gap-2'>
                                 <SmallSkeleton />
@@ -228,6 +228,7 @@ const ProductDetails = () => {
                             </div>
                         )}
                     </div>
+                    {!isLoading && productDetail && <ProductRelated relatedProduct={productDetail} />}
                 </>
             )}
             {!product && !isLoading && (

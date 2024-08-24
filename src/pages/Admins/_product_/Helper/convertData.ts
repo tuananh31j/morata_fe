@@ -26,11 +26,13 @@ const convertData = ({ data, to, attributeSource }: IConverDataProps) => {
         }, {});
     }
 
-    const attributesData = Object.entries(data).map(([key, value]) => ({
-        name: attributeSource.find((attr) => attr.attributeKey === key)?.name || key.replace(/_/g, ' '),
-        key,
-        value: value ? (Array.isArray(value) ? value.join('_+') : value) : '',
-    }));
+    const attributesData = Object.entries(data)
+        .map(([key, value]) => ({
+            name: attributeSource.find((attr) => attr.attributeKey === key)?.name || key.replace(/_/g, ' '),
+            key,
+            value: value ? (Array.isArray(value) ? value.join('_+') : value) : '',
+        }))
+        .filter((item) => attributeSource.find((attr) => attr.attributeKey === item.key));
     console.log(attributesData, 'attributesData');
     // console.log(object.entries(data), 'object.entries(data)');
     return attributesData;

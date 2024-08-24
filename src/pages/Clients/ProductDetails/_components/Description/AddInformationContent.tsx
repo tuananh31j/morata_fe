@@ -15,6 +15,9 @@ const AddInformationContent = ({ attributes }: { attributes: IAttributesProduct 
                                     <td className='value text-sm'>
                                         <p className='text-[#777777]'>
                                             {item.value.includes('_+') ? item.value.split('_+').join(', ') : item.value}
+                                            {item.value === '' && (
+                                                <span className='font-normal italic'>Đang cập nhật</span>
+                                            )}
                                         </p>
                                     </td>
                                 </tr>

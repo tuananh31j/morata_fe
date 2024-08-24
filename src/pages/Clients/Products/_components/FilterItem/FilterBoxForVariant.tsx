@@ -24,14 +24,18 @@ const FilterBoxForVariant = ({
         const old = query[filterKey] ? query[filterKey].split(',') : [];
         let newAttributeQuery: string[] = [];
         if (e.target.checked) {
-            const copyBRandQuery = old.filter((item: string) => item !== e.target.value);
-            newAttributeQuery = [...copyBRandQuery, e.target.value];
+            const copyFilter = old.filter((item: string) => item !== e.target.value);
+            newAttributeQuery = [...copyFilter, e.target.value];
         } else {
             newAttributeQuery = old.filter((item: string) => item !== e.target.value);
         }
-        if (suffixKey) {
+        if (suffixKey && newAttributeQuery.length > 0 && newAttributeQuery[0] !== suffixKey) {
             newAttributeQuery = [suffixKey, ...newAttributeQuery];
         }
+        if (newAttributeQuery.length === 1 && newAttributeQuery[0] === suffixKey) {
+            newAttributeQuery = [];
+        }
+        console.log(newAttributeQuery.length === 1, newAttributeQuery[0] === suffixKey, newAttributeQuery.length);
         updateQueryParam({ ...query, [filterKey]: newAttributeQuery.join(','), page: 1 });
     };
 

@@ -25,6 +25,7 @@ const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
                     <FilterRadio data={categories} filterName='Danh Mục' filterParams='categoryId' />
                     <FilterBox data={brands} filterName='Hãng' filterParams='brandId' />
                     {filterByCate &&
+                        Array.isArray(filterByCate.data) &&
                         filterByCate.data.map((item) => (
                             <FilterBoxForVariant
                                 prevKey='raw'
