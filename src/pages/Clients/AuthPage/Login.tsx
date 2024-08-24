@@ -26,7 +26,7 @@ const Login = () => {
         mutate(body);
 
         if (isPending) {
-            handleMessage({ type: 'loading', content: '...authenticating!' });
+            handleMessage({ type: 'loading', content: '...Đang xác thực!' });
         }
     };
 
@@ -58,7 +58,7 @@ const Login = () => {
                                     <Input
                                         {...field}
                                         className='mb-1 h-[48px] rounded-[2px] font-semibold'
-                                        placeholder='Email Address'
+                                        placeholder='Địa chỉ email'
                                     />
                                 )}
                             />
@@ -71,23 +71,23 @@ const Login = () => {
                                     <Input.Password
                                         {...field}
                                         className='mb-1 h-[48px] rounded-[2px] font-semibold'
-                                        placeholder='Password'
+                                        placeholder='Mật khẩu'
                                     />
                                 )}
                             />
                         </Form.Item>
                         <div className='mt-[35px]'>
-                            <Link to='/forgotpassword'>Forgot your password?</Link>
+                            <Link to='/forgotpassword'>Quên mật khẩu?</Link>
                         </div>
                         <Form.Item className='mt-[15px]'>
                             <button
                                 type='submit'
                                 className='h-[48px] w-full rounded-[5px] bg-[#1e3a8a] font-bold text-white duration-300 hover:bg-cyan-500'
                             >
-                                Sign in
+                                Đăng nhập
                             </button>
-                            <p className='my-[15px] text-center text-[#7777]'>Or</p>
-                            <Link
+                            {/* <p className='my-[15px] text-center text-[#7777]'>Or</p> */}
+                            {/* <Link
                                 to=''
                                 className='text-md flex h-[48px] items-center justify-center gap-2 rounded-[5px] bg-blue-600 font-bold text-white shadow-md hover:opacity-90'
                             >
@@ -97,7 +97,7 @@ const Login = () => {
                                     width={35}
                                 />
                                 Sign in With Google
-                            </Link>
+                            </Link> */}
                         </Form.Item>
                     </Form>
                 </ConfigProvider>

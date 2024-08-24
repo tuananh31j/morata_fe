@@ -20,7 +20,7 @@ const useLogin = () => {
         mutationFn: (body: LoginFormData) => AuthService.login(body),
         onSuccess: (data) => {
             navigator('/');
-            showMessage('Login is successfuly!', 'success');
+            showMessage('Đăng nhập thành công!', 'success');
             dispatch(login(data.data.data.user));
             setUserInfo(data.data.data.user);
             setAccessToken(data.data.data.accessToken);

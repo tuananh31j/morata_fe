@@ -209,7 +209,7 @@ export const ProductsListColumns = ({
                                 okText='Đồng ý'
                                 cancelText='Đóng'
                             >
-                                <p className='text-blue-500 transition-colors duration-500 hover:text-blue-400'>
+                                <p className='cursor-pointer text-blue-500 transition-colors duration-500 hover:text-blue-400'>
                                     Ẩn đi
                                 </p>
                             </Popconfirm>
