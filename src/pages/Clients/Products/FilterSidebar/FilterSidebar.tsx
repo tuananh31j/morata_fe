@@ -21,7 +21,7 @@ const FilterSidebar: FC<IFilterProps> = ({ categories, brands }) => {
     return (
         <div className='rounded-md border border-transparent bg-white p-3 py-0'>
             <div className='relative hidden h-full md:block'>
-                <div className='h-[100vh] w-full overflow-x-hidden overflow-y-scroll'>
+                <div className='filter__scollbar h-[100vh] w-full overflow-x-hidden overflow-y-scroll'>
                     <FilterRadio data={categories} filterName='Danh Mục' filterParams='categoryId' />
                     <FilterBox data={brands} filterName='Hãng' filterParams='brandId' />
                     {filterByCate &&

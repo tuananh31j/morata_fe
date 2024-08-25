@@ -28,7 +28,8 @@ export default function MarqueeSlide() {
             <img src='https://etimg.etb2bimg.com/photo/75741441.cms' alt='' className='' />
             <p className='text-white'>
                 Chúng tôi hy vọng rằng mỗi lần bạn ghé thăm chúng tôi đều là một trải nghiệm đáng nhớ và tuyệt vời. Cảm
-                ơn vì đã lựa chọn Morata <HeartFilled className='text-red' />
+                ơn vì đã lựa chọn Morata
+                <HeartFilled className='ml-1 mr-2 text-red' />
             </p>
         </div>
     );

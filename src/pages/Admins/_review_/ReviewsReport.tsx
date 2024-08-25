@@ -140,7 +140,7 @@ const ReviewReportList = () => {
                 title={
                     <div>
                         <WarningOutlined className='text-yellow-500' style={{ fontSize: '1.5rem' }} />
-                        <h4 className='ml-2 inline-block'>Confirm</h4>
+                        <h4 className='ml-2 inline-block'>Xác nhận lại</h4>
                     </div>
                 }
                 open={isModalOpen}
@@ -148,7 +148,7 @@ const ReviewReportList = () => {
                 onCancel={handleCancel}
                 footer={[
                     <Button key='back' type='default' onClick={handleCancel}>
-                        Cancel
+                        Hủy
                     </Button>,
                     <Button
                         key='button'
@@ -159,11 +159,11 @@ const ReviewReportList = () => {
                             handleDeleteProduct();
                         }}
                     >
-                        Delete
+                        Chấp nhận
                     </Button>,
                 ]}
             >
-                <p>Are you sure want to delete this product?</p>
+                <p>Bạn có muốn xóa báo cáo này không?</p>
             </Modal>
         </>
     );
