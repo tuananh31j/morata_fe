@@ -44,13 +44,17 @@ const TableOrderItems = ({ orderItems }: Props) => {
             render: (variant) => {
                 return (
                     <>
-                        <div className='flex gap-2'>
-                            {variant.variantAttributes.map((item: any, i: number) => (
-                                <span key={i} className='text-xs'>
-                                    {item.value}
-                                </span>
-                            ))}
-                        </div>
+                        {variant ? (
+                            <div className='flex gap-2'>
+                                {variant.variantAttributes.map((item: any, i: number) => (
+                                    <span key={i} className='text-xs'>
+                                        {item.value}
+                                    </span>
+                                ))}
+                            </div>
+                        ) : (
+                            'Không có thông tin'
+                        )}
                     </>
                 );
             },
