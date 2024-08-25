@@ -8,6 +8,7 @@ import { setReviewData } from '~/store/slice/rateProductSlice';
 import { useTypedSelector } from '~/store/store';
 import { IProductItemNew } from '~/types/Product';
 import { useInView } from 'react-intersection-observer';
+import DescriptionContent from '~/pages/Clients/ProductDetails/_components/Description/DescriptionContent';
 
 const DescriptionProduct = ({ review, product }: { review: number; product: IProductItemNew }) => {
     const windowSize = useWindowSize();
@@ -29,13 +30,13 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
         shippingReturn: '3',
         reviews: '4',
     };
-    const activekey = orderId ? descriptionTabKey.reviews : descriptionTabKey.additionalInformation;
+    const activekey = orderId ? descriptionTabKey.reviews : descriptionTabKey.description;
     const items: TabsProps['items'] | CollapseProps['items'] = [
-        // {
-        //     key: descriptionTabKey.description,
-        //     label: 'DESCRIPTION',
-        //     children: <DescriptionContent />,
-        // },
+        {
+            key: descriptionTabKey.description,
+            label: 'MÔ TẢ VỀ SẢN PHẨM',
+            children: <DescriptionContent description={product.description} />,
+        },
         {
             key: descriptionTabKey.additionalInformation,
             label: 'THÔNG TIN BỔ SUNG',

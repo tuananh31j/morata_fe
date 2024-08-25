@@ -34,7 +34,7 @@ const Home = () => {
     return (
         <div>
             {/* @Banner*/}
-            <Banner />
+            <Banner Category={categoryList} />
 
             {/* @ShopBenefits*/}
             <ShopBenefits />

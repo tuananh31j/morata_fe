@@ -15,6 +15,8 @@ import Navbar from './Navbar';
 import UserToolbar from './UserToolbar';
 import { MAIN_ROUTES } from '~/constants/router';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
+import Marquee from 'react-fast-marquee';
+import MarqueeSlide from '~/layouts/_components/Main/Header/MarqueeSlide';
 // navbar-mobi
 interface SearchProductParams {
     search: string;
@@ -139,6 +141,9 @@ const Header = () => {
     return (
         <header className='bg-blue-900 '>
             <div className='mx-3 p-1 pt-4 lg:mx-4'>
+                <Marquee pauseOnHover speed={70} delay={3}>
+                    <MarqueeSlide />
+                </Marquee>
                 {/* thongtin-header-laptop */}
                 {/* <div className='hidden justify-between border-b border-[#3b50a3] py-3 lg:flex '>
                     <div className='justify-between gap-5 lg:flex'>
@@ -440,7 +445,7 @@ const Header = () => {
                         )}
                     </div>
                 </div>
-                <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:block'>
+                <div className='hidden justify-between bg-blue-900  lg:block'>
                     {/* Header MENU bottom */}
                     <Navbar categories={categories ? categories.data : []} brands={brands ? brands.data : []} />
                 </div>

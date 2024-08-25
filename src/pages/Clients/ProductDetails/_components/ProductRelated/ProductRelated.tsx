@@ -21,7 +21,7 @@ const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IPr
         id: product._id,
     };
     const { data: ListRelated, isLoading: relatedLoading } = useGetRelatedProduct(body);
-
+    const productFilter = ListRelated?.data.filter((item) => item._id !== product._id);
     return (
         <>
             {!relatedLoading && (
@@ -50,7 +50,7 @@ const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IPr
                     )}
                     {!relatedLoading && (
                         <CarouselDisplay>
-                            {ListRelated?.data?.map((item, i: number) => {
+                            {productFilter?.map((item, i: number) => {
                                 return (
                                     <CarouselItem key={i}>
                                         <SmallCard product={item} />

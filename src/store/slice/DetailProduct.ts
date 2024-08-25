@@ -2,12 +2,10 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IVariantItem } from '~/pages/Clients/ProductDetails/ProductDetails';
 
 type IinitialState = {
-    images: string[] | null;
+    images: string | null;
     variant: IVariantItem | null;
-    activeImage: string | null;
 };
 const initialState: IinitialState = {
-    activeImage: null,
     images: null,
     variant: null,
 };
@@ -16,8 +14,11 @@ const detailProduct = createSlice({
     name: 'detailProduct',
     initialState,
     reducers: {
-        setImages: (state, action: PayloadAction<string[]>) => {
+        setImages: (state, action: PayloadAction<string>) => {
             state.images = action.payload;
+        },
+        unSetImages: (state) => {
+            state.images = null;
         },
         updateVariant: (state, action: PayloadAction<IVariantItem>) => {
             state.variant = action.payload;
@@ -25,6 +26,6 @@ const detailProduct = createSlice({
     },
 });
 
-export const { setImages, updateVariant } = detailProduct.actions;
+export const { setImages, updateVariant, unSetImages } = detailProduct.actions;
 const detailProductReducer = detailProduct.reducer;
 export default detailProductReducer;
