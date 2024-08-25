@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import instance from '~/utils/api/axiosIntance';
+import showMessage from '~/utils/ShowMessage';
 
 const useCancelOrder = (orderId: string) => {
     const queryClient = useQueryClient();
@@ -19,6 +20,7 @@ const useCancelOrder = (orderId: string) => {
                         [QUERY_KEY.ORDERS, QUERY_KEY.PRODUCTS].includes(element as string)
                     ),
             });
+            showMessage('Hủy đơn hàng thành công!', 'success');
         },
     });
 };
