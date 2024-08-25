@@ -53,7 +53,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                                 loading='lazy'
                                 src={product.images[0]}
                                 alt=''
-                                className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 select-none object-cover transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
+                                className='absolute bottom-0 left-0 right-0 top-0 w-full scale-100 select-none object-contain transition-transform duration-500 ease-linear hover:scale-105 md:w-56'
                             />
                         )}
 
@@ -61,7 +61,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                             loading='lazy'
                             src={product.thumbnail}
                             alt=''
-                            className='relative z-10 w-full select-none object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                            className='relative z-10 w-full select-none object-contain opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
                     <ProductActions id={product._id} />
@@ -102,11 +102,9 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                     </VariantPickerDrawer>
                 </div>
             </div>
-            {/* {discountPercentage > 0 && (
-                <div className='absolute left-[20px] top-[20px] z-10 inline-block select-none rounded-sm bg-lime-600 px-4 text-sm leading-6 text-white'>
-                    -{discountPercentage}%
-                </div>
-            )} */}
+            <div className='absolute left-0 top-0 z-[50] inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>
+                Chính Hãng
+            </div>
         </div>
     );
 };

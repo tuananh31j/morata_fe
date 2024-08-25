@@ -8,7 +8,7 @@ const SearchCard = ({ product }: { product: IProductItemNew }) => {
             <div className='mb-4'>
                 <Link to={`/products/${product._id}`} className='flex items-center  gap-5  px-5'>
                     <div className='group relative border-2'>
-                        <img src={product.thumbnail} width={80} alt='' />
+                        <img className='object-contain' src={product.thumbnail} width={80} alt='' />
                     </div>
                     <div>
                         <h3 className='text-base font-medium'>{product.name}</h3>
