@@ -10,18 +10,18 @@ const MenuItem = ({ name, id, isBrand }: { name: string; id: string; isBrand?: b
                 <Link
                     onClick={() => updateQueryParam({ categoryId: id })}
                     to={`${MAIN_ROUTES.PRODUCTS}?categoryId=${id}`}
-                    className='border-cyan-500 p-1 text-[16px] font-semibold uppercase hover:border-b-2'
+                    className=' p-1 font-semibold  hover:text-cyan-500'
                 >
-                    <span className='pe-4 text-white'>{name}</span>
+                    <span className='pe-4 uppercase text-black hover:text-cyan-500'>{name}</span>
                 </Link>
             )}
             {isBrand && (
                 <Link
                     onClick={() => updateQueryParam({ brandId: id })}
                     to={`${MAIN_ROUTES.PRODUCTS}?brandId=${id}`}
-                    className='border-cyan-500 p-1 text-[16px] font-semibold uppercase  hover:border-b-2'
+                    className=' p-1  font-semibold uppercase  hover:text-cyan-500'
                 >
-                    <span className='pe-4 text-white'>{name}</span>
+                    <span className='pe-4 text-black hover:text-cyan-500'>{name}</span>
                 </Link>
             )}
         </>

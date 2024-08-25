@@ -27,8 +27,8 @@ export default function MarqueeSlide() {
             <span className='text-white'>|</span>
             <img src='https://etimg.etb2bimg.com/photo/75741441.cms' alt='' className='' />
             <p className='text-white'>
-                Chúng tôi cam đoan sẽ đem lại những trải nghiệm tốt nhất cho người dùng. Cảm ơn vì đã lựa chọn Morata{' '}
-                <HeartFilled className='text-red' />
+                Chúng tôi hy vọng rằng mỗi lần bạn ghé thăm chúng tôi đều là một trải nghiệm đáng nhớ và tuyệt vời. Cảm
+                ơn vì đã lựa chọn Morata <HeartFilled className='text-red' />
             </p>
         </div>
     );

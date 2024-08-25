@@ -445,7 +445,7 @@ const Header = () => {
                         )}
                     </div>
                 </div>
-                <div className='hidden h-20 justify-between bg-blue-900 py-5 lg:block'>
+                <div className='hidden justify-between bg-blue-900  lg:block'>
                     {/* Header MENU bottom */}
                     <Navbar categories={categories ? categories.data : []} brands={brands ? brands.data : []} />
                 </div>
