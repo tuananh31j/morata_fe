@@ -16,8 +16,9 @@ const useUpdateUser = (id: string) => {
             //         return (query.queryKey[0] as string) === `${QUERY_KEY.USERS}`;
             //     },
             // });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS, id] });
             setTimeout(() => {
-                queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS] });
+                queryClient.prefetchQuery({ queryKey: [QUERY_KEY.USERS], queryFn: () => userService.getAll({}) });
             }, 100);
             showMessage('Update user success', 'success');
             navigate(ADMIN_ROUTES.USERS);

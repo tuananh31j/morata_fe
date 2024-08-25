@@ -67,6 +67,7 @@ const ManageUsers = () => {
 
         {
             title: 'Thao tác',
+            dataIndex: 'action',
             key: 'action',
             render: (_, record) => (
                 <Space size={'middle'}>

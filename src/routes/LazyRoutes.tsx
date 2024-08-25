@@ -28,7 +28,6 @@ export const ProductsListAll = lazy(() => import('~/pages/Admins/_product_'));
 export const CreateProduct = lazy(() => import('~/pages/Admins/_product_/CreateProduct'));
 export const UpdateProduct = lazy(() => import('~/pages/Admins/_product_/UpdateProduct'));
 export const ManageUsers = lazy(() => import('~/pages/Admins/_user_/index'));
-export const CreateUser = lazy(() => import('~/pages/Admins/_user_/CreateUser'));
 export const UpdateUser = lazy(() => import('~/pages/Admins/_user_/UpdateUser'));
 export const ManageOrders = lazy(() => import('~/pages/Admins/_order_/ManageOrder'));
 export const OrdersDetails = lazy(() => import('~/pages/Admins/_order_/OrderDetails'));
