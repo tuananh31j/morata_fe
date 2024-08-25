@@ -28,7 +28,7 @@ const AuthPage = () => {
                                     return `flex w-full justify-center border-b-4 pb-[15px] font-medium duration-500 ${classActive}`;
                                 }}
                             >
-                                Sign In
+                                Đăng nhập
                             </NavLink>
                             <NavLink
                                 to='register'
@@ -37,7 +37,7 @@ const AuthPage = () => {
                                     return `flex w-full justify-center border-b-4 pb-[15px] font-medium duration-500 ${classActive}`;
                                 }}
                             >
-                                Sign Up
+                                Đăng ký
                             </NavLink>
                         </div>
                         <Outlet />

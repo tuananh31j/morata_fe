@@ -1,8 +1,7 @@
 import { Form, Input, Select } from 'antd';
-import { validators } from 'tailwind-merge';
 import { AttributeType } from '~/constants/enum';
 import { IAttributesValue } from '~/types/Attributes';
-import { validateNoComma } from '~/validation/Products/validators';
+import { validateNoUnderscore } from '~/validation/Products/validators';
 
 const AttributesItem = ({
     attribute,
@@ -29,13 +28,13 @@ const AttributesItem = ({
                     message: `Thuộc tính bắt buộc, vui lòng nhập giá trị của ${attribute.name}!`,
                 },
                 {
-                    validator: validateNoComma,
+                    validator: validateNoUnderscore,
                 },
             ]}
         >
             {/* <Input placeholder={`Hãy nhập ${attribute.name}`} /> */}
             {attribute.type === AttributeType.Options && (
-                <Select placeholder='Please select'>
+                <Select placeholder={`Hãy chọn giá trị cho ${attribute.name}`}>
                     {attribute.values.map((value, index) => (
                         <Select.Option value={value} key={index}>
                             {value}
@@ -44,7 +43,7 @@ const AttributesItem = ({
                 </Select>
             )}
             {attribute.type === AttributeType.Multiple && (
-                <Select mode='multiple' placeholder='Please select'>
+                <Select mode='multiple' placeholder={`Hãy chọn những giá trị cho ${attribute.name}`}>
                     {attribute.values.map((value, index) => (
                         <Select.Option value={value} key={index}>
                             {value}

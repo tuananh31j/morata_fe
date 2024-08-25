@@ -27,7 +27,7 @@ const Register = () => {
         };
         mutate(dataCustom);
         if (isPending) {
-            handleMessage({ type: 'loading', content: '...authenticating!' });
+            handleMessage({ type: 'loading', content: '...Đang xác thực!' });
         }
     };
     return (
@@ -47,8 +47,8 @@ const Register = () => {
                     }}
                 >
                     <Form onFinish={handleSubmit(onSubmit)} className='w-full '>
-                        <h1 className=' text-center text-2xl font-semibold text-[#222222] lg:text-4xl'>Sign up</h1>
-                        <p className='mb-[25px] text-center'>Create your account</p>
+                        <h1 className=' text-center text-2xl font-semibold text-[#222222] lg:text-4xl'>Đăng ký</h1>
+                        <p className='mb-[25px] text-center'>Đăng ký tài khoản</p>
                         <div className='flex justify-between gap-5'>
                             <Form.Item
                                 validateStatus={errors.firstName ? 'error' : ''}
@@ -62,7 +62,7 @@ const Register = () => {
                                         <Input
                                             {...field}
                                             className='h-[48px] rounded-[2px] font-semibold'
-                                            placeholder='First Name'
+                                            placeholder='Tên của bạn'
                                         />
                                     )}
                                 />
@@ -78,7 +78,7 @@ const Register = () => {
                                     render={({ field }) => (
                                         <Input
                                             className='h-[48px] rounded-[2px] font-semibold'
-                                            placeholder='Last Name'
+                                            placeholder='Tên đệm'
                                             {...field}
                                         />
                                     )}
@@ -92,7 +92,7 @@ const Register = () => {
                                 render={({ field }) => (
                                     <Input
                                         className='h-[48px] rounded-[2px] font-semibold'
-                                        placeholder='Email Address'
+                                        placeholder='Địa chi email'
                                         {...field}
                                     />
                                 )}
@@ -106,7 +106,7 @@ const Register = () => {
                                     <Input
                                         {...field}
                                         className='mb-1 h-[48px] rounded-[2px] font-semibold'
-                                        placeholder='Phone number'
+                                        placeholder='Số điện thoai của bạn'
                                     />
                                 )}
                             />
@@ -118,7 +118,7 @@ const Register = () => {
                                 render={({ field }) => (
                                     <Input.Password
                                         className='h-[48px] rounded-[2px] font-semibold'
-                                        placeholder='Password'
+                                        placeholder='Mật khẩu'
                                         {...field}
                                     />
                                 )}
@@ -129,10 +129,10 @@ const Register = () => {
                                 type='submit'
                                 className='mt-[5px] h-[48px] w-full rounded-[5px] bg-[#1e3a8a] font-medium text-white duration-300 hover:bg-cyan-500'
                             >
-                                Sign up
+                                Đăng ký
                             </button>
-                            <p className='my-[15px] text-center text-[#7777]'>Or</p>
-                            <Link
+                            {/* <p className='my-[15px] text-center text-[#7777]'>Or</p> */}
+                            {/* <Link
                                 to={''}
                                 className='text-md flex h-[48px] items-center justify-center gap-2 rounded-[5px] bg-blue-600 font-bold text-white shadow-md hover:opacity-90'
                             >
@@ -142,7 +142,7 @@ const Register = () => {
                                     width={35}
                                 />
                                 Sign in With Google
-                            </Link>
+                            </Link> */}
                         </Form.Item>
                     </Form>
                 </ConfigProvider>

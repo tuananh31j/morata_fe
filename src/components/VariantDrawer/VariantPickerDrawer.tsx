@@ -153,24 +153,34 @@ export default function VariantPickerDrawer({
                             {product?.variationIds.map((item) => {
                                 return (
                                     <div
-                                        onClick={() => handleChangeVariant(item)}
                                         key={item._id}
+                                        onClick={() => handleChangeVariant(item)}
                                         className={clsx(
-                                            `flex cursor-pointer items-center justify-between gap-3 rounded-sm border-2  bg-white px-2 py-1 transition duration-300 hover:border-blue-600`,
+                                            `flex cursor-pointer items-center justify-between gap-3 rounded-md border-2   bg-white px-2 py-1 transition duration-300 hover:opacity-70`,
                                             active === item._id && item.stock >= 1
-                                                ? 'border-blue-600'
-                                                : 'border-blue-200',
+                                                ? 'border-blue-600 shadow-8'
+                                                : 'border-blue-100',
                                             item.stock < 1 || !item.isActive ? 'pointer-events-none opacity-50' : ''
                                         )}
                                     >
                                         <div className='select-none'>
-                                            <img src={item.image} alt='variant product' className='h-10 w-10' />
+                                            <img
+                                                src={item.image}
+                                                alt='variant product'
+                                                className='h-10 w-10 object-cover'
+                                            />
                                         </div>
-                                        {item?.variantAttributes?.map((attr: variationAttribute, index) => (
-                                            <span key={index} className='select-none text-sm font-medium text-black'>
-                                                {attr.value}{' '}
-                                            </span>
-                                        ))}
+                                        <div className='flex flex-col gap-1'>
+                                            {item?.variantAttributes?.map((attr: variationAttribute, index) => (
+                                                <span
+                                                    key={index}
+                                                    className='flex select-none gap-x-2 text-sm font-medium text-black'
+                                                >
+                                                    <span>{attr.name}:</span>
+                                                    <span className='font-normal'>{attr.value}</span>
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
                                 );
                             })}

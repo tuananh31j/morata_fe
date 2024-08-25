@@ -1,5 +1,4 @@
-import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Space, TableProps, Tag, Tooltip } from 'antd';
+import { Popconfirm, Space, TableProps, Tag, Tooltip } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 import { Params } from '~/types/Api';
@@ -33,7 +32,7 @@ export const ProductsListColumns = ({
     brandFilter?: IFilter[];
     categoryFilter?: IFilter[];
     query: Params;
-    getColumnSearchProps: (dataIndex: string) => ColumnType<any>;
+    getColumnSearchProps: (dataIndex: string) => ColumnType<IProductItemNew>;
     mutateHideProduct: (id: string) => void;
     mutateShowProduct: (id: string) => void;
     getFilteredValue: (key: string) => string[] | undefined;
@@ -209,7 +208,7 @@ export const ProductsListColumns = ({
                                 okText='Đồng ý'
                                 cancelText='Đóng'
                             >
-                                <p className='text-blue-500 transition-colors duration-500 hover:text-blue-400'>
+                                <p className='cursor-pointer text-blue-500 transition-colors duration-500 hover:text-blue-400'>
                                     Ẩn đi
                                 </p>
                             </Popconfirm>

@@ -18,7 +18,7 @@ const useLogout = () => {
         localStorage.removeItem('accessToken');
         dispatch(logout());
         navigator('/');
-        showMessage('Logged out!', 'info');
+        showMessage('Đã đăng xuất!', 'info');
         queryClient.removeQueries({ queryKey: [QUERY_KEY.USERS] });
         queryClient.resetQueries();
     };

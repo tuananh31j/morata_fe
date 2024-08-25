@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
 import TextArea from 'antd/es/input/TextArea';

@@ -1,8 +1,10 @@
-import { useLocation } from 'react-router-dom';
+import { RightOutlined } from '@ant-design/icons';
+import { Link, useLocation } from 'react-router-dom';
 import SmallCard from '~/components/ProductCard/SmallCard';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import WrapperList from '~/components/_common/WrapperList';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
+import { MAIN_ROUTES } from '~/constants/router';
 import { useGetRelatedProduct } from '~/hooks/products/Queries/useGetRelatedProduct';
 import { IAxiosResponse } from '~/types/AxiosResponse';
 import { IProductItemNew } from '~/types/Product';
@@ -19,24 +21,43 @@ const ProductRelated = ({ relatedProduct }: { relatedProduct: IAxiosResponse<IPr
         id: product._id,
     };
     const { data: ListRelated, isLoading: relatedLoading } = useGetRelatedProduct(body);
-
+    const productFilter = ListRelated?.data.filter((item) => item._id !== product._id);
     return (
         <>
             {!relatedLoading && (
-                <WrapperList classic title='Sản phẩm liên quan'>
-                    {ListRelated && (
-                        <CarouselDisplay>
-                            {ListRelated?.data.map((item, i) => (
-                                <CarouselItem key={i}>
-                                    <SmallCard product={item} />
-                                </CarouselItem>
-                            ))}
-                        </CarouselDisplay>
+                <WrapperList
+                    classic
+                    title='Sản phẩm liên quan'
+                    option={
+                        <Link
+                            to={MAIN_ROUTES.PRODUCTS}
+                            className='text-[10px] font-[500] capitalize leading-6 duration-500 hover:text-blue-800 md:text-[14px]'
+                        >
+                            Xem tất cả <RightOutlined className='text-[7px] md:text-[10px]' />
+                        </Link>
+                    }
+                >
+                    {relatedLoading && (
+                        <>
+                            <div className='flex w-full justify-between overflow-hidden'>
+                                <SmallSkeleton />
+                                <SmallSkeleton />
+                                <SmallSkeleton />
+                                <SmallSkeleton />
+                                <SmallSkeleton />
+                            </div>
+                        </>
                     )}
-                    {!ListRelated?.data.length && (
-                        <div className='flex h-[344px] items-center justify-center '>
-                            <h3 className='text-xl font-semibold'>There are no related products</h3>
-                        </div>
+                    {!relatedLoading && (
+                        <CarouselDisplay>
+                            {productFilter?.map((item, i: number) => {
+                                return (
+                                    <CarouselItem key={i}>
+                                        <SmallCard product={item} />
+                                    </CarouselItem>
+                                );
+                            })}
+                        </CarouselDisplay>
                     )}
                 </WrapperList>
             )}

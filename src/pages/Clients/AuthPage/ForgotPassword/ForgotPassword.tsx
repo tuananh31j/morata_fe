@@ -36,10 +36,10 @@ export default function ForgotPassword() {
     return (
         <div className='bg-gray-100 flex min-h-[40vh] items-center justify-center p-4'>
             <div className='w-full max-w-md rounded-lg bg-white p-6 shadow-lg'>
-                <h1 className='text-gray-800 mb-6 text-center text-2xl font-semibold'>Forgot Your Password</h1>
+                <h1 className='text-gray-800 mb-6 text-center text-2xl font-semibold'>Quên mật khẩu</h1>
                 <Form onFinish={handleSubmit(handleOnSubmit)} layout='vertical'>
                     <Form.Item
-                        label='Email Address'
+                        label='Địa chỉ Email'
                         validateStatus={errors.email ? 'error' : undefined}
                         help={errors.email?.message}
                     >
@@ -58,7 +58,7 @@ export default function ForgotPassword() {
                             loading={isPending}
                             className='h-12 w-full rounded-md bg-[#1e3a8a] font-semibold text-white transition-colors duration-300 hover:bg-cyan-600'
                         >
-                            Send Reset Link
+                            Gửi yêu cầu
                         </Button>
                     </Form.Item>
                 </Form>

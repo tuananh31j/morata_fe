@@ -22,6 +22,8 @@ const CreateAttribute = () => {
     };
 
     const onFinish: FormProps<IAttributeFormData>['onFinish'] = (values) => {
+        if (values.type === AttributeType.Multiple) values.isVariant = false;
+        if (values.isFilter) values.type = AttributeType.Options;
         if (id) {
             updateAttribute({ _id: id, ...values });
         }
