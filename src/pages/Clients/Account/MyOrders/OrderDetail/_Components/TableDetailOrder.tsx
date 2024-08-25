@@ -61,9 +61,12 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
             title: 'Ảnh Sản Phẩm',
             dataIndex: 'image',
             key: 'image',
-            render: (image) => <img src={image} alt='product' className='h-20 w-20 object-cover' />,
+            render: (_, record) => (
+                <Link to={`/products/${record.productId}`}>
+                    <img src={record.image} alt='product' className='h-20 w-20 object-cover' />
+                </Link>
+            ),
             width: '15%',
-            responsive: ['xs'],
         },
         {
             title: 'Tên Sản Phẩm',

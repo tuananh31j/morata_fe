@@ -11,7 +11,12 @@ const useDeleteReview = (reviewId: string) => {
         onSuccess() {
             showMessage('Xóa đánh giá thành công', 'success');
 
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
+            queryClient.refetchQueries({
+                predicate: (query) =>
+                    query.queryKey.some((element) =>
+                        [QUERY_KEY.REVIEWS, QUERY_KEY.PRODUCTS].includes(element as string)
+                    ),
+            });
         },
         onError(error: errorResponse) {
             console.log(error.response.data.message);
