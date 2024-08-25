@@ -8,11 +8,11 @@ const FilterRating = ({ filterName }: { filterName: string }) => {
     const { query, updateQueryParam } = useFilter();
 
     const onChange = (e: RadioChangeEvent) => {
-        updateQueryParam({ ...query, ['rating[lte]']: String(e.target.value), page: 1 });
+        updateQueryParam({ ...query, ['rating[gte]']: String(e.target.value), page: 1 });
     };
     return (
         <FilterWrap filterName={filterName}>
-            <Radio.Group onChange={onChange} value={Number(query['rating[lte]']) || ''}>
+            <Radio.Group onChange={onChange} value={Number(query['rating[gte]']) || ''}>
                 <Space direction='vertical'>
                     <Radio value={1}>
                         <span className='cursor-pointer'>
