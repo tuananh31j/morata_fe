@@ -184,7 +184,6 @@ const ProductDetails = () => {
                                                 Thuế không được hoàn trả.
                                             </span>
                                         </p>
-                                        <p>{productDetail.data?.description}</p>
                                     </div>
                                 </div>
                                 {/* Availability product */}
