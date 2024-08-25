@@ -14,10 +14,12 @@ const useCreateReview = () => {
     return useMutation({
         mutationFn: (data: ReviewData) => reviewService.createReview(data),
         onSuccess() {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.RELATED] });
-
+            queryClient.refetchQueries({
+                predicate: (query) =>
+                    query.queryKey.some((element) =>
+                        [QUERY_KEY.REVIEWS, QUERY_KEY.PRODUCTS].includes(element as string)
+                    ),
+            });
             // @Remove review data in redux and localstorage
             dispatch(setReviewData({ orderId: '', isOpen: false, productId: '', productVariationId: '' }));
             window.localStorage.removeItem('orderId');

@@ -8,7 +8,12 @@ const FilterRating = ({ filterName }: { filterName: string }) => {
     const { query, updateQueryParam } = useFilter();
 
     const onChange = (e: RadioChangeEvent) => {
-        updateQueryParam({ ...query, ['rating[gte]']: String(e.target.value), page: 1 });
+        updateQueryParam({
+            ...query,
+            ['rating[gte]']: String(e.target.value),
+            ['rating[lt]']: String(e.target.value + 1),
+            page: 1,
+        });
     };
     return (
         <FilterWrap filterName={filterName}>
