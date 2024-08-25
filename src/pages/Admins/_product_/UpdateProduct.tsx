@@ -71,8 +71,8 @@ const UpdateProduct = () => {
     const brands = brandsRes.data?.data;
     const attributeSource = attributesForProduct
         ? attributesForVariant
-            ? [...attributesForProduct!, ...attributesForVariant!]
-            : [...attributesForProduct!]
+            ? [...attributesForProduct, ...attributesForVariant]
+            : [...attributesForProduct]
         : [];
     // Mutation
     const { mutate: updateProduct, isPending } = useUpdateProduct();
@@ -130,7 +130,7 @@ const UpdateProduct = () => {
 
     const onFinish: FormProps<IProductForm>['onFinish'] = (values) => {
         console.log(values, 'values');
-        if (productDetails) {
+        if (productDetails && attributeSource.length > 0) {
             handleEditProduct({
                 productId: id as string,
                 data: values,
@@ -156,6 +156,7 @@ const UpdateProduct = () => {
 
     useEffect(() => {
         if (productDetails && attributeSource.length > 0) {
+            console.log('ok');
             const {
                 attributes,
                 variationIds,
