@@ -24,7 +24,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
     return (
         <div className='product-thumbnail w-full flex-col gap-4'>
             {items.length > 0 && (
-                <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[825px]'>
+                <div className='product-thumbnail-main w-[100%] lg:w-[475px] 2xl:w-[725px]'>
                     <div className='group relative'>
                         <Carousel
                             dots={false}
@@ -37,7 +37,7 @@ const ThumnailProduct = ({ items, thumbnail }: { items: string[]; thumbnail: str
                         >
                             {images?.map((item, index: number) => (
                                 <Image
-                                    className='object-fill duration-75 lg:h-[475px] lg:w-[475px] 2xl:h-[625px] 2xl:w-[825px]'
+                                    className='object-contain duration-75 lg:h-[475px] lg:w-[475px] 2xl:h-[625px] 2xl:w-[725px]'
                                     key={index}
                                     preview={true}
                                     src={item}

@@ -11,7 +11,12 @@ const useUpdateReview = () => {
     return useMutation({
         mutationFn: (data: ReviewData) => reviewService.updateReview(data),
         onSuccess(res) {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.REVIEWS] });
+            queryClient.refetchQueries({
+                predicate: (query) =>
+                    query.queryKey.some((element) =>
+                        [QUERY_KEY.REVIEWS, QUERY_KEY.PRODUCTS].includes(element as string)
+                    ),
+            });
             showMessage('Sửa đánh giá thành công', 'success');
         },
         onError(error: errorResponse) {

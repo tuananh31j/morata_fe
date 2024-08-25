@@ -66,6 +66,7 @@ export type ReportData = {
 export type ReviewData = {
     userId?: string;
     productId?: string;
+    productVariationId?: string;
     rating: number;
     content: string;
     orderId?: string;
@@ -73,4 +74,11 @@ export type ReviewData = {
 };
 export interface ICountReview {
     count: number;
+}
+
+export interface IDisableReviewResponse {
+    orderId: string;
+    isReviewable: boolean;
+    productId: string;
+    productVariationId: string;
 }

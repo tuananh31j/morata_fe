@@ -44,3 +44,8 @@ export enum ReportReason {
     Misinformation = 'Thông tin sai lệch',
     advertisement = 'Quảng cáo',
 }
+
+export enum Role {
+    USER = 'user',
+    ADMIN = 'admin',
+}

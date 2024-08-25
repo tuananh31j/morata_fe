@@ -44,11 +44,10 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
                 await mutateAsync(data.reason);
             }
 
-            showMessage('Cancel order successfully!', 'success');
             setIsModalOpen(false);
             reset();
         } catch (error) {
-            showMessage('Something wrong!', 'error');
+            showMessage('Đã xảy ra lỗi vui lòng thử lại!', 'error');
         }
     };
 
@@ -64,7 +63,6 @@ const PopupFormCancelOrder = ({ id }: { id: string }) => {
 
     useEffect(() => {
         if (isSuccess) {
-            showMessage('Cancel order successfully!', 'success');
             setIsModalOpen(false);
             reset();
         }

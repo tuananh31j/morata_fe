@@ -6,14 +6,14 @@ type RateBtnProps = {
     productId: string;
     orderId: string;
     productVariationId: string;
-    isLoading: boolean;
+    isPending: boolean;
 };
 
 const colorsArr = ['#fc6076', '#ff9a44', '#ef9d43', '#e75516'];
 const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor(color).lighten(5).toString());
 const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
 
-const RateBtn = ({ handleRate, productId, orderId, productVariationId, isLoading }: RateBtnProps) => {
+const RateBtn = ({ handleRate, productId, orderId, productVariationId, isPending }: RateBtnProps) => {
     return (
         <ConfigProvider
             theme={{
@@ -30,7 +30,8 @@ const RateBtn = ({ handleRate, productId, orderId, productVariationId, isLoading
             <Button
                 type='primary'
                 size='middle'
-                loading={isLoading}
+                loading={isPending}
+                disabled={isPending}
                 onClick={() => handleRate(productId, orderId, productVariationId)}
             >
                 Đánh giá

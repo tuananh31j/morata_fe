@@ -229,3 +229,9 @@ export interface IFilterResponse {
     isVariant: boolean;
     attributeKey: string;
 }
+export type IAttributeItem = {
+    key: string;
+    name: string;
+    value: string;
+    _id: string;
+};

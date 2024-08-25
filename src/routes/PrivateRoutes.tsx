@@ -1,7 +1,6 @@
 import AdminLayout from '~/layouts/AdminLayout';
 import {
     CreateProduct,
-    CreateUser,
     DashboardPage,
     ManageUsers,
     Suspense,
@@ -95,14 +94,6 @@ const PrivateRoutes = [
                         element: (
                             <Suspense>
                                 <ManageUsers />
-                            </Suspense>
-                        ),
-                    },
-                    {
-                        path: ADMIN_ROUTES.USERS_CREATE,
-                        element: (
-                            <Suspense>
-                                <CreateUser />
                             </Suspense>
                         ),
                     },

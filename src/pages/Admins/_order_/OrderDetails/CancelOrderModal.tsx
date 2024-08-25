@@ -45,7 +45,6 @@ const CancelOrderModal = ({ orderId, status }: { orderId: string; status: string
                 await mutateAsync(data.reason);
             }
 
-            showMessage('Hủy đơn hàng thành công!', 'success');
             setIsModalOpen(false);
             reset();
         } catch (error) {
@@ -65,7 +64,6 @@ const CancelOrderModal = ({ orderId, status }: { orderId: string; status: string
 
     useEffect(() => {
         if (isSuccess) {
-            showMessage('Cancel order successfully!', 'success');
             setIsModalOpen(false);
             reset();
         }

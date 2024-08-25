@@ -202,6 +202,7 @@ export const ProductsListColumns = ({
                     {!record.isHide && (
                         <Tooltip title='Ẩn sản phẩm này'>
                             <Popconfirm
+                                placement='leftBottom'
                                 title='Ấn sản phẩm khỏi người dùng?'
                                 description='Người dùng sẽ không thể thấy sản phẩm này của bạn.'
                                 onConfirm={() => mutateHideProduct(record._id)}
@@ -217,6 +218,7 @@ export const ProductsListColumns = ({
                     {record.isHide && (
                         <Tooltip title='Hiện thị sản phẩm này'>
                             <Popconfirm
+                                placement='leftBottom'
                                 title='Hiện thị sản phẩm này?'
                                 description='Người dùng sẽ thầy sản phẩm này của bạn.'
                                 onConfirm={() => mutateShowProduct(record._id)}
