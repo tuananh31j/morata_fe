@@ -4,7 +4,7 @@ import productService from '~/services/product.service';
 
 const useGetFilterByCategory = (cateId: string) => {
     return useQuery({
-        queryKey: [QUERY_KEY.PRODUCTS, cateId],
+        queryKey: [QUERY_KEY.FILTER_BYCATE, QUERY_KEY.PRODUCTS, cateId],
         queryFn: () => productService.getFilterByCategory(cateId),
         enabled: !!cateId,
     });

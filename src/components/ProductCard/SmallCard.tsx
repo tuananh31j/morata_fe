@@ -59,7 +59,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             loading='lazy'
                             src={product.images[0]}
                             alt=''
-                            className='absolute h-full w-full transition-transform duration-700 ease-linear md:w-56'
+                            className='absolute h-full w-full bg-white transition-transform duration-700 ease-linear md:w-56'
                         />
                         {/* )} */}
 
@@ -68,7 +68,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             loading='lazy'
                             src={product.thumbnail}
                             alt=''
-                            className='relative z-10 h-full w-full opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                            className='relative z-10 h-full w-full bg-white opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
                     <ProductActions id={product._id} />
