@@ -47,9 +47,11 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     const reviewCount = reviewContentRes?.data;
     const { data: userInfo } = useGetProfile();
     const userInfoData = userInfo?.data;
-    const orderIdStorage = window.localStorage.getItem('orderId') || '';
-    const orderId = useTypedSelector((state) => state.rateProductSlice.orderId) || orderIdStorage;
+
+    const orderId = useTypedSelector((state) => state.rateProductSlice.orderId);
     const isOpen = useTypedSelector((state) => state.rateProductSlice.isOpen);
+    const productVariationId = useTypedSelector((state) => state.rateProductSlice.productVariationId);
+    const isReview = orderId && productVariationId;
     const userReviewData = useRef<userReviewData>({ reviewId: '', userId: '', content: '' });
     const {
         mutate: createReview,
@@ -115,6 +117,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                 userId: userInfo?.data.data._id as string,
                 productId: id as string,
                 orderId: orderId as string,
+                productVariationId: productVariationId as string,
             });
         }
     };
@@ -265,10 +268,10 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                     <div>
                         <button
                             onClick={handleAddReview}
-                            disabled={orderId ? false : true}
+                            disabled={isReview ? false : true}
                             className='flex h-[40px] w-[340px] items-center justify-center bg-[#ffb800] font-bold text-white'
                         >
-                            {orderId ? 'Viết đánh giá' : 'Bạn cần mua hàng để đánh giá'}
+                            {isReview ? 'Viết đánh giá' : 'Bạn cần mua hàng để đánh giá'}
                         </button>
                     </div>
                 </div>

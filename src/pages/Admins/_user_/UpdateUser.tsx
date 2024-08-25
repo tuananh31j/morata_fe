@@ -1,6 +1,6 @@
 import { Button, Card, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useGetDetail from '~/hooks/users/Queries/useGetailUser';
 import { IProductFiles, IThumbnailAntd } from '~/types/Product';
 import { errorMessage } from '~/validation/Products/Product';
@@ -8,6 +8,8 @@ import { ACCEPT_FILE_TYPE, FileType, getBase64, MAX_SIZE } from '../_product_/He
 import convertApiResponseToFileList from '../_product_/Helper/convertImageUrlToFileList';
 import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import useUpdateUser from '~/hooks/users/Mutations/useUpdateUser';
+import { ADMIN_ROUTES } from '~/constants/router';
+import { Role } from '~/constants/enum';
 
 type FieldType = {
     name: string;
@@ -17,9 +19,6 @@ type FieldType = {
     avatar: IProductFiles;
 };
 
-const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-};
 const UpdateUser = () => {
     const { id } = useParams();
     const { data, isLoading } = useGetDetail(id as string);
@@ -34,10 +33,9 @@ const UpdateUser = () => {
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
         const formDataUpdateUser = new FormData();
 
-        console.log(values.role);
         formDataUpdateUser.append('name', values.name);
         formDataUpdateUser.append('email', values.email);
-        formDataUpdateUser.append('role', values.role);
+        formDataUpdateUser.append('role', values.role || (userData?.role as string));
         formDataUpdateUser.append('phone', values.phone);
         formDataUpdateUser.append('avatar', (values.avatar?.fileList?.[0] as IThumbnailAntd)?.originFileObj);
         formDataUpdateUser.append('avatarRef', userData?.avatarRef as string);
@@ -120,7 +118,11 @@ const UpdateUser = () => {
 
     return (
         <div className='mx-6 rounded-lg bg-white px-4 py-6'>
-            <Card loading={isLoading} title='General information'>
+            <Card
+                loading={isLoading}
+                title='Thông tin chung'
+                extra={<Link to={ADMIN_ROUTES.USERS}>Quay lại danh sách</Link>}
+            >
                 <div className='m-auto'>
                     <Form layout='vertical' form={form} onFinish={onFinish} autoComplete='off'>
                         <div className='my-3 flex items-center justify-center'>
@@ -167,7 +169,7 @@ const UpdateUser = () => {
                                 name='name'
                                 className='font-medium text-[#08090F]'
                                 initialValue={userData?.name}
-                                rules={[{ required: true, message: 'Please input your name!' }]}
+                                rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
                             >
                                 <Input size='large' />
                             </Form.Item>
@@ -176,7 +178,7 @@ const UpdateUser = () => {
                                 name='email'
                                 initialValue={userData?.email}
                                 className='font-medium text-[#08090F]'
-                                rules={[{ required: true, message: 'Please input your email!' }]}
+                                rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
                             >
                                 <Input type='email' size='large'></Input>
                             </Form.Item>
@@ -187,28 +189,27 @@ const UpdateUser = () => {
                                 label='Phone Number'
                                 initialValue={userData?.phone}
                                 name='phone'
-                                rules={[{ required: true, message: 'Please input your phone number!' }]}
+                                rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
                             >
                                 <Input type='text' size='large' className='w-full' />
                             </Form.Item>
-                            <Form.Item<FieldType>
-                                className='font-medium text-[#08090F]'
-                                label='Role'
-                                name='role'
-                                initialValue={userData?.role}
-                                rules={[{ required: true, message: 'Please input your role!' }]}
-                            >
-                                <Select
-                                    size='large'
-                                    onChange={handleChange}
-                                    className='w-full'
-                                    options={[
-                                        { value: 'user', label: 'Người dùng' },
-                                        { value: 'admin', label: 'Quản trị viên' },
-                                        // { value: 'super_admin', label: 'Super Admin' },
-                                    ]}
-                                ></Select>
-                            </Form.Item>
+                            {userData?.role !== Role.ADMIN && (
+                                <Form.Item<FieldType>
+                                    className='font-medium text-[#08090F]'
+                                    label='Role'
+                                    name='role'
+                                    initialValue={userData?.role}
+                                >
+                                    <Select
+                                        size='large'
+                                        className='w-full'
+                                        options={[
+                                            { value: 'user', label: 'Người dùng' },
+                                            { value: 'admin', label: 'Quản trị viên' },
+                                        ]}
+                                    ></Select>
+                                </Form.Item>
+                            )}
                         </div>
                         <div className='flex gap-2'>
                             <Button

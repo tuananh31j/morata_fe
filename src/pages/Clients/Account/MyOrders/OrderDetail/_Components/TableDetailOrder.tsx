@@ -1,11 +1,13 @@
 import { Button, Flex, Table, Tooltip } from 'antd';
 import { TableProps } from 'antd/lib';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import useDisabledReview from '~/hooks/orders/Mutations/useDisableReview';
 import RateBtn from '~/pages/Clients/Account/MyOrders/Components/RateBtn';
 import { setReviewData } from '~/store/slice/rateProductSlice';
+import { IAttributeItem } from '~/types/Product';
 import { Currency } from '~/utils';
 
 interface DataType {
@@ -30,20 +32,10 @@ interface Props {
 }
 
 const TableDetailOrder = ({ orderItems, status }: Props) => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { id } = useParams();
-    const { mutateAsync, data: responseData, isPending } = useDisabledReview();
-    const isReviewable = responseData?.data.data.isReviewable;
-
+    const { mutateAsync, isPending } = useDisabledReview();
     const handleRateProduct = async (productId: string, orderId: string, productVariationId: string) => {
-        // call api to check if product is deleted or hided
         mutateAsync({ orderId, productVariationId, productId });
-        if (isReviewable) {
-            // if passed
-            dispatch(setReviewData({ orderId, isOpen: false }));
-            navigate(`${MAIN_ROUTES.PRODUCTS}/${productId}`);
-        }
     };
     const data: DataType[] = orderItems.map((item, index) => ({
         key: index,
@@ -57,7 +49,6 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
         isReviewDisabled: item.isReviewDisabled,
         variant: item.variant,
     }));
-
     const columns: TableProps<DataType>['columns'] = [
         {
             title: 'No.',
@@ -72,13 +63,13 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
             key: 'image',
             render: (image) => <img src={image} alt='product' className='h-20 w-20 object-cover' />,
             width: '15%',
+            responsive: ['xs'],
         },
         {
             title: 'Tên Sản Phẩm',
             dataIndex: 'name',
             key: 'name',
             render: (_, record) => {
-                console.log(record);
                 // const { data } = useGetVariantDetail();
                 return (
                     <>
@@ -92,6 +83,7 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
                     </>
                 );
             },
+            width: '20%',
         },
         {
             title: 'Loại sản phẩm',
@@ -100,9 +92,9 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
             render: (variant) => {
                 return (
                     <>
-                        <div className='flex gap-2'>
-                            {variant.variantAttributes.map((item: any, i: number) => (
-                                <span key={i} className='text-xs'>
+                        <div className='flex flex-wrap gap-2'>
+                            {variant.variantAttributes.map((item: IAttributeItem, i: number) => (
+                                <span key={i} className='block text-xs'>
                                     {item.value}
                                 </span>
                             ))}
@@ -110,6 +102,7 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
                     </>
                 );
             },
+            width: '30%',
         },
         {
             title: 'Giá Tiền',
@@ -148,7 +141,7 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
                                                       productId={record.productId}
                                                       orderId={id!}
                                                       productVariationId={record.productVariationId}
-                                                      isLoading={isPending}
+                                                      isPending={isPending}
                                                   />
                                               </Tooltip>
                                           )}
@@ -164,7 +157,7 @@ const TableDetailOrder = ({ orderItems, status }: Props) => {
                                   {record.isReviewDisabled && (
                                       <Tooltip title='Sản phẩm này đã bị ẩn hoặc xóa'>
                                           <Button type='default' disabled>
-                                              Vô hiệu hóa
+                                              Đánh giá
                                           </Button>
                                       </Tooltip>
                                   )}
