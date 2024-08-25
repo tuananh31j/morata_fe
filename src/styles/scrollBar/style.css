@@ -15,7 +15,7 @@
 }
 
 .filter__scollbar::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: #d7d5d5;
 }
 .noscroll {
     overflow: hidden;

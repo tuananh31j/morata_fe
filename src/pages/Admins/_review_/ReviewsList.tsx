@@ -65,7 +65,9 @@ const ReviewsList = () => {
                         Mã sản phẩm: <span className='text-xs'>{record.productId}</span>
                     </span>
 
-                    <Link to={`${MAIN_ROUTES.PRODUCTS}/${record.productId}`} className='block text-blue-400 underline'>Link sản phẩm</Link>
+                    <Link to={`${MAIN_ROUTES.PRODUCTS}/${record.productId}`} className='block text-blue-400 underline'>
+                        Link sản phẩm
+                    </Link>
                     <Rate value={record.rating} disabled className='mt-1 text-nowrap text-sm'></Rate>
                 </div>
             ),
@@ -137,7 +139,7 @@ const ReviewsList = () => {
                 title={
                     <div>
                         <WarningOutlined className='text-yellow-500' style={{ fontSize: '1.5rem' }} />
-                        <h4 className='ml-2 inline-block'>Confirm</h4>
+                        <h4 className='ml-2 inline-block'>Xác nhận lại</h4>
                     </div>
                 }
                 open={isModalOpen}
@@ -145,7 +147,7 @@ const ReviewsList = () => {
                 onCancel={handleCancel}
                 footer={[
                     <Button key='back' type='default' onClick={handleCancel}>
-                        Cancel
+                        Hủy
                     </Button>,
                     <Button
                         key='button'
@@ -156,11 +158,11 @@ const ReviewsList = () => {
                             handleDeleteProduct();
                         }}
                     >
-                        Delete
+                        Chấp nhận
                     </Button>,
                 ]}
             >
-                <p>Are you sure want to delete this product?</p>
+                <p>Bạn có muốn xóa đánh giá này không?</p>
             </Modal>
         </>
     );
