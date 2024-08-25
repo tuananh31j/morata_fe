@@ -26,7 +26,8 @@ const UserToolbar = () => {
     const totalQuantityAmount = data
         ? data?.data?.items?.reduce((total: number, product) => total + product.quantity, 0)
         : 0;
-
+    const isDisable =
+        location.pathname !== '/checkout' && location.pathname !== '/shipping' && location.pathname !== '/cart';
     return (
         <div className='justify-between lg:flex'>
             {isLoading && !data && (
@@ -48,7 +49,7 @@ const UserToolbar = () => {
                         <IconButton name={`${me.data.data.data.name}`} subName='Xin chào' icon='UserOutlined' />
                     </Link>
 
-                    {location.pathname !== '/checkout-details' ? (
+                    {isDisable ? (
                         <CartDrawer item={data ? data.data : undefined}>
                             <div>
                                 <IconButton
@@ -60,12 +61,14 @@ const UserToolbar = () => {
                             </div>
                         </CartDrawer>
                     ) : (
-                        <IconButton
-                            name={`${Currency.format(totalOrderAmount)}`}
-                            count={totalQuantityAmount}
-                            subName='Giỏ hàng'
-                            icon='ShoppingCartOutlined'
-                        />
+                        <div className='cursor-not-allowed select-none'>
+                            <IconButton
+                                name={`${Currency.format(totalOrderAmount)}`}
+                                count={totalQuantityAmount}
+                                subName='Giỏ hàng'
+                                icon='ShoppingCartOutlined'
+                            />
+                        </div>
                     )}
                 </>
             )}

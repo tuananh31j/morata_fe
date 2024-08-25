@@ -59,7 +59,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             loading='lazy'
                             src={product.images[0]}
                             alt=''
-                            className='absolute h-full w-full bg-white object-fill transition-transform duration-700 ease-linear md:w-56'
+                            className='absolute h-full w-full bg-white object-contain transition-transform duration-700 ease-linear md:w-56'
                         />
                         {/* )} */}
 
@@ -68,7 +68,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                             loading='lazy'
                             src={product.thumbnail}
                             alt=''
-                            className='relative z-10 h-full w-full bg-white object-fill opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                            className='relative z-10 h-full w-full bg-white object-contain opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
                         />
                     </Link>
                     <ProductActions id={product._id} />
@@ -131,15 +131,10 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                 </div>
 
                 {/* Discount */}
-                {/* {discountPercentage > 0 ? (
-                    <div className='absolute left-0 top-0 z-10 inline-block select-none rounded-sm bg-lime-600 px-2 text-sm leading-6 text-white'>
-                        -{discountPercentage}%
-                    </div>
-                ) : (
-                    <div className='absolute left-0 top-0 z-[50] inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>
-                        Mới
-                    </div>
-                )} */}
+
+                <div className='absolute left-0 top-0 z-[50] inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>
+                    Chính Hãng
+                </div>
             </div>
         </div>
     );

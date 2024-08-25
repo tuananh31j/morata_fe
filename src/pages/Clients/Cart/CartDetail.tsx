@@ -14,7 +14,7 @@ import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
 import { useUpdateQuantity } from '~/hooks/cart/Mutations/useUpdateQuantity';
 import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
-import { addItems, removeAll, removeItems, setItemsCart } from '~/store/slice/cartSlice';
+import { addItems, removeAll, removeItems, setItemsCart, updateItemsCart } from '~/store/slice/cartSlice';
 import { RootState, useTypedSelector } from '~/store/store';
 import { IAddCartPayload } from '~/types/cart/CartPayload';
 import { ICartItemsResponse } from '~/types/cart/CartResponse';
@@ -46,6 +46,23 @@ const CartDetail = () => {
     const [quantityProduct, setQuantityProduct] = useState<{ quantity: number; id: string }[]>([]);
     const [pendingUpdates, setPendingUpdates] = useState<{ productVariation: string; quantity: number } | null>(null);
     const findItemsActive = products?.items.filter((v) => v.productVariation.isActive);
+    // useEffect for redux
+    useEffect(() => {
+        if (cartItem) {
+            cartItem.map((item) => {
+                {
+                    products?.items.map((product) => {
+                        if (product.productVariation._id === item.productVariation._id) {
+                            if (product.quantity !== item.quantity) {
+                                dispatch(updateItemsCart(product));
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }, [products]);
+    //
     useEffect(() => {
         if (products) {
             const newArr = products?.items.map(({ quantity, productVariation }) => ({
@@ -53,12 +70,9 @@ const CartDetail = () => {
                 id: productVariation._id,
             }));
             setQuantityProduct(newArr);
-        }
-        if (products) {
             dispatch(setItemsCart(findItemsActive!));
         }
-    }, [products]);
-
+    }, []);
     const handleChangeQuantity = (id: string, newQuantity: number) => {
         setQuantityProduct((prev) =>
             prev.map((itemCart) => (itemCart.id === id ? { ...itemCart, quantity: newQuantity } : itemCart))
@@ -258,6 +272,7 @@ const CartDetail = () => {
                                     rowKey={(product) => product.productVariation._id}
                                     columns={columns}
                                     dataSource={products.items}
+                                    pagination={false}
                                 />
                             )}
                             <div className='my-6 flex items-center justify-between'>
