@@ -31,13 +31,13 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                         loading='lazy'
                         src={product.images[1]}
                         alt=''
-                        className={`absolute bottom-0 left-0 right-0 top-0 scale-105 transition-transform duration-500 ease-linear ${!isScale ? 'object-cover hover:duration-500 hover:ease-linear' : ''}`}
+                        className={`absolute bottom-0 left-0 right-0 top-0 scale-105 bg-white object-cover p-2 transition-transform duration-500 ease-linear ${!isScale ? ' hover:duration-500 hover:ease-linear ' : ''}`}
                     />
                     <img
                         loading='lazy'
                         src={product.thumbnail}
                         alt=''
-                        className='absolute bottom-0 left-0 right-0 top-0 object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear'
+                        className='absolute bottom-0 left-0 right-0 top-0 bg-white object-cover opacity-100 transition-opacity duration-500 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear'
                         onFocus={() => handleScale('open')}
                         onMouseOver={() => handleScale('open')}
                         onMouseLeave={() => handleScale('close')}

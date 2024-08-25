@@ -41,36 +41,35 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
     return (
         <div className='rounded-xl bg-white p-5'>
-            <div className='relative justify-between gap-5 rounded'>
+            <div className='group relative justify-between gap-5 rounded'>
                 {/* Image */}
                 <div
-                    className='relative w-full'
+                    className='group relative w-full'
                     // data-active={isActiveProductActions ? 'card' : ''}
                     // onMouseEnter={handleSetDateActive}
                     // onMouseLeave={handleSetDateActive}
                 >
                     <Link
                         to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}
-                        className='group flex h-[224px] w-full items-center justify-center overflow-hidden'
+                        className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                     >
-                        {/* THUMBNAIL */}
-
-                        <img
-                            loading='lazy'
-                            src={product.thumbnail}
-                            alt=''
-                            className='relative z-10 h-full w-full object-fill opacity-100 transition-opacity duration-700 ease-linear  hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
-                        />
-                        {/* {isActiveProductActions && ( */}
                         {/* HOVER IMAGE */}
-
+                        {/* {isActiveProductActions && ( */}
                         <img
                             loading='lazy'
                             src={product.images[0]}
                             alt=''
-                            className='absolute h-full w-full object-fill opacity-0 transition-transform duration-700 ease-linear hover:opacity-100 md:w-56'
+                            className='absolute h-full w-full bg-white object-fill transition-transform duration-700 ease-linear md:w-56'
                         />
                         {/* )} */}
+
+                        {/* THUMBNAIL */}
+                        <img
+                            loading='lazy'
+                            src={product.thumbnail}
+                            alt=''
+                            className='relative z-10 h-full w-full bg-white object-fill opacity-100 transition-opacity duration-700 ease-linear hover:opacity-0 hover:duration-300 hover:ease-linear md:w-56'
+                        />
                     </Link>
                     <ProductActions id={product._id} />
                 </div>
