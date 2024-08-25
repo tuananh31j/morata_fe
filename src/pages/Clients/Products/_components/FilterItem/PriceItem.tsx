@@ -11,7 +11,7 @@ type FieldType = {
 };
 const PriceFilterItem = () => {
     const defaultMin = 0;
-    const defaultMax = 10000000;
+    const defaultMax = 100000000;
     const { query, updateQueryParam } = useFilter();
     const [value, setValue] = useState<number[]>([defaultMin, 9999999]);
 
@@ -46,15 +46,31 @@ const PriceFilterItem = () => {
                     value={value}
                     onChange={setValue}
                 />
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-2'>
                     <Form.Item>
-                        <InputNumber value={value[0]} onChange={onChnageInputMin} placeholder='Giá tiền tối thiểu' />
+                        <InputNumber<number>
+                            className='w-full'
+                            value={value[0]}
+                            onChange={onChnageInputMin}
+                            controls={false}
+                            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={(value) => value?.replace(/VNĐ\s?|(,*)/g, '') as unknown as number}
+                            placeholder='Giá tiền tối thiểu'
+                        />
                     </Form.Item>
                     <div className=''>
                         <MinusOutlined />
                     </div>
                     <Form.Item>
-                        <InputNumber value={value[1]} onChange={onChnageInputMax} placeholder='Giá tiền tối đa' />
+                        <InputNumber<number>
+                            className='w-full'
+                            value={value[1]}
+                            onChange={onChnageInputMax}
+                            controls={false}
+                            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={(value) => value?.replace(/VNĐ\s?|(,*)/g, '') as unknown as number}
+                            placeholder='Giá tiền tối đa'
+                        />
                     </Form.Item>
                 </div>
                 <Form.Item>

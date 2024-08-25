@@ -25,6 +25,12 @@ const cartSlice = createSlice({
             const filteredItems = state.items.filter((item) => item.productVariation._id !== payload.payload);
             state.items = filteredItems;
         },
+        updateItemsCart: (state, payload: PayloadAction<ICartItemsResponse>) => {
+            const findIndex = state.items.findIndex(
+                (item) => item.productVariation._id === payload.payload.productVariation._id
+            );
+            state.items[findIndex] = payload.payload;
+        },
         addItems: (state, payload: PayloadAction<ICartItemsResponse>) => {
             state.items.push(payload.payload);
         },
@@ -33,6 +39,6 @@ const cartSlice = createSlice({
         },
     },
 });
-export const { setClose, setOpen, setItemsCart, removeItems, addItems, removeAll } = cartSlice.actions;
+export const { setClose, setOpen, setItemsCart, removeItems, addItems, removeAll, updateItemsCart } = cartSlice.actions;
 const cartReducer = cartSlice.reducer;
 export default cartReducer;
