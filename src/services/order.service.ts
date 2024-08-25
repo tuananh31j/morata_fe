@@ -4,6 +4,7 @@ import { ORDER_ENDPOINT } from '~/constants/endpoint';
 import { IOrderResponse, IOrderDetails } from '~/types/Order';
 import { OrderStatus } from '~/constants/enum';
 import { Params } from '~/types/Api';
+import { IDisableReviewResponse } from '~/types/Review';
 
 const orderService = {
     myOrder(params: Params) {
@@ -62,11 +63,8 @@ const orderService = {
     orderStatus() {
         return instance.get<IAxiosResponse<OrderStatus[]>>(`${ORDER_ENDPOINT.MY_ORDERS}`);
     },
-    disabledReview(data: { orderId: string; productVariationId: string }) {
-        return instance.patch<IAxiosResponse<{ orderId: string; isReviewable: boolean }>>(
-            `${ORDER_ENDPOINT.DISABLED_REVIEW}`,
-            data
-        );
+    disabledReview(data: { orderId: string; productVariationId: string; productId: string }) {
+        return instance.patch<IAxiosResponse<IDisableReviewResponse>>(`${ORDER_ENDPOINT.DISABLED_REVIEW}`, data);
     },
     /* eslint-disable */
     // vnpayReturnStatusOrder(params: URLSearchParams) {

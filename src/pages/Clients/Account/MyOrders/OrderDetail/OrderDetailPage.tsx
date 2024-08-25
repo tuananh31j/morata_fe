@@ -1,11 +1,9 @@
 import { LeftOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
-import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import WrapperList from '~/components/_common/WrapperList';
 import { MAIN_ROUTES } from '~/constants/router';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
-import useGetDetailProductReview from '~/hooks/products/Queries/useGetDetailProductReview';
 import OrderStatusBar from '~/pages/Admins/_order_/OrderDetails/OrderStatusBar';
 import ActionLink from '~/pages/Clients/Account/MyOrders/Components/ActionLink';
 import ReceiverInfor from '~/pages/Clients/Account/MyOrders/OrderDetail/_Components/ReceiverInfor';
@@ -43,7 +41,7 @@ const OrderDetailPage = () => {
                     title={`Chi tiết đơn hàng #${id}`}
                     option={
                         <Link to={MAIN_ROUTES.MY_ORDERS}>
-                            <LeftOutlined /> Quay Trở Về Danh Sach
+                            <LeftOutlined /> Quay Trở Về Danh Sách
                         </Link>
                     }
                 >
@@ -62,7 +60,11 @@ const OrderDetailPage = () => {
                             <Space align='center' direction='vertical'>
                                 <h2 className='text-rose-500'>
                                     Đơn hàng đã bị hủy bởi{' '}
-                                    {data?.canceledBy === 'admin' ? <span>admin</span> : <span>người dùng</span>}
+                                    {data?.canceledBy === 'admin' ? (
+                                        <span>Người quản trị</span>
+                                    ) : (
+                                        <span>người dùng</span>
+                                    )}
                                 </h2>
                                 <p className='font-normal'>{data?.description}</p>
                             </Space>

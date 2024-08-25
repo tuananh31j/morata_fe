@@ -3,7 +3,6 @@ import { TinyColor } from '@ctrl/tinycolor';
 import { Button, ConfigProvider, Tag } from 'antd';
 import { OrderStatus } from '~/constants/enum';
 import useFinishOrderClient from '~/hooks/orders/Mutations/useFinishOrderClient';
-import showMessage from '~/utils/ShowMessage';
 import PopupFormCancelOrder from './PopupFormCancelOrder';
 
 const colorsArr = ['#fc6076', '#ff9a44', '#ef9d43', '#e75516'];
@@ -13,11 +12,7 @@ const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColo
 const ActionLink = ({ status, orderId }: { status: OrderStatus; orderId: string }) => {
     const { mutateAsync: finishOrder, isPending } = useFinishOrderClient();
     const handleFinishOrder = async () => {
-        const res = await finishOrder(orderId);
-
-        if (res) {
-            showMessage('Thank you for confirming!', 'success');
-        }
+        await finishOrder(orderId);
     };
 
     switch (status) {

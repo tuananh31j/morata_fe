@@ -76,9 +76,8 @@ const ProductDetails = () => {
         } else {
             return () => {
                 if (!isInitialMount.current) {
-                    dispatch(setReviewData({ orderId: '', isOpen: false, productId: '' }));
+                    dispatch(setReviewData({ orderId: '', isOpen: false, productId: '', productVariationId: '' }));
                 }
-                window.localStorage.removeItem('orderId');
             };
         }
     }, []);

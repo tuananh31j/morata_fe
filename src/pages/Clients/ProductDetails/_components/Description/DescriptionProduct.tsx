@@ -15,6 +15,7 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
     const targetToReview = useRef<HTMLDivElement>();
 
     const orderId = useTypedSelector((state) => state.rateProductSlice.orderId);
+    const productVariationId = useTypedSelector((state) => state.rateProductSlice.productVariationId);
     const dispatch = useDispatch();
 
     const { ref: inViewRef, inView } = useInView({
@@ -72,11 +73,11 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
     }, [targetToReview]);
 
     useEffect(() => {
-        if (inView && orderId) {
-            dispatch(setReviewData({ orderId: orderId, isOpen: true }));
+        if (inView && orderId && productVariationId) {
+            dispatch(setReviewData({ orderId: orderId, isOpen: true, productVariationId }));
             document.body.classList.remove('noscroll');
         }
-    }, [inView, orderId]);
+    }, [inView]);
     /* eslint-enable */
 
     return (
