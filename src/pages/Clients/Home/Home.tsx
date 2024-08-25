@@ -20,7 +20,7 @@ const Home = () => {
     const [
         { data: ProductsList, isLoading: isLoadingProductsAll },
         { data: TopDeals, isLoading: isLoadingTopDeals },
-        _,
+        { data: Toptrending, isLoading: isLoadingTrending },
         { data: ProductsLatest, isLoading: isLoadingProductsLatest },
         { data: categories, isLoading: categoriesLoading },
     ] = useQueriesHomepage();
@@ -52,7 +52,7 @@ const Home = () => {
                     </Link>
                 }
             >
-                {isLoadingProductsAll && (
+                {isLoadingTrending && (
                     <>
                         <div className='flex w-full justify-between overflow-hidden'>
                             <SmallSkeleton />
@@ -63,9 +63,9 @@ const Home = () => {
                         </div>
                     </>
                 )}
-                {!isLoadingProductsAll && (
+                {!isLoadingTrending && (
                     <CarouselDisplay>
-                        {AllProductsList?.map((item, i: number) => {
+                        {Toptrending?.data.map((item, i: number) => {
                             return (
                                 <CarouselItem key={i}>
                                     <SmallCard product={item} />

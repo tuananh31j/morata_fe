@@ -9,7 +9,7 @@ export default function MarqueeSlide() {
                 alt=''
             />
             <span className='text-white'>|</span>
-            <img src='https://libnanews.com/wp-content/uploads/2019/10/Samsung-logo.png' alt='' className='' />
+            <span className=' text-sm font-semibold text-white '>SAMSUNG</span>
             <span className='text-white'>|</span>
             <img
                 src='https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg'
@@ -19,11 +19,7 @@ export default function MarqueeSlide() {
             <span className='text-white'>|</span>
             <img src='https://upload.wikimedia.org/wikipedia/commons/1/13/OPPO_Logo_wiki.png' alt='' className='' />
             <span className='text-white'>|</span>
-            <img
-                src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Dell_Logo.svg/1024px-Dell_Logo.svg.png'
-                alt=''
-                className=''
-            />
+            <span className=' text-sm font-bold text-white '>DELL</span>
             <span className='text-white'>|</span>
             <img src='https://etimg.etb2bimg.com/photo/75741441.cms' alt='' className='' />
             <p className='text-white'>

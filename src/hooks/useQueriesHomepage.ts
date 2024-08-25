@@ -16,7 +16,7 @@ const useQueriesHomepage = () => {
             },
             {
                 queryKey: [QUERY_KEY.PRODUCTS, QUERY_KEY.REVIEWS],
-                queryFn: () => productService.getTopReviews(),
+                queryFn: () => productService.getTrendingProducts(),
             },
             {
                 queryKey: [QUERY_KEY.PRODUCTS, QUERY_KEY.LATEST],

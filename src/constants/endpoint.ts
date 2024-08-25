@@ -1,6 +1,7 @@
 export const PRODUCT_ENDPOINT = {
     PRODUCT: '/products',
     DETAILED_VARIANT: '/variantDetail',
+    TRENING: '/products/top-sold',
     ALL: '/products/all',
     ALL_ADMIN: '/products/portal/all',
     LATEST: '/products/latest',
