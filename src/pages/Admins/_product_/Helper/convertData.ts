@@ -20,7 +20,7 @@ const convertData = ({ data, to, attributeSource }: IConverDataProps) => {
     if (to === DataTypeConvert.obj && Array.isArray(data)) {
         const dataSource = data.map((item) => _.mapValues(item, (value) => (_.isUndefined(value) ? '' : value)));
         return dataSource.reduce((acc: { [key: string]: any }, { key, value }: any, i) => {
-            if (key === attributeSource[i].attributeKey && attributeSource[i].type === AttributeType.Multiple) {
+            if (attributeSource[i].type === AttributeType.Multiple) {
                 const values = value.includes('_+') ? value.split('_+') : value;
                 acc[key] = Array.isArray(values) ? values : [values];
             } else {

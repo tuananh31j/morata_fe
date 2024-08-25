@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, FormProps, Image, Input, Select, Upload, UploadFile, UploadProps } from 'antd';
@@ -68,7 +69,11 @@ const UpdateProduct = () => {
     const [brandsRes, categoriesRes] = useGetCategoriesAndBrands();
     const categories = categoriesRes.data?.data;
     const brands = brandsRes.data?.data;
-
+    const attributeSource = attributesForProduct
+        ? attributesForVariant
+            ? [...attributesForProduct!, ...attributesForVariant!]
+            : [...attributesForProduct!]
+        : [];
     // Mutation
     const { mutate: updateProduct, isPending } = useUpdateProduct();
     const { mutate: updateProductVariant } = useUpdateProductVariant();
@@ -133,7 +138,7 @@ const UpdateProduct = () => {
                 updateProduct,
                 updateProductVariant,
                 createProductVariant,
-                attributeSource: [...attributesForProduct!, ...attributesForVariant!],
+                attributeSource,
             });
         }
     };
@@ -150,7 +155,7 @@ const UpdateProduct = () => {
     };
 
     useEffect(() => {
-        if (productDetails && attributesForProduct && attributesForVariant) {
+        if (productDetails && attributeSource.length > 0) {
             const {
                 attributes,
                 variationIds,
@@ -175,7 +180,7 @@ const UpdateProduct = () => {
             const attConvert = convertData({
                 data: attributes,
                 to: DataTypeConvert.obj,
-                attributeSource: [...attributesForProduct, ...attributesForVariant],
+                attributeSource,
             });
             let newVariantFile: UploadFile<any>[][] = [];
             const variaConverts = variationIds.map((varia, i) => {
@@ -184,7 +189,7 @@ const UpdateProduct = () => {
                     variantAttributes = convertData({
                         data: varia.variantAttributes,
                         to: DataTypeConvert.obj,
-                        attributeSource: [...attributesForProduct, ...attributesForVariant],
+                        attributeSource,
                     });
                 }
                 const image = convertApiResponseToFileList({
@@ -222,6 +227,8 @@ const UpdateProduct = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productDetails, id, attributesForProduct, attributesForVariant]);
+    console.log(attributesForVariant, '0000000000', attributeSource);
+
     return (
         <WrapperPageAdmin
             title='Cập nhật sản phẩm'
