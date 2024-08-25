@@ -89,18 +89,14 @@ const SmallCard = ({ product }: PropTypeProduct) => {
 
                         {/* Price */}
                         <div className='mb-3 mt-[10px] flex items-center gap-4'>
-                            <span
-                                className={clsx('text-base font-semibold leading-5 text-[#222]', {
-                                    'text-red-600': discountPercentage > 0,
-                                })}
-                            >
+                            <span className={'text-base font-semibold leading-5 text-[#222]'}>
                                 {Currency.format(product.variationIds[0].price)}
                             </span>
-                            {discountPercentage > 0 && (
+                            {/* {discountPercentage > 0 && (
                                 <del className='text-gray-400 text-base font-semibold leading-5 '>
                                     {Currency.format(newPrice)}
                                 </del>
-                            )}
+                            )} */}
                         </div>
                     </Link>
 
@@ -135,7 +131,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                 </div>
 
                 {/* Discount */}
-                {discountPercentage > 0 ? (
+                {/* {discountPercentage > 0 ? (
                     <div className='absolute left-0 top-0 z-10 inline-block select-none rounded-sm bg-lime-600 px-2 text-sm leading-6 text-white'>
                         -{discountPercentage}%
                     </div>
@@ -143,7 +139,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                     <div className='absolute left-0 top-0 z-[50] inline-block select-none rounded-sm bg-[#16bcdc] px-2 text-sm text-white'>
                         Mới
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

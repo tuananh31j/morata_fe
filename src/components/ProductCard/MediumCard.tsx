@@ -75,18 +75,14 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                             <RatingDisplay rating={product.rating} reviews={product.reviewCount || 0} />
                         </div>
                         <div className='mb-3 flex gap-x-2'>
-                            <span
-                                className={clsx('text-base font-semibold leading-5', {
-                                    'text-red-600': discountPercentage > 0,
-                                })}
-                            >
+                            <span className={'text-base font-semibold leading-5'}>
                                 {Currency.format(product.variationIds[0].price)}
                             </span>
-                            {discountPercentage > 0 && (
+                            {/* {discountPercentage > 0 && (
                                 <del className='text-gray-400 text-base font-semibold leading-5 '>
                                     {Currency.format(newPrice)}
                                 </del>
-                            )}
+                            )} */}
                         </div>
                         <ProductAttributeShort attributes={product.attributes} />
                         <ProgressBar percentageSoldProducts={percentageSoldProducts} />
@@ -106,11 +102,11 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                     </VariantPickerDrawer>
                 </div>
             </div>
-            {discountPercentage > 0 && (
+            {/* {discountPercentage > 0 && (
                 <div className='absolute left-[20px] top-[20px] z-10 inline-block select-none rounded-sm bg-lime-600 px-4 text-sm leading-6 text-white'>
                     -{discountPercentage}%
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

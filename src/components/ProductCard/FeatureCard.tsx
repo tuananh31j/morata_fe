@@ -53,29 +53,25 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                         <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
 
                         <div className='mb-3 flex gap-x-2'>
-                            <span
-                                className={clsx('text-[14px] font-semibold leading-5', {
-                                    'text-red-600': discountPercentage,
-                                })}
-                            >
+                            <span className={'text-[14px] font-semibold leading-5'}>
                                 {Currency?.format(product.variationIds?.[0].price)}
                             </span>
 
-                            {discountPercentage > 0 && (
+                            {/* {discountPercentage > 0 && (
                                 <sub>
                                     <del className=' text-gray-500 hidden text-[10px] font-semibold italic  leading-5 lg:block'>
                                         {Currency.format(newPrice)}
                                     </del>
                                 </sub>
-                            )}
+                            )} */}
                         </div>
                     </Link>
                 </div>
-                {discountPercentage > 0 && (
+                {/* {discountPercentage > 0 && (
                     <div className='absolute left-0  top-0 inline-block select-none rounded-sm bg-lime-600 px-3 text-sm text-white'>
                         -5%
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

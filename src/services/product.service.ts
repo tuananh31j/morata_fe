@@ -39,6 +39,10 @@ const productService = {
         });
         return res.data;
     },
+    async getTrendingProducts() {
+        const res = await instance.get<IAxiosResponse<IProductItemNew[]>>(`${PRODUCT_ENDPOINT.TRENING}`);
+        return res.data;
+    },
     async getDetail(id: string) {
         const res = await instance.get<IAxiosResponse<IProductItemNew>>(`${PRODUCT_ENDPOINT.PRODUCT}/${id}`);
         return res.data;

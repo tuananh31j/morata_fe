@@ -1,4 +1,4 @@
-import { DeleteTwoTone, FrownTwoTone } from '@ant-design/icons';
+import { CloseOutlined, DeleteTwoTone, FrownTwoTone } from '@ant-design/icons';
 import { Button, Card, Flex, Image, Rate, Space, Tooltip } from 'antd';
 import { debounce } from 'lodash';
 import { useState } from 'react';
@@ -24,7 +24,7 @@ const Wishlist = () => {
     const { query } = useFilter();
     const [valueQuantity, setQuantityValue] = useState(1);
     const { data: wishList } = useGetAllWishlist(query);
-    const { handleRemoveWishList } = useMutationRemoveWishList();
+    const { handleRemoveWishList, isPending } = useMutationRemoveWishList();
     const wishListProduct = wishList?.data.wishList;
     const navigate = useNavigate();
     const { mutate } = useMutationCart();
@@ -79,13 +79,18 @@ const Wishlist = () => {
                                         <div className='flex items-center justify-between text-2xl font-semibold '>
                                             <span>{item.name}</span>
 
-                                            <Tooltip title='Remove from wishlist' placement='left' color='#108ee9'>
+                                            <Tooltip
+                                                title='Xóa khỏi danh sách yêu thích'
+                                                placement='left'
+                                                color='#108ee9'
+                                            >
                                                 <Button
                                                     type='text'
                                                     size='large'
-                                                    shape='round'
+                                                    loading={isPending}
+                                                    className='hover:rotate-180 hover:text-cyan-500'
                                                     onClick={() => debouncedRemove(item._id)}
-                                                    icon={<DeleteTwoTone />}
+                                                    icon={<CloseOutlined />}
                                                 />
                                             </Tooltip>
                                         </div>
