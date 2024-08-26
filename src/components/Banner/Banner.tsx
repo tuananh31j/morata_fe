@@ -31,10 +31,10 @@ const Banner = ({ Category }: { Category: ICategoryPopular[] | undefined }) => {
 
                 <div className='grid gap-2 sm:grid-cols-2 sm:gap-4'>
                     <div className='grid gap-2 sm:gap-4'>
-                        <div className='group relative overflow-hidden rounded-3xl'>
+                        <div className='group relative h-52 overflow-hidden rounded-3xl'>
                             <img
                                 loading='lazy'
-                                className=' h-full w-full transform transition-transform duration-500 group-hover:scale-110'
+                                className=' h-52 w-full transform transition-transform duration-500 group-hover:scale-110'
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/1_1.png?v=1697473091&width=1500'
                                 alt=''
                             />
@@ -47,10 +47,10 @@ const Banner = ({ Category }: { Category: ICategoryPopular[] | undefined }) => {
                             </div>
                         </div>
 
-                        <div className='group relative overflow-hidden rounded-3xl'>
+                        <div className='group relative h-52 overflow-hidden rounded-3xl'>
                             <img
                                 loading='lazy'
-                                className=' h-full w-full transform transition-transform duration-500 group-hover:scale-110 '
+                                className=' h-52 w-full transform transition-transform duration-500 group-hover:scale-110 '
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/1_2.png?v=1697474702&width=1500'
                                 alt=''
                             />
@@ -65,10 +65,10 @@ const Banner = ({ Category }: { Category: ICategoryPopular[] | undefined }) => {
                     </div>
 
                     <div className='grid gap-2 sm:gap-4'>
-                        <div className='group relative overflow-hidden rounded-3xl'>
+                        <div className='group relative h-52 overflow-hidden rounded-3xl'>
                             <img
                                 loading='lazy'
-                                className=' h-full w-full transform transition-transform duration-500 group-hover:scale-110'
+                                className=' h-52 w-full transform transition-transform duration-500 group-hover:scale-110'
                                 src='https://demo-morata.myshopify.com/cdn/shop/files/1_3.png?v=1697474702&width=1500'
                                 alt=''
                             />
@@ -81,11 +81,11 @@ const Banner = ({ Category }: { Category: ICategoryPopular[] | undefined }) => {
                             </div>
                         </div>
 
-                        <div className='group relative overflow-hidden rounded-3xl'>
+                        <div className='group relative h-52 overflow-hidden rounded-3xl'>
                             <img
                                 loading='lazy'
-                                className='h-full w-full transform transition-transform duration-500 group-hover:scale-110'
-                                src='https://demo-morata.myshopify.com/cdn/shop/files/1_4.png?v=1697474702&width=1780'
+                                className='h-52 w-full  transform object-cover  object-[80%] transition-transform duration-500 group-hover:scale-110'
+                                src='https://demo-morata.myshopify.com/cdn/shop/files/1_5.png?v=1697474702&width=1780'
                                 alt=''
                             />
 
