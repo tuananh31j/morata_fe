@@ -66,7 +66,6 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
     useEffect(() => {
         if (orderId && targetToReview.current) {
             setTimeout(() => {
-                document.body.classList.add('noscroll');
                 targetToReview.current?.scrollIntoView({ behavior: 'smooth' });
             }, 1000);
         }
@@ -75,7 +74,6 @@ const DescriptionProduct = ({ review, product }: { review: number; product: IPro
     useEffect(() => {
         if (inView && orderId && productVariationId) {
             dispatch(setReviewData({ orderId: orderId, isOpen: true, productVariationId }));
-            document.body.classList.remove('noscroll');
         }
     }, [inView]);
     /* eslint-enable */

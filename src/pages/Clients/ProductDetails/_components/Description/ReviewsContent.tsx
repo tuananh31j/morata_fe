@@ -100,7 +100,6 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     };
     const handleCancel = () => {
         setIsModalVisible(false);
-        document.body.classList.remove('noscroll');
     };
 
     const handleSubmit = (Reviewdata: ReviewData) => {
