@@ -181,9 +181,7 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.VERIFY,
                 element: (
                     <Suspense>
-                        <AuthProtected>
-                            <VerifyPage />
-                        </AuthProtected>
+                        <VerifyPage />
                     </Suspense>
                 ),
             },
@@ -199,9 +197,7 @@ const PublicRoutes = [
                 path: MAIN_ROUTES.FORGOT_PASSWORD,
                 element: (
                     <Suspense>
-                        <AuthProtected>
-                            <ForgotPassword />
-                        </AuthProtected>
+                        <ForgotPassword />
                     </Suspense>
                 ),
             },
