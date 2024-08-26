@@ -84,9 +84,9 @@ const PolicyModal = () => {
                     <div className='text-base'>
                         Tất cả các mức giá có thể thay đổi mà không cần thông báo trước. Chúng tôi chấp nhận các hình
                         thức thanh toán khác nhau như thanh toán online, và thanh toán khi nhận hàng. Nếu như thanh toán
-                        online thì sẽ được miễn phí vận chuyển. Thuế VAT mặc định là 10% phí tổng đơn hàng. Nếu như đơn
-                        hàng của bạn vượt quá 50 triệu Việt Nam đồng (50.000.000 VNĐ) thì bạn bắt buộc phải thanh toán
-                        online.
+                        online thì sẽ được miễn phí vận chuyển và thuế. Thuế VAT mặc định là 10% phí tổng đơn hàng. Nếu
+                        như đơn hàng của bạn vượt quá 50 triệu Việt Nam đồng (50.000.000 VNĐ) thì bạn bắt buộc phải
+                        thanh toán online.
                     </div>
 
                     <Divider orientation='left' className='border-[#1d4ed8] text-lg font-medium'>

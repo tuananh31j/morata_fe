@@ -1,5 +1,6 @@
 import { TinyColor } from '@ctrl/tinycolor';
 import { Button, ConfigProvider } from 'antd';
+import { useEffect, useState } from 'react';
 
 type RateBtnProps = {
     handleRate: (productId: string, orderId: string, productVariationId: string) => void;
@@ -14,6 +15,13 @@ const getHoverColors = (colors: string[]) => colors.map((color) => new TinyColor
 const getActiveColors = (colors: string[]) => colors.map((color) => new TinyColor(color).darken(5).toString());
 
 const RateBtn = ({ handleRate, productId, orderId, productVariationId, isPending }: RateBtnProps) => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (!isPending) {
+            setIsLoading(false);
+        }
+    }, [isPending]);
     return (
         <ConfigProvider
             theme={{
@@ -30,9 +38,12 @@ const RateBtn = ({ handleRate, productId, orderId, productVariationId, isPending
             <Button
                 type='primary'
                 size='middle'
-                loading={isPending}
-                disabled={isPending}
-                onClick={() => handleRate(productId, orderId, productVariationId)}
+                loading={isLoading}
+                disabled={isLoading}
+                onClick={() => {
+                    handleRate(productId, orderId, productVariationId);
+                    setIsLoading(true);
+                }}
             >
                 Đánh giá
             </Button>

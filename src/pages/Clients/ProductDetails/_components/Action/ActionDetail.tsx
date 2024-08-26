@@ -204,13 +204,13 @@ export default function ActionDetail({ product }: { product: IProductItemNew }) 
                             },
                         }}
                     >
-                        <Button
+                        {/* <Button
                             size={'large'}
                             disabled={variant?.stock === 0 || !variant?.isActive}
                             className={`h-[50px] w-full rounded-[30px] bg-[#5a31f4] ${variant?.stock === 0 || !variant?.isActive ? 'pointer-events-none opacity-60' : ''}  font-bold text-white`}
                         >
                             Thanh toán với Stripe
-                        </Button>
+                        </Button> */}
                     </ConfigProvider>
                 </div>
                 {/* action favorite */}

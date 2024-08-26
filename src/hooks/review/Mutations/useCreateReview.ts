@@ -22,8 +22,6 @@ const useCreateReview = () => {
             });
             // @Remove review data in redux and localstorage
             dispatch(setReviewData({ orderId: '', isOpen: false, productId: '', productVariationId: '' }));
-            window.localStorage.removeItem('orderId');
-            document.body.classList.remove('noscroll');
             showMessage('Đánh giá thành công', 'success');
         },
         onError: (error: errorResponse) => {

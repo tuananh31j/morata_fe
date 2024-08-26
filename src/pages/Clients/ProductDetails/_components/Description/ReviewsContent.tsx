@@ -100,7 +100,6 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
     };
     const handleCancel = () => {
         setIsModalVisible(false);
-        document.body.classList.remove('noscroll');
     };
 
     const handleSubmit = (Reviewdata: ReviewData) => {
@@ -233,7 +232,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                         </p>
                     </div>
                     <div>
-                        {reviewCount?.starsReview.map((item, index) => (
+                        {reviewCount?.starsReview?.map((item, index) => (
                             <div key={index}>
                                 <div className='flex cursor-pointer items-center gap-2'>
                                     <span className='cursor-pointer'>
@@ -287,7 +286,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                 </div>
                 <div className='review__scrollbar mx-4 mt-6 max-h-[70vh] overflow-y-scroll py-6 pr-4 '>
                     {reviewContent &&
-                        reviewContent.reviewList?.map((item, index) => (
+                        reviewContent?.reviewList?.map((item, index) => (
                             <div key={index} className='mb-6 flex flex-col gap-2 py-2'>
                                 <Rate value={item.rating} disabled className='text-base' />
                                 <div>
