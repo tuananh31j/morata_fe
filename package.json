@@ -10,8 +10,7 @@
         "preview": "vite preview",
         "lint:fix": "eslint --fix src --ext ts,tsx",
         "prettier": "prettier --check \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
-        "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\"",
-        "prepare": "husky"
+        "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\""
     },
     "dependencies": {
         "@ant-design/icons": "^5.3.6",

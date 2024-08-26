@@ -12,7 +12,7 @@ import { cn } from '~/utils';
 const Products = () => {
     useDocumentTitle('Sản phẩm');
     const { query, grid, updateQueryParam } = useFilter();
-    const limit = 8;
+    const limit = 10;
     // @Query
     const [{ data: brands }, { data: categoies }] = useGetCategoriesAndBrands();
     const { data: products, isLoading: isProductsLoading } = useGetAllProducts(query);

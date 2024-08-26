@@ -23,9 +23,9 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
 
     const handleSelectChange = (value: string) => {
         if (value === '-price' || value === 'price') {
-            updateQueryParam({ ...query, rawsort: value, sort: '' });
+            updateQueryParam({ ...query, sort: value });
         } else {
-            updateQueryParam({ ...query, sort: value, rawsort: '' });
+            updateQueryParam({ ...query, sort: value });
         }
     };
 
@@ -84,12 +84,12 @@ const SortAndViewOptions = ({ totalProducts }: { totalProducts: number }) => {
                         label: 'Z-A',
                     },
                     {
-                        value: '-price',
+                        value: '-priceFilter',
                         title: 'price',
                         label: 'Giá giảm dần',
                     },
                     {
-                        value: 'price',
+                        value: 'priceFilter',
                         title: 'price',
                         label: 'Giá tăng dần',
                     },
