@@ -90,7 +90,7 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                         {/* Price */}
                         <div className='mb-3 mt-[10px] flex items-center gap-4'>
                             <span className={'text-base font-semibold leading-5 text-[#222]'}>
-                                {Currency.format(product.variationIds[0].price)}
+                                {Currency.format(product.priceFilter)}
                             </span>
                             {/* {discountPercentage > 0 && (
                                 <del className='text-gray-400 text-base font-semibold leading-5 '>

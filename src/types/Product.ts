@@ -69,6 +69,7 @@ export type ProductStatus = {
 };
 export type IProductItemNew = {
     _id: string;
+    priceFilter: number;
     name: string;
     thumbnail: string;
     discount: number;

@@ -76,7 +76,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                         </div>
                         <div className='mb-3 flex gap-x-2'>
                             <span className={'text-base font-semibold leading-5'}>
-                                {Currency.format(product.variationIds[0].price)}
+                                {Currency.format(product.priceFilter)}
                             </span>
                             {/* {discountPercentage > 0 && (
                                 <del className='text-gray-400 text-base font-semibold leading-5 '>

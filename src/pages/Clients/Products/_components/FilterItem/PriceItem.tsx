@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import FilterItem from './FilterWrap';
 import { useEffect, useState } from 'react';
 import { Button, Form, InputNumber, Slider } from 'antd';
@@ -27,12 +28,12 @@ const PriceFilterItem = () => {
         }
     };
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        updateQueryParam({ ...query, ['rawprice[gte]']: value[0], ['rawprice[lte]']: value[1], page: 1 });
+        updateQueryParam({ ...query, ['priceFilter[gte]']: value[0], ['priceFilter[lte]']: value[1], page: 1 });
     };
 
     useEffect(() => {
-        const minValue = query['rawprice[gte]'] ? Number(query['rawprice[gte]']) : defaultMin;
-        const maxValue = query['rawprice[lte]'] ? Number(query['rawprice[lte]']) : defaultMax;
+        const minValue = query['priceFilter[gte]'] ? Number(query['priceFilter[gte]']) : defaultMin;
+        const maxValue = query['priceFilter[lte]'] ? Number(query['priceFilter[lte]']) : defaultMax;
         setValue([minValue, maxValue]);
     }, [query]);
 

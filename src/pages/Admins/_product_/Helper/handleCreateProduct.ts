@@ -26,7 +26,6 @@ export const handleCreateProduct = (
 
     /* eslint-disable */
     const attributesData = convertData({ data: attributes, to: DataTypeConvert.raw, attributeSource });
-
     if (variations) {
         for (const [, value] of Object.entries(variations)) {
             if (value.thumbnail?.fileList?.[firstElement]?.originFileObj) {

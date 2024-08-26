@@ -41,6 +41,7 @@ export const handleEditProduct = async ({
     } = data;
     const attributesData = convertData({ data: attributes, to: DataTypeConvert.raw, attributeSource });
     const firstElement = 0;
+    let attributeVariantForFilter: any = [];
     if (variations) {
         variations.forEach((value) => {
             if (value._id) {
@@ -62,6 +63,7 @@ export const handleEditProduct = async ({
                           attributeSource,
                       })
                     : [];
+                attributeVariantForFilter = [...attributeVariantForFilter, ...(variantAttributes as any)];
                 const variantFinal = { imageUrlRef, price, stock, isActive, variantAttributes };
                 formDataUpdateProductVariant.append('variantString', JSON.stringify(variantFinal));
                 updateProductVariant({ data: formDataUpdateProductVariant, variantId: value._id });
@@ -92,6 +94,7 @@ export const handleEditProduct = async ({
         formDataUpdateProduct.append('name', name);
         formDataUpdateProduct.append('isHide', String(isHide));
         formDataUpdateProduct.append('attributes', JSON.stringify(attributesData));
+        formDataUpdateProduct.append('attributeVariantForFilter', JSON.stringify(attributeVariantForFilter));
 
         // Update product
         /* eslint-disable */

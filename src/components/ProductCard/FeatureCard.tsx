@@ -54,7 +54,7 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
 
                         <div className='mb-3 flex gap-x-2'>
                             <span className={'text-[14px] font-semibold leading-5'}>
-                                {Currency?.format(product.variationIds?.[0].price)}
+                                {Currency?.format(product.priceFilter)}
                             </span>
 
                             {/* {discountPercentage > 0 && (

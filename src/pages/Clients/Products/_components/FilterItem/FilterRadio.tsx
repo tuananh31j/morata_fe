@@ -15,7 +15,10 @@ const FilterRadio = ({
 }) => {
     const { query, updateQueryParam } = useFilter();
     const onChange = (e: RadioChangeEvent) => {
-        updateQueryParam({ ...query, [filterParams]: e.target.value.toString(), page: String(1) });
+        const resetQuery = Object.keys(query).reduce((acc, key) => {
+            return { ...acc, [key]: '' };
+        }, {});
+        updateQueryParam({ ...resetQuery, [filterParams]: e.target.value.toString(), page: String(1) });
     };
     return (
         <FilterWrap filterName={filterName}>
