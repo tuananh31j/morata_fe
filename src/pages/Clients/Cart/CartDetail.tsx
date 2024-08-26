@@ -112,7 +112,11 @@ const CartDetail = () => {
         const newQuantity = (quantityProduct.find((itemCart) => itemCart.id === id)?.quantity || 0) - 1;
         handleChangeQuantity(id, newQuantity);
     };
-    const debouncedRemove = debounce((id: string) => handleRemoveCart(id), 500);
+
+    const debouncedRemove = debounce((id: string) => {
+        handleRemoveCart(id);
+        dispatch(removeItems(id));
+    }, 500);
     /* eslint-disable */
     useEffect(() => {
         if (pendingUpdates) {
