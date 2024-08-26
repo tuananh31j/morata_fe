@@ -24,7 +24,7 @@ const PopConFirmOrder = ({ orderId }: Props) => {
 
             confirmOrder.mutate(orderId, {
                 onSuccess: () => {
-                    toast.success('Đã xác nhận cho đơn hang này');
+                    toast.success('Đã xác nhận cho đơn hàng này');
                     navigate(`/admin/orders/${orderId}/detail`);
                     // setOpen(false);
                 },

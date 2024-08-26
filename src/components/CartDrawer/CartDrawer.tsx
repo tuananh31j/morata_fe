@@ -192,7 +192,7 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                                             <span className='capitalize text-black'>
                                                                                 {itemP.name}
                                                                             </span>
-                                                                            :<span>{itemP.value}</span>
+                                                                            :<span className='ms-2'>{itemP.value}</span>
                                                                             {/* {product.productVariation.color.toUpperCase()} */}
                                                                         </div>
                                                                     )
