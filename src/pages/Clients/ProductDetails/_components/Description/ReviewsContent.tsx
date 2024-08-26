@@ -233,7 +233,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
                         </p>
                     </div>
                     <div>
-                        {reviewCount?.starsReview.map((item, index) => (
+                        {reviewCount?.starsReview?.map((item, index) => (
                             <div key={index}>
                                 <div className='flex cursor-pointer items-center gap-2'>
                                     <span className='cursor-pointer'>
