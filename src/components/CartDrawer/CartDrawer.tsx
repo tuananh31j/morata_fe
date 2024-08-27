@@ -1,5 +1,5 @@
 import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Empty, Image, InputNumber, List, Slider, Spin } from 'antd';
+import { Button, ConfigProvider, Drawer, Empty, Image, InputNumber, List, Slider, Spin } from 'antd';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
@@ -222,7 +222,22 @@ const CartDrawer = ({ children, item }: PropsType) => {
                                                                         )
                                                                     }
                                                                 />
-                                                                <InputNumber min={1} value={quantity} className='' />
+                                                                <ConfigProvider
+                                                                    theme={{
+                                                                        token: {
+                                                                            colorBgContainerDisabled: 'white',
+                                                                            colorTextDisabled: 'black',
+                                                                        },
+                                                                    }}
+                                                                >
+                                                                    <InputNumber
+                                                                        min={1}
+                                                                        disabled={true}
+                                                                        value={quantity}
+                                                                        className=''
+                                                                    />
+                                                                </ConfigProvider>
+
                                                                 <Button
                                                                     type='default'
                                                                     disabled={

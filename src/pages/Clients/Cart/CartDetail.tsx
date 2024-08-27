@@ -1,5 +1,6 @@
+/* eslint-disable no-lone-blocks */
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Image, InputNumber, Spin, Table } from 'antd';
+import { Button, Checkbox, ConfigProvider, Form, Image, InputNumber, Spin, Table } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { TableProps } from 'antd/lib';
 import clsx from 'clsx';
@@ -49,9 +50,9 @@ const CartDetail = () => {
     // useEffect for redux
     useEffect(() => {
         if (cartItem) {
-            cartItem.map((item) => {
+            cartItem.forEach((item) => {
                 {
-                    products?.items.map((product) => {
+                    products?.items.forEach((product) => {
                         if (product.productVariation._id === item.productVariation._id) {
                             if (product.quantity !== item.quantity) {
                                 dispatch(updateItemsCart(product));
@@ -229,7 +230,16 @@ const CartDetail = () => {
                             icon={<MinusOutlined className='transform transition duration-500 hover:rotate-180' />}
                             onClick={() => handleDecreaseQuantity(product.productVariation._id)}
                         />
-                        <InputNumber min={1} value={quantity} />
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorBgContainerDisabled: 'white',
+                                    colorTextDisabled: 'black',
+                                },
+                            }}
+                        >
+                            <InputNumber min={1} disabled={true} value={quantity} className='' />
+                        </ConfigProvider>
                         <Button
                             type='default'
                             disabled={quantity === product.productVariation.stock}
@@ -330,16 +340,13 @@ const CartDetail = () => {
                         {cartItem.length > 0 ? (
                             <>
                                 <div className='mt-4 flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                                    <span>Tổng tiền mặt hàng:</span>
-                                    <span className='text-lg '>{Currency.format(totalOrderAmount)}</span>
+                                    <span>Sản phẩm được chọn:</span>
+                                    <span>{cartItem?.length}</span>
                                 </div>
-                                <div className=' flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
-                                    <span>Thuế:</span>
-                                    <span>10%</span>
-                                </div>
+
                                 <div className=' flex items-center justify-between border-b border-gray pb-6 text-base font-semibold'>
                                     <span>Tổng tiền:</span>
-                                    <span className='text-lg text-green-500'>{Currency.format(priceWithTax)}</span>
+                                    <span className='text-lg text-green-500'>{Currency.format(totalOrderAmount)}</span>
                                 </div>
                                 <p className='my-4 opacity-90'>Phí vận chuyển sẽ được tính khi thanh toán.</p>
                             </>
@@ -349,7 +356,7 @@ const CartDetail = () => {
                             </div>
                         )}
 
-                        <div className='mt-4'>
+                        <div className='mt-12'>
                             {totalOrderAmount > 50000000 && (
                                 <div className='flex h-[48px] items-center justify-center'>
                                     <p className='text-center text-sm text-red'>

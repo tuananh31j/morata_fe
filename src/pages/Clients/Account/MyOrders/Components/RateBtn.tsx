@@ -40,6 +40,7 @@ const RateBtn = ({ handleRate, productId, orderId, productVariationId, isPending
                 size='middle'
                 loading={isLoading}
                 disabled={isLoading}
+                className={`${!isLoading && isPending ? 'pointer-events-none' : ''}`}
                 onClick={() => {
                     handleRate(productId, orderId, productVariationId);
                     setIsLoading(true);

@@ -216,7 +216,7 @@ export default function ReviewsContent({ TopReviews }: { TopReviews: number }) {
             }, 100);
         }
     }, [isOpen]);
-
+    console.log(reviewCount);
     return (
         <>
             <h3 className='my-6 text-center text-xl'>Đánh giá của khách hàng</h3>
