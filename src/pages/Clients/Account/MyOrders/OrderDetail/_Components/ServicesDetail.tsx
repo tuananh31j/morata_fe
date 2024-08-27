@@ -37,7 +37,9 @@ export default function ServicesDetail({ services, totalQuantity }: Props) {
         {
             key: 'Tax',
             label: <span className='font-semibold capitalize'>Thuế:</span>,
-            children: <p>{`${Number(services.tax) * 100}% VAT `}</p>,
+            children: (
+                <p>{`${services.paymentMethod === PaymentMethod.card ? '0 %' : `${Number(services.tax) * 100}% VAT`} `}</p>
+            ),
         },
         {
             key: 'Total Price',

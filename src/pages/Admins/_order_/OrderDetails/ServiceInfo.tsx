@@ -1,5 +1,6 @@
 import { Descriptions, Input, Space } from 'antd';
 import { DescriptionsProps } from 'antd/lib';
+import { PaymentMethod } from '~/constants/enum';
 
 interface Props {
     serviceInfo: {
@@ -37,7 +38,9 @@ const ServiceInfo = ({ serviceInfo, description }: Props) => {
         {
             key: 'Tax',
             label: <span className='font-semibold capitalize'>Thuế</span>,
-            children: <p>{`${Number(serviceInfo.tax) * 100}% VAT `}</p>,
+            children: (
+                <p>{`${serviceInfo.paymentMethod === PaymentMethod.card ? '0 %' : `${Number(serviceInfo.tax) * 100}% VAT`} `}</p>
+            ),
         },
         {
             key: 'Total Price',

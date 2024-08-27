@@ -25,6 +25,7 @@ export interface IProduct {
 export type IProductItem = {
     isHide: boolean;
     reviewCount: number;
+    priceFilter: number;
     _id: string;
     name: string;
     discount: number;
