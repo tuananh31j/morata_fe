@@ -16,16 +16,14 @@ import useQueriesHomepage from '~/hooks/useQueriesHomepage';
 
 const Home = () => {
     useDocumentTitle('Trang chủ');
-    const { Observer, data: ProductScroll, hasNextPage, isLoading } = useGetAllProductsScroll();
+    const { Observer, data: ProductScroll } = useGetAllProductsScroll();
     const [
-        { data: ProductsList, isLoading: isLoadingProductsAll },
+        _, // AllProductsList
         { data: TopDeals, isLoading: isLoadingTopDeals },
         { data: Toptrending, isLoading: isLoadingTrending },
         { data: ProductsLatest, isLoading: isLoadingProductsLatest },
-        { data: categories, isLoading: categoriesLoading },
+        { data: categories },
     ] = useQueriesHomepage();
-
-    const AllProductsList = ProductsList?.data?.products;
 
     const TopDealsProductsList = TopDeals?.data;
     const LatestList = ProductsLatest?.data;

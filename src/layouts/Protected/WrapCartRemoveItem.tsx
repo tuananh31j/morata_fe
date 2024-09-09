@@ -15,6 +15,7 @@ export default function WrapCartRemoveItem({ children }: { children: ReactNode }
         ) {
             dispatch(removeAll());
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
     return <>{children}</>;
 }

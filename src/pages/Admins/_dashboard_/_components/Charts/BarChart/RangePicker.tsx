@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs, { Dayjs } from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
@@ -11,9 +12,9 @@ const BarChartRangePicker: React.FC = () => {
     const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>([today, today]);
     const { data: dailyStats } = UseRangePicker(dateRange[0], dateRange[1]);
 
-    const revenue = dailyStats?.data?.map((item: any) => item.totalRevenue) || [];
-    const orders = dailyStats?.data?.map((item: any) => item.totalOrders) || [];
-    const time = dailyStats?.data?.map((item: any) => item.date) || [];
+    const revenue = Array.isArray(dailyStats?.data) ? dailyStats?.data.map((item: any) => item.totalRevenue) || [] : [];
+    const orders = Array.isArray(dailyStats?.data) ? dailyStats?.data.map((item: any) => item.totalOrders) || [] : [];
+    const time = Array.isArray(dailyStats?.data) ? dailyStats?.data.map((item: any) => item.date) || [] : [];
 
     const series = [
         {
@@ -37,6 +38,7 @@ const BarChartRangePicker: React.FC = () => {
         if (!dateRange[0] || !dateRange[1]) {
             setDateRange([today, today]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <WrapperList

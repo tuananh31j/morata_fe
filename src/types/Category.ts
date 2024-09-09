@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { IAttributesValue } from './Attributes';
 import { AttributeType } from '~/constants/enum';
-import { IBrand } from './Brand';
 
 export interface ICategoryPopular {
     totalProducts?: number;
@@ -44,4 +43,7 @@ export interface IValueCheckbox {
     value: string;
 }
 
-export type IMenu = IBrand;
+export type IMenu = {
+    name: string;
+    _id: string;
+};

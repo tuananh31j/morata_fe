@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import { checkoutService } from '~/services/checkout.service';
 import { IPayloadItemsOrder } from '~/types/checkout/Checkout';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 export const useMutationCheckOutSession = () => {
@@ -19,7 +20,7 @@ export const useMutationCheckOutSession = () => {
                 console.error('Không tìm thấy sessionUrl trong response.');
             }
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

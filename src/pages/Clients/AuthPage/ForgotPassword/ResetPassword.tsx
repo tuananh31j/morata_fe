@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Form, Input } from 'antd';
 import { useEffect } from 'react';
@@ -28,6 +29,7 @@ export default function ResetPassword() {
         if (!token) {
             navigate('/');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
     return (
         <div className='bg-gray-100 flex min-h-[70vh] items-center justify-center p-4'>

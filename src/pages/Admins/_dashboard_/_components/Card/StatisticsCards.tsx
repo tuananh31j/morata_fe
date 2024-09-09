@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     DollarCircleOutlined,
     LeftOutlined,
@@ -33,7 +34,7 @@ const StatisticsCards: React.FC = () => {
     if (isLoading) return <div className='flex h-screen items-center justify-center'>Loading...</div>;
     if (error)
         return <div className='text-red-500 flex h-screen items-center justify-center'>Error: {error.message}</div>;
-    const statsData = data?.data?.data || {};
+    const statsData: any = data?.data?.data || {};
     const cardData = [
         {
             title: 'Tổng đơn hàng',

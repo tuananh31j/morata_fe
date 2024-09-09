@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { Spin } from 'antd';
 import { useCallback, useEffect } from 'react';
@@ -52,7 +53,7 @@ export const VerifyPage = () => {
                                 </div>
                                 <div className='mt-12'>
                                     <h3 className='text-center text-xl font-semibold'>
-                                        {isError ? error.response.data.message : 'Welcome to morata'}
+                                        {isError ? (error as any).response.data.message : 'Welcome to morata'}
                                     </h3>
                                     <p className='mt-6 text-center '>
                                         Thank you, your email has been verified, your account is now activated. Please

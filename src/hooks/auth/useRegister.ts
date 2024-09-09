@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useSendVerify } from '~/hooks/auth/useSendVerify';
 import AuthService from '~/services/auth.service';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 const useRegister = () => {
@@ -15,7 +16,7 @@ const useRegister = () => {
             navigator(MAIN_ROUTES.CHECKEMAIL);
             mutate({ email: data.data.data.email });
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

@@ -13,6 +13,7 @@ const ShippingAddress = () => {
     const dispatch = useDispatch();
     const { shippingAddress, description, receiverInfo } = useSelector((state: RootState) => state.order);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSelectProvinceChange = (value: string, option: any) => {
         dispatch(setShippingAddress({ provinceId: +value, province: option.label }));
         dispatch(setShippingAddress({ district: '', districtId: null, ward: '', wardCode: '' }));
@@ -35,6 +36,7 @@ const ShippingAddress = () => {
             description,
             ...receiverInfo,
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

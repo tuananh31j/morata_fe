@@ -15,7 +15,9 @@ const useLogout = () => {
             queryKey: [QUERY_KEY.CART],
         });
         localStorage.removeItem('user');
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+
         dispatch(logout());
         navigator('/');
         showMessage('Đã đăng xuất!', 'info');

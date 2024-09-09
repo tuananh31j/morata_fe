@@ -6,7 +6,7 @@ import { TableProps } from 'antd/lib';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
@@ -16,14 +16,14 @@ import { useUpdateQuantity } from '~/hooks/cart/Mutations/useUpdateQuantity';
 import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
 import { addItems, removeAll, removeItems, setItemsCart, updateItemsCart } from '~/store/slice/cartSlice';
-import { RootState, useTypedSelector } from '~/store/store';
+import { useTypedSelector } from '~/store/store';
 import { IAddCartPayload } from '~/types/cart/CartPayload';
 import { ICartItemsResponse } from '~/types/cart/CartResponse';
 import { Currency } from '~/utils';
 
 const CartDetail = () => {
     useDocumentTitle('Giỏ hàng');
-    const { handleRemoveCart, isPending } = useMutationRemoveItem();
+    const { handleRemoveCart } = useMutationRemoveItem();
     const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
     const dispatch = useDispatch();
     const { mutate: updateQuantity } = useUpdateQuantity();
@@ -35,8 +35,6 @@ const CartDetail = () => {
     const totalOrderAmount = cartItem
         ? cartItem.reduce((total: number, product) => total + product.productVariation.price * product.quantity, 0)
         : 0;
-    const taxAmount = Math.round(totalOrderAmount * 0.1);
-    const priceWithTax = totalOrderAmount + taxAmount;
 
     const handlePayStripe = () => {
         stripeCheckout({
@@ -62,6 +60,7 @@ const CartDetail = () => {
                 }
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [products]);
     //
     useEffect(() => {
@@ -73,6 +72,7 @@ const CartDetail = () => {
             setQuantityProduct(newArr);
             dispatch(setItemsCart(findItemsActive!));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const handleChangeQuantity = (id: string, newQuantity: number) => {
         setQuantityProduct((prev) =>

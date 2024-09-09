@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import { cartService } from '~/services/cart.service';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 export const useMutationRemoveAll = () => {
@@ -16,7 +17,7 @@ export const useMutationRemoveAll = () => {
                 queryKey: [QUERY_KEY.ORDERS],
             });
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

@@ -1,5 +1,5 @@
 import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, ConfigProvider, Drawer, Empty, Image, InputNumber, List, Slider, Spin } from 'antd';
+import { Button, ConfigProvider, Drawer, Empty, Image, InputNumber, List } from 'antd';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { debounce } from 'lodash';
@@ -9,10 +9,8 @@ import { Link } from 'react-router-dom';
 import LoadingBar from '~/components/_common/Loading/LoadingBar';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useCart } from '~/hooks/_common/useCart';
-import { useMutationRemoveAll } from '~/hooks/cart/Mutations/useRemoveAll';
 import { useMutationRemoveItem } from '~/hooks/cart/Mutations/useRemoveOne';
 import { useUpdateQuantity } from '~/hooks/cart/Mutations/useUpdateQuantity';
-import { useMutationCheckOutSession } from '~/hooks/checkout/useCreateOrderSession';
 import { RootState } from '~/store/store';
 import { IAddCartPayload } from '~/types/cart/CartPayload';
 import { ICartDataResponse } from '~/types/cart/CartResponse';
@@ -24,35 +22,14 @@ type PropsType = {
 };
 const CartDrawer = ({ children, item }: PropsType) => {
     const { handleRemoveCart, isPending } = useMutationRemoveItem();
-    const { mutate: stripeCheckout, isPending: PendingStripe } = useMutationCheckOutSession();
     const { mutate: updateQuantity } = useUpdateQuantity();
     const { handleOpenCart, onClose, cart } = useCart();
     const user = useSelector((state: RootState) => state.authReducer.user?._id);
     const products = item ? item.items : null;
-    const freeShippingThreshold = 1000;
     const totalOrderAmount = products
         ? products?.reduce((total: number, product) => total + product.productVariation.price * product.quantity, 0)
         : 0;
-    const marks = {
-        0: `$0`,
-        [totalOrderAmount]: `$${totalOrderAmount}`,
-        [freeShippingThreshold]: `$${freeShippingThreshold}`,
-    };
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const responsePayloadCheckout = products?.map((item) => ({
-        name: item?.productVariation?.productId?.name,
-        price: item?.productVariation?.price,
-        quantity: item?.quantity,
-        image: item?.productVariation?.image,
-        productId: item?.productVariation?.productId?._id,
-        productVariationId: item?.productVariation?._id,
-    }));
-    const handlePayStripe = () => {
-        stripeCheckout({
-            items: responsePayloadCheckout,
-            currency: 'vnd',
-        });
-    };
+
     const [quantityProduct, setQuantityProduct] = useState<{ quantity: number; id: string }[]>([]);
     const [pendingUpdates, setPendingUpdates] = useState<{ productVariation: string; quantity: number } | null>(null);
     useEffect(() => {

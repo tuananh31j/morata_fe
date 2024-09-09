@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteOutlined, WarningOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Button, Modal, Space, Tooltip } from 'antd';
@@ -10,7 +11,6 @@ import TableDisplay from '../../../components/_common/TableDisplay';
 import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import dayjs from 'dayjs';
 import moment from 'moment';
-import { get } from 'lodash';
 
 const ReviewReportList = () => {
     const { query, onFilter, onSelectPaginateChange, getColumnSearchProps, getSortedInfo } =

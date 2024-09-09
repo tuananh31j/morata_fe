@@ -1,6 +1,5 @@
 import { Descriptions, Space } from 'antd';
 import { DescriptionsProps } from 'antd/lib';
-import { log } from 'console';
 
 interface User {
     email: string;

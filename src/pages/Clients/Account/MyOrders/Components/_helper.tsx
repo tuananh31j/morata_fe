@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-nested-ternary */
 import { Button } from 'antd';
 import { OrderStatus, PaymentMethod } from '~/constants/enum';

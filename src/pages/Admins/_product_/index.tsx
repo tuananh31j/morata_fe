@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import useGetProducts from '~/hooks/products/Queries/useGetProductsForAdmin';
-import { IProductItem } from '~/types/Product';
+import { IProductItemNew } from '~/types/Product';
 import useGetCategoriesAndBrands from '~/hooks/useGetCategoriesAndBrands';
 import _ from 'lodash';
 import { ProductsListColumns } from './Helper/tableList';
@@ -17,7 +17,7 @@ import useShowProduct from '~/hooks/products/Mutations/useShowProduct';
 
 const ListAll = () => {
     const { onSelectPaginateChange, query, onFilter, getColumnSearchProps, getFilteredValue } =
-        useTable<IProductItem>();
+        useTable<IProductItemNew>();
     const [brands, categories] = useGetCategoriesAndBrands();
     const { mutate: mutateHideProduct } = useHideProduct();
     const { mutate: mutateShowProduct } = useShowProduct();
@@ -44,7 +44,7 @@ const ListAll = () => {
         mutateShowProduct,
         mutateHideProduct,
         getFilteredValue,
-    }) as ColumnsType<IProductItem>;
+    }) as ColumnsType<IProductItemNew>;
 
     return (
         <WrapperPageAdmin
@@ -57,7 +57,7 @@ const ListAll = () => {
                 </Link>
             }
         >
-            <TableDisplay<IProductItem>
+            <TableDisplay<IProductItemNew>
                 onFilter={onFilter}
                 columns={columns}
                 currentPage={currentPage}

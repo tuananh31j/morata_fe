@@ -4,6 +4,7 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import { ADMIN_ROUTES } from '~/constants/router';
 import categoryService from '~/services/category.service';
 import { ICategoryFormData } from '~/types/Category';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 export const useMutationCreateCategory = () => {
@@ -23,7 +24,7 @@ export const useMutationCreateCategory = () => {
             showMessage('Tạo mới danh mục thành công!', 'success');
             navigate(ADMIN_ROUTES.CATEGORIES, { replace: true });
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

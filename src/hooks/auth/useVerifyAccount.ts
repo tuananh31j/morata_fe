@@ -7,11 +7,10 @@ export const useVerifyAccount = (token: string) => {
     return useMutation({
         mutationKey: ['VERIFY_ACCOUNT'],
         mutationFn: () => AuthService.verify({ token }),
-        onSuccess: (data) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.USERS],
             });
         },
-        onError: (error: any) => {},
     });
 };

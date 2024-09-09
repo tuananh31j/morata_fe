@@ -33,6 +33,7 @@ const OrderStatusBar = ({ orderStatus }: Props) => {
 
     useEffect(() => {
         handleStepChange();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [orderStatus]);
 
     return (

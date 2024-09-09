@@ -1,5 +1,5 @@
 import { Collapse, CollapseProps, ConfigProvider, Tabs, TabsProps } from 'antd';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import useWindowSize from '~/hooks/_common/useWindowSize';
 import AddInformationContent from '~/pages/Clients/ProductDetails/_components/Description/AddInformationContent';
