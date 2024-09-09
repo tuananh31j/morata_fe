@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAccessToken, setAccessToken } from './apiHelper';
+import { getAccessToken, getRefreshToken, setAccessToken } from './apiHelper';
 import queryString from 'query-string';
 import { AUTH_ENDPOINT } from '~/constants/endpoint';
 import { IAxiosResponse } from '~/types/AxiosResponse';
@@ -35,8 +35,15 @@ instance.interceptors.response.use(
             originalRequest._isRetry = true;
 
             try {
+                const refreshToken = getRefreshToken();
                 const { data } = await instance.post<IAxiosResponse<{ accessToken: string }>>(
-                    `${AUTH_ENDPOINT.REFRESH}`
+                    `${AUTH_ENDPOINT.REFRESH}`,
+                    {},
+                    {
+                        headers: {
+                            'x-refresh-token': `Bearer ${refreshToken}`,
+                        },
+                    }
                 );
                 setAccessToken(data.data.accessToken);
                 originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`;

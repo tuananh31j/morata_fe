@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-nested-ternary */
 import type { TableColumnsType } from 'antd';
 import { Button } from 'antd';
@@ -7,7 +8,6 @@ import { ORDER_STATUS } from '~/constants/order';
 import useTable from '~/hooks/_common/useTable';
 import { OrderStatus } from '~/constants/enum';
 import TableDisplay from '../../../components/_common/TableDisplay';
-import { get } from 'lodash';
 
 interface Props {
     ordersList: {

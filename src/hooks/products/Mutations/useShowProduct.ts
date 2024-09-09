@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import productService from '~/services/product.service';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 const useShowProduct = () => {
@@ -14,7 +15,7 @@ const useShowProduct = () => {
             });
             showMessage('Đã hiện sản phẩm!', 'info');
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

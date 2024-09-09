@@ -1,12 +1,7 @@
-import { Spin } from 'antd';
-import clsx from 'clsx';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ProgressBar from '~/components/_common/ProgressBar';
 import { MAIN_ROUTES } from '~/constants/router';
-import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
-import { RootState } from '~/store/store';
 import { IProductItemNew } from '~/types/Product';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
@@ -15,9 +10,6 @@ import ProductAttributeShort from '../_common/ProductAttributeShort';
 import VariantPickerDrawer from '~/components/VariantDrawer/VariantPickerDrawer';
 
 const MediumCard = ({ product }: { product: IProductItemNew }) => {
-    const discountPercentage = 10;
-    const { mutate, isPending } = useMutationCart();
-    const user = useSelector((state: RootState) => state.authReducer.user);
     const productSold = product.variationIds.reduce((acc, item) => {
         const sold = item.sold || 0;
         return acc + sold;
@@ -25,14 +17,6 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
     const productStock = product.variationIds.reduce((acc, item) => acc + item.stock, 0);
     const totalQuantity = productSold + productStock;
     const percentageSoldProducts = (productSold / totalQuantity) * 100;
-    const handleAddCart = () => {
-        mutate({
-            productVariation: product.variationIds[0]._id,
-            quantity: 1,
-            userId: user ? user._id : '',
-        });
-    };
-    const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
     const handleSetDateActive = () => {
         setIsActiveProductActions(!isActiveProductActions);
@@ -78,11 +62,6 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                             <span className={'text-base font-semibold leading-5'}>
                                 {Currency.format(product.priceFilter)}
                             </span>
-                            {/* {discountPercentage > 0 && (
-                                <del className='text-gray-400 text-base font-semibold leading-5 '>
-                                    {Currency.format(newPrice)}
-                                </del>
-                            )} */}
                         </div>
                         <ProductAttributeShort attributes={product.attributes} />
                         <ProgressBar percentageSoldProducts={percentageSoldProducts} />
@@ -96,8 +75,7 @@ const MediumCard = ({ product }: { product: IProductItemNew }) => {
                     </Link>
                     <VariantPickerDrawer product={product}>
                         <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
-                            {isPending && <Spin />}
-                            {!isPending && 'Thêm vào giỏ hàng'}
+                            Thêm vào giỏ hàng
                         </button>
                     </VariantPickerDrawer>
                 </div>

@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import statsService from '~/services/stats.service';

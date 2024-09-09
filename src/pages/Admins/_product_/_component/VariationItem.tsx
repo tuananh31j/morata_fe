@@ -1,5 +1,5 @@
 import { MinusCircleOutlined } from '@ant-design/icons';
-import { Checkbox, Form, Input, InputNumber, Select, Space, Upload, UploadFile, UploadProps } from 'antd';
+import { Checkbox, Form, Input, InputNumber, Select, Upload, UploadFile, UploadProps } from 'antd';
 import { IAttributesValue } from '~/types/Attributes';
 import {
     variationsPriceValidator,

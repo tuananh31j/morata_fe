@@ -11,11 +11,6 @@ const useUpdateUser = (id: string) => {
     return useMutation({
         mutationFn: (data: FormData) => userService.updateUser(data, id),
         onSuccess: () => {
-            // queryClient.resetQueries({
-            //     predicate: (query) => {
-            //         return (query.queryKey[0] as string) === `${QUERY_KEY.USERS}`;
-            //     },
-            // });
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS, id] });
             setTimeout(() => {
                 queryClient.prefetchQuery({ queryKey: [QUERY_KEY.USERS], queryFn: () => userService.getAll({}) });

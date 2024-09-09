@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import request from '../../../utils/api/axiosIntance';
 import { HTTP_METHOD } from '~/constants/http';
@@ -43,6 +44,7 @@ export const useCreateOrder = () => {
 
     return useMutation({
         mutationFn: async (data: DataType) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return await request<any>({
                 method: HTTP_METHOD.POST,
                 url: ORDER_ENDPOINT.CREATE_ORDER,

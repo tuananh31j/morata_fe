@@ -1,13 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, Table, Tooltip } from 'antd';
 import { TableProps } from 'antd/lib';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { MAIN_ROUTES } from '~/constants/router';
+import { Link, useParams } from 'react-router-dom';
 import useDisabledReview from '~/hooks/orders/Mutations/useDisableReview';
 import RateBtn from '~/pages/Clients/Account/MyOrders/Components/RateBtn';
-import { setReviewData } from '~/store/slice/rateProductSlice';
-import { IAttributeItem } from '~/types/Product';
 import { Currency } from '~/utils';
 
 interface DataType {

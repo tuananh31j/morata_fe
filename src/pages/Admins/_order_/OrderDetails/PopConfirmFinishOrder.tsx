@@ -2,7 +2,6 @@ import { Button, Popconfirm } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useDeliveredOrder } from '~/hooks/orders/Mutations/useDeliveredOrder';
 import { useFinishOrder } from '~/hooks/orders/Mutations/useFinishAnOrder';
 
 interface Props {

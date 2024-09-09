@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { QUERY_KEY } from '~/constants/queryKey';
 import reviewService from '~/services/reviews.service';
 import { setReviewData } from '~/store/slice/rateProductSlice';
-import { errorResponse } from '~/types/ErrorResponse';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import { ReviewData } from '~/types/Review';
 import showMessage from '~/utils/ShowMessage';
 
@@ -24,7 +24,7 @@ const useCreateReview = () => {
             dispatch(setReviewData({ orderId: '', isOpen: false, productId: '', productVariationId: '' }));
             showMessage('Đánh giá thành công', 'success');
         },
-        onError: (error: errorResponse) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

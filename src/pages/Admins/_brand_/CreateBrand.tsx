@@ -6,38 +6,6 @@ import WrapperPageAdmin from '../_common/WrapperPageAdmin';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { Link } from 'react-router-dom';
 
-import { Select, Space } from 'antd';
-
-const handleChange = (value: string[]) => {
-    console.log(`selected ${value}`);
-};
-
-const options = [
-    {
-        label: 'China',
-        value: 'china',
-        emoji: '🇨🇳',
-        desc: 'China (中国)',
-    },
-    {
-        label: 'USA',
-        value: 'usa',
-        emoji: '🇺🇸',
-        desc: 'USA (美国)',
-    },
-    {
-        label: 'Japan',
-        value: 'japan',
-        emoji: '🇯🇵',
-        desc: 'Japan (日本)',
-    },
-    {
-        label: 'Korea',
-        value: 'korea',
-        emoji: '🇰🇷',
-        desc: 'Korea (韩国)',
-    },
-];
 const CreateBrand = () => {
     const [form] = Form.useForm<{ name: string }>();
     const { mutate: createBrandMutate, isPending } = useCreateBrand();
@@ -63,17 +31,6 @@ const CreateBrand = () => {
                     onFinish={onFinish}
                     initialValues={{ isRequired: false, isVariant: false }}
                 >
-                    {/* <Form.Item label='Select' name='select'>
-                        <Select
-                            mode='multiple'
-                            allowClear
-                            style={{ width: '100%' }}
-                            placeholder='Please select'
-                            defaultValue={['china']}
-                            onChange={handleChange}
-                            options={options}
-                        />
-                    </Form.Item> */}
                     <div>
                         <div>
                             <div className='flex gap-1'>

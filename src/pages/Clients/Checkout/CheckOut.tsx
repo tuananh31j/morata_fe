@@ -25,6 +25,7 @@ const Checkout: React.FC = () => {
         if (shippingFee) {
             dispatch(setShippingFee(shippingFee.total));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shippingFee]);
 
     return (

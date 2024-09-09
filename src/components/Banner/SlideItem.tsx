@@ -1,5 +1,4 @@
-import { Button, Typography } from 'antd';
-import Animation from '../_common/Animation';
+import { Typography } from 'antd';
 
 const { Title, Paragraph } = Typography;
 const SlideItem = ({

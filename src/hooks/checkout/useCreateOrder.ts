@@ -4,6 +4,7 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import { MAIN_ROUTES } from '~/constants/router';
 import { checkoutService } from '~/services/checkout.service';
 import { ICheckoutCash } from '~/types/checkout/Checkout';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 /**
@@ -20,7 +21,7 @@ export const useMutationCreateOrder = () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] });
             navigate(MAIN_ROUTES.SUCCESS_ORDER, { state: { authorized: true } });
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

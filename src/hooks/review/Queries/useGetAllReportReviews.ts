@@ -5,7 +5,7 @@ import { Params } from '~/types/Api';
 
 const useGetAllReportReviews = (params: Params) => {
     return useQuery({
-        queryKey: [QUERY_KEY.REPORT_REVIEWS,...Object.values(params)],
+        queryKey: [QUERY_KEY.REPORT_REVIEWS, ...Object.values(params)],
         queryFn: () => reviewService.getAllReportReviews(params),
     });
 };

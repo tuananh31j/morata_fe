@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
 import { IVariantItem } from '~/pages/Clients/ProductDetails/ProductDetails';
-import { setImages, updateVariant } from '~/store/slice/DetailProduct';
+import { updateVariant } from '~/store/slice/DetailProduct';
 import { RootState, useAppDispatch } from '~/store/store';
 import { variationAttribute } from '~/types/cart/CartResponse';
 import { IProductItemNew } from '~/types/Product';

@@ -17,6 +17,7 @@ export const useGetDistrict = (provinceId: number) => {
             return response && response.data && response.data.data;
         },
         select: (data) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return data && data.map((item: any) => ({ label: item.DistrictName, value: item.DistrictID }));
         },
     });

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { QUERY_KEY } from '~/constants/queryKey';
 import { ADMIN_ROUTES } from '~/constants/router';
 import productService from '~/services/product.service';
-import { errorResponse } from '~/types/ErrorResponse';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 const useCreateProduct = () => {
@@ -19,7 +19,7 @@ const useCreateProduct = () => {
             showMessage('Thêm mới sản phẩm thành công!', 'success');
             navigate(ADMIN_ROUTES.PRODUCTS);
         },
-        onError: (error: errorResponse) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

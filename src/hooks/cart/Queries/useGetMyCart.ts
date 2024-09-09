@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
 import { QUERY_KEY } from '~/constants/queryKey';
 import { cartService } from '~/services/cart.service';
-import { RootState, useTypedSelector } from '~/store/store';
+import { useTypedSelector } from '~/store/store';
 
 const useGetMyCart = (id?: string) => {
     const user = useTypedSelector((state) => state.authReducer.user);

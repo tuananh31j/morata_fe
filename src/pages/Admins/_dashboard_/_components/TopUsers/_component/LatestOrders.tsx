@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Flex, Typography, Tag, Avatar, Tooltip, Button } from 'antd';
+import { Card, Flex, Typography, Avatar, Tooltip, Button } from 'antd';
 import { CreditCardOutlined, DollarOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
@@ -17,18 +17,6 @@ type LatestOrder = {
     createdAt: string;
     customerName: string;
     customerAvatar: string;
-};
-
-const getStatusColor = (status: LatestOrder['orderStatus']) => {
-    const statusMap: Record<LatestOrder['orderStatus'], string> = {
-        pending: '#faad14',
-        confirmed: '#1890ff',
-        shipping: '#13c2c2',
-        delivered: '#52c41a',
-        cancelled: '#f5222d',
-        done: '#237804',
-    };
-    return statusMap[status] || '#d9d9d9';
 };
 
 const LatestOrders: React.FC<{ orders: LatestOrder[] }> = ({ orders }) => {

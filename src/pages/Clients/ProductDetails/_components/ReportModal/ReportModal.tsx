@@ -59,6 +59,7 @@ const ReviewModal = ({ isSuccessful, isModalVisible, handleSubmit, handleCancel 
             form.resetFields();
             setIsOtherOpen(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccessful]);
     return (
         <Modal title='Chọn một lý do' centered open={isModalVisible} footer={null} onCancel={handleCancel}>

@@ -4,6 +4,7 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import { ADMIN_ROUTES } from '~/constants/router';
 import categoryService from '~/services/category.service';
 import { ICategoryFormData } from '~/types/Category';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 export const useMutationUpdateCategory = () => {
@@ -24,7 +25,7 @@ export const useMutationUpdateCategory = () => {
             showMessage('Đã cập nhật thông tin danh mục!', 'success');
             navigate(ADMIN_ROUTES.CATEGORIES, { replace: true });
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

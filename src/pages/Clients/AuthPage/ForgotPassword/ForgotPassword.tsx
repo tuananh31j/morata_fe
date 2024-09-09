@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Form, Input } from 'antd';
 import { useEffect } from 'react';
@@ -31,6 +32,7 @@ export default function ForgotPassword() {
                 showMessage(error.response.data.message, 'error');
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isError]);
 
     return (
