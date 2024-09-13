@@ -1,6 +1,5 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { MAIN_ROUTES } from '~/constants/router';
 
 const MenuItem = () => {
     return (

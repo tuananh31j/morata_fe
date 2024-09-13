@@ -4,9 +4,9 @@ import statsService from '~/services/stats.service';
 import { Dayjs } from 'dayjs';
 
 export const UseRangePicker = (startDate: Dayjs | null, endDate: Dayjs | null) => {
-  return useQuery({
-    queryKey: [QUERY_KEY.DATE_RANGE, startDate, endDate],
-    queryFn: () => statsService.getOrderAndRevenueByRange(startDate!, endDate!),
-    enabled: !!startDate && !!endDate,
-  });
+    return useQuery({
+        queryKey: [QUERY_KEY.DATE_RANGE, startDate, endDate],
+        queryFn: () => statsService.getOrderAndRevenueByRange(startDate!, endDate!),
+        enabled: !!startDate && !!endDate,
+    });
 };

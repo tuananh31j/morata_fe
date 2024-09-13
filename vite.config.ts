@@ -5,7 +5,10 @@ import path from 'path';
 export default defineConfig({
     plugins: [react()],
     server: {
-        port: 3000,
+        // watch: { usePolling: true },
+        // host: true,
+        // strictPort: true,
+        port: 5173,
     },
     css: {
         devSourcemap: true,

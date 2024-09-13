@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteOutlined, WarningOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Button, Modal, Rate, Space, Tooltip } from 'antd';

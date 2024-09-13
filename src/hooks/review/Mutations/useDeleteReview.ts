@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import reviewService from '~/services/reviews.service';
-import { errorResponse } from '~/types/ErrorResponse';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 const useDeleteReview = (reviewId: string) => {
@@ -18,7 +18,7 @@ const useDeleteReview = (reviewId: string) => {
                     ),
             });
         },
-        onError(error: errorResponse) {
+        onError(error: IErrorResponse) {
             console.log(error.response.data.message);
         },
     });

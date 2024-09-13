@@ -5,7 +5,7 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import { MAIN_ROUTES } from '~/constants/router';
 import orderService from '~/services/order.service';
 import { setReviewData } from '~/store/slice/rateProductSlice';
-import { errorResponse } from '~/types/ErrorResponse';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 export default function useDisabledReview() {
@@ -29,7 +29,7 @@ export default function useDisabledReview() {
                 navigate(`${MAIN_ROUTES.PRODUCTS}/${productId}`);
             }
         },
-        onError: (error: errorResponse) => {
+        onError: (error: IErrorResponse) => {
             console.log(error.response.data.message);
         },
     });

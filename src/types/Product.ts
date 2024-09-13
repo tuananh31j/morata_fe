@@ -158,7 +158,7 @@ export type IProductDetailsAdmin = {
 };
 
 export type IAllProductsResponse = {
-    products: IProductItem[];
+    products: IProductItemNew[];
     page: number;
     totalDocs: number;
     totalPages: number;

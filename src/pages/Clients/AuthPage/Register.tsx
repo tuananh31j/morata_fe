@@ -2,7 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ConfigProvider, Form, Input } from 'antd';
 import { motion } from 'framer-motion';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import useDocumentTitle from '~/hooks/_common/useDocumentTitle';
 import useMessage from '~/hooks/_common/useMessage';
 import useRegister from '~/hooks/auth/useRegister';

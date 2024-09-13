@@ -1,5 +1,5 @@
 import { DeleteOutlined, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, FormProps, GetProp, Image, Input, Modal, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Form, FormProps, Image, Input, Modal, Upload, UploadFile, UploadProps } from 'antd';
 import { useEffect, useState } from 'react';
 import StaticImages from '~/assets';
 import WrapperList from '~/components/_common/WrapperList';
@@ -13,11 +13,11 @@ import { IProductFiles, IThumbnailAntd } from '~/types/Product';
 import { errorMessage } from '~/validation/Products/Product';
 
 const Profile = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading, _] = useState(false);
 
     const { mutate: updateProfile, isPending } = useMutationUpdateProfle();
 
-    const { mutate: sendResetPassword, error, isError, isPending: isPendingPassword } = useSendResetPassword();
+    const { mutate: sendResetPassword, isPending: isPendingPassword } = useSendResetPassword();
 
     const [thumbnailFile, setThumbnailFile] = useState<UploadFile[]>([]);
     const [previewThumbnailOpen, setPreviewThumbnailOpen] = useState<boolean>(false);
@@ -63,7 +63,7 @@ const Profile = () => {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const thumbnailValidator = async (_: any, thumbnail: IProductFiles) => {
+    const thumbnailValidator = async (__: any, thumbnail: IProductFiles) => {
         if (
             thumbnail &&
             thumbnail.fileList &&

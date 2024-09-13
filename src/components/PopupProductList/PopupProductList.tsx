@@ -6,11 +6,11 @@ import useWindowSize from '~/hooks/_common/useWindowSize';
 import SmallCard from '../ProductCard/SmallCard';
 import CarouselDisplay, { CarouselItem } from '~/components/_common/CarouselDisplay';
 import SmallSkeleton from '~/components/_common/skeleton/SmallSkeleton';
-import { IProductItem } from '~/types/Product';
 import { MAIN_ROUTES } from '~/constants/router';
+import { IProductItemNew } from '~/types/Product';
 
 // fake quantity data get api new product
-const PopupProductList = ({ product, propsLoading }: { product: IProductItem[]; propsLoading: boolean }) => {
+const PopupProductList = ({ product, propsLoading }: { product: IProductItemNew[]; propsLoading: boolean }) => {
     const [open, setOpen] = useState(false);
     const windowsize = useWindowSize();
     useEffect(() => {
@@ -81,9 +81,9 @@ const PopupProductList = ({ product, propsLoading }: { product: IProductItem[]; 
                                 </>
                             )}
                             {!propsLoading &&
-                                product?.map((item, i) => {
+                                product?.map((item) => {
                                     return (
-                                        <CarouselItem key={i}>
+                                        <CarouselItem key={item._id}>
                                             <SmallCard product={item} />
                                         </CarouselItem>
                                     );

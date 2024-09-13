@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import request from '../../utils/api/axiosIntance';

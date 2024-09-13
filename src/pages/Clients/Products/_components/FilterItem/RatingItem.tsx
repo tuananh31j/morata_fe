@@ -1,6 +1,5 @@
 import FilterWrap from './FilterWrap';
 import { Radio, RadioChangeEvent, Rate, Space } from 'antd';
-import RatingDisplay from '~/components/_common/RatingDisplay';
 import useFilter from '~/hooks/_common/useFilter';
 import { cn } from '~/utils';
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Table } from 'antd';
 import { TableProps } from 'antd/lib';
 

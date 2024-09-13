@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { QUERY_KEY } from '~/constants/queryKey';
 import { ADMIN_ROUTES } from '~/constants/router';
 import brandService from '~/services/brand.service';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 export const useCreateBrand = () => {
@@ -18,7 +19,7 @@ export const useCreateBrand = () => {
             showMessage('Brand created successfully!', 'success');
             navigate(ADMIN_ROUTES.BRANDS, { replace: true });
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

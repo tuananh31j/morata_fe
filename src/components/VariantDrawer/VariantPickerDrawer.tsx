@@ -5,7 +5,6 @@ import { debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import ProductActions from '~/components/_common/ProductActions';
 import RatingDisplay from '~/components/_common/RatingDisplay';
 import { MAIN_ROUTES } from '~/constants/router';
 import useFilter from '~/hooks/_common/useFilter';
@@ -18,6 +17,7 @@ import { variationAttribute } from '~/types/cart/CartResponse';
 import { IProductItemNew } from '~/types/Product';
 import { Currency } from '~/utils';
 import showMessage from '~/utils/ShowMessage';
+
 type IStateVariant = {
     _id: string;
     price: number;
@@ -93,6 +93,7 @@ export default function VariantPickerDrawer({
     useEffect(() => {
         setVariant(initialVariant);
         setActive(initialVariant?._id || '');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [product]);
     const { query } = useFilter();
     const { data: allWishList } = useGetAllWishlist(query);
@@ -146,7 +147,7 @@ export default function VariantPickerDrawer({
                         <RatingDisplay rating={product.rating} reviews={product.reviewCount} />
                         <span className='text-xl font-medium text-black'>
                             {variant?.price
-                                ? Currency.format(variant?.price!)
+                                ? Currency.format(variant?.price)
                                 : Currency.format(product.variationIds[0].price)}
                         </span>
                         <div className='mt-2 flex flex-wrap items-center gap-3'>

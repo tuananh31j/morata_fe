@@ -72,14 +72,6 @@ const Header = () => {
         disPatch(setFocusSearch(false));
     }, 100);
 
-    // categroy
-    // const [isVisible, setIsVisible] = useState(false);
-    // const toggleVisibility = () => {
-    //     setIsVisible(!isVisible);
-    // };
-    // const categories = ['Electronics', 'Clothing', 'Home & Kitchen', 'Sports & Outdoors'];
-
-    // mobi
     const [open, setOpen] = useState(false);
     const [placement, _] = useState<DrawerProps['placement']>('left');
 
@@ -137,6 +129,7 @@ const Header = () => {
     }, [categoryId.id, refetch]);
     useEffect(() => {
         disPatch(setFocusSearch(false));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
     return (
         <header className='bg-blue-900 '>

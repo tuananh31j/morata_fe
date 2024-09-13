@@ -37,6 +37,7 @@ export type ILoginResponse = {
         updatedAt: string;
     };
     accessToken: string;
+    refreshToken: string;
 };
 
 export type IRegisterResponse = {

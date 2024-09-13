@@ -4,6 +4,7 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { attributesServices } from '~/services/attributes.service';
 import { IAttributeFormData } from '~/types/Category';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 const useUpdateAttribute = () => {
@@ -24,7 +25,7 @@ const useUpdateAttribute = () => {
             showMessage('Đã cập nhật thông tin thuộc tính!', 'success');
             navigate(ADMIN_ROUTES.ATTRIBUTES, { replace: true });
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

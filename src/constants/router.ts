@@ -8,7 +8,6 @@ export const MAIN_ROUTES = {
     PROFILE: '/profile',
     MY_ORDERS: '/my-orders',
     MY_ORDERS_DETAIL: '/my-orders/:id',
-    MY_ADDRESS: '/my-address',
     LOGIN: '/login',
     VERIFY: '/verifyAccount/:token',
     REGISTER: '/register',

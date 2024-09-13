@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CalendarOutlined } from '@ant-design/icons';
 import { DatePicker, Dropdown, MenuProps, Space, Tooltip } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';

@@ -1,11 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { Button, Card, List, Typography, Divider, Tag, Image, Space, Checkbox, CheckboxProps, Tooltip } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import useGetMyCart from '~/hooks/cart/Queries/useGetMyCart';
 import { useCreateOrder } from '~/hooks/orders/Mutations/useCreateOrder';
-import { clearCheckoutInfo } from '~/store/slice/orderSlice';
 import { RootState } from '~/store/store';
 import PolicyModal from '~/components/PolicyPopup/Policy';
 import showMessage from '~/utils/ShowMessage';
@@ -14,7 +12,6 @@ const { Text, Title } = Typography;
 
 const ProductItemsCheckout: React.FC = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const [policyAgreed, setPolicyAgreed] = useState<boolean>(false);
 

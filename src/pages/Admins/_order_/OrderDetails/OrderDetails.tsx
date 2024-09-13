@@ -1,7 +1,6 @@
 import { Space } from 'antd';
 import { useParams } from 'react-router-dom';
 import useOrderDetails from '~/hooks/orders/Queries/useOrderDetails';
-import CancelOrderModal from './CancelOrderModal';
 import CustomerInfo from './CustomerInfo';
 import OrderStatusBar from './OrderStatusBar';
 import ServiceInfo from './ServiceInfo';
