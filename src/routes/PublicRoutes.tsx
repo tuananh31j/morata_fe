@@ -1,4 +1,4 @@
-import { Form, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { MAIN_ROUTES } from '~/constants/router';
 import AccountLayout from '~/layouts/AccountLayout';
 import MainLayout from '~/layouts/MainLayout/MainLayout';
@@ -20,7 +20,6 @@ import {
     ErrorPage,
     HomePage,
     LoginPage,
-    MyAddressPage,
     MyOrdersPage,
     NotFoundPage,
     ProductDetailsPage,
@@ -126,7 +125,6 @@ const PublicRoutes = [
                     { path: MAIN_ROUTES.PROFILE, element: <ProfilePage /> },
                     { path: MAIN_ROUTES.MY_ORDERS, element: <MyOrdersPage /> },
                     { path: MAIN_ROUTES.MY_ORDERS_DETAIL, element: <OrderDetailPage /> },
-                    { path: MAIN_ROUTES.MY_ADDRESS, element: <MyAddressPage /> },
                 ],
             },
             {

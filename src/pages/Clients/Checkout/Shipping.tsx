@@ -22,6 +22,7 @@ const Shipping: React.FC = () => {
         dispatch(setDescription({ description: e.target.value }));
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onFinish = (values: any) => {
         dispatch(
             setReceiver({

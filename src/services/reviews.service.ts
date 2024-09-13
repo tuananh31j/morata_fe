@@ -33,7 +33,9 @@ const reviewService = {
         return res.data;
     },
     async getStarsReview(productId: string) {
-        const res = await instance.get<IAxiosResponse<IStarsReviewResponse>>(`${REVIEW_ENDPOINT.STARS_REVIEW}/${productId}`);
+        const res = await instance.get<IAxiosResponse<IStarsReviewResponse>>(
+            `${REVIEW_ENDPOINT.STARS_REVIEW}/${productId}`
+        );
         return res.data;
     },
     async getAllReportReviews(params: Params) {

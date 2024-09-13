@@ -1,14 +1,9 @@
-import clsx from 'clsx';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Currency } from '~/utils';
 import ProductActions from '../_common/ProductActions';
 import RatingDisplay from '../_common/RatingDisplay';
 import { IProductItemNew } from '~/types/Product';
-import { Image, Spin } from 'antd';
-import { useMutationCart } from '~/hooks/cart/Mutations/useAddCart';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store/store';
+import { Image } from 'antd';
 import { MAIN_ROUTES } from '~/constants/router';
 import VariantPickerDrawer from '~/components/VariantDrawer/VariantPickerDrawer';
 
@@ -18,43 +13,20 @@ type PropTypeProduct = {
 
 const SmallCard = ({ product }: PropTypeProduct) => {
     const VARIANT_LENGTH = 5;
-    const discountPercentage = 10;
-    const { mutate, isPending } = useMutationCart();
-    const user = useSelector((state: RootState) => state.authReducer.user);
-    const handleAddCart = () => {
-        mutate({
-            productVariation: product.variationIds[0]._id,
-            quantity: 1,
-            userId: user ? user._id : '',
-        });
-    };
     const productSold = product.variationIds.reduce((acc, item) => {
         const sold = item.sold || 0;
         return acc + sold;
     }, 0);
-    const newPrice = product.variationIds[0].price * (1 + discountPercentage / 100);
-    const [isActiveProductActions, setIsActiveProductActions] = useState<boolean>(false);
-
-    const handleSetDateActive = () => {
-        setIsActiveProductActions(!isActiveProductActions);
-    };
-
     return (
         <div className='rounded-xl bg-white p-5'>
             <div className='group relative justify-between gap-5 rounded'>
                 {/* Image */}
-                <div
-                    className='group relative w-full'
-                    // data-active={isActiveProductActions ? 'card' : ''}
-                    // onMouseEnter={handleSetDateActive}
-                    // onMouseLeave={handleSetDateActive}
-                >
+                <div className='group relative w-full'>
                     <Link
                         to={`${MAIN_ROUTES.PRODUCTS}/${product._id}`}
                         className='flex h-[224px] w-full items-center justify-center overflow-hidden'
                     >
                         {/* HOVER IMAGE */}
-                        {/* {isActiveProductActions && ( */}
                         <img
                             loading='lazy'
                             src={product.images[0]}
@@ -120,14 +92,11 @@ const SmallCard = ({ product }: PropTypeProduct) => {
                     </div>
 
                     {/* Add to cart btn */}
-                    {/* <PopupAttributes product={product}> */}
                     <VariantPickerDrawer product={product}>
                         <button className='block w-full rounded-3xl border-black bg-black py-2 text-center text-sm text-white transition-colors duration-300 ease-linear hover:bg-[#16bcdc]'>
-                            {isPending && <Spin />}
-                            {!isPending && 'Thêm vào giỏ hàng'}
+                            Thêm vào giỏ hàng
                         </button>
                     </VariantPickerDrawer>
-                    {/* </PopupAttributes> */}
                 </div>
 
                 {/* Discount */}

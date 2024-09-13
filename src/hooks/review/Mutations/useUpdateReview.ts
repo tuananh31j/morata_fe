@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/constants/queryKey';
 import reviewService from '~/services/reviews.service';
-import { errorResponse } from '~/types/ErrorResponse';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import { ReviewData } from '~/types/Review';
 import showMessage from '~/utils/ShowMessage';
 
@@ -19,7 +19,7 @@ const useUpdateReview = () => {
             });
             showMessage('Sửa đánh giá thành công', 'success');
         },
-        onError(error: errorResponse) {
+        onError(error: IErrorResponse) {
             console.log(error.response.data.message);
         },
     });

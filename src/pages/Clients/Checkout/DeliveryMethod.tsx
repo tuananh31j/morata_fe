@@ -32,6 +32,7 @@ const DeliveryMethod = ({ districtId }: Props) => {
                 queryKey: [QUERY_KEY.SHIPPING_SERVICES],
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [districtId, services]);
     return (
         <Space direction='vertical' className='mb-5 w-full rounded-lg border-2 border-gray p-5'>

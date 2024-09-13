@@ -2,10 +2,6 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import optionsPieChart from './_option';
 
-// interface PieChartState {
-//     series: number[];
-// }
-
 const PieChart: React.FC = () => {
     const series = [65, 34, 12, 56];
 

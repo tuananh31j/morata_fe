@@ -16,8 +16,10 @@ const DistrictSelectList = ({ provinceId }: { provinceId: number }) => {
         queryClient.invalidateQueries({
             queryKey: [QUERY_KEY.GET_DISTRICT, provinceId],
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [provinceId]);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSelectChange = (value: string, option: any) => {
         dispatch(setShippingAddress({ districtId: +value, district: option.label }));
         dispatch(setShippingAddress({ ward: '', wardCode: '' }));

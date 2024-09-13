@@ -5,10 +5,6 @@ import { IProductItemNew } from '~/types/Product';
 import SliderControls from '../SliderControls';
 import SlideItem from '~/components/Banner/SlideItem';
 
-// interface ICardItemProps {
-//     [key: string]: any; // có api thì sẽ định nghĩa lại
-// }
-
 interface ISlideshowProps {
     ItemCard?: React.ElementType;
     banners?: {
@@ -20,7 +16,7 @@ interface ISlideshowProps {
 }
 
 const Slideshow: React.FC<ISlideshowProps> = ({ ItemCard, banners, Products }) => {
-    const [currentSlide, setCurrentSlide] = useState(0);
+    const [_, setCurrentSlide] = useState(0);
     const ref = useRef<CarouselRef>(null);
     const handlePrev = () => {
         if (ref.current) {

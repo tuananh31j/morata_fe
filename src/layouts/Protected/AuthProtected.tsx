@@ -11,10 +11,10 @@ const AuthProtected = ({ children }: { children: ReactNode }) => {
         location.pathname === MAIN_ROUTES.REGISTER ||
         location.pathname === MAIN_ROUTES.FORGOT_PASSWORD;
     if (!user && !isAuthPage) {
-        return <Navigate to={'/'} replace />;
+        return <Navigate to={MAIN_ROUTES.LOGIN} replace />;
     }
     if (!user && !isAuthPage) {
-        return <Navigate to={'/'} replace />;
+        return <Navigate to={MAIN_ROUTES.LOGIN} replace />;
     }
     if (user && isAuthPage) {
         return <Navigate to={'/'} replace />;

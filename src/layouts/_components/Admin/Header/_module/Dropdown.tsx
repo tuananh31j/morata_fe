@@ -1,5 +1,4 @@
 import { FC, ReactNode, useState } from 'react';
-import { Link } from 'react-router-dom';
 import ClickOutside from '~/components/_common/ClickOutside';
 import { cn } from '~/utils';
 

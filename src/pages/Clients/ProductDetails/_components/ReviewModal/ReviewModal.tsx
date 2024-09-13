@@ -47,6 +47,7 @@ const ReviewModal = ({ initialValue, isSuccessful, isModalVisible, handleSubmit,
                 content: initialValue.content,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initialValue, form]);
 
     return (

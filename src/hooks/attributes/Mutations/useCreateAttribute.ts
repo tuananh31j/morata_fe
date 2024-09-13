@@ -4,6 +4,7 @@ import { QUERY_KEY } from '~/constants/queryKey';
 import { ADMIN_ROUTES } from '~/constants/router';
 import { attributesServices } from '~/services/attributes.service';
 import { IAttributeFormData } from '~/types/Category';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import showMessage from '~/utils/ShowMessage';
 
 export const useMutationCreateAttribute = () => {
@@ -20,7 +21,7 @@ export const useMutationCreateAttribute = () => {
             showMessage('Thêm mới thuộc tính thành công!', 'success');
             navigate(ADMIN_ROUTES.ATTRIBUTES, { replace: true });
         },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

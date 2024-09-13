@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import reviewService from '~/services/reviews.service';
-import { errorResponse } from '~/types/ErrorResponse';
+import { IErrorResponse } from '~/types/ErrorResponse';
 import { ReportData } from '~/types/Review';
 import showMessage from '~/utils/ShowMessage';
 
@@ -10,7 +10,7 @@ const useCreateReport = () => {
         onSuccess() {
             showMessage('Báo cáo thành công', 'success');
         },
-        onError: (error: errorResponse) => {
+        onError: (error: IErrorResponse) => {
             showMessage(error.response.data.message, 'error');
         },
     });

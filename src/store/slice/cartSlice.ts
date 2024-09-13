@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ICartItemsResponse } from '~/types/cart/CartResponse';
+
 type IinitialState = {
     cartOpen: boolean;
     items: ICartItemsResponse[];

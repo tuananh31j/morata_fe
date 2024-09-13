@@ -2,16 +2,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RatingDisplay from '../_common/RatingDisplay';
 import { Currency } from '~/utils';
-import clsx from 'clsx';
 import { IProductItemNew } from '~/types/Product';
 import { MAIN_ROUTES } from '~/constants/router';
 
 type PropTypeProduct = { product: IProductItemNew };
 const FeatureCard = ({ product }: PropTypeProduct) => {
-    const discountPercentage = 10;
-
     const [isScale, setIsScale] = useState<boolean>(false);
-    const newPrice = product.variationIds?.[0].price * (1 + discountPercentage / 100);
     const handleScale = (status: string) => {
         if (status === 'open') {
             setIsScale(true);
@@ -56,14 +52,6 @@ const FeatureCard = ({ product }: PropTypeProduct) => {
                             <span className={'text-[14px] font-semibold leading-5'}>
                                 {Currency?.format(product.priceFilter)}
                             </span>
-
-                            {/* {discountPercentage > 0 && (
-                                <sub>
-                                    <del className=' text-gray-500 hidden text-[10px] font-semibold italic  leading-5 lg:block'>
-                                        {Currency.format(newPrice)}
-                                    </del>
-                                </sub>
-                            )} */}
                         </div>
                     </Link>
                 </div>
