@@ -56,8 +56,8 @@ export const VerifyPage = () => {
                                         {isError ? (error as any).response.data.message : 'Welcome to morata'}
                                     </h3>
                                     <p className='mt-6 text-center '>
-                                        Thank you, your email has been verified, your account is now activated. Please
-                                        login to your account.
+                                        Cảm ơn bạn, email của bạn đã được xác minh, tài khoản của bạn hiện đã được kích
+                                        hoạt. Vui lòng đăng nhập vào tài khoản của bạn.
                                     </p>
                                     <div className='mt-4 flex justify-center'>
                                         {!isError && (
@@ -65,7 +65,7 @@ export const VerifyPage = () => {
                                                 onClick={handleLogin}
                                                 className='rounded-lg bg-cyan-500 px-5 py-2 font-semibold text-white'
                                             >
-                                                LOGIN
+                                                Đăng nhập
                                             </button>
                                         )}
                                         {isError && (
@@ -79,7 +79,7 @@ export const VerifyPage = () => {
                                         )}
                                     </div>
 
-                                    {!isError && <p className='mt-4 text-center'>Thank you for choosing morata</p>}
+                                    {!isError && <p className='mt-4 text-center'>Cảm ơn bạn đã tin tưởng Morata!</p>}
                                 </div>
                             </>
                         </div>
