@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // const handleError = (error: unknown) => {
 //     if (error instanceof Error) console.error(error.message);
